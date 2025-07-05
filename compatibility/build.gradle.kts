@@ -13,7 +13,7 @@ dependencies {
     compileOnly("net.momirealms:craft-engine-bukkit:0.0.57") // CraftEngine
 
     // 拓展功能
-    compileOnly("dev.aurelium:auraskills-api-bukkit:2.3.5") // AuraSkills
+    compileOnly("dev.aurelium:auraskills-api-bukkit:2.2.4") // AuraSkills
     compileOnly("net.momirealms:custom-crops:3.6.29") // CustomCrops
     compileOnly("net.momirealms:custom-fishing:2.3.7") // CustomFishing
 }

@@ -44,7 +44,7 @@ object GiveEnchantedBookCommand: AbstractCommand() {
         val enchantmentKey = context.getArgument("enchantment", Enchantment::class.java).key()
         val levelRange = context.getArgument("level", IntegerRangeProvider::class.java)
         val failureRange = context.getArgument("failure", IntegerRangeProvider::class.java)
-        val consumedSoulsRange = context.getArgument("consumedSouls", IntegerRangeProvider::class.java) // TODO 安全的获取? 如果是null会出现异常, 如何才能安全的返回null呢.
+        val consumedSoulsRange = if (context.nodes.last().node.name == "consumedSouls") context.getArgument("consumedSouls", IntegerRangeProvider::class.java) else null
 
         val level = getRandomFromRange(levelRange.range())
         val failure = getRandomFromRange(failureRange.range())

@@ -1,6 +1,7 @@
 package top.catnies.firenchantkt.item
 
 import org.bukkit.inventory.ItemStack
+import top.catnies.firenchantkt.api.ServiceContainer
 
 class FirEnchantingTableRegistry: EnchantingTableRegistry {
 
@@ -13,7 +14,7 @@ class FirEnchantingTableRegistry: EnchantingTableRegistry {
     }
 
     fun load() {
-
+        ServiceContainer.register(EnchantingTableRegistry::class.java, this)
     }
 
     override fun registerItem(item: EnchantingTableApplicable): Boolean {

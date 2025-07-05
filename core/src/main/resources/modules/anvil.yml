@@ -7,6 +7,12 @@ vanilla-enchanted-book:
   deny-use: true
 
 
+
+# 附魔书设置
+enchanted-book:
+
+
+
 # 扩展槽位符文设置
 # 此功能需要安装插件 EnchantmentSlots 4.4.0 +.
 slot-rune:

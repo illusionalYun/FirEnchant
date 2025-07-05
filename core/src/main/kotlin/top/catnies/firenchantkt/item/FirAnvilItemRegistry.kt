@@ -1,6 +1,7 @@
 package top.catnies.firenchantkt.item
 
 import org.bukkit.inventory.ItemStack
+import top.catnies.firenchantkt.api.ServiceContainer
 import top.catnies.firenchantkt.item.anvil.FirEnchantedBook
 import top.catnies.firenchantkt.item.anvil.VanillaEnchantedBook
 
@@ -19,6 +20,7 @@ class FirAnvilItemRegistry: AnvilItemRegistry {
     fun load() {
         registerItem(VanillaEnchantedBook())
         registerItem(FirEnchantedBook())
+        ServiceContainer.register(AnvilItemRegistry::class.java, this)
     }
 
     // 注册新的铁砧物品
