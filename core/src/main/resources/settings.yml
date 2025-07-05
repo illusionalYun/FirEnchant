@@ -1,0 +1,15 @@
+# 配置文件版本, 勿动捏 ~
+file-version: 1
+
+# 语言配置, 请确保语言缩写是Locale可识别的, 如 en, zh_CN, zh_TW 等.
+language: "zh-CN"
+
+# 数据库配置, 支持 MYSQL, SQLite 两种存储方式.
+database:
+  type: "SQLite"
+  jdbc-class: "com.mysql.cj.jdbc.Driver"
+  jdbc-url: "jdbc:mysql://127.0.0.1:3306/minecraft?useSSL=false&autoReconnect=true"
+  properties:
+    table_name: "firenchant_data"
+    user: "root"
+    password: "123456"

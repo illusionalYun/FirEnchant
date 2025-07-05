@@ -1,0 +1,4 @@
+lang-version: 1
+
+command.reload.success: "<white>[FirEnchant] Configs reloaded in <green><arg:0></green> ms.</white>"
+resource.enchantment.file.error: "<white>[FirEnchant] Error at init enchantment <red><arg:0></red> , please check file then reload.</white>"

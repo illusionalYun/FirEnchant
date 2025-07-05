@@ -1,0 +1,12 @@
+# 勿动
+enchantment-version: 1
+
+# 附魔书物品设置
+hooked-plugin: "vanilla"
+hooked-id: "book"
+item-name: "<arg:key> <arg:roman_level>"
+item-lore:
+  - "<white>等级: <blue><arg:level>"
+  - "<white>失败率: <red><arg:failure>%"
+  - "<gray>一本神秘的附魔书喵~"
+  - "<gray>Ciallo～(∠・ω< )⌒★"

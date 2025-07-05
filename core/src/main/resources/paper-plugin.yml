@@ -1,0 +1,26 @@
+api-version: "1.21"
+name: FirEnchantKt
+version: 3.0.0-beta1
+main: top.catnies.firenchantkt.FirEnchantPlugin
+#bootstrapper:
+#load: POSTWORLD
+authors:
+  - Catnies
+folia-supported: true
+dependencies:
+  server:
+    # 强依赖插件
+    PlaceholderAPI: {load: AFTER, required: true, join-classpath: true}
+
+    # 物品依赖插件
+    Nexo: {load: OMIT, required: false, join-classpath: true}
+    Oraxen: {load: OMIT, required: false, join-classpath: true}
+    Itemsadder: {load: OMIT, required: false, join-classpath: true}
+    MythicMobs: {load: OMIT, required: false, join-classpath: true}
+    CraftEngine: {load: OMIT, required: false, join-classpath: true}
+
+    # 可选依赖插件
+    EnchantmentSlots: {load: AFTER, required: false, join-classpath: true}
+    MythicChanger: {load: AFTER, required: false, join-classpath: true}
+    CustomFishing: {load: AFTER, required: false, join-classpath: true}
+    CustomCrops: {load: AFTER, required: false, join-classpath: true}

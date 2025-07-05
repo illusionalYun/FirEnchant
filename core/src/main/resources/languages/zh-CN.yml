@@ -1,0 +1,10 @@
+lang-version: 1
+
+database.connect.error: "<#96f896>[FirEnchant] <red>插件无法连接到数据库，请检查数据库配置。</red>"
+
+command.no_permission: "<#96f896>[FirEnchant] <red>您没有权限执行此命令。</red>"
+command.reload.success: "<#96f896>[FirEnchant] <#cef8f5>配置文件重新加载完成，耗时 <green><arg:0></green> 毫秒。</#cef8f5>"
+
+resource.enchantment.file.error: "<#96f896>[FirEnchant] <red>魔咒 <arg:0> 的配置文件格式错误，魔咒数据无法正常加载，请修正后再试。</red>"
+resource.enchantment.file.provider.not_found: "<#96f896>[FirEnchant] <red>魔咒 <arg:0> 的配置文件中指定了物品提供插件 <arg:1> 不存在或不受支持，魔咒数据无法正常加载，请修正后再试。</red>"
+resource.enchantment.file.item.not_found: "<#96f896>[FirEnchant] <red>魔咒 <arg:0> 的配置文件中指定了物品 <arg:1> 不存在，魔咒数据无法正常加载，请修正后再试。</red>"
