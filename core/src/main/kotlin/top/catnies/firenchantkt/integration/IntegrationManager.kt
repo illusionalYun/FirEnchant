@@ -1,47 +1,34 @@
 package top.catnies.firenchantkt.integration
 
 import org.bukkit.Bukkit
-import top.catnies.firenchantkt.FirEnchantPlugin
-import top.catnies.firenchantkt.api.event.ItemProviderRegisterEvent
-import top.catnies.firenchantkt.compatibility.provider.CraftEngineItemProvider
-import top.catnies.firenchantkt.compatibility.provider.ItemsAdderItemProvider
-import top.catnies.firenchantkt.compatibility.provider.MythicMobsItemProvider
-import top.catnies.firenchantkt.compatibility.provider.NexoItemProvider
-import top.catnies.firenchantkt.compatibility.provider.VanillaItemProvider
 
-class IntegrationManager private constructor(): ItemProviderRegistry {
-
-    var plugin = FirEnchantPlugin.instance
-    var logger = FirEnchantPlugin.instance.logger
+// 插件集成管理器
+class IntegrationManager private constructor() {
 
     companion object {
-        @JvmStatic
-        val instance by lazy { IntegrationManager().apply {
-            logger.info("Loading integration...")
-            load()
-            logger.info("Integration loaded!")
-        } }
-
-        @JvmStatic
-        private val itemProviderMap = mutableMapOf<String, ItemProvider>()
+        val instance by lazy { IntegrationManager().also {
+            it.load()
+        }}
     }
 
-    fun load() {
-        // Item Hook
-        registerItemProvider("Vanilla", VanillaItemProvider())
-        registerItemProvider("ItemsAdder", ItemsAdderItemProvider())
-        registerItemProvider("CraftEngine", CraftEngineItemProvider())
-        registerItemProvider("MythicMobs", MythicMobsItemProvider())
-        registerItemProvider("Nexo", NexoItemProvider())
-        Bukkit.getPluginManager().callEvent(ItemProviderRegisterEvent(this))
+    val isAuraSkillsEnabled: Boolean = Bukkit.getPluginManager().isPluginEnabled("AuraSkills")
+    val isEnchantmentSlotsEnabled: Boolean = Bukkit.getPluginManager().isPluginEnabled("EnchantmentSlots")
+    val isPlaceholderAPIEnabled: Boolean = Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")
+
+    private fun load() {
+        // AuraSkills
+        if (isEnchantmentSlotsEnabled) {
+
+        }
+        // EnchantmentSlots
+        if (isEnchantmentSlotsEnabled) {
+
+        }
+
     }
 
-    // ItemProviders
-    override fun registerItemProvider(plugin: String, provider: ItemProvider) = itemProviderMap.put(plugin.lowercase(), provider)
-    override fun unregisterItemProvider(plugin: String) = itemProviderMap.remove(plugin)
-    override fun getItemProviders() = itemProviderMap.values.filter { it.enabled }
-    override fun getItemProvider(plugin: String): ItemProvider? {
-        itemProviderMap[plugin.lowercase()]?.let { if (it.enabled) return it }
-        return null
+    fun reload() {
+
     }
+
 }

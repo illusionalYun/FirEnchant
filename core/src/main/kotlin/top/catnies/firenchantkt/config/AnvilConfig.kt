@@ -15,7 +15,7 @@ class AnvilConfig private constructor():
 
     override fun loadConfig() {
         val cfg = config()
-        isDenyVanillaEnchantedBook = cfg.getBoolean("deny-vanilla-enchanted-book", false)
+        isDenyVanillaEnchantedBook = cfg.getBoolean("vanilla-enchanted-book.deny-use", false)
     }
 
 }

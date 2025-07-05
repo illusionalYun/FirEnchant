@@ -3,4 +3,13 @@
 
 # 是否禁止玩家在铁砧上使用原版的附魔书？
 # 如果设置为 true， 那么铁砧上无法再使用附魔书（创造模式不受影响）。
-deny-vanilla-enchanted-book: true
+vanilla-enchanted-book:
+  deny-use: true
+
+
+# 扩展槽位符文设置
+# 此功能需要安装插件 EnchantmentSlots 4.4.0 +.
+slot-rune:
+  # 拓展符文使用的物品
+  hooked-plugin: "CraftEngine"
+  hooked-id: "enchantment:rune_slot"
