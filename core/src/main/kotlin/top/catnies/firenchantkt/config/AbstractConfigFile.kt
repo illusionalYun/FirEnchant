@@ -28,7 +28,7 @@ abstract class AbstractConfigFile(
     }
 
     // 安全获取属性
-    protected fun getConfig() = config
+    protected fun config() = config
 
     // 子类实现
     protected abstract fun loadConfig()

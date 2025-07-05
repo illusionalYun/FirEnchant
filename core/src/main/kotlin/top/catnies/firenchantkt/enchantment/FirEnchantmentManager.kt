@@ -10,7 +10,6 @@ import org.bukkit.enchantments.Enchantment
 import top.catnies.firenchantkt.FirEnchantPlugin
 import top.catnies.firenchantkt.api.ServiceContainer
 import top.catnies.firenchantkt.integration.IntegrationManager
-import top.catnies.firenchantkt.enchantment.EnchantmentSettingFactory
 import top.catnies.firenchantkt.language.MessageConstants.RESOURCE_ENCHANTMENT_FILE_ERROR
 import top.catnies.firenchantkt.language.MessageConstants.RESOURCE_ENCHANTMENT_FILE_ITEM_NOT_FOUND
 import top.catnies.firenchantkt.language.MessageConstants.RESOURCE_ENCHANTMENT_FILE_PROVIDER_NOT_FOUND
@@ -35,7 +34,7 @@ class FirEnchantmentManager private constructor(): EnchantmentManager {
     private fun load() {
         readRegisteredEnchantments()
         ServiceContainer.register(EnchantmentManager::class.java, this)
-        ServiceContainer.register(EnchantmentSettingFactory::class.java, FirEnchantmentSettingFactoryImpl)
+        ServiceContainer.register(EnchantmentSettingFactory::class.java, FirEnchantmentSettingFactory)
     }
 
     fun reload() {

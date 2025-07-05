@@ -39,7 +39,7 @@ class RecipeListener: Listener {
         // 构建上下文
         val context = AnvilContext(firstItem, secondItem, event.result, player)
         // 处理物品
-        anvilApplicable.onComplete(event, context)
+        anvilApplicable.onPrepareResult(event, context)
     }
 
 }

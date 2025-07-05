@@ -38,13 +38,7 @@ class FirAnvilItemRegistry: AnvilItemRegistry {
 
     // 找到物品对应的处理器
     override fun findApplicableItem(itemStack: ItemStack): AnvilApplicable? {
-        items.forEach {
-            if (it.matches(itemStack)) {
-                return it
-            }
-        }
-        return null
-//        return items.find { it.matches(itemStack) }
+        return items.find { it.matches(itemStack) }
     }
 
 }

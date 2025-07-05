@@ -14,7 +14,7 @@ class SettingsConfig private constructor():
 
 
     override fun loadConfig() {
-        val cfg = getConfig()
+        val cfg = config()
         LANGUAGE = cfg.getString("language", "zh_CN")!!
     }
 

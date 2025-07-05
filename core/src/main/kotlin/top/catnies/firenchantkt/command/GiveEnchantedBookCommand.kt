@@ -44,7 +44,7 @@ object GiveEnchantedBookCommand: AbstractCommand() {
         val enchantmentKey = context.getArgument("enchantment", Enchantment::class.java).key()
         val levelRange = context.getArgument("level", IntegerRangeProvider::class.java)
         val failureRange = context.getArgument("failure", IntegerRangeProvider::class.java)
-        val consumedSoulsRange = context.getArgument("consumedSouls", IntegerRangeProvider::class.java)
+        val consumedSoulsRange = context.getArgument("consumedSouls", IntegerRangeProvider::class.java) // TODO 安全的获取? 如果是null会出现异常, 如何才能安全的返回null呢.
 
         val level = getRandomFromRange(levelRange.range())
         val failure = getRandomFromRange(failureRange.range())
@@ -52,6 +52,7 @@ object GiveEnchantedBookCommand: AbstractCommand() {
         val enchantmentSetting = FirEnchantAPI.getSettingsByData(enchantmentKey, level, failure, consumedSouls)
 
         if (enchantmentSetting == null) {
+            // TODO 翻译文本
             println("enchantmentSetting is null")
             return Command.SINGLE_SUCCESS
         }
@@ -60,9 +61,11 @@ object GiveEnchantedBookCommand: AbstractCommand() {
         val players = targetResolver.resolve(context.source)
         players.forEach { player ->
             player.inventory.addItem(enchantmentSetting.toItemStack())
+            // TODO 翻译文本
             player.sendMessage { Component.text("give enchanted book to 6666") }
         }
 
+        // TODO 翻译文本
         println("give enchanted book to $players")
         return Command.SINGLE_SUCCESS
     }

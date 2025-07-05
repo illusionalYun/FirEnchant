@@ -3,8 +3,8 @@ package top.catnies.firenchantkt.item.anvil
 import com.destroystokyo.paper.event.inventory.PrepareResultEvent
 import org.bukkit.GameMode
 import org.bukkit.Material
-import org.bukkit.event.inventory.PrepareAnvilEvent
 import org.bukkit.inventory.ItemStack
+import top.catnies.firenchantkt.FirEnchantPlugin
 import top.catnies.firenchantkt.config.AnvilConfig
 import top.catnies.firenchantkt.context.AnvilContext
 import top.catnies.firenchantkt.item.AnvilApplicable
@@ -14,6 +14,8 @@ import top.catnies.firenchantkt.item.AnvilApplicable
 class VanillaEnchantedBook: AnvilApplicable {
 
     companion object {
+        val plugin = FirEnchantPlugin.instance
+        val logger = plugin.logger
         val config = AnvilConfig.instance
     }
 
@@ -25,12 +27,7 @@ class VanillaEnchantedBook: AnvilApplicable {
         return true
     }
 
-    override fun onPrepare(
-        event: PrepareAnvilEvent,
-        context: AnvilContext
-    ) {}
-
-    override fun onComplete(
+    override fun onPrepareResult(
         event: PrepareResultEvent,
         context: AnvilContext
     ) {

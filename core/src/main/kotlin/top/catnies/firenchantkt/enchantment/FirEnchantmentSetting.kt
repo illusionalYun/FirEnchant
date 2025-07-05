@@ -16,6 +16,7 @@ class FirEnchantmentSetting(
         if (data.cacheItem?.nullOrAir() == true) {
             val itemProvider = data.itemProvider
             data.cacheItem = itemProvider.getItemById(data.hookedID) ?:
+                    // 不应出现, 在 load 时就检查过.
                     throw IllegalArgumentException("Can't found item ${data.hookedID} from plugin ${data.itemProvider}!")
         }
         var result = data.cacheItem!!
@@ -27,10 +28,10 @@ class FirEnchantmentSetting(
     // 注入自定义数据
     private fun injectCustomData(item: ItemStack): ItemStack {
         RtagItem.of(item). let { tag ->
-            tag.set(data.key.toString(), "FirEnchant", "Enchantment")
-            tag.set(level.toString(), "FirEnchant", "Level")
-            tag.set(failure.toString(), "FirEnchant", "Failure")
-            tag.set(consumedSouls.toString(), "FirEnchant", "consumedSouls")
+            tag.set(data.key.asString(), "FirEnchant", "Enchantment")
+            tag.set(level, "FirEnchant", "Level")
+            tag.set(failure, "FirEnchant", "Failure")
+            tag.set(consumedSouls, "FirEnchant", "consumedSouls")
             return tag.load()
         }
     }
@@ -39,7 +40,7 @@ class FirEnchantmentSetting(
     private fun replacePlaceholder(item: ItemStack): ItemStack {
         val rawName = data.itemName
         val rawLore = data.itemLore
-        // TODO
+        // TODO 通过自定义 TagResolver 解析.
         return item
     }
 
