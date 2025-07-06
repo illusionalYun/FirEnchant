@@ -1,7 +1,6 @@
 package top.catnies.firenchantkt.item.anvil
 
 import org.bukkit.Bukkit
-import org.bukkit.Material
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.inventory.PrepareAnvilEvent
 import org.bukkit.inventory.ItemStack
@@ -34,7 +33,7 @@ class FirEnchantedBook: AnvilApplicable {
         val originEnchantment = setting.data.originEnchantment
 
         // 如果第一件物品也是附魔书, 触发合并逻辑.
-        if (isEnchantedBookMerger(firstSetting, setting)) {
+        if (isEnchantedBookMerge(firstSetting, setting)) {
             // 计算结果
             val resultSetting = FirEnchantmentSettingFactory.fromAnother(firstSetting!!)
             resultSetting.level++
@@ -53,7 +52,7 @@ class FirEnchantedBook: AnvilApplicable {
         }
 
         // 如果第一件物品是普通物品, 检查是否可以附魔.
-        if (context.firstItem.isCompatibleWithEnchantment(originEnchantment)) {
+        else if (context.firstItem.isCompatibleWithEnchantment(originEnchantment)) {
             // TODO("预览结果, 触发事件")
         }
 
@@ -66,7 +65,7 @@ class FirEnchantedBook: AnvilApplicable {
 
         // 如果第一件物品也是附魔书, 触发合并逻辑.
         // TODO (两本附魔书融合, 是否需要考虑失败率? 或者给出这个选项? -> 是否可以监听事件实现, 而非塞入主逻辑.)
-        if (isEnchantedBookMerger(firstSetting, setting)) {
+        if (isEnchantedBookMerge(firstSetting, setting)) {
             // 计算结果
             val resultItem = context.result!!
             val anvilView = event.view as AnvilView
@@ -81,7 +80,7 @@ class FirEnchantedBook: AnvilApplicable {
         }
 
         // 如果第一件物品是普通物品, 检查物品是否可以附魔.
-        if (context.firstItem.isCompatibleWithEnchantment(originEnchantment)) {
+        else if (context.firstItem.isCompatibleWithEnchantment(originEnchantment)) {
             // TODO("预览结果, 触发事件")
         }
 
@@ -89,7 +88,7 @@ class FirEnchantedBook: AnvilApplicable {
 
 
     // 检查是否是两本附魔书合并的情况
-    private fun isEnchantedBookMerger(firstSetting: EnchantmentSetting?, secondSetting: EnchantmentSetting?): Boolean {
+    private fun isEnchantedBookMerge(firstSetting: EnchantmentSetting?, secondSetting: EnchantmentSetting?): Boolean {
         if (firstSetting == null || secondSetting == null) return false // 第一个物品可转换成附魔配置.
         if (secondSetting.data.originEnchantment != firstSetting.data.originEnchantment) return false // 两个魔咒应当相同
         if (firstSetting.level >= firstSetting.data.maxLevel) return false // 第一本附魔书应当小于最大等级, 否则无法升级.
