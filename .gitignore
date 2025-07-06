@@ -3,6 +3,7 @@ build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
+/compatibility/libs/
 
 ### IntelliJ IDEA ###
 *.iws
@@ -39,3 +40,4 @@ bin/
 /run/
 /.idea/
 /.kotlin/
+

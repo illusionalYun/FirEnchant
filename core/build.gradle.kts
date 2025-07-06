@@ -1,8 +1,12 @@
+repositories {
+    mavenCentral()
+    maven("https://repo.xenondevs.xyz/releases") // InvUI
+}
+
 dependencies {
     implementation(project(":api"))
     implementation(project(":compatibility"))
-
-    compileOnly("me.clip:placeholderapi:2.11.6") // PlaceholderAPI
+    implementation("xyz.xenondevs.invui:invui:1.46") // InvUI
 }
 
 tasks.shadowJar {

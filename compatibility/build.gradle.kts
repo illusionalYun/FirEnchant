@@ -1,8 +1,5 @@
 dependencies {
-    // 项目依赖
     implementation(project(":api"))
-    compileOnly("me.clip:placeholderapi:2.11.6") // PlaceholderAPI
-    compileOnly(files("libs/EnchantmentSlots-4.4.6.jar")) // EnchantmentSlots
 
     // 物品库
     compileOnly("com.nexomc:nexo:1.1.0") // Nexo
@@ -13,6 +10,8 @@ dependencies {
     compileOnly("net.momirealms:craft-engine-bukkit:0.0.57") // CraftEngine
 
     // 拓展功能
+    compileOnly("me.clip:placeholderapi:2.11.6") // PlaceholderAPI
+    compileOnly(files("libs/EnchantmentSlots-4.4.6.jar")) // EnchantmentSlots
     compileOnly("dev.aurelium:auraskills-api-bukkit:2.2.4") // AuraSkills
     compileOnly("net.momirealms:custom-crops:3.6.29") // CustomCrops
     compileOnly("net.momirealms:custom-fishing:2.3.7") // CustomFishing
