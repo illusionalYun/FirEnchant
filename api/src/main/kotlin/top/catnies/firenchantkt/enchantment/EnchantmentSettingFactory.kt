@@ -11,4 +11,7 @@ interface EnchantmentSettingFactory {
     // 使用数据构建附魔书对象
     fun fromData(data: EnchantmentData, level: Int, failure: Int, usedDustTime: Int = 0): EnchantmentSetting
 
+    // 复制一份对象
+    fun fromAnother(setting: EnchantmentSetting): EnchantmentSetting
+
 }

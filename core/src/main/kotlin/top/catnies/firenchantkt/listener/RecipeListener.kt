@@ -4,7 +4,9 @@ import com.destroystokyo.paper.event.inventory.PrepareResultEvent
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
+import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.inventory.PrepareAnvilEvent
+import org.bukkit.inventory.view.AnvilView
 import top.catnies.firenchantkt.context.AnvilContext
 import top.catnies.firenchantkt.item.FirAnvilItemRegistry
 import top.catnies.firenchantkt.util.ItemUtils.nullOrAir
@@ -42,4 +44,27 @@ class RecipeListener: Listener {
         anvilApplicable.onPrepareResult(event, context)
     }
 
+
+    @EventHandler(ignoreCancelled = true)
+    fun onCostEvent(event: InventoryClickEvent) {
+        val player = event.inventory.viewers.first() as? Player ?: return
+
+        // 铁砧事件
+        val anvilView = event.view as? AnvilView
+        if (anvilView != null && event.slot == 2) {
+            val firstItem = anvilView.getItem(0) ?: return
+            val secondItem = anvilView.getItem(1) ?: return
+            val resultItem = anvilView.getItem(2) ?: return
+            if (firstItem.nullOrAir() || secondItem.nullOrAir() || resultItem.nullOrAir()) return
+
+            // 找到处理器
+            val anvilApplicable = FirAnvilItemRegistry.instance.findApplicableItem(secondItem) ?: return
+            // 构建上下文
+            val context = AnvilContext(firstItem, secondItem, resultItem, player)
+            // 处理物品
+            anvilApplicable.onCost(event, context)
+        }
+
+        // 其他事件
+    }
 }

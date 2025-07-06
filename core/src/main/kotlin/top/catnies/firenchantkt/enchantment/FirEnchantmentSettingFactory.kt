@@ -23,4 +23,9 @@ object FirEnchantmentSettingFactory: EnchantmentSettingFactory {
     override fun fromData(data: EnchantmentData, level: Int, failure: Int, usedDustTime: Int): EnchantmentSetting {
         return FirEnchantmentSetting(data, level, failure, usedDustTime)
     }
+
+    // 复制一份对象
+    override fun fromAnother(setting: EnchantmentSetting): EnchantmentSetting = fromData(
+        setting.data, setting.level, setting.failure, setting.consumedSouls
+    )
 }

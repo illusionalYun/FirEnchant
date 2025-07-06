@@ -18,23 +18,23 @@ class IntegrationManager private constructor() {
         }}
     }
 
-    val isAuraSkillsEnabled: Boolean = Bukkit.getPluginManager().isPluginEnabled("AuraSkills")
-    val isEnchantmentSlotsEnabled: Boolean = Bukkit.getPluginManager().isPluginEnabled("EnchantmentSlots")
-    val isPlaceholderAPIEnabled: Boolean = Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")
+    val hasAuraSkills: Boolean = Bukkit.getPluginManager().getPlugin("AuraSkills") != null
+    val hasEnchantmentSlots: Boolean = Bukkit.getPluginManager().getPlugin("EnchantmentSlots") != null
+    val hasPlaceholderAPI: Boolean = Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null
 
     private fun load() {
         // AuraSkills
-        if (isEnchantmentSlotsEnabled) {
-
+        if (hasAuraSkills) {
+            sendPluginHookedMessage("AuraSkills")
         }
         // EnchantmentSlots
-        if (isEnchantmentSlotsEnabled) {
+        if (hasEnchantmentSlots) {
             // 监听物品注册事件
             Bukkit.getPluginManager().registerEvents(RegistryListener(), plugin)
             sendPluginHookedMessage("EnchantmentSlots")
         }
         // PlaceholderAPI
-        if (isPlaceholderAPIEnabled) {
+        if (hasPlaceholderAPI) {
             sendPluginHookedMessage("PlaceholderAPI")
         }
     }
