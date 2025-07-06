@@ -26,7 +26,7 @@ allprojects {
     apply(plugin = "com.gradleup.shadow")
 
     group = "top.catnies"
-    version = "3.0.0"
+    version = "3.0.0-beta1"
     kotlin.jvmToolchain(21)
 
     repositories {
@@ -39,6 +39,7 @@ allprojects {
         maven("https://repo.extendedclip.com/content/repositories/placeholderapi/") // PlaceholderAPI
 
         maven("https://jitpack.io") // RTag
+        maven("https://repo.xenondevs.xyz/releases") // InvUI
     }
 
     dependencies {
@@ -51,11 +52,27 @@ allprojects {
         implementation("com.saicone.rtag:rtag-item:1.5.11") // RTag
     }
 
-    tasks.shadowJar {
-        relocate("com.saicone.rtag", "${project.group}.libs.rtag")
+    tasks {
+        shadowJar {
+            relocate("com.saicone.rtag", "${project.group}.libs.rtag")
+        }
     }
 }
 
+
 // 任务配置
-tasks.build { dependsOn(tasks.shadowJar) }
-tasks.runServer { minecraftVersion("1.21.4") }
+tasks {
+    shadowJar {
+        archiveFileName = "${rootProject.name}-$version.jar"
+        destinationDirectory.set(file("$rootDir/target"))
+    }
+    assemble {
+        dependsOn(shadowJar)
+    }
+}
+
+
+// 测试服务器
+tasks.runServer {
+    minecraftVersion("1.21.4")
+}

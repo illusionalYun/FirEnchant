@@ -1,5 +1,7 @@
 package top.catnies.firenchantkt.config
 
+import kotlin.properties.Delegates
+
 
 class AnvilConfig private constructor():
     AbstractConfigFile("modules/anvil.yml")
@@ -10,11 +12,11 @@ class AnvilConfig private constructor():
     }
 
     /*原版附魔书设置*/
-    var VANILLAENCHANTEDBOOK_DENY_USE: Boolean = false  // 是否禁用原版附魔书.
+    var VANILLAENCHANTEDBOOK_DENY_USE by Delegates.notNull<Boolean>()   // 是否禁用原版附魔书.
 
     /*附魔书设置*/
-    var ENCHANTEDBOOK_USE_EXP_COST_MODE: String = "FIXED"   // 经验值消耗模式
-    var ENCHANTEDBOOK_USE_EXP_FIXED_VALUE: Int = 0          // 固定模式的值
+    var ENCHANTEDBOOK_USE_EXP_COST_MODE by Delegates.notNull<String>()  // 经验值消耗模式
+    var ENCHANTEDBOOK_USE_EXP_FIXED_VALUE by Delegates.notNull<Int>()   // 固定模式的值
 
 
     override fun loadConfig() {
