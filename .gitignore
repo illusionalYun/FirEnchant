@@ -4,6 +4,7 @@ build/
 !**/src/main/**/build/
 !**/src/test/**/build/
 /compatibility/libs/
+/target/
 
 ### IntelliJ IDEA ###
 *.iws

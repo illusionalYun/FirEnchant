@@ -1,7 +1,5 @@
 package top.catnies.firenchantkt.config
 
-import kotlin.properties.Delegates
-
 
 class AnvilConfig private constructor():
     AbstractConfigFile("modules/anvil.yml")
@@ -12,20 +10,50 @@ class AnvilConfig private constructor():
     }
 
     /*原版附魔书设置*/
-    var VANILLAENCHANTEDBOOK_DENY_USE by Delegates.notNull<Boolean>()   // 是否禁用原版附魔书.
+    var VEB_DENY_USE: Boolean = false      // 是否禁用原版附魔书.
 
     /*附魔书设置*/
-    var ENCHANTEDBOOK_USE_EXP_COST_MODE by Delegates.notNull<String>()  // 经验值消耗模式
-    var ENCHANTEDBOOK_USE_EXP_FIXED_VALUE by Delegates.notNull<Int>()   // 固定模式的值
+    lateinit var EB_USE_EXP_COST_MODE: String    // 经验值消耗模式
+    var EB_USE_EXP_FIXED_VALUE: Int = 18         // 固定模式的值
+
+    var EB_FAILURE_CORRECTION_MINMAX_ENABLED: Boolean = false    // 最大最小失败率强制控制功能
+    var EB_FAILURE_CORRECTION_MINMAX_MIN: Int = 15               // 低于此失败率的附魔书将必定成功
+    var EB_FAILURE_CORRECTION_MINMAX_MAX: Int = 90               // 高于此失败率的附魔书将必定失败
+
+    var EB_FAILURE_CORRECTION_HISTORY_ENABLE: Boolean = false       // 附魔书的成功/失败历史记录功能
+    lateinit var EB_FAILURE_CORRECTION_HISTORY_CACHE_TYPE: String   // 存储历史记录的方法
+
+    lateinit var EB_MERGE_FAILURE_INHERITANCE: String // 当两本附魔书合并的结果附魔书的失败率处理模式
+
+    lateinit var EB_MERGE_EXP_COST_MODE: String    // 经验值消耗模式
+    var EB_MERGE_EXP_FIXED_VALUE: Int = 18         // 固定模式的值
+
+    /*升级符文设置*/
+
+
 
 
     override fun loadConfig() {
         /*原版附魔书设置*/
-        VANILLAENCHANTEDBOOK_DENY_USE = config().getBoolean("vanilla-enchanted-book.deny-use", false)
+        VEB_DENY_USE = config().getBoolean("vanilla-enchanted-book.deny-use", false)
 
         /*附魔书设置*/
-        ENCHANTEDBOOK_USE_EXP_COST_MODE = config().getString("enchanted-book.use-enchanted-book.exp.cost-mode", "FIXED")!!
-        ENCHANTEDBOOK_USE_EXP_FIXED_VALUE= config().getInt("enchanted-book.use-enchanted-book.exp.fixed-value", 18)
+        EB_USE_EXP_COST_MODE = config().getString("enchanted-book.use-enchanted-book.exp.cost-mode", "FIXED")!!
+        EB_USE_EXP_FIXED_VALUE = config().getInt("enchanted-book.use-enchanted-book.exp.fixed-value", 18)
+
+        EB_FAILURE_CORRECTION_MINMAX_ENABLED = config().getBoolean("enchanted-book.failure-correction.min-max-limit.enable", false)
+        EB_FAILURE_CORRECTION_MINMAX_MIN = config().getInt("enchanted-book.failure-correction.min-max-limit.min-success", 15)
+        EB_FAILURE_CORRECTION_MINMAX_MAX = config().getInt("enchanted-book.failure-correction.min-max-limit.max-failure", 90)
+
+        EB_FAILURE_CORRECTION_HISTORY_ENABLE = config().getBoolean("enchanted-book.failure-correction.history-compensation.enable", false)
+        EB_FAILURE_CORRECTION_HISTORY_CACHE_TYPE = config().getString("enchanted-book.failure-correction.history-compensation.cache-type", "PDC")!!
+
+        EB_MERGE_FAILURE_INHERITANCE = config().getString("enchanted-book.use-enchanted-book.failure-inheritance", "DEFAULT")!!
+
+        EB_MERGE_EXP_COST_MODE = config().getString("enchanted-book.use-enchanted-book.exp.cost-mode", "FIXED")!!
+        EB_MERGE_EXP_FIXED_VALUE = config().getInt("enchanted-book.use-enchanted-book.exp.fixed-value", 18)
+
+        /*升级符文设置*/
     }
 
 }

@@ -18,7 +18,7 @@ class EnchantedBookApplyListener: Listener {
 
     @EventHandler
     fun onEnchantedBookApply(event: PrepareResultEvent) {
-        if (!config.VANILLAENCHANTEDBOOK_DENY_USE) return
+        if (!config.VEB_DENY_USE) return
         if (event.inventory !is AnvilInventory) return
         if (event.viewers.first()?.gameMode == GameMode.CREATIVE) return
 

@@ -40,8 +40,25 @@ enchanted-book:
         # PDC重启不会消失,但是默认不支持跨服,你需要使用类似 HuskSync 的背包同步插件,打开PDC的跨服同步选项.
         cache-type: "PDC"
 
-    # 相同附魔书合并
-    merge-enchanted-book:
+  # 相同附魔书合并
+  merge-enchanted-book:
+    # 当两本附魔书合并时, 其结果附魔书上的失败率应该如何处理?
+    # 可选值:
+    # 1. DEFAULT(原版行为, 使用左边的附魔书的失败率)
+    # 2. RANDOM(随机失败率, 取值为两本附魔书的失败率区间)
+    # 3. HIGHER(选取两本附魔书中较高的概率)
+    # 4. LOWER(选取两本附魔书中较低的概率)
+    failure-inheritance: "DEFAULT"
+    # 经验值消耗设置
+    exp:
+      # 玩家在使用附魔书时,铁砧上消耗的经验值如何计算?
+      # 计算方式可选:
+      # 1. "FIXED"(固定值.)
+      # 2. "VANILLALIKE"(使用原版的计算逻辑,会将附魔书视为原版的附魔书,然后捕捉它的经验消耗.)
+      cost-mode: "FIXED"
+      fixed-value: 18
+
+
 
 
 
