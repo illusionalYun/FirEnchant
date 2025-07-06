@@ -1,21 +1,62 @@
 # 这个文件主要负责配置插件物品在铁砧上的行为，插件同时提供一些额外的可选功能。
 # 如果您发现了任何Bug/需要寻求帮助，您可以在我们的售后群联系 “那谁QQ1286071831” 进行反馈处理;
 
-# 是否禁止玩家在铁砧上使用原版的附魔书？
-# 如果设置为 true， 那么铁砧上无法再使用附魔书（创造模式不受影响）。
+
+# 原版附魔书设置
 vanilla-enchanted-book:
+  # 是否禁止玩家在铁砧上使用原版的附魔书？（创造模式不受影响）。
   deny-use: true
 
 
 
 # 附魔书设置
 enchanted-book:
+  # 使用附魔书
+  use-enchanted-book:
+    # 经验值消耗设置
+    exp:
+      # 玩家在使用附魔书时,铁砧上消耗的经验值如何计算?
+      # 计算方式可选:
+      # 1. "FIXED"(固定值.)
+      # 2. "VANILLALIKE"(使用原版的计算逻辑,会将附魔书视为原版的附魔书,然后捕捉它的经验消耗.)
+      cost-mode: "FIXED"
+      fixed-value: 18
+
+    # 玩家在使用附魔书时,让服务器干预使用附魔书是否成功/失败.
+    # 因为频繁大量的操作(附魔)使用纯随机计算的效果实际上对于玩家来说体验很差,可能会有非常离谱的非酋,然后造成玩家流失.
+    failure-correction:
+      # 该选项会强制修改附魔书的成功和失败,对于玩家来说,具有过低的失败率的附魔书失败通常是不可接受的.
+      min-max-limit:
+        enable: false
+        min-success: 15 # 低于多少失败率的附魔书将必定成功?
+        max-failure: 90 # 高于多少失败率的附魔书将必定失败?
+
+      # 该选项会试图将玩家使用附魔书的成功/失败历史记录在缓存里,并根据记录会试图干预结果.
+      # 例如,使连续失败的玩家下次成功率会更大,连续成功的玩家下次的失败概率会更大.
+      history-compensation:
+        enable: false
+        # 存储历史记录的方法, 可以是 PDC 或 Metadata.
+        # Metadata在服务器重启后会消失;
+        # PDC重启不会消失,但是默认不支持跨服,你需要使用类似 HuskSync 的背包同步插件,打开PDC的跨服同步选项.
+        cache-type: "PDC"
+
+    # 相同附魔书合并
+    merge-enchanted-book:
 
 
 
-# 扩展槽位符文设置
-# 此功能需要安装插件 EnchantmentSlots 4.4.0 +.
+# 升级符文设置
+upgrade-rune:
+  enable: true
+  # 升级符文使用的物品
+  hooked-plugin: "CraftEngine"
+  hooked-id: "enchantment:rune_upgrade"
+
+
+
+# 扩展槽位符文设置 (此功能需要安装插件 EnchantmentSlots 4.4.0 +.)
 slot-rune:
+  enable: true
   # 拓展符文使用的物品
   hooked-plugin: "CraftEngine"
   hooked-id: "enchantment:rune_slot"

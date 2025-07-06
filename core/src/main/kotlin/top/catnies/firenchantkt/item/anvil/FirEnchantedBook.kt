@@ -8,10 +8,12 @@ import org.bukkit.inventory.view.AnvilView
 import top.catnies.firenchantkt.FirEnchantPlugin
 import top.catnies.firenchantkt.api.event.EnchantedBookMergeEvent
 import top.catnies.firenchantkt.api.event.PreEnchantedBookMergeEvent
+import top.catnies.firenchantkt.compatibility.enchantmentslots.EnchantmentSlotsUtil
 import top.catnies.firenchantkt.config.AnvilConfig
 import top.catnies.firenchantkt.context.AnvilContext
 import top.catnies.firenchantkt.enchantment.EnchantmentSetting
 import top.catnies.firenchantkt.enchantment.FirEnchantmentSettingFactory
+import top.catnies.firenchantkt.integration.IntegrationManager
 import top.catnies.firenchantkt.item.AnvilApplicable
 import top.catnies.firenchantkt.util.ItemUtils.isCompatibleWithEnchantment
 
@@ -21,6 +23,7 @@ class FirEnchantedBook: AnvilApplicable {
         val plugin = FirEnchantPlugin.instance
         val logger = plugin.logger
         val config = AnvilConfig.instance
+        val hasEnchantmentSlots = IntegrationManager.instance.hasEnchantmentSlots
     }
 
     // 抓取符合条件的物品
@@ -55,6 +58,12 @@ class FirEnchantedBook: AnvilApplicable {
 
         // 如果第一件物品是普通物品, 检查是否可以附魔.
         else if (context.firstItem.isCompatibleWithEnchantment(originEnchantment)) {
+            // 如果有附魔槽位插件, 则需要判断魔咒数量有没有超过上限
+            if (hasEnchantmentSlots) {
+                val remainingSlots = EnchantmentSlotsUtil.getRemainingSlots(context.viewer, context.firstItem)
+                if (remainingSlots <= 0) return
+            }
+
             // TODO("预览结果, 触发事件")
         }
 
@@ -66,7 +75,7 @@ class FirEnchantedBook: AnvilApplicable {
         val originEnchantment = setting.data.originEnchantment
 
         // 如果第一件物品也是附魔书, 触发合并逻辑.
-        // TODO (两本附魔书融合, 是否需要考虑失败率? 或者给出这个选项? -> 是否可以监听事件实现, 而非塞入主逻辑.)
+        // TODO (两本附魔书融合, 是否需要考虑失败率? 或者给出这个选项? -> 是否可以监听事件实现拓展, 而非塞入主逻辑.)
         if (isEnchantedBookMerge(firstSetting, setting)) {
             // 计算结果
             val resultItem = context.result!!
@@ -101,7 +110,7 @@ class FirEnchantedBook: AnvilApplicable {
 
     // 根据失败率判断是否成功
     private fun isSuccess(failure: Int): Boolean {
-        // TODO ( 研究一下更合适的算法, 纯随机玩家表示受不了, 另外要注意config里可能会有兜底和其他方案)
+        // TODO (研究一下更合适的算法, 纯随机玩家表示受不了, 另外要注意config里可能会有兜底和其他方案)
         return true
     }
 }

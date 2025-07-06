@@ -3,6 +3,7 @@ plugins {
     id("org.jetbrains.kotlin.jvm") version "2.1.21" // Kotlin
     id("com.gradleup.shadow") version "9.0.0-beta6" // Shadow
     id("xyz.jpenilla.run-paper") version "2.3.1" // Run Paper
+    id("io.papermc.paperweight.userdev") version "2.0.0-beta.17" apply false // PAPER Weight
 }
 
 // 插件仓库
@@ -30,8 +31,6 @@ allprojects {
 
     repositories {
         mavenCentral()
-        maven("https://repo.papermc.io/repository/maven-public/") // PaperDev
-
         maven("https://maven.devs.beer/") // ItemsAdder
         maven("https://repo.nexomc.com/releases") // Nexo
         maven("https://repo.oraxen.com/releases") // Oraxen

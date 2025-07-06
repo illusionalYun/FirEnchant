@@ -21,7 +21,7 @@ class VanillaEnchantedBook: AnvilApplicable {
 
     override fun matches(itemStack: ItemStack): Boolean {
         // 未开启功能
-        if (!config.isDenyVanillaEnchantedBook) return false
+        if (!config.VANILLAENCHANTEDBOOK_DENY_USE) return false
         // 无效物品
         if (itemStack.type != Material.ENCHANTED_BOOK) return false
         return true
