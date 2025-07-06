@@ -5,7 +5,7 @@ import org.bukkit.inventory.ItemStack
 import top.catnies.firenchantkt.context.AnvilContext
 import top.catnies.firenchantkt.item.AnvilApplicable
 
-// 槽位符文
+// 拓展符文
 class SlotRune: AnvilApplicable {
 
     companion object {

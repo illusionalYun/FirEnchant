@@ -35,8 +35,8 @@ class FirItemProviderRegistry private constructor(): ItemProviderRegistry {
         registerItemProvider("CraftEngine", CraftEngineItemProvider())
         registerItemProvider("MythicMobs", MythicMobsItemProvider())
         registerItemProvider("Nexo", NexoItemProvider())
-        Bukkit.getPluginManager().callEvent(ItemProviderRegisterEvent(this))
         ServiceContainer.register(ItemProviderRegistry::class.java, this)
+        Bukkit.getPluginManager().callEvent(ItemProviderRegisterEvent(this))
     }
 
     // ItemProviders

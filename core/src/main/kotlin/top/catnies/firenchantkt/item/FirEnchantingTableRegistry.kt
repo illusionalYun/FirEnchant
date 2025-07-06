@@ -1,9 +1,11 @@
 package top.catnies.firenchantkt.item
 
+import org.bukkit.Bukkit
 import org.bukkit.inventory.ItemStack
 import top.catnies.firenchantkt.api.ServiceContainer
+import top.catnies.firenchantkt.api.event.EnchantingApplicableItemRegisterEvent
 
-class FirEnchantingTableRegistry: EnchantingTableRegistry {
+class FirEnchantingTableRegistry: EnchantingTableItemRegistry {
 
     private val items = mutableListOf<EnchantingTableApplicable>()
 
@@ -14,7 +16,8 @@ class FirEnchantingTableRegistry: EnchantingTableRegistry {
     }
 
     fun load() {
-        ServiceContainer.register(EnchantingTableRegistry::class.java, this)
+        ServiceContainer.register(EnchantingTableItemRegistry::class.java, this)
+        Bukkit.getPluginManager().callEvent(EnchantingApplicableItemRegisterEvent(this))
     }
 
     override fun registerItem(item: EnchantingTableApplicable): Boolean {

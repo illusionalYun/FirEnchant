@@ -2,7 +2,7 @@ package top.catnies.firenchantkt.item
 
 import org.bukkit.inventory.ItemStack
 
-interface EnchantingTableRegistry {
+interface EnchantingTableItemRegistry {
     
     // 注册一个附魔台物品
     fun registerItem(item: EnchantingTableApplicable): Boolean

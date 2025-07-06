@@ -10,4 +10,6 @@ object MessageConstants {
     const val RESOURCE_ENCHANTMENT_FILE_ERROR = "resource.enchantment.file.error"
     const val RESOURCE_ENCHANTMENT_FILE_PROVIDER_NOT_FOUND = "resource.enchantment.file.provider.not_found"
     const val RESOURCE_ENCHANTMENT_FILE_ITEM_NOT_FOUND = "resource.enchantment.file.item.not_found"
+
+    const val PLUGIN_COMPATIBILITY_HOOK_SUCCESS = "plugin.compatibility.hook.success"
 }

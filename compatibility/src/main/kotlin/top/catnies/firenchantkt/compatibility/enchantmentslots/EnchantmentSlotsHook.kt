@@ -13,9 +13,8 @@ class EnchantmentSlotsHook private constructor() {
     }
 
     fun load() {
-        // TODO 注册监听器? 直接从容器里拿 Registry 注册?
         val plugin = Bukkit.getPluginManager().getPlugin("EnchantmentSlots")!!
-        Bukkit.getPluginManager().registerEvents(EnchantmentSlotsRegistryListener(), plugin)
+
     }
 
 
