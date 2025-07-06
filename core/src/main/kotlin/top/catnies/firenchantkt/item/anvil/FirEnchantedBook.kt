@@ -8,6 +8,7 @@ import org.bukkit.inventory.view.AnvilView
 import top.catnies.firenchantkt.FirEnchantPlugin
 import top.catnies.firenchantkt.api.event.EnchantedBookMergeEvent
 import top.catnies.firenchantkt.api.event.PreEnchantedBookMergeEvent
+import top.catnies.firenchantkt.config.AnvilConfig
 import top.catnies.firenchantkt.context.AnvilContext
 import top.catnies.firenchantkt.enchantment.EnchantmentSetting
 import top.catnies.firenchantkt.enchantment.FirEnchantmentSettingFactory
@@ -19,6 +20,7 @@ class FirEnchantedBook: AnvilApplicable {
     companion object {
         val plugin = FirEnchantPlugin.instance
         val logger = plugin.logger
+        val config = AnvilConfig.instance
     }
 
     // 抓取符合条件的物品
@@ -93,6 +95,13 @@ class FirEnchantedBook: AnvilApplicable {
         if (secondSetting.data.originEnchantment != firstSetting.data.originEnchantment) return false // 两个魔咒应当相同
         if (firstSetting.level >= firstSetting.data.maxLevel) return false // 第一本附魔书应当小于最大等级, 否则无法升级.
         if (secondSetting.level != firstSetting.level) return false // 第一本和第二本附魔书应当等级相同.
+        return true
+    }
+
+
+    // 根据失败率判断是否成功
+    private fun isSuccess(failure: Int): Boolean {
+        // TODO ( 研究一下更合适的算法, 纯随机玩家表示受不了, 另外要注意config里可能会有兜底和其他方案)
         return true
     }
 }

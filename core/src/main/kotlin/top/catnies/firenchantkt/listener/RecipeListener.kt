@@ -63,6 +63,7 @@ class RecipeListener: Listener {
             val context = AnvilContext(firstItem, secondItem, resultItem, player)
             // 处理物品
             anvilApplicable.onCost(event, context)
+            return
         }
 
         // 其他事件
