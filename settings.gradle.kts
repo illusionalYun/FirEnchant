@@ -12,6 +12,6 @@ include("nms:v1_21_R5")
 pluginManagement {
     repositories {
         gradlePluginPortal()
-        maven("https://repo.papermc.io/repository/maven-public/") // PAPER Weight
+        maven("https://repo.papermc.io/repository/maven-public/") // Paper Weight
     }
 }

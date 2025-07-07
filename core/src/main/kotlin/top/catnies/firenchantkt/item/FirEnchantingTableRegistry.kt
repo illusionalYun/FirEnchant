@@ -32,6 +32,11 @@ class FirEnchantingTableRegistry: EnchantingTableItemRegistry {
         return items.remove(item)
     }
 
+    @Suppress("UNCHECKED_CAST")
+    override fun <T : EnchantingTableApplicable> getItem(applicableClass: Class<T>): T? {
+        return items.find { applicableClass.isInstance(it) } as T?
+    }
+
     override fun getItems(): List<EnchantingTableApplicable> {
         return items.toList()
     }

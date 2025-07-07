@@ -2,8 +2,8 @@ package top.catnies.firenchantkt.compatibility.enchantmentslots
 
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
-import top.catnies.firenchantkt.api.event.AnvilApplicableItemRegisterEvent
-import top.catnies.firenchantkt.api.event.PreEnchantedBookUseEvent
+import top.catnies.firenchantkt.api.event.anvilapplicable.AnvilApplicableItemRegisterEvent
+import top.catnies.firenchantkt.api.event.anvilapplicable.EnchantedBookPreUseEvent
 
 class EnchantmentSlotsListener: Listener {
 
@@ -15,7 +15,7 @@ class EnchantmentSlotsListener: Listener {
 
     // 监听使用附魔书事件, 如果槽位不够则不处理
     @EventHandler
-    fun onPreEnchantedBookUseEvent(event: PreEnchantedBookUseEvent) {
+    fun onPreEnchantedBookUseEvent(event: EnchantedBookPreUseEvent) {
         val remainingSlots = EnchantmentSlotsUtil.getRemainingSlots(event.player, event.firstItem)
         if (remainingSlots <= 0) {
             event.isCancelled = true

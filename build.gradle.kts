@@ -1,16 +1,9 @@
-import com.github.jengelman.gradle.plugins.shadow.transformers.Transformer
-
 // 插件
 plugins {
     id("org.jetbrains.kotlin.jvm") version "2.1.21" // Kotlin
     id("com.gradleup.shadow") version "9.0.0-beta6" // Shadow
     id("xyz.jpenilla.run-paper") version "2.3.1" // Run Paper
-    id("io.papermc.paperweight.userdev") version "2.0.0-beta.17" apply false // PAPER Weight
-}
-
-// 插件仓库
-repositories {
-    gradlePluginPortal()
+    id("io.papermc.paperweight.userdev") version "2.0.0-beta.17" apply false // Paper Weight
 }
 
 // 依赖所有子模块
@@ -26,7 +19,7 @@ dependencies {
 }
 
 
-// 需要将一些部分统一进行配置，可以直接在根项目创建一个build.gradle.kts来统一编写内容：
+// 需要将一些部分统一进行配置，可以直接在根项目使用`subprojects`或`allprojects`编写内容
 allprojects {
     // 应用插件到子项目
     apply(plugin = "java")
@@ -50,7 +43,7 @@ allprojects {
         maven("https://mvn.lumine.io/repository/maven-public/") // MythicMobs
         maven("https://repo.momirealms.net/releases/") // CustomCrops, CustomFishing, CraftEngine
         maven("https://repo.extendedclip.com/content/repositories/placeholderapi/") // PlaceholderAPI
-        maven("https://maven.chengzhimeow.cn/releases") // 橙汁喵
+        maven("https://maven.chengzhimeow.cn/releases") // ChengZhiMeow
         maven("https://repo.nightexpressdev.com/releases") // CoinsEngine
     }
 
@@ -61,7 +54,7 @@ allprojects {
         annotationProcessor("org.projectlombok:lombok:${rootProject.properties["lib.lombok.version"]}") // Lombok
 
         // 依赖库
-        implementation("cn.chengzhiya:MHDF-Scheduler:${rootProject.properties["lib.mhdf.scheduler.version"]}") // 調度器
+        implementation("cn.chengzhiya:MHDF-Scheduler:${rootProject.properties["lib.mhdf.scheduler.version"]}") // Scheduler
         implementation("com.saicone.rtag:rtag:${rootProject.properties["lib.rtag.version"]}") // RTag
         implementation("com.saicone.rtag:rtag-item:${rootProject.properties["lib.rtag.version"]}") // RTag
     }
@@ -91,19 +84,23 @@ tasks {
         destinationDirectory.set(file("$rootDir/target"))
     }
 
-    assemble {
-        dependsOn(shadowJar)
-    }
-
-    // 测试服务器
     runServer {
         dependsOn(shadowJar)
         dependsOn(jar)
-        minecraftVersion("1.21.4")
+        minecraftVersion("1.21.7")
 
         downloadPlugins {
             hangar("PlaceholderAPI", "2.11.6")
-            url("https://download.luckperms.net/1593/bukkit/loader/LuckPerms-Bukkit-5.5.8.jar")
         }
     }
+}
+
+tasks.withType(xyz.jpenilla.runtask.task.AbstractRun::class) {
+    javaLauncher = javaToolchains.launcherFor {
+        vendor = JvmVendorSpec.JETBRAINS
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+    jvmArgs("-Ddisable.watchdog=true")
+    jvmArgs("-Xlog:redefine+class*=info")
+    jvmArgs("-XX:+AllowEnhancedClassRedefinition")
 }
