@@ -5,7 +5,10 @@ import org.bukkit.Bukkit
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.inventory.PrepareAnvilEvent
 import org.bukkit.inventory.ItemStack
+import org.bukkit.inventory.view.AnvilView
 import top.catnies.firenchantkt.FirEnchantPlugin
+import top.catnies.firenchantkt.api.event.PreProtectionRuneUseEvent
+import top.catnies.firenchantkt.api.event.ProtectionRuneUseEvent
 import top.catnies.firenchantkt.config.AnvilConfig
 import top.catnies.firenchantkt.context.AnvilContext
 import top.catnies.firenchantkt.integration.FirItemProviderRegistry
@@ -83,9 +86,14 @@ class FirProtectionRune(): ProtectionRune {
         context: AnvilContext
     ) {
         if (hasProtectionRune(context.firstItem)) return
-        // TODO 经验值
 
-        // TODO 事件
+        // 经验值
+        val costExp = config.PROTECTION_RUNE_EXP
+
+        // 触发事件
+        val preProtectionRuneUseEvent = PreProtectionRuneUseEvent(context.viewer, event, costExp, context.firstItem)
+        Bukkit.getPluginManager().callEvent(preProtectionRuneUseEvent)
+        if (preProtectionRuneUseEvent.isCancelled) return
 
         // 显示结果
         val result = context.firstItem.clone()
@@ -98,6 +106,18 @@ class FirProtectionRune(): ProtectionRune {
         event: InventoryClickEvent,
         context: AnvilContext
     ) {
-        // TODO 事件
+        // 触发事件
+        val protectionRuneUseEvent = ProtectionRuneUseEvent(
+            context.viewer,
+            event,
+            event.view as AnvilView,
+            context.firstItem,
+            context.result!!
+        )
+        Bukkit.getPluginManager().callEvent(protectionRuneUseEvent)
+        if (protectionRuneUseEvent.isCancelled) {
+            event.isCancelled = true
+            return
+        }
     }
 }

@@ -16,6 +16,11 @@ dependencies {
     implementation(project(":core"))
     implementation(project(":api"))
     implementation(project(":compatibility"))
+    implementation(project(":nms:v1_21_R1"))
+    implementation(project(":nms:v1_21_R2"))
+    implementation(project(":nms:v1_21_R3"))
+    implementation(project(":nms:v1_21_R4"))
+    implementation(project(":nms:v1_21_R5"))
 }
 
 

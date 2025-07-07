@@ -1,8 +1,5 @@
 package top.catnies.firenchantkt.config
 
-import top.catnies.firenchantkt.integration.FirItemProviderRegistry
-import top.catnies.firenchantkt.integration.ItemProvider
-
 
 @Suppress("PropertyName")
 class AnvilConfig private constructor():
@@ -32,6 +29,7 @@ class AnvilConfig private constructor():
     var PROTECTION_RUNE_ENABLE: Boolean = false             // 开启保护符文道具
     var PROTECTION_RUNE_ITEM_PROVIDER: String? = null       // 保护符文的道具提供者
     var PROTECTION_RUNE_ITEM_ID: String? = null             // 保护符文的道具ID
+    var PROTECTION_RUNE_EXP: Int = 18                       // 保护符文消耗的经验等级
 
     /*升级符文设置*/
 
@@ -59,8 +57,8 @@ class AnvilConfig private constructor():
         if (PROTECTION_RUNE_ENABLE) {
             PROTECTION_RUNE_ITEM_PROVIDER = config().getString("protection-rune.hooked-plugin")
             PROTECTION_RUNE_ITEM_ID = config().getString("protection-rune.hooked-id")
+            PROTECTION_RUNE_EXP = config().getInt("protection-rune.exp", 18)
         }
-
 
         /*升级符文设置*/
     }

@@ -65,6 +65,8 @@ protection-rune:
   # 保护符文使用的物品
   hooked-plugin: "CraftEngine"
   hooked-id: "enchantment:rune_protection"
+  # 使用保护符文消耗的经验等级
+  exp: 18
 
 
 # 升级符文设置
