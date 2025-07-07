@@ -25,7 +25,7 @@ public class FirEnchantDatabaseManager extends AbstractDatabaseManager {
         return instance;
     }
 
-
+    // 创建数据库配置
     private void crateDatabaseConfig() {
         DatabaseConfig databaseConfig = new DatabaseConfig();
         databaseConfig.setType(SettingsConfig.getInstance().DATABASE_TYPE);
@@ -41,7 +41,7 @@ public class FirEnchantDatabaseManager extends AbstractDatabaseManager {
         this.setConfig(databaseConfig);
     }
 
-
+    // 创建数据库表
     @SneakyThrows
     public void initTable() {
         try {

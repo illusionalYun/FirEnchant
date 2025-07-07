@@ -49,6 +49,7 @@ allprojects {
         maven("https://repo.momirealms.net/releases/") // CustomCrops, CustomFishing, CraftEngine
         maven("https://repo.extendedclip.com/content/repositories/placeholderapi/") // PlaceholderAPI
         maven("https://maven.chengzhimeow.cn/releases") // 橙汁喵
+        maven("https://repo.nightexpressdev.com/releases") // CoinsEngine
     }
 
     dependencies {
