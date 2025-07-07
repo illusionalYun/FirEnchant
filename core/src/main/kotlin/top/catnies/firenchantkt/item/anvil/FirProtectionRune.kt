@@ -7,7 +7,7 @@ import org.bukkit.event.inventory.PrepareAnvilEvent
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.view.AnvilView
 import top.catnies.firenchantkt.FirEnchantPlugin
-import top.catnies.firenchantkt.api.event.anvilapplicable.PreProtectionRuneUseEvent
+import top.catnies.firenchantkt.api.event.anvilapplicable.ProtectionRunePreUseEvent
 import top.catnies.firenchantkt.api.event.anvilapplicable.ProtectionRuneUseEvent
 import top.catnies.firenchantkt.config.AnvilConfig
 import top.catnies.firenchantkt.context.AnvilContext
@@ -91,9 +91,9 @@ class FirProtectionRune(): ProtectionRune {
         val costExp = config.PROTECTION_RUNE_EXP
 
         // 触发事件
-        val preProtectionRuneUseEvent = PreProtectionRuneUseEvent(context.viewer, event, costExp, context.firstItem)
-        Bukkit.getPluginManager().callEvent(preProtectionRuneUseEvent)
-        if (preProtectionRuneUseEvent.isCancelled) return
+        val protectionRunePreUseEvent = ProtectionRunePreUseEvent(context.viewer, event, costExp, context.firstItem)
+        Bukkit.getPluginManager().callEvent(protectionRunePreUseEvent)
+        if (protectionRunePreUseEvent.isCancelled) return
 
         // 显示结果
         val result = context.firstItem.clone()

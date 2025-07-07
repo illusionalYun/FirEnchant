@@ -10,6 +10,9 @@ interface EnchantingTableItemRegistry {
     // 注销一个附魔台物品
     fun unregisterItem(item: EnchantingTableApplicable): Boolean
 
+    // 获取一个附魔台物品
+    fun <T :EnchantingTableApplicable> getItem(applicableClass: Class<T>): T?
+
     // 获取所有的附魔台物品
     fun getItems(): List<EnchantingTableApplicable>
 

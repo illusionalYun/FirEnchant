@@ -12,7 +12,9 @@ import top.catnies.firenchantkt.enchantment.EnchantmentSettingFactory
 import top.catnies.firenchantkt.integration.ItemProviderRegistry
 import top.catnies.firenchantkt.item.AnvilItemRegistry
 import top.catnies.firenchantkt.item.EnchantingTableItemRegistry
+import top.catnies.firenchantkt.item.FixTableItemRegistry
 import top.catnies.firenchantkt.item.anvil.ProtectionRune
+import top.catnies.firenchantkt.item.fixtable.BrokenGear
 
 
 object FirEnchantAPI {
@@ -69,16 +71,34 @@ object FirEnchantAPI {
      */
     @NotNull
     fun hasProtectionRune(item: ItemStack): Boolean {
-        val protectionRune = ServiceContainer.get(AnvilItemRegistry::class.java).getItem(ProtectionRune::class.java) ?: return false
+        val protectionRune = ServiceContainer.get(AnvilItemRegistry::class.java).getItem(ProtectionRune::class.java) ?: throw IllegalStateException("ProtectionRune is not registered.")
         return protectionRune.hasProtectionRune(item)
     }
     fun addProtectionRune(item: ItemStack) {
-        val protectionRune = ServiceContainer.get(AnvilItemRegistry::class.java).getItem(ProtectionRune::class.java)
+        val protectionRune = ServiceContainer.get(AnvilItemRegistry::class.java).getItem(ProtectionRune::class.java) ?: throw IllegalStateException("ProtectionRune is not registered.")
         protectionRune?.addProtectionRune(item)
     }
     fun removeProtectionRune(item: ItemStack) {
-        val protectionRune = ServiceContainer.get(AnvilItemRegistry::class.java).getItem(ProtectionRune::class.java)
+        val protectionRune = ServiceContainer.get(AnvilItemRegistry::class.java).getItem(ProtectionRune::class.java) ?: throw IllegalStateException("ProtectionRune is not registered.")
         protectionRune?.removeProtectionRune(item)
     }
 
+
+    /**
+     * 破损物品的检查, 转换和修复.
+     */
+    @NotNull
+    fun isBrokenGear(item: ItemStack): Boolean {
+        val brokenGear = ServiceContainer.get(FixTableItemRegistry::class.java).getItem(BrokenGear::class.java) ?: throw IllegalStateException("BrokenGear is not registered.")
+        return brokenGear.isBrokenGear(item)
+    }
+    fun toBrokenGear(item: ItemStack): ItemStack? {
+        val brokenGear = ServiceContainer.get(FixTableItemRegistry::class.java).getItem(BrokenGear::class.java) ?: throw IllegalStateException("BrokenGear is not registered.")
+        return brokenGear.toBrokenGear(item)
+    }
+    fun repairBrokenGear(item: ItemStack): ItemStack? {
+        val brokenGear = ServiceContainer.get(FixTableItemRegistry::class.java).getItem(BrokenGear::class.java) ?: throw IllegalStateException("BrokenGear is not registered.")
+        if (!brokenGear.isBrokenGear(item)) return item
+        return brokenGear.repairBrokenGear(item)
+    }
 }

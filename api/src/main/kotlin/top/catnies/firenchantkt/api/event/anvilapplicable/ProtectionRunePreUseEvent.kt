@@ -6,20 +6,13 @@ import org.bukkit.event.HandlerList
 import org.bukkit.event.inventory.PrepareAnvilEvent
 import org.bukkit.event.player.PlayerEvent
 import org.bukkit.inventory.ItemStack
-import top.catnies.firenchantkt.enchantment.EnchantmentSetting
 
-/**
- * 当装备和附魔书放入铁砧, 试图使用时触发.
- * 事件如果取消了, 插件将不会处理它, 将会进行原版逻辑.
- */
-class PreEnchantedBookUseEvent(
+class ProtectionRunePreUseEvent(
     player: Player,
     val event: PrepareAnvilEvent,
     var costExp: Int,
-    val firstItem: ItemStack,
-    val secondSetting: EnchantmentSetting,
-    var resultItem: ItemStack
-): PlayerEvent(player), Cancellable {
+    val firstItem: ItemStack
+) : PlayerEvent(player), Cancellable {
 
     companion object {
         val HANDLER_LIST = HandlerList()
@@ -43,4 +36,5 @@ class PreEnchantedBookUseEvent(
     override fun setCancelled(cancel: Boolean) {
         isCancelled = cancel
     }
+
 }
