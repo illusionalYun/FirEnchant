@@ -10,8 +10,10 @@ class SettingsConfig private constructor():
         val instance by lazy { SettingsConfig() }
     }
 
+    /* 基础配置 */
+    lateinit var LANGUAGE: String // 语言
 
-    lateinit var LANGUAGE: String
+    /* 数据库 */
     lateinit var DATABASE_TYPE: String;
     lateinit var DATABASE_MYSQL_HOST: String
     lateinit var DATABASE_MYSQL_DATABASE: String

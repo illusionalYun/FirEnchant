@@ -15,6 +15,7 @@ public class LibraryManager {
     private final RepositoryConfig chengzhiMeow = new RepositoryConfig("https://maven.chengzhimeow.cn/releases/");
     private final RepositoryConfig xenondevs = new RepositoryConfig("https://repo.xenondevs.xyz/releases/");
 
+    private LibraryManager() {}
     public static LibraryManager getInstance() {
         if (instance == null) {
             instance = new LibraryManager();

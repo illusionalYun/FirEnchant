@@ -15,4 +15,5 @@ dependencies {
     compileOnly("dev.aurelium:auraskills-api-bukkit:${rootProject.properties["lib.auraskills.version"]}") // AuraSkills
     compileOnly("net.momirealms:custom-crops:${rootProject.properties["lib.customcrops.version"]}") // CustomCrops
     compileOnly("net.momirealms:custom-fishing:${rootProject.properties["lib.customfishing.version"]}") // CustomFishing
+    compileOnly("su.nightexpress.coinsengine:CoinsEngine:${rootProject.properties["lib.coinsengine.version"]}") // CoinsEngine
 }
