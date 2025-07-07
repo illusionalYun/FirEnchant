@@ -1,4 +1,4 @@
-package top.catnies.firenchantkt.api.event
+package top.catnies.firenchantkt.api.event.enchantingapplicable
 
 import org.bukkit.event.Event
 import org.bukkit.event.HandlerList

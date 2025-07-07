@@ -9,10 +9,10 @@ import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.view.AnvilView
 import top.catnies.firenchantkt.FirEnchantPlugin
 import top.catnies.firenchantkt.api.FirEnchantAPI
-import top.catnies.firenchantkt.api.event.EnchantedBookMergeEvent
-import top.catnies.firenchantkt.api.event.EnchantedBookUseEvent
-import top.catnies.firenchantkt.api.event.PreEnchantedBookMergeEvent
-import top.catnies.firenchantkt.api.event.PreEnchantedBookUseEvent
+import top.catnies.firenchantkt.api.event.anvilapplicable.EnchantedBookMergeEvent
+import top.catnies.firenchantkt.api.event.anvilapplicable.EnchantedBookUseEvent
+import top.catnies.firenchantkt.api.event.anvilapplicable.PreEnchantedBookMergeEvent
+import top.catnies.firenchantkt.api.event.anvilapplicable.PreEnchantedBookUseEvent
 import top.catnies.firenchantkt.config.AnvilConfig
 import top.catnies.firenchantkt.context.AnvilContext
 import top.catnies.firenchantkt.enchantment.EnchantmentSetting

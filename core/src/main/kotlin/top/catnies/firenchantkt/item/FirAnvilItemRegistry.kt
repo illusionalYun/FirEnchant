@@ -3,7 +3,7 @@ package top.catnies.firenchantkt.item
 import org.bukkit.Bukkit
 import org.bukkit.inventory.ItemStack
 import top.catnies.firenchantkt.api.ServiceContainer
-import top.catnies.firenchantkt.api.event.AnvilApplicableItemRegisterEvent
+import top.catnies.firenchantkt.api.event.anvilapplicable.AnvilApplicableItemRegisterEvent
 import top.catnies.firenchantkt.item.anvil.FirEnchantedBook
 import top.catnies.firenchantkt.item.anvil.FirProtectionRune
 import top.catnies.firenchantkt.item.anvil.FirVanillaEnchantedBook

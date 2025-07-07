@@ -1,23 +1,22 @@
-package top.catnies.firenchantkt.api.event
+package top.catnies.firenchantkt.api.event.anvilapplicable
 
 import org.bukkit.entity.Player
 import org.bukkit.event.Cancellable
 import org.bukkit.event.HandlerList
-import org.bukkit.event.inventory.PrepareAnvilEvent
+import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.player.PlayerEvent
+import org.bukkit.inventory.ItemStack
+import org.bukkit.inventory.view.AnvilView
 import top.catnies.firenchantkt.enchantment.EnchantmentSetting
 
-/**
- * 当两本附魔书放入铁砧, 试图合并时触发.
- * 事件如果取消了, 插件将不会处理它, 将会进行原版逻辑.
- */
-class PreEnchantedBookMergeEvent(
+class EnchantedBookUseEvent(
     player: Player,
-    val event: PrepareAnvilEvent,
-    var costExp: Int,
-    val firstSetting: EnchantmentSetting,
+    val event: InventoryClickEvent,
+    val anvilView: AnvilView,
+    val firstItem: ItemStack,
     val secondSetting: EnchantmentSetting,
-    var resultSetting: EnchantmentSetting
+    var resultItem: ItemStack,
+    var isSuccess: Boolean
 ) : PlayerEvent(player), Cancellable {
 
     companion object {
@@ -42,5 +41,4 @@ class PreEnchantedBookMergeEvent(
     override fun setCancelled(cancel: Boolean) {
         isCancelled = cancel
     }
-
 }
