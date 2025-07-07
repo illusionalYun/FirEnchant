@@ -26,7 +26,7 @@ allprojects {
     apply(plugin = "com.gradleup.shadow")
 
     group = "top.catnies"
-    version = "3.0.0-beta1"
+    version = "${rootProject.properties["project.version"]}"
     kotlin.jvmToolchain(21)
     java.sourceCompatibility = JavaVersion.VERSION_21
     java.targetCompatibility = JavaVersion.VERSION_21
@@ -47,12 +47,15 @@ allprojects {
 
     dependencies {
         // 基础库
-        compileOnly("io.papermc.paper:paper-api:1.21.4-R0.1-SNAPSHOT") // PAPER
+        compileOnly("io.papermc.paper:paper-api:${rootProject.properties["server.paper.version"]}") // PAPER
         implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8") // Kotlin STD
 
+        compileOnly("org.projectlombok:lombok:${rootProject.properties["lib.lombok.version"]}")
+        annotationProcessor("org.projectlombok:lombok:${rootProject.properties["lib.lombok.version"]}") // Lombok
+
         // 依赖库
-        implementation("com.saicone.rtag:rtag:1.5.11") // RTag
-        implementation("com.saicone.rtag:rtag-item:1.5.11") // RTag
+        implementation("com.saicone.rtag:rtag:${rootProject.properties["lib.rtag.version"]}") // RTag
+        implementation("com.saicone.rtag:rtag-item:${rootProject.properties["lib.rtag.version"]}") // RTag
     }
 
     tasks {

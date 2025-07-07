@@ -16,7 +16,7 @@ publishing {
         create<MavenPublication>("maven") {
             groupId = "top.catnies"
             artifactId = "firenchantkt"
-            version = "3.0.0-beta-1"
+            version = "${rootProject.properties["project.version"]}"
             from(components["java"])
         }
     }

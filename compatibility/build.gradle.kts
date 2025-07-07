@@ -2,17 +2,17 @@ dependencies {
     implementation(project(":api"))
 
     // 物品库
-    compileOnly("com.nexomc:nexo:1.1.0") // Nexo
-    compileOnly("io.th0rgal:oraxen:1.181.0") // Oraxen
-    compileOnly("io.lumine:Mythic-Dist:5.6.1") // MythicMobs
-    compileOnly("dev.lone:api-itemsadder:4.0.10") // ItemsAdder
-    compileOnly("net.momirealms:craft-engine-core:0.0.57") // CraftEngine
-    compileOnly("net.momirealms:craft-engine-bukkit:0.0.57") // CraftEngine
+    compileOnly("com.nexomc:nexo:${rootProject.properties["lib.nexo.version"]}") // Nexo
+    compileOnly("io.th0rgal:oraxen:${rootProject.properties["lib.oraxen.version"]}") // Oraxen
+    compileOnly("io.lumine:Mythic-Dist:${rootProject.properties["lib.mythicmobs.version"]}") // MythicMobs
+    compileOnly("dev.lone:api-itemsadder:${rootProject.properties["lib.itemsadder.version"]}") // ItemsAdder
+    compileOnly("net.momirealms:craft-engine-core:${rootProject.properties["lib.craftengine.version"]}") // CraftEngine
+    compileOnly("net.momirealms:craft-engine-bukkit:${rootProject.properties["lib.craftengine.version"]}") // CraftEngine
 
     // 拓展功能
-    compileOnly("me.clip:placeholderapi:2.11.6") // PlaceholderAPI
+    compileOnly("me.clip:placeholderapi:${rootProject.properties["lib.placeholderapi.version"]}") // PlaceholderAPI
     compileOnly(files("libs/EnchantmentSlots-4.4.6.jar")) // EnchantmentSlots
-    compileOnly("dev.aurelium:auraskills-api-bukkit:2.2.4") // AuraSkills
-    compileOnly("net.momirealms:custom-crops:3.6.29") // CustomCrops
-    compileOnly("net.momirealms:custom-fishing:2.3.7") // CustomFishing
+    compileOnly("dev.aurelium:auraskills-api-bukkit:${rootProject.properties["lib.auraskills.version"]}") // AuraSkills
+    compileOnly("net.momirealms:custom-crops:${rootProject.properties["lib.customcrops.version"]}") // CustomCrops
+    compileOnly("net.momirealms:custom-fishing:${rootProject.properties["lib.customfishing.version"]}") // CustomFishing
 }

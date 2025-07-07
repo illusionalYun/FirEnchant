@@ -5,11 +5,11 @@ plugins {
 dependencies {
     implementation(project(":api"))
     implementation(project(":compatibility"))
-    compileOnly("org.projectlombok:lombok:1.18.34") // Lombok
-    compileOnly("io.lettuce:lettuce-core:6.5.3.RELEASE") // Lettuce
 
-    compileOnly("me.clip:placeholderapi:2.11.6") // PlaceholderAPI
-    implementation("xyz.xenondevs.invui:invui:1.46") // InvUI
+    compileOnly("io.lettuce:lettuce-core:${rootProject.properties["lib.lettuce.version"]}") // Lettuce
+
+    compileOnly("me.clip:placeholderapi:${rootProject.properties["lib.placeholderapi.version"]}") // PlaceholderAPI
+    implementation("xyz.xenondevs.invui:invui:${rootProject.properties["lib.invui.version"]}") // InvUI
 }
 
 // 确保 plugin.yml 被正确处理
