@@ -23,14 +23,12 @@ class FirEnchantPlugin: JavaPlugin() {
         var instance by Delegates.notNull<FirEnchantPlugin>()
     }
 
-    lateinit var databaseManager: DatabaseManager
-
 
     override fun onLoad() {
         instance = this
-
-        LibraryManager.getInstance()
+        LibraryManager.getInstance() // 动态依赖下载
     }
+
 
     override fun onEnable() {
         ConfigManager.instance // 配置文件管理器

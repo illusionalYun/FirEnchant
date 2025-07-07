@@ -6,6 +6,7 @@ import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.stmt.QueryBuilder;
 import lombok.SneakyThrows;
 import top.catnies.firenchantkt.FirEnchantPlugin;
+import top.catnies.firenchantkt.database.impl.FirEnchantDatabaseManager;
 
 import java.lang.reflect.ParameterizedType;
 import java.sql.SQLException;
@@ -19,7 +20,7 @@ public abstract class AbstractDaoManager<V, K> {
                     ParameterizedType type = (ParameterizedType) getClass().getGenericSuperclass();
                     Class<V> clazz = (Class<V>) type.getActualTypeArguments()[0];
 
-                    return DaoManager.createDao(FirEnchantPlugin.getInstance().getDatabaseManager().getConnectionSource(), clazz);
+                    return DaoManager.createDao(FirEnchantDatabaseManager.getInstance().getConnectionSource(), clazz);
                 } catch (SQLException e) {
                     throw new RuntimeException(e);
                 }
