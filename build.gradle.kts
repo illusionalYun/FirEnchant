@@ -31,6 +31,7 @@ allprojects {
 
     repositories {
         mavenCentral()
+        maven("https://repo.papermc.io/repository/maven-public/") // Paper
         maven("https://maven.devs.beer/") // ItemsAdder
         maven("https://repo.nexomc.com/releases") // Nexo
         maven("https://repo.oraxen.com/releases") // Oraxen
@@ -44,7 +45,7 @@ allprojects {
 
     dependencies {
         // 基础库
-        compileOnly("io.papermc.paper:paper-api:1.21.5-R0.1-SNAPSHOT") // PAPER
+        compileOnly("io.papermc.paper:paper-api:1.21.4-R0.1-SNAPSHOT") // PAPER
         implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8") // Kotlin STD
 
         // 依赖库

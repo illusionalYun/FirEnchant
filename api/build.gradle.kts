@@ -1,15 +1,5 @@
 plugins {
     id("maven-publish") // Maven Publish
-    id("io.papermc.paperweight.userdev") // PAPER Weight
-}
-
-
-repositories {
-    mavenCentral()
-}
-
-dependencies {
-    paperweight.paperDevBundle("1.21.7-R0.1-SNAPSHOT") // PAPER Weight
 }
 
 // 发布到 Maven 仓库
