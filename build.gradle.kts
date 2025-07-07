@@ -28,6 +28,8 @@ allprojects {
     group = "top.catnies"
     version = "3.0.0-beta1"
     kotlin.jvmToolchain(21)
+    java.sourceCompatibility = JavaVersion.VERSION_21
+    java.targetCompatibility = JavaVersion.VERSION_21
 
     repositories {
         mavenCentral()

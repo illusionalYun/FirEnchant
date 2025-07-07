@@ -16,6 +16,4 @@ interface Database {
     /* 设置附魔台的种子 */
     fun setEnchantTableSeed(@NotNull player: Player, @NotNull seed: Long)
 
-
-
 }

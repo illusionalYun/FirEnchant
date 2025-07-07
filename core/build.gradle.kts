@@ -1,7 +1,11 @@
+plugins {
+    id("java") // Java
+}
+
 dependencies {
     implementation(project(":api"))
     implementation(project(":compatibility"))
-
+    compileOnly("org.projectlombok:lombok:1.18.34") // Lombok
     compileOnly("io.lettuce:lettuce-core:6.5.3.RELEASE") // Lettuce
 
     compileOnly("me.clip:placeholderapi:2.11.6") // PlaceholderAPI
