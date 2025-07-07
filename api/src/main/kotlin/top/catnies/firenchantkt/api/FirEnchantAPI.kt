@@ -76,11 +76,11 @@ object FirEnchantAPI {
     }
     fun addProtectionRune(item: ItemStack) {
         val protectionRune = ServiceContainer.get(AnvilItemRegistry::class.java).getItem(ProtectionRune::class.java) ?: throw IllegalStateException("ProtectionRune is not registered.")
-        protectionRune?.addProtectionRune(item)
+        protectionRune.addProtectionRune(item)
     }
     fun removeProtectionRune(item: ItemStack) {
         val protectionRune = ServiceContainer.get(AnvilItemRegistry::class.java).getItem(ProtectionRune::class.java) ?: throw IllegalStateException("ProtectionRune is not registered.")
-        protectionRune?.removeProtectionRune(item)
+        protectionRune.removeProtectionRune(item)
     }
 
 

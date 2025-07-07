@@ -12,7 +12,8 @@ class FirEnchantPluginLoader: PluginLoader {
     // 依赖管理
     override fun classloader(classpathBuilder: PluginClasspathBuilder) {
         val resolver = MavenLibraryResolver()
-        resolver.addRepository(RemoteRepository.Builder("central", "default", "https://maven.aliyun.com/repository/public").build())
+        resolver.addRepository(RemoteRepository.Builder("alibaba-central", "default", "https://maven.aliyun.com/repository/public").build())
+        resolver.addRepository(RemoteRepository.Builder("tsinghua-central", "default", "https://repo.maven.apache.org/maven2/").build())
 
         // MYSQL
         resolver.addDependency(Dependency(DefaultArtifact("com.j256.ormlite:ormlite-core:6.1"), null))
