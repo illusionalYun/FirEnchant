@@ -1,5 +1,6 @@
 package top.catnies.firenchantkt.util
 
+import com.saicone.rtag.item.ItemTagStream
 import org.bukkit.enchantments.Enchantment
 import org.bukkit.inventory.ItemStack
 
@@ -22,6 +23,14 @@ object ItemUtils {
             if (!enchantment.conflictsWith(other)) return false
         }
         return true
+    }
+
+    // 序列化物品为Byte数组
+    fun ItemStack.serializeToBytes(): ByteArray {
+        return ItemTagStream.INSTANCE.toBytes(this)
+    }
+    fun ByteArray.deserializeFromBytes(): ItemStack {
+        return ItemTagStream.INSTANCE.fromBytes(this)
     }
 
 }
