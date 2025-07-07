@@ -7,11 +7,9 @@ import org.bukkit.inventory.ItemStack
 import top.catnies.firenchantkt.FirEnchantPlugin
 import top.catnies.firenchantkt.config.AnvilConfig
 import top.catnies.firenchantkt.context.AnvilContext
-import top.catnies.firenchantkt.item.AnvilApplicable
-
 
 // 监听原版的附魔书应用事件, 然后根据配置取消.
-class VanillaEnchantedBook: AnvilApplicable {
+class FirVanillaEnchantedBook: VanillaEnchantedBook {
 
     companion object {
         val plugin = FirEnchantPlugin.instance

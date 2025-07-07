@@ -14,10 +14,10 @@ import top.catnies.firenchantkt.enchantment.EnchantmentSetting
 class PreEnchantedBookMergeEvent(
     player: Player,
     val event: PrepareAnvilEvent,
-    val costExp: Int,
+    var costExp: Int,
     val firstSetting: EnchantmentSetting,
     val secondSetting: EnchantmentSetting,
-    val resultSetting: EnchantmentSetting
+    var resultSetting: EnchantmentSetting
 ) : PlayerEvent(player), Cancellable {
 
     companion object {

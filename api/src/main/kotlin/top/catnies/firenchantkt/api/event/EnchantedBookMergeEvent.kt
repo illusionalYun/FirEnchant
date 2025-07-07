@@ -21,7 +21,7 @@ class EnchantedBookMergeEvent(
     val anvilView: AnvilView,
     val firstSetting: EnchantmentSetting,
     val secondSetting: EnchantmentSetting,
-    val resultItem: ItemStack?
+    var resultItem: ItemStack?
 ) : PlayerEvent(player), Cancellable {
 
     companion object {

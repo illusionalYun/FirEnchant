@@ -1,12 +1,16 @@
 package top.catnies.firenchantkt.item.anvil
 
 import org.bukkit.Bukkit
+import org.bukkit.Material
+import org.bukkit.entity.Player
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.inventory.PrepareAnvilEvent
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.view.AnvilView
 import top.catnies.firenchantkt.FirEnchantPlugin
+import top.catnies.firenchantkt.api.FirEnchantAPI
 import top.catnies.firenchantkt.api.event.EnchantedBookMergeEvent
+import top.catnies.firenchantkt.api.event.EnchantedBookUseEvent
 import top.catnies.firenchantkt.api.event.PreEnchantedBookMergeEvent
 import top.catnies.firenchantkt.api.event.PreEnchantedBookUseEvent
 import top.catnies.firenchantkt.compatibility.enchantmentslots.EnchantmentSlotsUtil
@@ -15,12 +19,11 @@ import top.catnies.firenchantkt.context.AnvilContext
 import top.catnies.firenchantkt.enchantment.EnchantmentSetting
 import top.catnies.firenchantkt.enchantment.FirEnchantmentSettingFactory
 import top.catnies.firenchantkt.integration.IntegrationManager
-import top.catnies.firenchantkt.item.AnvilApplicable
 import top.catnies.firenchantkt.util.ItemUtils.isCompatibleWithEnchantment
 import kotlin.math.max
 import kotlin.math.min
 
-class FirEnchantedBook: AnvilApplicable {
+class FirEnchantedBook: EnchantedBook {
 
     companion object {
         val plugin = FirEnchantPlugin.instance
@@ -63,12 +66,6 @@ class FirEnchantedBook: AnvilApplicable {
 
         // 如果第一件物品是普通物品, 检查是否可以附魔.
         else if (context.firstItem.isCompatibleWithEnchantment(originEnchantment)) {
-            // 如果有附魔槽位插件, 则需要判断魔咒数量有没有超过上限
-            if (hasEnchantmentSlots) {
-                val remainingSlots = EnchantmentSlotsUtil.getRemainingSlots(context.viewer, context.firstItem)
-                if (remainingSlots <= 0) return
-            }
-
             // 计算结果
             val resultItem = context.firstItem.clone().apply { addEnchantment(setting.data.originEnchantment, setting.level) }
 
@@ -82,7 +79,7 @@ class FirEnchantedBook: AnvilApplicable {
             if (preEnchantedBookUseEvent.isCancelled) return
 
             // 显示结果
-            event.result = resultItem
+            event.result = preEnchantedBookUseEvent.resultItem
             event.view.repairCost = preEnchantedBookUseEvent.costExp
         }
 
@@ -96,7 +93,6 @@ class FirEnchantedBook: AnvilApplicable {
         // 如果第一件物品也是附魔书, 触发合并逻辑.
         // TODO (两本附魔书融合, 是否需要考虑失败率? 或者给出这个选项? -> 是否可以监听事件实现拓展, 而非塞入主逻辑.)
         if (isEnchantedBookMerge(firstSetting, setting)) {
-            // 计算结果
             val resultItem = context.result!!
             val anvilView = event.view as AnvilView
 
@@ -111,7 +107,49 @@ class FirEnchantedBook: AnvilApplicable {
 
         // 如果第一件物品是普通物品, 检查物品是否可以附魔.
         else if (context.firstItem.isCompatibleWithEnchantment(originEnchantment)) {
-            // TODO("预览结果, 触发事件")
+            val resultItem = context.result!!
+            val anvilView = event.view as AnvilView
+            val isSuccess = isSuccess(context.viewer, setting.failure)
+
+            // 触发事件
+            val enchantedBookUseEvent = EnchantedBookUseEvent(
+                context.viewer,
+                event,
+                anvilView,
+                context.firstItem,
+                setting,
+                resultItem,
+                isSuccess
+            )
+            Bukkit.getPluginManager().callEvent(enchantedBookUseEvent)
+            if (enchantedBookUseEvent.isCancelled) {
+                event.isCancelled = true
+                return
+            }
+
+            // 成功直接返回
+            if (enchantedBookUseEvent.isSuccess) return
+
+            // TODO(失败逻辑)
+            event.isCancelled = true
+            // 检查保护符文功能是否开启, 物品有没有保护符文
+            if (FirEnchantAPI.hasProtectionRune(context.firstItem)) {
+                // 有 -> 直接光标设置为灵魂,
+                anvilView.setItem(1, ItemStack.empty())
+                anvilView.setItem(2, ItemStack.empty())
+                anvilView.setCursor(ItemStack(Material.SOUL_SAND))
+                // 发送消息
+                context.viewer.sendMessage("失败但是有符文!")
+            }
+
+            // 没有保护符文
+            else {
+                anvilView.setItem(1, ItemStack.empty())
+                anvilView.setItem(2, ItemStack.empty())
+                anvilView.setCursor(ItemStack(Material.SAND))
+                context.viewer.sendMessage("失败也没有符文!")
+            }
+
         }
 
     }
@@ -150,7 +188,7 @@ class FirEnchantedBook: AnvilApplicable {
     }
 
     // 根据失败率判断是否成功
-    private fun isSuccess(failure: Int): Boolean {
+    private fun isSuccess(player: Player, failure: Int): Boolean {
         // TODO (研究一下更合适的算法, 纯随机玩家表示受不了, 另外要注意config里可能会有兜底和其他方案)
         return true
     }

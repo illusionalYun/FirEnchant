@@ -2,7 +2,7 @@ package top.catnies.firenchantkt.integration
 
 import org.bukkit.Bukkit
 import top.catnies.firenchantkt.FirEnchantPlugin
-import top.catnies.firenchantkt.compatibility.enchantmentslots.RegistryListener
+import top.catnies.firenchantkt.compatibility.enchantmentslots.EnchantmentSlotsListener
 import top.catnies.firenchantkt.language.MessageConstants.PLUGIN_COMPATIBILITY_HOOK_SUCCESS
 import top.catnies.firenchantkt.util.MessageUtils.sendTranslatableComponent
 
@@ -30,7 +30,7 @@ class IntegrationManager private constructor() {
         // EnchantmentSlots
         if (hasEnchantmentSlots) {
             // 监听物品注册事件
-            Bukkit.getPluginManager().registerEvents(RegistryListener(), plugin)
+            Bukkit.getPluginManager().registerEvents(EnchantmentSlotsListener(), plugin)
             sendPluginHookedMessage("EnchantmentSlots")
         }
         // PlaceholderAPI

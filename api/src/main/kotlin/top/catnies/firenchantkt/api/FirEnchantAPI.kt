@@ -1,10 +1,10 @@
 package top.catnies.firenchantkt.api
 
+import com.saicone.rtag.RtagItem
 import net.kyori.adventure.key.Key
 import org.bukkit.inventory.ItemStack
 import org.jetbrains.annotations.NotNull
 import org.jetbrains.annotations.Nullable
-import top.catnies.firenchantkt.api.ServiceContainer.get
 import top.catnies.firenchantkt.enchantment.EnchantmentData
 import top.catnies.firenchantkt.enchantment.EnchantmentManager
 import top.catnies.firenchantkt.enchantment.EnchantmentSetting
@@ -12,18 +12,17 @@ import top.catnies.firenchantkt.enchantment.EnchantmentSettingFactory
 import top.catnies.firenchantkt.integration.ItemProviderRegistry
 import top.catnies.firenchantkt.item.AnvilItemRegistry
 import top.catnies.firenchantkt.item.EnchantingTableItemRegistry
+import top.catnies.firenchantkt.item.anvil.ProtectionRune
 
 
 object FirEnchantAPI {
 
     // 物品提供者注册表
-    val itemProviderRegistry: () -> ItemProviderRegistry = { get(ItemProviderRegistry::class.java) }
-
+    val itemProviderRegistry: () -> ItemProviderRegistry = { ServiceContainer.get(ItemProviderRegistry::class.java) }
     // 铁砧物品注册表
-    val anvilItemRegistry: () -> AnvilItemRegistry = { get(AnvilItemRegistry::class.java) }
-
+    val anvilItemRegistry: () -> AnvilItemRegistry = { ServiceContainer.get(AnvilItemRegistry::class.java) }
     // 附魔台物品注册表
-    val enchantingTableItemRegistry: () -> EnchantingTableItemRegistry = { get(EnchantingTableItemRegistry::class.java) }
+    val enchantingTableItemRegistry: () -> EnchantingTableItemRegistry = { ServiceContainer.get(EnchantingTableItemRegistry::class.java) }
 
 
     /**
@@ -59,6 +58,25 @@ object FirEnchantAPI {
     @NotNull
     fun getAllEnchantmentData(): List<EnchantmentData> {
         return ServiceContainer.get(EnchantmentManager::class.java).getAllEnchantmentData()
+    }
+
+
+    /**
+     * 物品上保护符文的检查, 添加和删除.
+     * @param item 物品
+     */
+    @NotNull
+    fun hasProtectionRune(item: ItemStack): Boolean {
+        val protectionRune = ServiceContainer.get(AnvilItemRegistry::class.java).getItem(ProtectionRune::class.java) ?: return false
+        return protectionRune.hasProtectionRune(item)
+    }
+    fun addProtectionRune(item: ItemStack) {
+        val protectionRune = ServiceContainer.get(AnvilItemRegistry::class.java).getItem(ProtectionRune::class.java)
+        protectionRune?.addProtectionRune(item)
+    }
+    fun removeProtectionRune(item: ItemStack) {
+        val protectionRune = ServiceContainer.get(AnvilItemRegistry::class.java).getItem(ProtectionRune::class.java)
+        protectionRune?.removeProtectionRune(item)
     }
 
 }
