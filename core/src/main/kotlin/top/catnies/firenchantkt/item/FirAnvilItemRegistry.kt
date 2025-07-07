@@ -5,6 +5,7 @@ import org.bukkit.inventory.ItemStack
 import top.catnies.firenchantkt.api.ServiceContainer
 import top.catnies.firenchantkt.api.event.AnvilApplicableItemRegisterEvent
 import top.catnies.firenchantkt.item.anvil.FirEnchantedBook
+import top.catnies.firenchantkt.item.anvil.FirProtectionRune
 import top.catnies.firenchantkt.item.anvil.FirVanillaEnchantedBook
 
 
@@ -19,11 +20,17 @@ class FirAnvilItemRegistry: AnvilItemRegistry {
     }
 
     // 初始化注册物品
-    fun load() {
+    private fun load() {
         registerItem(FirVanillaEnchantedBook())
         registerItem(FirEnchantedBook())
+        registerItem(FirProtectionRune())
         ServiceContainer.register(AnvilItemRegistry::class.java, this)
         Bukkit.getPluginManager().callEvent(AnvilApplicableItemRegisterEvent(this))
+    }
+
+    // 重载物品
+    fun reload() {
+        items.forEach { it.reload() }
     }
 
     // 注册新的铁砧物品

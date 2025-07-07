@@ -19,6 +19,7 @@ class FirEnchantPlugin: JavaPlugin() {
         var instance by Delegates.notNull<FirEnchantPlugin>()
     }
 
+
     override fun onEnable() {
         instance = this
 
@@ -31,11 +32,12 @@ class FirEnchantPlugin: JavaPlugin() {
         IntegrationManager.instance // 关联插件集成管理器
 
         FirItemProviderRegistry.instance // 物品集成注册表
-        FirAnvilItemRegistry.instance // 初始化铁砧物品注册表
-        FirEnchantingTableRegistry.instance // 初始化附魔台物品注册表
+        FirAnvilItemRegistry.instance // 铁砧物品注册表
+        FirEnchantingTableRegistry.instance // 附魔台物品注册表
 
         logger.info("FirEnchant enabled!")
     }
+
 
     fun reload() {
         ConfigManager.instance.reload() // 配置文件管理器
@@ -43,5 +45,8 @@ class FirEnchantPlugin: JavaPlugin() {
         FirEnchantmentManager.instance.reload() // 系统魔咒管理器
 
         IntegrationManager.instance.reload() // 关联插件集成管理器
+
+        FirAnvilItemRegistry.instance.reload() // 铁砧物品注册表
+        FirEnchantingTableRegistry.instance.reload() // 附魔台物品注册表
     }
 }

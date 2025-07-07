@@ -13,26 +13,22 @@ import top.catnies.firenchantkt.api.event.EnchantedBookMergeEvent
 import top.catnies.firenchantkt.api.event.EnchantedBookUseEvent
 import top.catnies.firenchantkt.api.event.PreEnchantedBookMergeEvent
 import top.catnies.firenchantkt.api.event.PreEnchantedBookUseEvent
-import top.catnies.firenchantkt.compatibility.enchantmentslots.EnchantmentSlotsUtil
 import top.catnies.firenchantkt.config.AnvilConfig
 import top.catnies.firenchantkt.context.AnvilContext
 import top.catnies.firenchantkt.enchantment.EnchantmentSetting
 import top.catnies.firenchantkt.enchantment.FirEnchantmentSettingFactory
-import top.catnies.firenchantkt.integration.IntegrationManager
 import top.catnies.firenchantkt.util.ItemUtils.isCompatibleWithEnchantment
 import kotlin.math.max
 import kotlin.math.min
 
-class FirEnchantedBook: EnchantedBook {
+class FirEnchantedBook() : EnchantedBook {
 
     companion object {
         val plugin = FirEnchantPlugin.instance
         val logger = plugin.logger
         val config = AnvilConfig.instance
-        val hasEnchantmentSlots = IntegrationManager.instance.hasEnchantmentSlots
     }
 
-    // 抓取符合条件的物品
     override fun matches(itemStack: ItemStack): Boolean {
         FirEnchantmentSettingFactory.fromItemStack(itemStack) ?: return false
         return true

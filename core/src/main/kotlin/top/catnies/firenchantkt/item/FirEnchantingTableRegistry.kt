@@ -20,6 +20,10 @@ class FirEnchantingTableRegistry: EnchantingTableItemRegistry {
         Bukkit.getPluginManager().callEvent(EnchantingApplicableItemRegisterEvent(this))
     }
 
+    fun reload() {
+        items.forEach { it.reload() }
+    }
+
     override fun registerItem(item: EnchantingTableApplicable): Boolean {
         return items.add(item)
     }

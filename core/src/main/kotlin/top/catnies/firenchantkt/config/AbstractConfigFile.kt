@@ -6,7 +6,7 @@ import java.io.File
 import kotlin.properties.Delegates
 
 abstract class AbstractConfigFile(
-    private val fileName: String
+    val fileName: String
 ) {
     protected val plugin get() = FirEnchantPlugin.instance
     protected val logger get() = plugin.logger

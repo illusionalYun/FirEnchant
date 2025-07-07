@@ -9,6 +9,16 @@ import top.catnies.firenchantkt.context.AnvilContext
 
 interface AnvilApplicable {
 
+    // 创建处理器时执行的操作, 例如绑定检查物品是否存在.
+    fun load() {
+        return
+    }
+
+    // 重载插件时处理器执行的操作, 例如清除更新缓存等.
+    fun reload() {
+        return
+    }
+
     // 检查给定的 ItemStack 是否匹配这个处理器.
     fun matches(itemStack: ItemStack): Boolean {
         return false

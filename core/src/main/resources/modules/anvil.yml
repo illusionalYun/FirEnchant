@@ -59,7 +59,12 @@ enchanted-book:
       fixed-value: 18
 
 
-
+# 保护符文设置
+protection-rune:
+  enable: true
+  # 保护符文使用的物品
+  hooked-plugin: "CraftEngine"
+  hooked-id: "enchantment:rune_protection"
 
 
 # 升级符文设置
