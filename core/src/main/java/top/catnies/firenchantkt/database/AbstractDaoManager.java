@@ -11,6 +11,7 @@ import java.lang.reflect.ParameterizedType;
 import java.sql.SQLException;
 import java.util.List;
 
+@SuppressWarnings("unchecked")
 public abstract class AbstractDaoManager<V, K> {
     private final ThreadLocal<Dao<V, K>> daoThread =
             ThreadLocal.withInitial(() -> {
@@ -34,9 +35,9 @@ public abstract class AbstractDaoManager<V, K> {
     }
 
     /**
-     * 获取数据实例l列表
+     * 获取数据实例列表
      *
-     * @return 数据实例l列表
+     * @return 数据实例列表
      */
     @SneakyThrows
     public List<V> getList() {

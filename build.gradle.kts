@@ -70,6 +70,9 @@ allprojects {
 
 // 任务配置
 tasks {
+    clean {
+        delete("$rootDir/target")
+    }
     shadowJar {
         dependsOn(":nms:v1_21_R1:reobfJar")
         dependsOn(":nms:v1_21_R2:reobfJar")
@@ -77,8 +80,8 @@ tasks {
         dependsOn(":nms:v1_21_R4:reobfJar")
         dependsOn(":nms:v1_21_R5:reobfJar")
 
-//        archiveFileName = "${rootProject.name}-$version.jar"
-//        destinationDirectory.set(file("$rootDir/target"))
+        archiveFileName = "${rootProject.name}-$version.jar"
+        destinationDirectory.set(file("$rootDir/target"))
 
         relocate("com.saicone.rtag", "${project.group}.libs.rtag")
     }
