@@ -46,7 +46,7 @@ allprojects {
         maven("https://mvn.lumine.io/repository/maven-public/") // MythicMobs
         maven("https://repo.momirealms.net/releases/") // CustomCrops, CustomFishing, CraftEngine
         maven("https://repo.extendedclip.com/content/repositories/placeholderapi/") // PlaceholderAPI
-        maven("https://maven-eo.chengzhimeow.cn/releases") // 橙汁喵
+        maven("https://maven.chengzhimeow.cn/releases") // 橙汁喵
 
         maven("https://jitpack.io") // RTag
         maven("https://repo.xenondevs.xyz/releases") // InvUI
@@ -76,7 +76,6 @@ tasks {
         dependsOn(":nms:v1_21_R3:reobfJar")
         dependsOn(":nms:v1_21_R4:reobfJar")
         dependsOn(":nms:v1_21_R5:reobfJar")
-        mergeServiceFiles()
 
 //        archiveFileName = "${rootProject.name}-$version.jar"
 //        destinationDirectory.set(file("$rootDir/target"))
