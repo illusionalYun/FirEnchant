@@ -25,60 +25,37 @@ public abstract class AbstractDatabaseManager implements DatabaseManager {
     public void connect() {
         String type = getConfig().getType();
 
-        if (type == null) {
-            throw new RuntimeException("数据库类型未设置");
-        }
-
         switch (type) {
             // 初始化MariaDB/MySQL数据库的连接
             case "mariadb", "mysql" -> {
                 this.type = "mysql";
 
-                try {
-                    Class.forName("com.mysql.cj.jdbc.Driver");
-                } catch (ClassNotFoundException e) {
-                    throw new RuntimeException("数据库驱动加载失败");
-                }
+                try {Class.forName("com.mysql.cj.jdbc.Driver");}
+                catch (ClassNotFoundException e) {throw new RuntimeException("数据库驱动加载失败");}
 
                 databaseUrl = "jdbc:mysql://" + getConfig().getHost() + "/" + getConfig().getDatabase();
                 HikariConfig config = getHikariConfig(this.databaseUrl);
 
                 config.setUsername(getConfig().getUser());
                 config.setPassword(getConfig().getPassword());
-
                 initDataSource(config);
             }
             // 初始化Sqlite/H2数据库的连接
             case "sqlite", "h2" -> {
                 this.type = "h2";
 
-                try {
-                    Class.forName("org.h2.Driver");
-                } catch (ClassNotFoundException e) {
-                    throw new RuntimeException("数据库驱动加载失败");
-                }
+                try {Class.forName("org.h2.Driver");}
+                catch (ClassNotFoundException e) {throw new RuntimeException("数据库驱动加载失败");}
 
                 File file = getConfig().getFile();
                 databaseUrl = "jdbc:h2:" + file.getAbsolutePath();
-
                 initDataSource(getHikariConfig(this.databaseUrl));
             }
             default -> throw new RuntimeException("不支持的数据库类型: " + type);
         }
     }
 
-    @Override
-    @SneakyThrows
-    public void close() {
-        this.connectionSource.close();
-        this.hikariDataSource.close();
-    }
-
-    /**
-     * 获取数据库配置
-     *
-     * @return 数据库配置实例
-     */
+    // 获取数据库配置
     private HikariConfig getHikariConfig(String databaseUrl) {
         HikariConfig config = new HikariConfig();
         config.setJdbcUrl(databaseUrl);
@@ -92,14 +69,17 @@ public abstract class AbstractDatabaseManager implements DatabaseManager {
         return config;
     }
 
-    /**
-     * 根据数据库配置实例初始化数据源
-     *
-     * @param config 数据库配置实例
-     */
+    // 根据数据库配置实例初始化数据源
     @SneakyThrows
     private void initDataSource(HikariConfig config) {
         this.hikariDataSource = new HikariDataSource(config);
         this.connectionSource = new DataSourceConnectionSource(this.hikariDataSource, this.databaseUrl);
+    }
+
+    @Override
+    @SneakyThrows
+    public void close() {
+        this.connectionSource.close();
+        this.hikariDataSource.close();
     }
 }

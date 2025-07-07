@@ -1,4 +1,4 @@
-package top.catnies.firenchantkt.entity;
+package top.catnies.firenchantkt.database;
 
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;

@@ -3,7 +3,6 @@ package top.catnies.firenchantkt
 import org.bukkit.plugin.java.JavaPlugin
 import top.catnies.firenchantkt.command.CommandManager
 import top.catnies.firenchantkt.config.ConfigManager
-import top.catnies.firenchantkt.database.DatabaseManager
 import top.catnies.firenchantkt.database.impl.FirEnchantDatabaseManager
 import top.catnies.firenchantkt.database.impl.FirPlayerEnchantLogDataManager
 import top.catnies.firenchantkt.enchantment.FirEnchantmentManager
@@ -12,7 +11,6 @@ import top.catnies.firenchantkt.integration.IntegrationManager
 import top.catnies.firenchantkt.item.FirAnvilItemRegistry
 import top.catnies.firenchantkt.item.FirEnchantingTableRegistry
 import top.catnies.firenchantkt.language.TranslationManager
-import top.catnies.firenchantkt.library.LibraryManager
 import top.catnies.firenchantkt.listener.ListenerManger
 import kotlin.properties.Delegates
 
@@ -26,7 +24,6 @@ class FirEnchantPlugin: JavaPlugin() {
 
     override fun onLoad() {
         instance = this
-        LibraryManager.getInstance() // 动态依赖下载
     }
 
 

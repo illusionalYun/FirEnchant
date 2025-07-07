@@ -1,3 +1,5 @@
+import com.github.jengelman.gradle.plugins.shadow.transformers.Transformer
+
 // 插件
 plugins {
     id("org.jetbrains.kotlin.jvm") version "2.1.21" // Kotlin
@@ -53,16 +55,13 @@ allprojects {
     }
 
     dependencies {
-        implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8") // Kotlin STD
-
-        // 基础库
         compileOnly("io.papermc.paper:paper-api:${rootProject.properties["server.paper.version"]}") // PAPER
-        compileOnly("cn.chengzhiya:MHDF-Scheduler:${rootProject.properties["lib.mhdf.scheduler.version"]}") // 調度器
-
-        compileOnly("org.projectlombok:lombok:${rootProject.properties["lib.lombok.version"]}")
+        implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8") // Kotlin STD
+        compileOnly("org.projectlombok:lombok:${rootProject.properties["lib.lombok.version"]}") // Lombok
         annotationProcessor("org.projectlombok:lombok:${rootProject.properties["lib.lombok.version"]}") // Lombok
 
         // 依赖库
+        implementation("cn.chengzhiya:MHDF-Scheduler:${rootProject.properties["lib.mhdf.scheduler.version"]}") // 調度器
         implementation("com.saicone.rtag:rtag:${rootProject.properties["lib.rtag.version"]}") // RTag
         implementation("com.saicone.rtag:rtag-item:${rootProject.properties["lib.rtag.version"]}") // RTag
     }
@@ -83,15 +82,13 @@ tasks {
         dependsOn(":nms:v1_21_R5:reobfJar")
 
         relocate("cn.chengzhiya", "${project.group}.firenchantkt.libs.cn.chengzhiya")
-        relocate("org.h2", "${project.group}.firenchantkt.libs.org.h2")
-        relocate("com.mysql", "${project.group}.firenchantkt.libs.com.mysql")
-        relocate("com.j256", "${project.group}.firenchantkt.libs.com.j256")
-        relocate("com.zaxxer", "${project.group}.firenchantkt.libs.com.zaxxer")
-        relocate("io.lettuce", "${project.group}.firenchantkt.libs.io.lettuce")
         relocate("com.saicone", "${project.group}.firenchantkt.libs.com.saicone")
         relocate("xyz.xenondevs", "${project.group}.firenchantkt.libs.xyz.xenondevs")
         relocate("org.intellij", "${project.group}.firenchantkt.libs.org.intellij")
         relocate("org.jetbrains", "${project.group}.firenchantkt.libs.org.jetbrains")
+
+        archiveFileName.set("${project.name}-${project.version}.jar")
+        destinationDirectory.set(file("$rootDir/target"))
     }
 
     assemble {

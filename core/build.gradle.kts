@@ -1,16 +1,13 @@
 dependencies {
     implementation(project(":api"))
     implementation(project(":compatibility"))
+    implementation("xyz.xenondevs.invui:invui:${rootProject.properties["lib.invui.version"]}") // InvUI
 
-    implementation("cn.chengzhiya:MHDF-Library:${rootProject.properties["lib.mhdf.library.version"]}") // 依赖下载
-
-    compileOnly("xyz.xenondevs.invui:invui:${rootProject.properties["lib.invui.version"]}") // InvUI
     compileOnly("io.lettuce:lettuce-core:${rootProject.properties["lib.lettuce.version"]}") {
         exclude("io.netty", "*")
     } // Lettuce
-
     compileOnly("com.j256.ormlite:ormlite-core:${rootProject.properties["lib.ormlite.version"]}") // ORMLite
-    compileOnly("com.j256.ormlite:ormlite-jdbc:${rootProject.properties["lib.ormlite.version"]}")
+    compileOnly("com.j256.ormlite:ormlite-jdbc:${rootProject.properties["lib.ormlite.version"]}") // ORMLite
     compileOnly("com.zaxxer:HikariCP:${rootProject.properties["lib.hikaricp.version"]}") {
         exclude("org.slf4j", "*")
     } // HikariCP

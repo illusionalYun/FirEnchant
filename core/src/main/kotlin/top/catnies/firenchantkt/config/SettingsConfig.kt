@@ -14,7 +14,7 @@ class SettingsConfig private constructor():
     lateinit var LANGUAGE: String // 语言
 
     /* 数据库 */
-    lateinit var DATABASE_TYPE: String;
+    lateinit var DATABASE_TYPE: String
     lateinit var DATABASE_MYSQL_HOST: String
     lateinit var DATABASE_MYSQL_DATABASE: String
     lateinit var DATABASE_MYSQL_USER: String

@@ -6,7 +6,7 @@ import top.catnies.firenchantkt.FirEnchantPlugin;
 import top.catnies.firenchantkt.config.SettingsConfig;
 import top.catnies.firenchantkt.database.AbstractDatabaseManager;
 import top.catnies.firenchantkt.entity.DatabaseConfig;
-import top.catnies.firenchantkt.entity.PlayerEnchantLogData;
+import top.catnies.firenchantkt.database.PlayerEnchantLogData;
 
 import java.io.File;
 

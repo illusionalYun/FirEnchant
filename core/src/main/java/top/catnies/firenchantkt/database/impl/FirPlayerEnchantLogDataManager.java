@@ -1,12 +1,11 @@
 package top.catnies.firenchantkt.database.impl;
 
 import com.j256.ormlite.stmt.QueryBuilder;
-import lombok.Getter;
 import lombok.SneakyThrows;
 import top.catnies.firenchantkt.api.ServiceContainer;
 import top.catnies.firenchantkt.database.AbstractDaoManager;
 import top.catnies.firenchantkt.database.PlayerEnchantLogDataManager;
-import top.catnies.firenchantkt.entity.PlayerEnchantLogData;
+import top.catnies.firenchantkt.database.PlayerEnchantLogData;
 
 import java.util.List;
 import java.util.UUID;
