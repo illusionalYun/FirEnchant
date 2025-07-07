@@ -1,6 +1,5 @@
 package top.catnies.firenchantkt.api
 
-import com.saicone.rtag.RtagItem
 import net.kyori.adventure.key.Key
 import org.bukkit.inventory.ItemStack
 import org.jetbrains.annotations.NotNull

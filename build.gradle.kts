@@ -65,20 +65,23 @@ allprojects {
         implementation("com.saicone.rtag:rtag:${rootProject.properties["lib.rtag.version"]}") // RTag
         implementation("com.saicone.rtag:rtag-item:${rootProject.properties["lib.rtag.version"]}") // RTag
     }
-
-    tasks {
-        shadowJar {
-            relocate("com.saicone.rtag", "${project.group}.libs.rtag")
-        }
-    }
 }
 
 
 // 任务配置
 tasks {
     shadowJar {
-        archiveFileName = "${rootProject.name}-$version.jar"
-        destinationDirectory.set(file("$rootDir/target"))
+        dependsOn(":nms:v1_21_R1:reobfJar")
+        dependsOn(":nms:v1_21_R2:reobfJar")
+        dependsOn(":nms:v1_21_R3:reobfJar")
+        dependsOn(":nms:v1_21_R4:reobfJar")
+        dependsOn(":nms:v1_21_R5:reobfJar")
+        mergeServiceFiles()
+
+//        archiveFileName = "${rootProject.name}-$version.jar"
+//        destinationDirectory.set(file("$rootDir/target"))
+
+        relocate("com.saicone.rtag", "${project.group}.libs.rtag")
     }
     assemble {
         dependsOn(shadowJar)
