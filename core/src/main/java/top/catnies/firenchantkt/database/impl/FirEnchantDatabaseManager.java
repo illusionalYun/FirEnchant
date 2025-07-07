@@ -11,7 +11,22 @@ import top.catnies.firenchantkt.entity.PlayerEnchantLogData;
 import java.io.File;
 
 public class FirEnchantDatabaseManager extends AbstractDatabaseManager {
-    public FirEnchantDatabaseManager() {
+
+    private static FirEnchantDatabaseManager instance;
+
+    private FirEnchantDatabaseManager() {}
+    public static FirEnchantDatabaseManager getInstance() {
+        if (instance == null) {
+            instance = new FirEnchantDatabaseManager();
+            instance.crateDatabaseConfig();
+            instance.connect();
+            instance.initTable();
+        }
+        return instance;
+    }
+
+
+    private void crateDatabaseConfig() {
         DatabaseConfig databaseConfig = new DatabaseConfig();
         databaseConfig.setType(SettingsConfig.getInstance().DATABASE_TYPE);
 
@@ -20,11 +35,10 @@ public class FirEnchantDatabaseManager extends AbstractDatabaseManager {
         databaseConfig.setUser(SettingsConfig.getInstance().DATABASE_MYSQL_USER);
         databaseConfig.setPassword(SettingsConfig.getInstance().DATABASE_MYSQL_PASSWORD);
 
-        databaseConfig.setFile(
-                new File(FirEnchantPlugin.getInstance().getDataFolder(), SettingsConfig.getInstance().DATABASE_H2_FILE)
-        );
+        File h2 = new File(FirEnchantPlugin.getInstance().getDataFolder(), SettingsConfig.getInstance().DATABASE_H2_FILE);
+        databaseConfig.setFile(h2);
 
-        setConfig(databaseConfig);
+        this.setConfig(databaseConfig);
     }
 
 

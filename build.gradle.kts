@@ -48,7 +48,7 @@ allprojects {
         maven("https://mvn.lumine.io/repository/maven-public/") // MythicMobs
         maven("https://repo.momirealms.net/releases/") // CustomCrops, CustomFishing, CraftEngine
         maven("https://repo.extendedclip.com/content/repositories/placeholderapi/") // PlaceholderAPI
-        maven("https://maven-eo.chengzhimeow.cn/releases") // 橙汁喵
+        maven("https://maven.chengzhimeow.cn/releases") // 橙汁喵
     }
 
     dependencies {

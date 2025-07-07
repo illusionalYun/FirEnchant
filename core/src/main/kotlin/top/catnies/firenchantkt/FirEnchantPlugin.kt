@@ -45,13 +45,8 @@ class FirEnchantPlugin: JavaPlugin() {
         FirAnvilItemRegistry.instance // 铁砧物品注册表
         FirEnchantingTableRegistry.instance // 附魔台物品注册表
 
-        // 数据库控制器
-        databaseManager = FirEnchantDatabaseManager()
-        databaseManager.connect()
-        databaseManager.initTable()
-
-        // 玩家附魔日志数据控制器
-        FirPlayerEnchantLogDataManager.getInstance()
+        FirEnchantDatabaseManager.getInstance() // 数据库控制器
+        FirPlayerEnchantLogDataManager.getInstance() // 玩家附魔日志数据控制器
 
         logger.info("FirEnchant enabled!")
     }
