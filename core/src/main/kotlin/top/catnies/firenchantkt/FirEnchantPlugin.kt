@@ -3,6 +3,9 @@ package top.catnies.firenchantkt
 import org.bukkit.plugin.java.JavaPlugin
 import top.catnies.firenchantkt.command.CommandManager
 import top.catnies.firenchantkt.config.ConfigManager
+import top.catnies.firenchantkt.database.DatabaseManager
+import top.catnies.firenchantkt.database.impl.FirEnchantDatabaseManager
+import top.catnies.firenchantkt.database.impl.FirPlayerEnchantLogDataManager
 import top.catnies.firenchantkt.enchantment.FirEnchantmentManager
 import top.catnies.firenchantkt.integration.FirItemProviderRegistry
 import top.catnies.firenchantkt.integration.IntegrationManager
@@ -19,10 +22,14 @@ class FirEnchantPlugin: JavaPlugin() {
         var instance by Delegates.notNull<FirEnchantPlugin>()
     }
 
+    lateinit var databaseManager: DatabaseManager
+
+
+    override fun onLoad() {
+        instance = this
+    }
 
     override fun onEnable() {
-        instance = this
-
         ConfigManager.instance // 配置文件管理器
         TranslationManager.instance // 语言管理器
         FirEnchantmentManager.instance // 系统魔咒管理器
@@ -34,6 +41,14 @@ class FirEnchantPlugin: JavaPlugin() {
         FirItemProviderRegistry.instance // 物品集成注册表
         FirAnvilItemRegistry.instance // 铁砧物品注册表
         FirEnchantingTableRegistry.instance // 附魔台物品注册表
+
+        // 数据库控制器
+        databaseManager = FirEnchantDatabaseManager()
+        databaseManager.connect()
+        databaseManager.initTable()
+
+        // 玩家附魔日志数据控制器
+        FirPlayerEnchantLogDataManager.getInstance()
 
         logger.info("FirEnchant enabled!")
     }

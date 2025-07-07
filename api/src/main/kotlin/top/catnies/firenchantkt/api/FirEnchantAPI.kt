@@ -5,6 +5,7 @@ import net.kyori.adventure.key.Key
 import org.bukkit.inventory.ItemStack
 import org.jetbrains.annotations.NotNull
 import org.jetbrains.annotations.Nullable
+import top.catnies.firenchantkt.database.PlayerEnchantLogDataManager
 import top.catnies.firenchantkt.enchantment.EnchantmentData
 import top.catnies.firenchantkt.enchantment.EnchantmentManager
 import top.catnies.firenchantkt.enchantment.EnchantmentSetting
@@ -23,6 +24,8 @@ object FirEnchantAPI {
     val anvilItemRegistry: () -> AnvilItemRegistry = { ServiceContainer.get(AnvilItemRegistry::class.java) }
     // 附魔台物品注册表
     val enchantingTableItemRegistry: () -> EnchantingTableItemRegistry = { ServiceContainer.get(EnchantingTableItemRegistry::class.java) }
+    // 玩家附魔日志控制器
+    val playerEnchantLogDataManager: () -> PlayerEnchantLogDataManager = { ServiceContainer.get(PlayerEnchantLogDataManager::class.java) }
 
 
     /**

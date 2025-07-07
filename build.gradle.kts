@@ -27,6 +27,7 @@ dependencies {
 // 需要将一些部分统一进行配置，可以直接在根项目创建一个build.gradle.kts来统一编写内容：
 allprojects {
     // 应用插件到子项目
+    apply(plugin = "java")
     apply(plugin = "org.jetbrains.kotlin.jvm")
     apply(plugin = "com.gradleup.shadow")
 
@@ -45,6 +46,7 @@ allprojects {
         maven("https://mvn.lumine.io/repository/maven-public/") // MythicMobs
         maven("https://repo.momirealms.net/releases/") // CustomCrops, CustomFishing, CraftEngine
         maven("https://repo.extendedclip.com/content/repositories/placeholderapi/") // PlaceholderAPI
+        maven("https://maven-eo.chengzhimeow.cn/releases") // 橙汁喵
 
         maven("https://jitpack.io") // RTag
         maven("https://repo.xenondevs.xyz/releases") // InvUI
@@ -53,6 +55,7 @@ allprojects {
     dependencies {
         // 基础库
         compileOnly("io.papermc.paper:paper-api:${rootProject.properties["server.paper.version"]}") // PAPER
+        implementation("cn.chengzhiya:MHDF-Scheduler:1.0.1") // 調度器
         implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8") // Kotlin STD
 
         compileOnly("org.projectlombok:lombok:${rootProject.properties["lib.lombok.version"]}")

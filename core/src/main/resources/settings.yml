@@ -14,7 +14,7 @@ database:
     # 地址
     host: "127.0.0.1:3306"
     # 数据库
-    database: "firenchan"
+    database: "firenchant"
     # 用户
     user: "root"
     # 密码

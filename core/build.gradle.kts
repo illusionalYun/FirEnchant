@@ -1,7 +1,3 @@
-plugins {
-    id("java") // Java
-}
-
 dependencies {
     implementation(project(":api"))
     implementation(project(":compatibility"))
