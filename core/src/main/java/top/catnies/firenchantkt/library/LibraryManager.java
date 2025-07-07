@@ -12,8 +12,8 @@ import java.io.File;
 public class LibraryManager {
     private static LibraryManager instance;
 
-    private final RepositoryConfig chengzhiMeow = new RepositoryConfig("https://maven.chengzhimeow.cn/releases");
-    private final RepositoryConfig repositoryConfig = new RepositoryConfig("https://repo.xenondevs.xyz/releases");
+    private final RepositoryConfig chengzhiMeow = new RepositoryConfig("https://maven.chengzhimeow.cn/releases/");
+    private final RepositoryConfig xenondevs = new RepositoryConfig("https://repo.xenondevs.xyz/releases/");
 
     public static LibraryManager getInstance() {
         if (instance == null) {
@@ -41,12 +41,22 @@ public class LibraryManager {
         ));
 
         mhdfLibrary.addDependencyConfig(new DependencyConfig(
-                "xyz{}xenondevs{}invui",
-                "invui",
+                handleString("xyz{}xenondevs{}invui"),
+                "invui-core",
                 "1.46",
-                this.repositoryConfig,
+                this.xenondevs,
                 new RelocateConfig(true)
         ));
+        for (int i = 1; i <= 24; i++) {
+            mhdfLibrary.addDependencyConfig(new DependencyConfig(
+                    handleString("xyz{}xenondevs{}invui"),
+                    "inventory-access-r"+i,
+                    "1.46",
+                    this.xenondevs,
+                    new RelocateConfig(true, false, handleString("xyz{}xenondevs"))
+            ));
+        }
+
         mhdfLibrary.addDependencyConfig(new DependencyConfig(
                 handleString("com{}j256{}ormlite"),
                 "ormlite-core",

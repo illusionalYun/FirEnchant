@@ -48,7 +48,7 @@ allprojects {
         maven("https://mvn.lumine.io/repository/maven-public/") // MythicMobs
         maven("https://repo.momirealms.net/releases/") // CustomCrops, CustomFishing, CraftEngine
         maven("https://repo.extendedclip.com/content/repositories/placeholderapi/") // PlaceholderAPI
-        maven("https://maven-eo.chengzhimeow.cn/releases") // 橙汁喵
+        maven("https://maven.chengzhimeow.cn/releases") // 橙汁喵
     }
 
     dependencies {
@@ -101,11 +101,11 @@ tasks {
     runServer {
         dependsOn(shadowJar)
         dependsOn(jar)
-        minecraftVersion("1.21.4")
+        minecraftVersion("1.21.7")
 
         downloadPlugins {
             hangar("PlaceholderAPI", "2.11.6")
-            url("https://download.luckperms.net/1593/bukkit/loader/LuckPerms-Bukkit-5.5.8.jar")
+//            url("https://download.luckperms.net/1593/bukkit/loader/LuckPerms-Bukkit-5.5.8.jar")
         }
     }
 }
