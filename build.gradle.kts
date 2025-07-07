@@ -81,15 +81,16 @@ tasks {
         dependsOn(":nms:v1_21_R4:reobfJar")
         dependsOn(":nms:v1_21_R5:reobfJar")
 
-        relocate("cn.chengzhiya.mhdflibrary", "${project.group}.firenchantkt.libs.cn.chengzhiya.mhdflibrary")
-        relocate("cn.chengzhiya.mhdfscheduler", "${project.group}.firenchantkt.libs.cn.chengzhiya.mhdfscheduler")
+        relocate("cn.chengzhiya", "${project.group}.firenchantkt.libs.cn.chengzhiya")
         relocate("org.h2", "${project.group}.firenchantkt.libs.org.h2")
         relocate("com.mysql", "${project.group}.firenchantkt.libs.com.mysql")
-        relocate("com.j256.ormlite", "${project.group}.firenchantkt.libs.com.j256.ormlite")
+        relocate("com.j256", "${project.group}.firenchantkt.libs.com.j256")
         relocate("com.zaxxer", "${project.group}.firenchantkt.libs.com.zaxxer")
         relocate("io.lettuce", "${project.group}.firenchantkt.libs.io.lettuce")
-        relocate("com.saicone.rtag", "${project.group}.firenchantkt.libs.com.saicone.rtag")
-        relocate("xyz.xenondevs.invui", "${project.group}.firenchantkt.libs.xyz.xenondevs.invui")
+        relocate("com.saicone", "${project.group}.firenchantkt.libs.com.saicone")
+        relocate("xyz.xenondevs", "${project.group}.firenchantkt.libs.xyz.xenondevs")
+        relocate("org.intellij", "${project.group}.firenchantkt.libs.org.intellij")
+        relocate("org.jetbrains", "${project.group}.firenchantkt.libs.org.jetbrains")
     }
 
     assemble {
