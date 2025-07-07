@@ -19,7 +19,4 @@ object ServiceContainer {
         return services.containsKey(serviceClass)
     }
 
-    fun clear() {
-        services.clear()
-    }
 }

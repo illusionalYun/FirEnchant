@@ -16,11 +16,11 @@ dependencies {
     implementation(project(":core"))
     implementation(project(":api"))
     implementation(project(":compatibility"))
-    implementation(project(":nms:v1_21_R1"))
-    implementation(project(":nms:v1_21_R2"))
-    implementation(project(":nms:v1_21_R3"))
-    implementation(project(":nms:v1_21_R4"))
-    implementation(project(":nms:v1_21_R5"))
+    implementation(project(path = ":nms:v1_21_R1", configuration = "reobf"))
+    implementation(project(path = ":nms:v1_21_R2", configuration = "reobf"))
+    implementation(project(path = ":nms:v1_21_R3", configuration = "reobf"))
+    implementation(project(path = ":nms:v1_21_R4", configuration = "reobf"))
+    implementation(project(path = ":nms:v1_21_R5", configuration = "reobf"))
 }
 
 
@@ -70,13 +70,16 @@ allprojects {
 
 // 任务配置
 tasks {
+    clean {
+        delete("$rootDir/target")
+    }
+
     shadowJar {
         dependsOn(":nms:v1_21_R1:reobfJar")
         dependsOn(":nms:v1_21_R2:reobfJar")
         dependsOn(":nms:v1_21_R3:reobfJar")
         dependsOn(":nms:v1_21_R4:reobfJar")
         dependsOn(":nms:v1_21_R5:reobfJar")
-        mergeServiceFiles()
 
         relocate("cn.chengzhiya.mhdflibrary", "${project.group}.firenchantkt.libs.cn.chengzhiya.mhdflibrary")
         relocate("cn.chengzhiya.mhdfscheduler", "${project.group}.firenchantkt.libs.cn.chengzhiya.mhdfscheduler")
@@ -88,13 +91,20 @@ tasks {
         relocate("com.saicone.rtag", "${project.group}.firenchantkt.libs.com.saicone.rtag")
         relocate("xyz.xenondevs.invui", "${project.group}.firenchantkt.libs.xyz.xenondevs.invui")
     }
+
     assemble {
         dependsOn(shadowJar)
     }
-}
 
+    // 测试服务器
+    runServer {
+        dependsOn(shadowJar)
+        dependsOn(jar)
+        minecraftVersion("1.21.4")
 
-// 测试服务器
-tasks.runServer {
-    minecraftVersion("1.21.4")
+        downloadPlugins {
+            hangar("PlaceholderAPI", "2.11.6")
+            url("https://download.luckperms.net/1593/bukkit/loader/LuckPerms-Bukkit-5.5.8.jar")
+        }
+    }
 }
