@@ -126,11 +126,13 @@ class FirEnchantedBook() : EnchantedBook {
             // 成功直接返回
             if (enchantedBookUseEvent.isSuccess) return
 
-            // TODO(失败逻辑)
+            // 失败逻辑
             event.isCancelled = true
             // 检查保护符文功能是否开启, 物品有没有保护符文
             if (FirEnchantAPI.hasProtectionRune(context.firstItem)) {
-                // 有 -> 直接光标设置为灵魂,
+                // 移除保护,
+                FirEnchantAPI.removeProtectionRune(context.firstItem)
+                anvilView.setItem(0, context.firstItem)
                 anvilView.setItem(1, ItemStack.empty())
                 anvilView.setItem(2, ItemStack.empty())
                 anvilView.setCursor(ItemStack(Material.SOUL_SAND))
@@ -140,6 +142,7 @@ class FirEnchantedBook() : EnchantedBook {
 
             // 没有保护符文
             else {
+                // TODO 转成破损物品.
                 anvilView.setItem(1, ItemStack.empty())
                 anvilView.setItem(2, ItemStack.empty())
                 anvilView.setCursor(ItemStack(Material.SAND))
