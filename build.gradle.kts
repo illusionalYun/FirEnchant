@@ -39,6 +39,8 @@ allprojects {
 
     repositories {
         mavenCentral()
+        maven("https://jitpack.io") // RTag
+        maven("https://repo.xenondevs.xyz/releases") // InvUI
         maven("https://repo.papermc.io/repository/maven-public/") // Paper
         maven("https://maven.devs.beer/") // ItemsAdder
         maven("https://repo.nexomc.com/releases") // Nexo
@@ -47,16 +49,14 @@ allprojects {
         maven("https://repo.momirealms.net/releases/") // CustomCrops, CustomFishing, CraftEngine
         maven("https://repo.extendedclip.com/content/repositories/placeholderapi/") // PlaceholderAPI
         maven("https://maven-eo.chengzhimeow.cn/releases") // 橙汁喵
-
-        maven("https://jitpack.io") // RTag
-        maven("https://repo.xenondevs.xyz/releases") // InvUI
     }
 
     dependencies {
+        implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8") // Kotlin STD
+
         // 基础库
         compileOnly("io.papermc.paper:paper-api:${rootProject.properties["server.paper.version"]}") // PAPER
-        implementation("cn.chengzhiya:MHDF-Scheduler:1.0.1") // 調度器
-        implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8") // Kotlin STD
+        compileOnly("cn.chengzhiya:MHDF-Scheduler:${rootProject.properties["lib.mhdf.scheduler.version"]}") // 調度器
 
         compileOnly("org.projectlombok:lombok:${rootProject.properties["lib.lombok.version"]}")
         annotationProcessor("org.projectlombok:lombok:${rootProject.properties["lib.lombok.version"]}") // Lombok
@@ -78,10 +78,15 @@ tasks {
         dependsOn(":nms:v1_21_R5:reobfJar")
         mergeServiceFiles()
 
-//        archiveFileName = "${rootProject.name}-$version.jar"
-//        destinationDirectory.set(file("$rootDir/target"))
-
-        relocate("com.saicone.rtag", "${project.group}.libs.rtag")
+        relocate("cn.chengzhiya.mhdflibrary", "${project.group}.firenchantkt.libs.cn.chengzhiya.mhdflibrary")
+        relocate("cn.chengzhiya.mhdfscheduler", "${project.group}.firenchantkt.libs.cn.chengzhiya.mhdfscheduler")
+        relocate("org.h2", "${project.group}.firenchantkt.libs.org.h2")
+        relocate("com.mysql", "${project.group}.firenchantkt.libs.com.mysql")
+        relocate("com.j256.ormlite", "${project.group}.firenchantkt.libs.com.j256.ormlite")
+        relocate("com.zaxxer", "${project.group}.firenchantkt.libs.com.zaxxer")
+        relocate("io.lettuce", "${project.group}.firenchantkt.libs.io.lettuce")
+        relocate("com.saicone.rtag", "${project.group}.firenchantkt.libs.com.saicone.rtag")
+        relocate("xyz.xenondevs.invui", "${project.group}.firenchantkt.libs.xyz.xenondevs.invui")
     }
     assemble {
         dependsOn(shadowJar)

@@ -2,15 +2,18 @@ dependencies {
     implementation(project(":api"))
     implementation(project(":compatibility"))
 
-    implementation("xyz.xenondevs.invui:invui:${rootProject.properties["lib.invui.version"]}") // InvUI
-    implementation("io.lettuce:lettuce-core:${rootProject.properties["lib.lettuce.version"]}") // Lettuce
+    implementation("cn.chengzhiya:MHDF-Library:${rootProject.properties["lib.mhdf.library.version"]}") // 依赖下载
 
-    implementation("com.j256.ormlite:ormlite-core:${rootProject.properties["lib.ormlite.version"]}")
-    implementation("com.j256.ormlite:ormlite-jdbc:${rootProject.properties["lib.ormlite.version"]}") // ORMLite
-    implementation("com.zaxxer:HikariCP:${rootProject.properties["lib.hikaricp.version"]}") // HikariCP
+    compileOnly("xyz.xenondevs.invui:invui:${rootProject.properties["lib.invui.version"]}") // InvUI
+    compileOnly("io.lettuce:lettuce-core:${rootProject.properties["lib.lettuce.version"]}") {
+        exclude("io.netty", "*")
+    } // Lettuce
 
-    implementation("com.h2database:h2:${rootProject.properties["database.driver.h2.version"]}")
-    implementation("com.mysql:mysql-connector-j:${rootProject.properties["database.driver.mysql.version"]}")
+    compileOnly("com.j256.ormlite:ormlite-core:${rootProject.properties["lib.ormlite.version"]}") // ORMLite
+    compileOnly("com.j256.ormlite:ormlite-jdbc:${rootProject.properties["lib.ormlite.version"]}")
+    compileOnly("com.zaxxer:HikariCP:${rootProject.properties["lib.hikaricp.version"]}") {
+        exclude("org.slf4j", "*")
+    } // HikariCP
 
     compileOnly("me.clip:placeholderapi:${rootProject.properties["lib.placeholderapi.version"]}") // PlaceholderAPI
 }

@@ -12,6 +12,7 @@ import top.catnies.firenchantkt.integration.IntegrationManager
 import top.catnies.firenchantkt.item.FirAnvilItemRegistry
 import top.catnies.firenchantkt.item.FirEnchantingTableRegistry
 import top.catnies.firenchantkt.language.TranslationManager
+import top.catnies.firenchantkt.library.LibraryManager
 import top.catnies.firenchantkt.listener.ListenerManger
 import kotlin.properties.Delegates
 
@@ -27,6 +28,8 @@ class FirEnchantPlugin: JavaPlugin() {
 
     override fun onLoad() {
         instance = this
+
+        LibraryManager.getInstance()
     }
 
     override fun onEnable() {
