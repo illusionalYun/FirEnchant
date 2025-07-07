@@ -11,10 +11,12 @@ object FirEnchantmentSettingFactory: EnchantmentSettingFactory {
         val tag = RtagItem.of(item)
         val enchantmentKey: String = tag.get("FirEnchant", "Enchantment") ?: return null
         val data = FirEnchantmentManager.instance.getEnchantmentData(enchantmentKey) ?: return null
-        // TODO 旧版本是String, 这里需要处理兼容旧版本.
-        val level: Int = tag.get("FirEnchant", "Level") ?: return null
-        val failure: Int = tag.get("FirEnchant", "Failure") ?: return null
-        val usedDustTime: Int = tag.get("FirEnchant", "DustTimes") ?: 0
+
+        // 在FirEnchant 2.0 版本, NBT内的记录是String类型的, 所以需要额外向下兼容处理.
+        val level: Int = try { tag.get("FirEnchant", "Level") as? Int ?: tag.get<String>("FirEnchant", "Level")?.toInt() ?: return null } catch (e: NumberFormatException) { return null }
+        val failure: Int = try { tag.get("FirEnchant", "Failure") as? Int ?: tag.get<String>("FirEnchant", "Failure")?.toInt() ?: return null } catch (e: NumberFormatException) { return null }
+        val usedDustTime: Int = try { tag.get("FirEnchant", "consumedSouls") as? Int ?: tag.get<String>("FirEnchant", "DustTimes")?.toInt() ?: 0 } catch (e: NumberFormatException) { 0 }
+
         return FirEnchantmentSetting(data, level, failure, usedDustTime)
     }
 
