@@ -7,6 +7,7 @@ loader: top.catnies.firenchantkt.FirEnchantPluginLoader
 #load: POSTWORLD
 authors:
   - Catnies
+  - ChengZhiMeow
 folia-supported: true
 dependencies:
   server:
