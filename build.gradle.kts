@@ -68,6 +68,10 @@ tasks {
         delete("$rootDir/target")
     }
 
+    build {
+        dependsOn(shadowJar)
+    }
+
     shadowJar {
         dependsOn(":nms:v1_21_R1:reobfJar")
         dependsOn(":nms:v1_21_R2:reobfJar")
@@ -75,12 +79,6 @@ tasks {
         dependsOn(":nms:v1_21_R4:reobfJar")
         dependsOn(":nms:v1_21_R5:reobfJar")
         mergeServiceFiles()
-
-        relocate("cn.chengzhiya", "${project.group}.firenchantkt.libs.cn.chengzhiya")
-        relocate("com.saicone", "${project.group}.firenchantkt.libs.com.saicone")
-        relocate("xyz.xenondevs", "${project.group}.firenchantkt.libs.xyz.xenondevs")
-        relocate("org.intellij", "${project.group}.firenchantkt.libs.org.intellij")
-        relocate("org.jetbrains", "${project.group}.firenchantkt.libs.org.jetbrains")
 
         archiveFileName.set("${project.name}-${project.version}.jar")
         destinationDirectory.set(file("$rootDir/target"))
