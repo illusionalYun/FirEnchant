@@ -49,11 +49,12 @@ class RecipeListener: Listener {
     @EventHandler(ignoreCancelled = true)
     fun onCostEvent(event: InventoryClickEvent) {
         val player = event.inventory.viewers.first() as? Player ?: return
-        if (!player.itemOnCursor.nullOrAir()) return // 光标有物品就拒绝处理(? //TODO 需要测试
+        if (!player.itemOnCursor.nullOrAir()) return // 光标有物品就拒绝处理
 
         // 铁砧事件
         val anvilView = event.view as? AnvilView
         if (anvilView != null && event.slot == 2) {
+            if (player.level < anvilView.repairCost) return // 等级需要超过铁砧的消耗等级, 否则不处理.
             val firstItem = anvilView.getItem(0) ?: return
             val secondItem = anvilView.getItem(1) ?: return
             val resultItem = anvilView.getItem(2) ?: return

@@ -103,6 +103,8 @@ class FirProtectionRune(): ProtectionRune {
         event: InventoryClickEvent,
         context: AnvilContext
     ) {
+        val anvilView = event.view as AnvilView
+
         // 触发事件
         val protectionRuneUseEvent = ProtectionRuneUseEvent(context.viewer, event, event.view as AnvilView, context.firstItem, context.result!!)
         Bukkit.getPluginManager().callEvent(protectionRuneUseEvent)
@@ -111,12 +113,19 @@ class FirProtectionRune(): ProtectionRune {
             return
         }
 
-        // 就一个物品, 直接返回
-        if (context.secondItem.amount <= 1) return
-
-        // 如果多个堆叠需要返还物品
+        // TODO 有没有什么不需要取消事件就能处理堆叠物品的方案?
         event.isCancelled = true
-        val backItem = context.secondItem.clone().apply { amount = amount - 1 }
-        event.view.setItem(1, backItem)
+        context.viewer.level -= anvilView.repairCost // 扣除经验值
+
+        // 扣除一个保护符文
+        if (context.secondItem.amount > 1) context.secondItem.amount -= 1
+        else anvilView.setItem(1, ItemStack.empty())
+        anvilView.setItem(0, ItemStack.empty())
+        anvilView.setItem(2, ItemStack.empty())
+
+        // 设置结果  TODO 需要测试, 可能前面set会导致后面为空.?
+        anvilView.setCursor(context.result!!)
+        context.viewer.playSound(context.viewer.location, "block.anvil.use", 1f, 1f)
     }
+
 }

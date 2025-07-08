@@ -84,7 +84,7 @@ class FirEnchantSoul: EnchantSoul {
         // 显示结果
         val resultItem = useEvent.resultSetting.toItemStack().also { injectContextData(it, useEvent.useAmount) }
         event.result = resultItem
-        event.view.repairCost = useEvent.useAmount * config.ENCHANT_SOUL_EXP
+        event.view.repairCost = useEvent.costExp
     }
 
     override fun onCost(
@@ -104,10 +104,10 @@ class FirEnchantSoul: EnchantSoul {
 
         // 计算使用的物品数量
         event.isCancelled = true
-        val backItem = context.secondItem.clone()
-        val resultAmount = backItem.amount - useEvent.useAmount
+        context.viewer.level -= anvilView.repairCost // 扣除经验值, 控制经验值的是 onPrepare 的事件设置.
+        val resultAmount = context.secondItem.amount - useEvent.useAmount
         if (resultAmount <= 0) event.view.setItem(1, ItemStack.empty())
-        else event.view.setItem(1, backItem.apply { amount = resultAmount })
+        else context.secondItem.amount.apply { context.secondItem.amount = resultAmount }
 
         // 光标给物品
         anvilView.setCursor(useEvent.resultItem)

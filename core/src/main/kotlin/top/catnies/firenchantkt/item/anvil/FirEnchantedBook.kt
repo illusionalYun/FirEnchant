@@ -136,6 +136,7 @@ class FirEnchantedBook : EnchantedBook {
 
                 // 失败逻辑
                 event.isCancelled = true
+                context.viewer.level -= anvilView.repairCost // 扣除经验值
                 anvilView.setItem(1, ItemStack.empty())
                 anvilView.setItem(2, ItemStack.empty())
 
@@ -144,13 +145,16 @@ class FirEnchantedBook : EnchantedBook {
                     FirEnchantAPI.removeProtectionRune(context.firstItem)
                     anvilView.setItem(0, context.firstItem)
                     anvilView.setCursor(ItemStack(Material.SOUL_SAND))
+                    context.viewer.playSound(context.viewer.location, "block.anvil.destroy", 1f, 1f)
                     context.viewer.sendTranslatableComponent(ANVIL_ENCHANTED_BOOK_USE_PROTECT_FAIL)
                 }
 
                 // 没有保护符文
                 else {
-                    anvilView.setItem(0, FirEnchantAPI.toBrokenGear(context.firstItem))
+//                    anvilView.setItem(0, FirEnchantAPI.toBrokenGear(context.firstItem))
+                    anvilView.setItem(0, context.firstItem)
                     anvilView.setCursor(ItemStack(Material.SAND))
+                    context.viewer.playSound(context.viewer.location, "block.anvil.destroy", 1f, 1f)
                     context.viewer.sendTranslatableComponent(ANVIL_ENCHANTED_BOOK_USE_FAIL)
                 }
             }

@@ -49,7 +49,7 @@ class SlotRuneImpl: SlotRune {
         val useAmount = getCanUseAmount(slotCount, maxSlotCount, context.firstItem.amount).takeIf { it > 0 } ?: return
 
         // 事件
-        val preUseEvent = SlotRunePreUseEvent(context.viewer, event, costExp, slotCount, slotCount + useAmount, useAmount, context.firstItem)
+        val preUseEvent = SlotRunePreUseEvent(context.viewer, event, useAmount * costExp, slotCount, slotCount + useAmount, useAmount, context.firstItem)
         Bukkit.getPluginManager().callEvent(preUseEvent)
         if (preUseEvent.isCancelled) return
 
@@ -75,6 +75,7 @@ class SlotRuneImpl: SlotRune {
 
         // 计算使用的物品数量
         event.isCancelled = true
+        context.viewer.level -= anvilView.repairCost // 扣除经验值
         val backItem = context.secondItem.clone()
         val resultAmount = backItem.amount - useEvent.usedAmount
         if (resultAmount <= 0) anvilView.setItem(1, ItemStack.empty())

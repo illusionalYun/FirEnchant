@@ -65,31 +65,31 @@ class FirPowerRune: PowerRune {
         }
 
         event.isCancelled = true
-        context.viewer.playSound(context.viewer.location, "block.anvil.use", 1f, 1f)
+        context.viewer.level -= anvilView.repairCost // 扣除经验值
 
         // 扣除一个强化符文
-        if (context.secondItem.amount > 1) {
-            context.secondItem.amount -= 1
-        } else {
-            anvilView.setItem(1, ItemStack.empty())
-        }
-
+        if (context.secondItem.amount > 1) context.secondItem.amount -= 1
+        else anvilView.setItem(1, ItemStack.empty())
         anvilView.setItem(0, ItemStack.empty())
         anvilView.setItem(2, ItemStack.empty())
+
         when {
             // 成功了
             useEvent.isSuccess -> {
                 anvilView.setCursor(resultItem)
+                context.viewer.playSound(context.viewer.location, "block.anvil.use", 1f, 1f)
             }
 
             // 失败了, 但是有保护符文
             FirEnchantAPI.hasProtectionRune(resultItem) -> {
                 anvilView.setCursor(context.firstItem)
+                context.viewer.playSound(context.viewer.location, "block.anvil.destroy", 1f, 1f)
             }
 
             // 失败了, 没有保护符文
             else -> {
                 FirEnchantAPI.toBrokenGear(context.firstItem).let { anvilView.setCursor(it) }
+                context.viewer.playSound(context.viewer.location, "block.anvil.destroy", 1f, 1f)
             }
 
         }
