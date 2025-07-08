@@ -20,7 +20,10 @@ import top.catnies.firenchantkt.database.PlayerEnchantLogData
 import top.catnies.firenchantkt.database.PlayerEnchantLogDataManager
 import top.catnies.firenchantkt.enchantment.EnchantmentSetting
 import top.catnies.firenchantkt.enchantment.FirEnchantmentSettingFactory
+import top.catnies.firenchantkt.language.MessageConstants.ANVIL_ENCHANTED_BOOK_USE_FAIL
+import top.catnies.firenchantkt.language.MessageConstants.ANVIL_ENCHANTED_BOOK_USE_PROTECT_FAIL
 import top.catnies.firenchantkt.util.ItemUtils.isCompatibleWithEnchantment
+import top.catnies.firenchantkt.util.MessageUtils.sendTranslatableComponent
 import java.util.Random
 import kotlin.math.max
 import kotlin.math.min
@@ -46,27 +49,35 @@ class FirEnchantedBook : EnchantedBook {
         val originEnchantment = setting.data.originEnchantment
 
         when {
+            // 如果第一件物品也是附魔书, 触发合并逻辑.
             isEnchantedBookMerge(firstSetting, setting) -> {
+                // 计算结果
                 val resultSetting = FirEnchantmentSettingFactory.fromAnother(firstSetting!!).apply {
                     failure = getMergeEnchantmentFailureRate(firstSetting, setting)
                     level++
                 }
+
+                // 计算经验消耗
                 val costExp = if (config.EB_MERGE_EXP_COST_MODE.equals("FIXED", true)) config.EB_MERGE_EXP_FIXED_VALUE
                 else getCost(resultSetting, resultSetting.level, repairCost, repairCost2)
 
-                val mergeEvent =
-                    EnchantedBookPreMergeEvent(context.viewer, event, costExp, firstSetting, setting, resultSetting)
+                // 触发事件
+                val mergeEvent = EnchantedBookPreMergeEvent(context.viewer, event, costExp, firstSetting, setting, resultSetting)
                 Bukkit.getPluginManager().callEvent(mergeEvent)
                 if (mergeEvent.isCancelled) return
 
+                // 显示结果
                 event.result = resultSetting.toItemStack()
                 event.view.repairCost = mergeEvent.costExp
             }
 
+            // 如果第一件物品是普通物品, 触发使用逻辑.
             context.firstItem.isCompatibleWithEnchantment(originEnchantment, setting.level) -> {
+                // 计算目标结果等级
                 val oldLevel = context.firstItem.getEnchantmentLevel(originEnchantment)
                 val targetLevel = if (oldLevel != 0 && oldLevel == setting.level) setting.level + 1 else setting.level
 
+                // 计算经验消耗
                 val costExp = if (config.EB_USE_EXP_COST_MODE.equals("FIXED", true)) config.EB_USE_EXP_FIXED_VALUE
                 else getCost(setting, targetLevel, repairCost, repairCost2)
                 val resultItem = context.firstItem.clone().apply {
@@ -74,11 +85,12 @@ class FirEnchantedBook : EnchantedBook {
                     addEnchantment(originEnchantment, targetLevel)
                 }
 
-                val useEvent =
-                    EnchantedBookPreUseEvent(context.viewer, event, costExp, context.firstItem, setting, resultItem)
+                // 触发事件
+                val useEvent = EnchantedBookPreUseEvent(context.viewer, event, costExp, context.firstItem, setting, resultItem)
                 Bukkit.getPluginManager().callEvent(useEvent)
                 if (useEvent.isCancelled) return
 
+                // 显示结果
                 event.result = useEvent.resultItem
                 event.view.repairCost = useEvent.costExp
             }
@@ -94,9 +106,10 @@ class FirEnchantedBook : EnchantedBook {
         val anvilView = event.view as AnvilView
 
         when {
+            // 如果第一件物品也是附魔书, 触发合并逻辑.
             isEnchantedBookMerge(firstSetting, setting) -> {
-                val mergeEvent =
-                    EnchantedBookMergeEvent(context.viewer, event, anvilView, firstSetting!!, setting, resultItem)
+                // 触发事件
+                val mergeEvent = EnchantedBookMergeEvent(context.viewer, event, anvilView, firstSetting!!, setting, resultItem)
                 Bukkit.getPluginManager().callEvent(mergeEvent)
                 if (mergeEvent.isCancelled) {
                     event.isCancelled = true
@@ -104,7 +117,9 @@ class FirEnchantedBook : EnchantedBook {
                 }
             }
 
+            // 如果第一件物品是普通物品, 检查物品是否可以附魔.
             context.firstItem.isCompatibleWithEnchantment(originEnchantment, setting.level) -> {
+                // 触发事件
                 val useEvent = EnchantedBookUseEvent(
                     context.viewer, event, anvilView, context.firstItem, setting, resultItem,
                     isSuccess(context.viewer, originEnchantment.key.asString(), anvilView.repairCost, setting.failure)
@@ -114,21 +129,28 @@ class FirEnchantedBook : EnchantedBook {
                     event.isCancelled = true
                     return
                 }
+
+                // 成功直接返回
                 if (useEvent.isSuccess) return
 
+                // 失败逻辑
                 event.isCancelled = true
                 anvilView.setItem(1, ItemStack.empty())
                 anvilView.setItem(2, ItemStack.empty())
 
+                // 检查保护符文功能是否开启, 物品有没有保护符文
                 if (FirEnchantAPI.hasProtectionRune(context.firstItem)) {
                     FirEnchantAPI.removeProtectionRune(context.firstItem)
                     anvilView.setItem(0, context.firstItem)
                     anvilView.setCursor(ItemStack(Material.SOUL_SAND))
-                    context.viewer.sendMessage("失败但是有符文!")
-                } else {
+                    context.viewer.sendTranslatableComponent(ANVIL_ENCHANTED_BOOK_USE_PROTECT_FAIL)
+                }
+
+                // 没有保护符文
+                else {
                     anvilView.setItem(0, FirEnchantAPI.toBrokenGear(context.firstItem))
                     anvilView.setCursor(ItemStack(Material.SAND))
-                    context.viewer.sendMessage("失败也没有符文!")
+                    context.viewer.sendTranslatableComponent(ANVIL_ENCHANTED_BOOK_USE_FAIL)
                 }
             }
         }
