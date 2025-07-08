@@ -3,6 +3,7 @@ package top.catnies.firenchantkt.item.anvil
 import io.papermc.paper.datacomponent.DataComponentTypes
 import org.bukkit.Bukkit
 import org.bukkit.Material
+import org.bukkit.configuration.ConfigurationSection
 import org.bukkit.entity.Player
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.inventory.PrepareAnvilEvent
@@ -17,7 +18,6 @@ import top.catnies.firenchantkt.api.event.anvilapplicable.EnchantedBookUseEvent
 import top.catnies.firenchantkt.config.AnvilConfig
 import top.catnies.firenchantkt.context.AnvilContext
 import top.catnies.firenchantkt.database.PlayerEnchantLogData
-import top.catnies.firenchantkt.database.PlayerEnchantLogDataManager
 import top.catnies.firenchantkt.enchantment.EnchantmentSetting
 import top.catnies.firenchantkt.enchantment.FirEnchantmentSettingFactory
 import top.catnies.firenchantkt.language.MessageConstants.ANVIL_ENCHANTED_BOOK_USE_FAIL
