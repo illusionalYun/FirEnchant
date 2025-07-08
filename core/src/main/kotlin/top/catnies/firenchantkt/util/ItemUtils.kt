@@ -1,6 +1,7 @@
 package top.catnies.firenchantkt.util
 
 import com.saicone.rtag.item.ItemTagStream
+import io.papermc.paper.datacomponent.DataComponentTypes
 import org.bukkit.enchantments.Enchantment
 import org.bukkit.inventory.ItemStack
 
@@ -34,6 +35,16 @@ object ItemUtils {
     }
     fun ByteArray.deserializeFromBytes(): ItemStack {
         return ItemTagStream.INSTANCE.fromBytes(this)
+    }
+
+    // 增加物品的 RepairCost
+    fun ItemStack.addRepairCost() {
+        val cost = this.getDataOrDefault(DataComponentTypes.REPAIR_COST, 0)!!
+        this.setData(DataComponentTypes.REPAIR_COST, cost * 2 + 1)
+    }
+    fun ItemStack.addRepairCost(count: Int) {
+        val cost = this.getDataOrDefault(DataComponentTypes.REPAIR_COST, 0)!!
+        this.setData(DataComponentTypes.REPAIR_COST, cost + count)
     }
 
 }

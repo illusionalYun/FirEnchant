@@ -52,6 +52,7 @@ class FirEnchantedBook : EnchantedBook {
             isEnchantedBookMerge(firstSetting, setting) -> {
                 // 计算结果
                 val resultSetting = FirEnchantmentSettingFactory.fromAnother(firstSetting!!).apply {
+                    // TODO, 当概率行为为 RANDOM 时, 不应该在结果里显示实际的概率, 否则玩家可以通过来回放置附魔书刷出想要的失败率.
                     failure = getMergeEnchantmentFailureRate(firstSetting, setting)
                     level++
                 }
