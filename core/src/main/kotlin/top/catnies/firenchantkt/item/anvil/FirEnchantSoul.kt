@@ -105,6 +105,8 @@ class FirEnchantSoul: EnchantSoul {
         // 计算使用的物品数量
         event.isCancelled = true
         context.viewer.level -= anvilView.repairCost // 扣除经验值, 控制经验值的是 onPrepare 的事件设置.
+        anvilView.setItem(0, ItemStack.empty())
+        anvilView.setItem(2, ItemStack.empty())
         val resultAmount = context.secondItem.amount - useEvent.useAmount
         if (resultAmount <= 0) event.view.setItem(1, ItemStack.empty())
         else context.secondItem.amount.apply { context.secondItem.amount = resultAmount }

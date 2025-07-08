@@ -73,9 +73,12 @@ class SlotRuneImpl: SlotRune {
             return
         }
 
-        // 计算使用的物品数量
         event.isCancelled = true
         context.viewer.level -= anvilView.repairCost // 扣除经验值
+        anvilView.setItem(0, ItemStack.empty())
+        anvilView.setItem(2, ItemStack.empty())
+
+        // 计算使用的物品数量
         val backItem = context.secondItem.clone()
         val resultAmount = backItem.amount - useEvent.usedAmount
         if (resultAmount <= 0) anvilView.setItem(1, ItemStack.empty())
