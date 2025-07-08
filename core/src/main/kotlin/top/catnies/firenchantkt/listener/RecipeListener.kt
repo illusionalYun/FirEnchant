@@ -15,6 +15,7 @@ class RecipeListener: Listener {
 
     @EventHandler(ignoreCancelled = true)
     fun onPrepareAnvilEvent(event: PrepareAnvilEvent){
+        if (event.inventory.viewers.isEmpty()) return
         val player = event.inventory.viewers.first() as? Player ?: return
         val firstItem = event.inventory.getItem(0) ?: return
         val secondItem = event.inventory.getItem(1) ?: return
@@ -31,6 +32,7 @@ class RecipeListener: Listener {
 
     @EventHandler(ignoreCancelled = true)
     fun onPrepareResultEvent(event: PrepareResultEvent) {
+        if (event.inventory.viewers.isEmpty()) return
         val player = event.inventory.viewers.first() as? Player ?: return
         val firstItem = event.inventory.getItem(0) ?: return
         val secondItem = event.inventory.getItem(1) ?: return
@@ -48,6 +50,7 @@ class RecipeListener: Listener {
 
     @EventHandler(ignoreCancelled = true)
     fun onCostEvent(event: InventoryClickEvent) {
+        if (event.inventory.viewers.isEmpty()) return
         val player = event.inventory.viewers.first() as? Player ?: return
         if (!player.itemOnCursor.nullOrAir()) return // 光标有物品就拒绝处理
 
