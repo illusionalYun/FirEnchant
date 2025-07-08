@@ -22,5 +22,9 @@ public class PlayerEnchantLogData {
     @DatabaseField(canBeNull = false)
     private int random;
     @DatabaseField(canBeNull = false)
+    private int baseFailure;
+    @DatabaseField(canBeNull = false)
+    private int actualFailure;
+    @DatabaseField(canBeNull = false)
     private boolean success;
 }
