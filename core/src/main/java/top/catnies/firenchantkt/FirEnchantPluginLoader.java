@@ -8,13 +8,14 @@ import org.eclipse.aether.graph.Dependency;
 import org.eclipse.aether.repository.RemoteRepository;
 
 public class FirEnchantPluginLoader implements PluginLoader {
+
     @Override
     public void classloader(PluginClasspathBuilder classpathBuilder) {
         MavenLibraryResolver resolver = new MavenLibraryResolver();
         resolver.addRepository(new RemoteRepository.Builder("alibaba-central", "default", "https://maven.aliyun.com/repository/public").build());
         resolver.addRepository(new RemoteRepository.Builder("jitpack", "default", "https://jitpack.io").build());
 
-        // kotlin
+        // Kotlin STD
         resolver.addDependency(new Dependency(new DefaultArtifact("org.jetbrains.kotlin:kotlin-stdlib-jdk8:2.1.21"), null));
 
         // RTag
@@ -34,4 +35,5 @@ public class FirEnchantPluginLoader implements PluginLoader {
 
         classpathBuilder.addLibrary(resolver);
     }
+
 }

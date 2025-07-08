@@ -13,14 +13,17 @@ object ItemUtils {
     }
 
     // 检查物品是否能够应用某个魔咒兼容.
-    fun ItemStack.isCompatibleWithEnchantment(other: Enchantment): Boolean {
+    fun ItemStack.isCompatibleWithEnchantment(other: Enchantment, level: Int): Boolean {
         // 如果物品类型不支持附魔
-        if (!other.canEnchantItem(this)) {
-            return false
-        }
+        if (!other.canEnchantItem(this)) return false
         // 检查物品上的魔咒是否有冲突
-        this.enchantments.forEach { (enchantment, level) ->
+        this.enchantments.forEach { (enchantment, lv) ->
             if (!enchantment.conflictsWith(other)) return false
+            // 如果两个目标魔咒相同
+            if (enchantment == other) {
+                if (lv >= enchantment.maxLevel) return false // 不能超过最大等级
+                if (lv > level) return false // 不能大于目标附魔的等级
+            }
         }
         return true
     }

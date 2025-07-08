@@ -16,9 +16,6 @@ dependencies {
     implementation(project(path = ":nms:v1_21_R3"))
     implementation(project(path = ":nms:v1_21_R4"))
     implementation(project(path = ":nms:v1_21_R5"))
-    apply(plugin = "com.gradleup.shadow")
-
-    group = "top.catnies"
 }
 
 
@@ -27,6 +24,9 @@ allprojects {
     // 应用插件到子项目
     apply(plugin = "java")
     apply(plugin = "org.jetbrains.kotlin.jvm")
+    apply(plugin = "com.gradleup.shadow")
+
+    group = "top.catnies"
     version = "${rootProject.properties["project.version"]}"
     kotlin.jvmToolchain(21)
     java.sourceCompatibility = JavaVersion.VERSION_21
@@ -50,7 +50,6 @@ allprojects {
     dependencies {
         compileOnly("io.papermc.paper:paper-api:${rootProject.properties["server.paper.version"]}") // PAPER
         compileOnly("org.jetbrains.kotlin:kotlin-stdlib-jdk8") // Kotlin STD
-
         compileOnly("org.projectlombok:lombok:${rootProject.properties["lib.lombok.version"]}") // Lombok
         annotationProcessor("org.projectlombok:lombok:${rootProject.properties["lib.lombok.version"]}") // Lombok
 
@@ -82,10 +81,6 @@ tasks {
 
         archiveFileName.set("${project.name}-${project.version}.jar")
         destinationDirectory.set(file("$rootDir/target"))
-
-        manifest {
-            attributes["paperweight-mappings-namespace"] = "mojang"
-        }
     }
 
     runServer {
@@ -97,6 +92,7 @@ tasks {
             hangar("PlaceholderAPI", "2.11.6")
         }
     }
+
 }
 
 tasks.withType(xyz.jpenilla.runtask.task.AbstractRun::class) {
