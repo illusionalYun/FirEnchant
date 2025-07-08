@@ -3,6 +3,7 @@ package top.catnies.firenchantkt.item.anvil
 import io.papermc.paper.datacomponent.DataComponentTypes
 import org.bukkit.Bukkit
 import org.bukkit.Material
+import org.bukkit.configuration.ConfigurationSection
 import org.bukkit.entity.Player
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.inventory.PrepareAnvilEvent
