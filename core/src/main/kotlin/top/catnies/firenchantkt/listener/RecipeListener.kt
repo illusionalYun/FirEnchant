@@ -49,6 +49,7 @@ class RecipeListener: Listener {
     @EventHandler(ignoreCancelled = true)
     fun onCostEvent(event: InventoryClickEvent) {
         val player = event.inventory.viewers.first() as? Player ?: return
+        if (!player.itemOnCursor.nullOrAir()) return // 光标有物品就拒绝处理(? //TODO 需要测试
 
         // 铁砧事件
         val anvilView = event.view as? AnvilView

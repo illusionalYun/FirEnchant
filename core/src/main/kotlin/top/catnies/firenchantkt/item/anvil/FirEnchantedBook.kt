@@ -155,6 +155,7 @@ class FirEnchantedBook : EnchantedBook {
         }
     }
 
+
     // 检查是否是两本附魔书合并的情况
     private fun isEnchantedBookMerge(firstSetting: EnchantmentSetting?, secondSetting: EnchantmentSetting?): Boolean {
         if (firstSetting == null || secondSetting == null) return false // 第一个物品可转换成附魔配置.

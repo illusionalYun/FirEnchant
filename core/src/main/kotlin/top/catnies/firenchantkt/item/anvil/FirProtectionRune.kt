@@ -52,7 +52,6 @@ class FirProtectionRune(): ProtectionRune {
                 return
             }
         }
-
     }
 
     override fun reload() = load()

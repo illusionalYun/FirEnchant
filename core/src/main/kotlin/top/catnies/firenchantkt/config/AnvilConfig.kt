@@ -22,9 +22,9 @@ class AnvilConfig private constructor():
     var EB_FAILURE_CORRECTION_MINMAX_MAX: Int = 90               // 高于此失败率的附魔书将必定失败
     var EB_FAILURE_CORRECTION_HISTORY_ENABLE: Boolean = false       // 附魔书的成功/失败历史记录功能
     lateinit var EB_FAILURE_CORRECTION_HISTORY_CACHE_TYPE: String   // 存储历史记录的方法
-    lateinit var EB_MERGE_FAILURE_INHERITANCE: String // 当两本附魔书合并的结果附魔书的失败率处理模式
-    lateinit var EB_MERGE_EXP_COST_MODE: String    // 经验值消耗模式
-    var EB_MERGE_EXP_FIXED_VALUE: Int = 18         // 固定模式的值
+    lateinit var EB_MERGE_FAILURE_INHERITANCE: String   // 当两本附魔书合并的结果附魔书的失败率处理模式
+    lateinit var EB_MERGE_EXP_COST_MODE: String         // 经验值消耗模式
+    var EB_MERGE_EXP_FIXED_VALUE: Int = 18              // 固定模式的值
 
     /*魔咒之魂设置*/
     var ENCHANT_SOUL_ENABLE: Boolean = false             // 开启魔咒之魂道具
@@ -42,7 +42,9 @@ class AnvilConfig private constructor():
     var PROTECTION_RUNE_EXP: Int = 18                       // 保护符文消耗的经验等级
 
     /*升级符文设置*/
-
+    var POWER_RUNE_ENABLE: Boolean = false              // 开启升级符文道具
+    var POWER_RUNE_BREAK_FAILED_ITEM: Boolean = false   // 升级符文失败时损坏装备
+    var POWER_RUNE_EXP: Int = 25                        // 升级符文消耗的经验等级
 
 
 
@@ -82,6 +84,11 @@ class AnvilConfig private constructor():
         }
 
         /*升级符文设置*/
+        POWER_RUNE_ENABLE = config().getBoolean("power-rune.enable", false)
+        if (POWER_RUNE_ENABLE) {
+            POWER_RUNE_BREAK_FAILED_ITEM = config().getBoolean("power-rune.break-failed-item", false)
+            POWER_RUNE_EXP = config().getInt("power-rune.exp", 25)
+        }
     }
 
 }

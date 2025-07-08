@@ -26,7 +26,7 @@ class ProtectionRunePreUseEvent(
     private var isCancelled = false
 
     override fun getHandlers(): HandlerList {
-        return AnvilApplicableItemRegisterEvent.Companion.HANDLER_LIST
+        return HANDLER_LIST
     }
 
     override fun isCancelled(): Boolean {

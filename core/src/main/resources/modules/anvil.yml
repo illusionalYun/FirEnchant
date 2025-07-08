@@ -95,12 +95,14 @@ protection-rune:
 
 
 # 升级符文设置
-upgrade-rune:
+# 升级符文是通过物品custom-data里的数据指定的。
+# 具有 {FirEnchant: {PowerChance: 成功率}} 的数据的物品将会被视为升级符文. (成功率 >= 0)
+power-rune:
   enable: true
-  # 升级符文使用的物品
-  hooked-plugin: "CraftEngine"
-  hooked-id: "enchantment:rune_upgrade"
-
+  # 升级符文升级失败时, 是否会使装备破损?
+  break-failed-item: false
+  # 使用升级符文消耗的经验等级
+  exp: 25
 
 
 # 扩展槽位符文设置 (此功能需要安装插件 EnchantmentSlots 4.4.0 +.)

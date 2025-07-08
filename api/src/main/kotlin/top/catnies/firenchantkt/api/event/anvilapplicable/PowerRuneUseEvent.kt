@@ -8,11 +8,12 @@ import org.bukkit.event.player.PlayerEvent
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.view.AnvilView
 
-class ProtectionRuneUseEvent(
+class PowerRuneUseEvent(
     player: Player,
     val event: InventoryClickEvent,
     val anvilView: AnvilView,
     val firstItem: ItemStack,
+    var isSuccess: Boolean,
     var resultItem: ItemStack
 ) : PlayerEvent(player), Cancellable {
 

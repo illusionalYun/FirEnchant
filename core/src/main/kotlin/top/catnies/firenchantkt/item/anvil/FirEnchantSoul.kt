@@ -118,7 +118,7 @@ class FirEnchantSoul: EnchantSoul {
     private fun readAndClearContextData(item: ItemStack): Int {
         return RtagItem.of(item).get<Int>("FirEnchantTempData", "CostSoulsAmount")?.also {
             RtagItem.edit(item) { tag ->
-                tag.remove("FirEnchantTempData", "CostSoulsAmount")
+                tag.remove("FirEnchantTempData")
             }
         } ?: -1
     }
