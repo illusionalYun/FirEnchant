@@ -117,7 +117,7 @@ class FirProtectionRune(): ProtectionRune {
 
         // 如果多个堆叠需要返还物品
         event.isCancelled = true
-        val result = context.secondItem.clone().apply { amount = amount - 1 }
-        event.view.setItem(1, result)
+        val backItem = context.secondItem.clone().apply { amount = amount - 1 }
+        event.view.setItem(1, backItem)
     }
 }

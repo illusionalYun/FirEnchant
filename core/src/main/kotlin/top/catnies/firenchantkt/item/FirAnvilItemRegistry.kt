@@ -4,6 +4,7 @@ import org.bukkit.Bukkit
 import org.bukkit.inventory.ItemStack
 import top.catnies.firenchantkt.api.ServiceContainer
 import top.catnies.firenchantkt.api.event.anvilapplicable.AnvilApplicableItemRegisterEvent
+import top.catnies.firenchantkt.item.anvil.FirEnchantSoul
 import top.catnies.firenchantkt.item.anvil.FirEnchantedBook
 import top.catnies.firenchantkt.item.anvil.FirProtectionRune
 import top.catnies.firenchantkt.item.anvil.FirVanillaEnchantedBook
@@ -24,6 +25,7 @@ class FirAnvilItemRegistry: AnvilItemRegistry {
         registerItem(FirVanillaEnchantedBook())
         registerItem(FirEnchantedBook())
         registerItem(FirProtectionRune())
+        registerItem(FirEnchantSoul())
         ServiceContainer.register(AnvilItemRegistry::class.java, this)
         Bukkit.getPluginManager().callEvent(AnvilApplicableItemRegisterEvent(this))
     }

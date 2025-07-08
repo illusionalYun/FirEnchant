@@ -13,7 +13,8 @@ class EnchantSoulUseEvent(
     val event: InventoryClickEvent,
     val anvilView: AnvilView,
     val firstItem: ItemStack,
-    var resultItem: ItemStack
+    var useAmount: Int,
+    val resultItem: ItemStack
 ) : PlayerEvent(player), Cancellable {
 
     companion object {
@@ -28,7 +29,7 @@ class EnchantSoulUseEvent(
     private var isCancelled = false
 
     override fun getHandlers(): HandlerList {
-        return AnvilApplicableItemRegisterEvent.Companion.HANDLER_LIST
+        return HANDLER_LIST
     }
 
     override fun isCancelled(): Boolean {

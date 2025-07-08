@@ -11,6 +11,9 @@ class NMSHandlerHolder {
         val instance by lazy { NMSHandlerHolder().apply {
             load()
         } }
+
+        @JvmStatic
+        fun getNMSHandler(): NMSHandler = instance.nmsHandler
     }
 
     var plugin = FirEnchantPlugin.instance

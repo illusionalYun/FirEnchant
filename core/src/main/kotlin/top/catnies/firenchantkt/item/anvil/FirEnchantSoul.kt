@@ -1,5 +1,6 @@
 package top.catnies.firenchantkt.item.anvil
 
+import com.saicone.rtag.RtagItem
 import org.bukkit.Bukkit
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.inventory.PrepareAnvilEvent
@@ -10,12 +11,15 @@ import top.catnies.firenchantkt.api.event.anvilapplicable.EnchantSoulPreUseEvent
 import top.catnies.firenchantkt.api.event.anvilapplicable.EnchantSoulUseEvent
 import top.catnies.firenchantkt.config.AnvilConfig
 import top.catnies.firenchantkt.context.AnvilContext
+import top.catnies.firenchantkt.enchantment.EnchantmentSetting
 import top.catnies.firenchantkt.enchantment.FirEnchantmentSettingFactory
 import top.catnies.firenchantkt.integration.FirItemProviderRegistry
 import top.catnies.firenchantkt.integration.ItemProvider
 import top.catnies.firenchantkt.language.MessageConstants.RESOURCE_HOOK_ITEM_NOT_FOUND
 import top.catnies.firenchantkt.language.MessageConstants.RESOURCE_HOOK_ITEM_PROVIDER_NOT_FOUND
 import top.catnies.firenchantkt.util.MessageUtils.sendTranslatableComponent
+import kotlin.math.max
+import kotlin.math.min
 
 class FirEnchantSoul: EnchantSoul {
 
@@ -69,7 +73,7 @@ class FirEnchantSoul: EnchantSoul {
         if (isLowestFailure(setting.failure)) return
 
         // 计算花费
-        val canUseAmount = getCanUseAmount(setting.failure, context.secondItem.amount).also { if (it <= 0) return }
+        val canUseAmount = getCanUseAmount(setting, context.secondItem.amount).also { if (it <= 0) return }
         val costExp = config.ENCHANT_SOUL_EXP * canUseAmount
         val resultSetting = FirEnchantmentSettingFactory.fromAnother(setting).apply { failure = failure - canUseAmount * config.ENCHANT_SOUL_REDUCE_FAILURE }
 
@@ -78,9 +82,7 @@ class FirEnchantSoul: EnchantSoul {
         if (useEvent.isCancelled) return
 
         // 显示结果
-        val resultItem = useEvent.resultSetting.toItemStack()
-        // TODO 夹带私货
-
+        val resultItem = useEvent.resultSetting.toItemStack().also { injectContextData(it, useEvent.useAmount) }
         event.result = resultItem
         event.view.repairCost = useEvent.useAmount * config.ENCHANT_SOUL_EXP
     }
@@ -89,11 +91,10 @@ class FirEnchantSoul: EnchantSoul {
         event: InventoryClickEvent,
         context: AnvilContext
     ) {
-        val firstSetting = FirEnchantmentSettingFactory.fromItemStack(context.firstItem) ?: return
-        val resultSetting = context.result?.let { FirEnchantmentSettingFactory.fromItemStack(it) } ?: return
+        val usedAmount = readAndClearContextData(context.result!!).also { if (it <= 0) return }
 
         // 触发事件
-        val useEvent = EnchantSoulUseEvent(context.viewer, event, event.view as AnvilView, context.firstItem, context.result!!)
+        val useEvent = EnchantSoulUseEvent(context.viewer, event, event.view as AnvilView, context.firstItem, usedAmount, context.result!!)
         Bukkit.getPluginManager().callEvent(useEvent)
         if (useEvent.isCancelled) {
             event.isCancelled = true
@@ -101,18 +102,25 @@ class FirEnchantSoul: EnchantSoul {
         }
 
         // 计算使用的物品数量
-
-        resultSetting.failure
-
-
+        event.isCancelled = true
+        val backItem = context.secondItem.clone()
+        val resultAmount = backItem.amount - usedAmount
+        if (resultAmount <= 0) event.view.setItem(1, ItemStack.empty())
+        else event.view.setItem(1, backItem.apply { amount = resultAmount })
     }
 
-    // TODO 夹带私货, 把部分数据缓存到物品.
-    private fun injectContextData(item: ItemStack) {
-        return
+    // 夹带私货, 把部分数据缓存到物品.
+    private fun injectContextData(item: ItemStack, useAmount: Int) {
+        RtagItem.edit(item) { tag ->
+            tag.set(useAmount, "FirEnchantTempData", "CostSoulsAmount")
+        }
     }
-    private fun readContextData(item: ItemStack): Map<String, Any> {
-        return emptyMap()
+    private fun readAndClearContextData(item: ItemStack): Int {
+        return RtagItem.of(item).get<Int>("FirEnchantTempData", "CostSoulsAmount")?.also {
+            RtagItem.edit(item) { tag ->
+                tag.remove("FirEnchantTempData", "CostSoulsAmount")
+            }
+        } ?: -1
     }
 
     // 检查概率是否到达了最低的附魔书概率
@@ -120,9 +128,21 @@ class FirEnchantSoul: EnchantSoul {
         return failure <= config.ENCHANT_SOUL_MIN_FAILURE
     }
 
-    // 计算当前最多可以使用多少个魔咒之魂
-    private fun getCanUseAmount(failure: Int, inputAmount: Int): Int{
-        return 0
+    // 检查附魔书还能用多少个魔咒之魂
+    override fun getReamingCanUse(setting: EnchantmentSetting) = max((config.ENCHANT_SOUL_MAX_USE_SOULS - setting.consumedSouls), 0)
+
+    // 计算当前情况最多可以使用多少个魔咒之魂
+    private fun getCanUseAmount(setting: EnchantmentSetting, inputAmount: Int): Int{
+        val failure = setting.failure
+        val reaming = getReamingCanUse(setting).also { if (it <= 0) return 0 } // 如果没有剩余的使用次数则返回.
+
+        val maxCanUse = min(reaming, inputAmount) // 不考虑最低概率限制, 最多可以使用多少个魔咒之魂.
+        if ((failure - (maxCanUse * config.ENCHANT_SOUL_REDUCE_FAILURE)) >= config.ENCHANT_SOUL_MIN_FAILURE) return maxCanUse // 如果减去所有概率仍然合法, 那就返回可用的数量
+
+        val canCostFailure = failure - config.ENCHANT_SOUL_MIN_FAILURE // 当前可以继续扣除的概率
+        val i = canCostFailure / config.ENCHANT_SOUL_REDUCE_FAILURE // 检查还能使用几个灵魂
+        val j = canCostFailure % config.ENCHANT_SOUL_REDUCE_FAILURE // 检查还有没有余数, 有的话再加一个
+        return if (j <= 0) return i else i + 1
     }
 
 }
