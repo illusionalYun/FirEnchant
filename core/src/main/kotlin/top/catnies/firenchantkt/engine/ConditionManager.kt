@@ -20,7 +20,7 @@ class ConditionManager {
             finalType = type.substring(1)
         }
 
-        val conditionClass = FirEnchantAPI.conditionRegistry().getCondition<AbstractCondition>(finalType)
+        val conditionClass = FirEnchantAPI.conditionRegistry().getCondition(finalType) ?: return false
         val condition = conditionClass.getDeclaredConstructor(args.javaClass).newInstance(args)
 
         return not != condition.check()
@@ -37,13 +37,6 @@ class ConditionManager {
     }
 
     fun check(user: CommandSender, configList: List<ConfigurationSection>): Boolean {
-        configList.forEach {
-            val result = check(user, it)
-            if (!result) {
-                return false
-            }
-        }
-
-        return true
+        return configList.all { check(user, it) }
     }
 }

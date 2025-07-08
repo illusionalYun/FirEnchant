@@ -52,7 +52,7 @@ class FirConditionRegistry private constructor() : ConditionRegistry {
         Bukkit.getPluginManager().callEvent(ConditionRegisterEvent(this))
     }
 
-    override fun <T : Condition> registerCondition(name: String, condition: Class<T>) {
+    override fun registerCondition(name: String, condition: Class<out Condition>) {
         registry.putIfAbsent(name, condition)
     }
 
@@ -60,8 +60,7 @@ class FirConditionRegistry private constructor() : ConditionRegistry {
         return registry.remove(name) != null
     }
 
-    @Suppress("UNCHECKED_CAST")
-    override fun <T : Condition> getCondition(name: String): Class<T> {
-        return registry[name] as Class<T>
+    override fun getCondition(name: String): Class<out Condition>? {
+        return registry[name]
     }
 }

@@ -8,12 +8,12 @@ import top.catnies.firenchantkt.engine.condition.Condition
 interface ConditionRegistry {
 
     // 注册新的条件
-    fun <T: Condition> registerCondition(name: String, condition: Class<T>)
+    fun registerCondition(name: String, condition: Class<out Condition>)
 
     // 注销条件
     fun unregisterCondition(name: String): Boolean
 
     // 获取条件类
-    fun <T: Condition> getCondition(name: String): Class<T>
+    fun getCondition(name: String): Class<out Condition>?
 
 }
