@@ -87,76 +87,49 @@ class FirEnchantedBook : EnchantedBook {
         val setting = FirEnchantmentSettingFactory.fromItemStack(context.secondItem)!!
         val firstSetting = FirEnchantmentSettingFactory.fromItemStack(context.firstItem)
         val originEnchantment = setting.data.originEnchantment
+        val resultItem = context.result!!
+        val anvilView = event.view as AnvilView
 
-        // 如果第一件物品也是附魔书, 触发合并逻辑.
-        // TODO (两本附魔书融合, 是否需要考虑失败率? 或者给出这个选项? -> 是否可以监听事件实现拓展, 而非塞入主逻辑.)
-        if (isEnchantedBookMerge(firstSetting, setting)) {
-            val resultItem = context.result!!
-            val anvilView = event.view as AnvilView
-
-            // 触发事件
-            val enchantedBookMergeEvent =
-                EnchantedBookMergeEvent(context.viewer, event, anvilView, firstSetting!!, setting, resultItem)
-            Bukkit.getPluginManager().callEvent(enchantedBookMergeEvent)
-            if (enchantedBookMergeEvent.isCancelled) {
-                event.isCancelled = true
-                return
-            }
-        }
-
-        // 如果第一件物品是普通物品, 检查物品是否可以附魔.
-        else if (context.firstItem.isCompatibleWithEnchantment(originEnchantment, setting.level)) {
-            val resultItem = context.result!!
-            val anvilView = event.view as AnvilView
-            val isSuccess = isSuccess(context.viewer, setting.failure)
-
-            // 触发事件
-            val enchantedBookUseEvent = EnchantedBookUseEvent(
-                context.viewer,
-                event,
-                anvilView,
-                context.firstItem,
-                setting,
-                resultItem,
-                isSuccess
-            )
-            Bukkit.getPluginManager().callEvent(enchantedBookUseEvent)
-            if (enchantedBookUseEvent.isCancelled) {
-                event.isCancelled = true
-                return
+        when {
+            isEnchantedBookMerge(firstSetting, setting) -> {
+                val mergeEvent =
+                    EnchantedBookMergeEvent(context.viewer, event, anvilView, firstSetting!!, setting, resultItem)
+                Bukkit.getPluginManager().callEvent(mergeEvent)
+                if (mergeEvent.isCancelled) {
+                    event.isCancelled = true
+                    return
+                }
             }
 
-            // 成功直接返回
-            if (enchantedBookUseEvent.isSuccess) return
+            context.firstItem.isCompatibleWithEnchantment(originEnchantment, setting.level) -> {
+                val useEvent = EnchantedBookUseEvent(
+                    context.viewer, event, anvilView, context.firstItem, setting, resultItem,
+                    isSuccess(context.viewer, setting.failure)
+                )
+                Bukkit.getPluginManager().callEvent(useEvent)
+                if (useEvent.isCancelled) {
+                    event.isCancelled = true
+                    return
+                }
+                if (useEvent.isSuccess) return
 
-            // 失败逻辑
-            event.isCancelled = true
-            // 检查保护符文功能是否开启, 物品有没有保护符文
-            if (FirEnchantAPI.hasProtectionRune(context.firstItem)) {
-                // 移除保护,
-                FirEnchantAPI.removeProtectionRune(context.firstItem)
-                anvilView.setItem(0, context.firstItem)
+                event.isCancelled = true
                 anvilView.setItem(1, ItemStack.empty())
                 anvilView.setItem(2, ItemStack.empty())
-                anvilView.setCursor(ItemStack(Material.SOUL_SAND))
-                // 发送消息 TODO 翻译键
-                context.viewer.sendMessage("失败但是有符文!")
-            }
 
-            // 没有保护符文
-            else {
-                val brokenGear = FirEnchantAPI.toBrokenGear(context.firstItem)
-                anvilView.setItem(0, brokenGear)
-                anvilView.setItem(1, ItemStack.empty())
-                anvilView.setItem(2, ItemStack.empty())
-                anvilView.setCursor(ItemStack(Material.SAND))
-                // TODO 翻译键
-                context.viewer.sendMessage("失败也没有符文!")
+                if (FirEnchantAPI.hasProtectionRune(context.firstItem)) {
+                    FirEnchantAPI.removeProtectionRune(context.firstItem)
+                    anvilView.setItem(0, context.firstItem)
+                    anvilView.setCursor(ItemStack(Material.SOUL_SAND))
+                    context.viewer.sendMessage("失败但是有符文!")
+                } else {
+                    anvilView.setItem(0, FirEnchantAPI.toBrokenGear(context.firstItem))
+                    anvilView.setCursor(ItemStack(Material.SAND))
+                    context.viewer.sendMessage("失败也没有符文!")
+                }
             }
         }
-
     }
-
 
     // 检查是否是两本附魔书合并的情况
     private fun isEnchantedBookMerge(firstSetting: EnchantmentSetting?, secondSetting: EnchantmentSetting?): Boolean {
