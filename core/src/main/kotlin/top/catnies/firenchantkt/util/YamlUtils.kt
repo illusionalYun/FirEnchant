@@ -6,14 +6,14 @@ import org.yaml.snakeyaml.Yaml
 import java.io.StringReader
 
 object YamlUtils {
+
+    // 将 ListMap 转换成 List<YamlConfiguration>
     fun ConfigurationSection?.getConfigurationSectionList(key: String) : List<YamlConfiguration> {
         val data: List<*> = this?.getList(key) ?: return ArrayList()
 
-        val yaml = Yaml()
-        return data
-            .map(yaml::dump)
-            .map { s: String? -> StringReader(s!!) }
-            .map { reader: StringReader? -> YamlConfiguration.loadConfiguration(reader!!) }
-            .toList()
+        return data.map { Yaml().dump(it) }
+            .map { StringReader(it) }
+            .map { YamlConfiguration.loadConfiguration(it) }
     }
+
 }
