@@ -96,10 +96,8 @@ class FirProtectionRune(): ProtectionRune {
         if (protectionRunePreUseEvent.isCancelled) return
 
         // 显示结果
-        val result = context.firstItem.clone()
-        addProtectionRune(result)
-        event.result = result
-        event.view.repairCost = 1
+        event.result = context.firstItem.clone().also { addProtectionRune(it) }
+        event.view.repairCost = config.PROTECTION_RUNE_EXP
     }
 
     override fun onCost(
@@ -107,17 +105,19 @@ class FirProtectionRune(): ProtectionRune {
         context: AnvilContext
     ) {
         // 触发事件
-        val protectionRuneUseEvent = ProtectionRuneUseEvent(
-            context.viewer,
-            event,
-            event.view as AnvilView,
-            context.firstItem,
-            context.result!!
-        )
+        val protectionRuneUseEvent = ProtectionRuneUseEvent(context.viewer, event, event.view as AnvilView, context.firstItem, context.result!!)
         Bukkit.getPluginManager().callEvent(protectionRuneUseEvent)
         if (protectionRuneUseEvent.isCancelled) {
             event.isCancelled = true
             return
         }
+
+        // 就一个物品, 直接返回
+        if (context.secondItem.amount <= 1) return
+
+        // 如果多个堆叠需要返还物品
+        event.isCancelled = true
+        val result = context.secondItem.clone().apply { amount = amount - 1 }
+        event.view.setItem(1, result)
     }
 }

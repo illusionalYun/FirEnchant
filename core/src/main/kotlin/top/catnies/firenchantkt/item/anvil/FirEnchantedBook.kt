@@ -17,14 +17,12 @@ import top.catnies.firenchantkt.api.event.anvilapplicable.EnchantedBookUseEvent
 import top.catnies.firenchantkt.config.AnvilConfig
 import top.catnies.firenchantkt.context.AnvilContext
 import top.catnies.firenchantkt.database.PlayerEnchantLogData
-import top.catnies.firenchantkt.database.PlayerEnchantLogDataManager
 import top.catnies.firenchantkt.enchantment.EnchantmentSetting
 import top.catnies.firenchantkt.enchantment.FirEnchantmentSettingFactory
 import top.catnies.firenchantkt.language.MessageConstants.ANVIL_ENCHANTED_BOOK_USE_FAIL
 import top.catnies.firenchantkt.language.MessageConstants.ANVIL_ENCHANTED_BOOK_USE_PROTECT_FAIL
 import top.catnies.firenchantkt.util.ItemUtils.isCompatibleWithEnchantment
 import top.catnies.firenchantkt.util.MessageUtils.sendTranslatableComponent
-import java.util.Random
 import kotlin.math.max
 import kotlin.math.min
 
@@ -190,7 +188,7 @@ class FirEnchantedBook : EnchantedBook {
 
     // 根据失败率判断是否成功
     private fun isSuccess(player: Player, enchantment: String, level: Int, baseFailure: Int): Boolean {
-        val manager = FirEnchantAPI.playerEnchantLogDataManager.invoke()
+        val manager = FirEnchantAPI.playerEnchantLogDataManager()
 
         // 1. 获取玩家历史记录（最近20次）
         val logList = manager.getList(player.uniqueId, 20)

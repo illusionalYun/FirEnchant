@@ -26,6 +26,15 @@ class AnvilConfig private constructor():
     lateinit var EB_MERGE_EXP_COST_MODE: String    // 经验值消耗模式
     var EB_MERGE_EXP_FIXED_VALUE: Int = 18         // 固定模式的值
 
+    /*魔咒之魂设置*/
+    var ENCHANT_SOUL_ENABLE: Boolean = false             // 开启魔咒之魂道具
+    var ENCHANT_SOUL_ITEM_PROVIDER: String? = null       // 魔咒之魂的道具提供者
+    var ENCHANT_SOUL_ITEM_ID: String? = null             // 魔咒之魂的道具ID
+    var ENCHANT_SOUL_EXP: Int = 3                        // 魔咒之魂消耗的经验等级
+    var ENCHANT_SOUL_REDUCE_FAILURE: Int = 3             // 每个魔咒之魂可降低附魔书的失败率
+    var ENCHANT_SOUL_MIN_FAILURE: Int = 5                // 附魔书最多可以使用魔咒之魂降低到的失败率
+    var ENCHANT_SOUL_MAX_USE_SOULS: Int = 12             // 附魔书最多可以使用的魔咒之魂数量
+
     /*保护符文设置*/
     var PROTECTION_RUNE_ENABLE: Boolean = false             // 开启保护符文道具
     var PROTECTION_RUNE_ITEM_PROVIDER: String? = null       // 保护符文的道具提供者
@@ -52,6 +61,17 @@ class AnvilConfig private constructor():
         EB_MERGE_FAILURE_INHERITANCE = config().getString("enchanted-book.use-enchanted-book.failure-inheritance", "DEFAULT")!!
         EB_MERGE_EXP_COST_MODE = config().getString("enchanted-book.use-enchanted-book.exp.cost-mode", "FIXED")!!
         EB_MERGE_EXP_FIXED_VALUE = config().getInt("enchanted-book.use-enchanted-book.exp.fixed-value", 18)
+
+        /*魔咒之魂设置*/
+        ENCHANT_SOUL_ENABLE = config().getBoolean("enchant-soul.enable", false)
+        if (PROTECTION_RUNE_ENABLE) {
+            ENCHANT_SOUL_ITEM_PROVIDER = config().getString("enchant-soul.hooked-plugin")!!
+            ENCHANT_SOUL_ITEM_ID = config().getString("enchant-soul.hooked-id")!!
+            ENCHANT_SOUL_EXP = config().getInt("enchant-soul.exp", 3)
+            ENCHANT_SOUL_REDUCE_FAILURE = config().getInt("enchant-soul.reduce-failure", 3)
+            ENCHANT_SOUL_MIN_FAILURE = config().getInt("enchant-soul.min-failure", 5)
+            ENCHANT_SOUL_MAX_USE_SOULS = config().getInt("enchant-soul.max-use-souls", 12)
+        }
 
         /*保护符文设置*/
         PROTECTION_RUNE_ENABLE = config().getBoolean("protection-rune.enable", false)

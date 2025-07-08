@@ -8,7 +8,6 @@ vanilla-enchanted-book:
   deny-use: true
 
 
-
 # 附魔书设置
 enchanted-book:
   # 使用附魔书
@@ -35,10 +34,20 @@ enchanted-book:
       # 例如,使连续失败的玩家下次成功率会更大,连续成功的玩家下次的失败概率会更大.
       history-compensation:
         enable: false
-        # 存储历史记录的方法, 可以是 PDC 或 Metadata.
-        # Metadata在服务器重启后会消失;
-        # PDC重启不会消失,但是默认不支持跨服,你需要使用类似 HuskSync 的背包同步插件,打开PDC的跨服同步选项.
-        cache-type: "PDC"
+
+    # 行为设置, 当玩家使用附魔书后, 有可能会成功/失败.
+    # 如果成功或者失败了,应该执行什么操作? 默认配置提供一个示例, 你可以在失败时返回给玩家一件钻石.
+    # 具体支持的所有操作列表和条件列表, 请访问WIKI文档查看.
+    behaviors:
+      success: []
+      failed:
+        - type: set_cursor  # 设置光标物品
+          hooked_plugin: vanilla
+          hooked_id: DIAMOND
+          condition:            # 你还可以设置各种条件.
+            - type: permission  # 具有一定权限时
+              permission: game.op
+            - type: hasProtectionRune # 装备上有保护符文时
 
   # 相同附魔书合并
   merge-enchanted-book:
@@ -57,6 +66,22 @@ enchanted-book:
       # 2. "VANILLALIKE"(使用原版的计算逻辑,会将附魔书视为原版的附魔书,然后捕捉它的经验消耗.)
       cost-mode: "FIXED"
       fixed-value: 18
+
+
+# 魔咒之魂设置
+enchant-soul:
+  enable: true
+  # 魔咒之魂使用的物品
+  hooked-plugin: "CraftEngine"
+  hooked-id: "enchantment:enchantment_o_soul"
+  # 使用每个魔咒之魂消耗的经验等级
+  exp: 3
+  # 每个魔咒之魂可降低多少附魔书的失败率?
+  reduce-failure: 3
+  # 附魔书最多可以使用魔咒之魂降低到多少的失败率?
+  min-failure: 5
+  # 附魔书最多可以使用多少个魔咒之魂?
+  max-use-souls: 12
 
 
 # 保护符文设置

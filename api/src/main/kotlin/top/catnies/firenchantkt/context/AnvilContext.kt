@@ -2,11 +2,13 @@ package top.catnies.firenchantkt.context
 
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
+import org.bukkit.inventory.view.AnvilView
 
 class AnvilContext(
     val firstItem: ItemStack,
     val secondItem: ItemStack,
     val result: ItemStack?,
+    val view: AnvilView,
     val viewer: Player,
 ): Context {
 
