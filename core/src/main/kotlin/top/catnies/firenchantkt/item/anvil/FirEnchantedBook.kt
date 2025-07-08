@@ -36,61 +36,52 @@ class FirEnchantedBook : EnchantedBook {
     }
 
     override fun onPrepare(event: PrepareAnvilEvent, context: AnvilContext) {
-        val setting = FirEnchantmentSettingFactory.fromItemStack(context.secondItem)!!
         val firstSetting = FirEnchantmentSettingFactory.fromItemStack(context.firstItem)
+        val setting = FirEnchantmentSettingFactory.fromItemStack(context.secondItem)!!
+        val repairCost = context.firstItem.getDataOrDefault(DataComponentTypes.REPAIR_COST, 0)!!
+        val repairCost2 = context.secondItem.getDataOrDefault(DataComponentTypes.REPAIR_COST, 0)!!
         val originEnchantment = setting.data.originEnchantment
 
-        // 如果第一件物品也是附魔书, 触发合并逻辑.
-        if (isEnchantedBookMerge(firstSetting, setting)) {
-            // 计算结果
-            val resultSetting = FirEnchantmentSettingFactory.fromAnother(firstSetting!!)
-            resultSetting.failure = getMergeEnchantmentFailureRate(firstSetting, setting)
-            resultSetting.level++
+        when {
+            isEnchantedBookMerge(firstSetting, setting) -> {
+                val resultSetting = FirEnchantmentSettingFactory.fromAnother(firstSetting!!).apply {
+                    failure = getMergeEnchantmentFailureRate(firstSetting, setting)
+                    level++
+                }
+                val costExp = if (config.EB_MERGE_EXP_COST_MODE.equals("FIXED", true)) config.EB_MERGE_EXP_FIXED_VALUE
+                else getCost(resultSetting, resultSetting.level, repairCost, repairCost2)
 
-            // 计算经验消耗
-            val costExp = if (config.EB_MERGE_EXP_COST_MODE.uppercase() == "FIXED") config.EB_MERGE_EXP_FIXED_VALUE
-            else getMergeRepairCost(firstSetting, setting)
+                val mergeEvent =
+                    EnchantedBookPreMergeEvent(context.viewer, event, costExp, firstSetting, setting, resultSetting)
+                Bukkit.getPluginManager().callEvent(mergeEvent)
+                if (mergeEvent.isCancelled) return
 
-            // 触发事件
-            val enchantedBookPreMergeEvent =
-                EnchantedBookPreMergeEvent(context.viewer, event, costExp, firstSetting, setting, resultSetting)
-            Bukkit.getPluginManager().callEvent(enchantedBookPreMergeEvent)
-            if (enchantedBookPreMergeEvent.isCancelled) return
+                event.result = resultSetting.toItemStack()
+                event.view.repairCost = mergeEvent.costExp
+            }
 
-            // 显示结果
-            event.result = resultSetting.toItemStack()
-            event.view.repairCost = enchantedBookPreMergeEvent.costExp
+            context.firstItem.isCompatibleWithEnchantment(originEnchantment, setting.level) -> {
+                val oldLevel = context.firstItem.getEnchantmentLevel(originEnchantment)
+                val targetLevel = if (oldLevel != 0 && oldLevel == setting.level) setting.level + 1 else setting.level
+
+                val costExp = if (config.EB_USE_EXP_COST_MODE.equals("FIXED", true)) config.EB_USE_EXP_FIXED_VALUE
+                else getCost(setting, targetLevel, repairCost, repairCost2)
+                val resultItem = context.firstItem.clone().apply {
+                    setData(DataComponentTypes.REPAIR_COST, repairCost * 2 + 1)
+                    addEnchantment(originEnchantment, targetLevel)
+                }
+
+                val useEvent =
+                    EnchantedBookPreUseEvent(context.viewer, event, costExp, context.firstItem, setting, resultItem)
+                Bukkit.getPluginManager().callEvent(useEvent)
+                if (useEvent.isCancelled) return
+
+                event.result = useEvent.resultItem
+                event.view.repairCost = useEvent.costExp
+            }
         }
-
-        // 如果第一件物品是普通物品, 触发使用逻辑.
-        else if (context.firstItem.isCompatibleWithEnchantment(originEnchantment, setting.level)) {
-            val resultItem = context.firstItem.clone()
-
-            // 计算目标结果等级
-            var targetLevel = setting.level
-            val oldLevel = resultItem.getEnchantmentLevel(setting.data.originEnchantment)
-            if (oldLevel != 0 && oldLevel == setting.level) targetLevel++
-            val repairCost: Int = resultItem.getDataOrDefault(DataComponentTypes.REPAIR_COST, 0)!!
-
-            // 计算经验消耗
-            val costExp = if (config.EB_USE_EXP_COST_MODE.uppercase() == "FIXED") config.EB_USE_EXP_FIXED_VALUE
-            else getUseRepairCost(context.firstItem, setting, targetLevel, repairCost)
-
-            resultItem.setData(DataComponentTypes.REPAIR_COST, repairCost * 2 + 1)
-            resultItem.addEnchantment(setting.data.originEnchantment, setting.level)
-
-            // 触发事件
-            val enchantedBookPreUseEvent =
-                EnchantedBookPreUseEvent(context.viewer, event, costExp, context.firstItem, setting, resultItem)
-            Bukkit.getPluginManager().callEvent(enchantedBookPreUseEvent)
-            if (enchantedBookPreUseEvent.isCancelled) return
-
-            // 显示结果
-            event.result = enchantedBookPreUseEvent.resultItem
-            event.view.repairCost = enchantedBookPreUseEvent.costExp
-        }
-
     }
+
 
     override fun onCost(event: InventoryClickEvent, context: AnvilContext) {
         val setting = FirEnchantmentSettingFactory.fromItemStack(context.secondItem)!!
@@ -120,7 +111,15 @@ class FirEnchantedBook : EnchantedBook {
             val isSuccess = isSuccess(context.viewer, setting.failure)
 
             // 触发事件
-            val enchantedBookUseEvent = EnchantedBookUseEvent(context.viewer, event, anvilView, context.firstItem, setting, resultItem, isSuccess)
+            val enchantedBookUseEvent = EnchantedBookUseEvent(
+                context.viewer,
+                event,
+                anvilView,
+                context.firstItem,
+                setting,
+                resultItem,
+                isSuccess
+            )
             Bukkit.getPluginManager().callEvent(enchantedBookUseEvent)
             if (enchantedBookUseEvent.isCancelled) {
                 event.isCancelled = true
@@ -186,13 +185,9 @@ class FirEnchantedBook : EnchantedBook {
         }
     }
 
-    // 根据模式计算消耗的经验值
-    // TODO 经验消耗通过原版方案计算? 原版好像有价值组件.
-    private fun getMergeRepairCost(firstSetting: EnchantmentSetting, secondSetting: EnchantmentSetting): Int {
-        return 10
-    }
-    private fun getUseRepairCost(item: ItemStack, setting: EnchantmentSetting, level: Int, repairCost: Int): Int {
-        return setting.data.originEnchantment.anvilCost * level + repairCost
+    // 获取经验花费
+    private fun getCost(setting: EnchantmentSetting, level: Int, repairCost: Int, repairCost2: Int): Int {
+        return setting.data.originEnchantment.anvilCost * level + repairCost + repairCost2
     }
 
     // 根据失败率判断是否成功
