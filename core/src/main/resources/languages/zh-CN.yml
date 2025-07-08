@@ -14,3 +14,6 @@ resource.hook.item_provider.not_found: "<#96f896>[FirEnchant] <red>在 <arg:0> �
 resource.hook.item.not_found: "<#96f896>[FirEnchant] <red>在 <arg:0> 配置文件中指定的物品 <arg:1> 不存在，请修正后再试。</red>"
 
 plugin.compatibility.hook.success: "<#96f896>[FirEnchant] <#cef8f5>检查到服务器存在插件 <arg:0> ，已进行关联兼容。"
+
+anvil.enchanted.book.use.fail: "<#96f896>[FirEnchant] <#cef8f5>啊哦，附魔失败了，你的装备破损了！ 不过别担心，你可以在修复桌上修复它！"
+anvil.enchanted.book.use.protect.fail: "<#96f896>[FirEnchant] <#cef8f5>啊哦，附魔失败了，你的装备没有破损，装备上的保护符文被消耗了。"

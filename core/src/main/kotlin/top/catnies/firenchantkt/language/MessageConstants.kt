@@ -16,4 +16,7 @@ object MessageConstants {
     const val RESOURCE_HOOK_ITEM_NOT_FOUND = "resource.hook.item.not_found"
 
     const val PLUGIN_COMPATIBILITY_HOOK_SUCCESS = "plugin.compatibility.hook.success"
+
+    const val ANVIL_ENCHANTED_BOOK_USE_FAIL = "anvil.enchanted.book.use.fail"
+    const val ANVIL_ENCHANTED_BOOK_USE_PROTECT_FAIL = "anvil.enchanted.book.use.protect.fail"
 }
