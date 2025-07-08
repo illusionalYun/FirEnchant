@@ -111,3 +111,5 @@ slot-rune:
   # 拓展符文使用的物品
   hooked-plugin: "CraftEngine"
   hooked-id: "enchantment:rune_slot"
+  # 使用拓展符文消耗的经验等级
+  exp: 12

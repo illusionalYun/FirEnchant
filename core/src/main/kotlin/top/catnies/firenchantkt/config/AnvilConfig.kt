@@ -45,6 +45,11 @@ class AnvilConfig private constructor():
     var POWER_RUNE_BREAK_FAILED_ITEM: Boolean = false   // 升级符文失败时损坏装备
     var POWER_RUNE_EXP: Int = 25                        // 升级符文消耗的经验等级
 
+    /*拓展符文设置*/
+    var SLOT_RUNE_ENABLE: Boolean = false               // 开启拓展符文道具
+    var SLOT_RUNE_ITEM_PROVIDER: String? = null         // 拓展符文的道具提供者
+    var SLOT_RUNE_ITEM_ID: String? = null               // 拓展符文的道具ID
+    var SLOT_RUNE_EXP: Int = 12                         // 拓展符文消耗的经验等级
 
 
     override fun loadConfig() {
@@ -86,6 +91,14 @@ class AnvilConfig private constructor():
         if (POWER_RUNE_ENABLE) {
             POWER_RUNE_BREAK_FAILED_ITEM = config().getBoolean("power-rune.break-failed-item", false)
             POWER_RUNE_EXP = config().getInt("power-rune.exp", 25)
+        }
+
+        /*拓展符文设置*/
+        SLOT_RUNE_ENABLE = config().getBoolean("slot-rune.enable", false)
+        if (SLOT_RUNE_ENABLE) {
+            SLOT_RUNE_ITEM_PROVIDER = config().getString("slot-rune.hooked-plugin")
+            SLOT_RUNE_ITEM_ID = config().getString("slot-rune.hooked-id")
+            SLOT_RUNE_EXP = config().getInt("slot-rune.exp", 12)
         }
     }
 

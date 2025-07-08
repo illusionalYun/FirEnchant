@@ -57,4 +57,13 @@ object EnchantmentSlotsUtil {
         val used = targetItem.enchantments.size
         return getCurrentEnchantmentSlotCount(player, targetItem) - used
     }
+
+    /**
+     * 设置物品的附魔槽位数量
+     */
+    fun setEnchantmentSlots(targetItem: ItemStack, slots: Int) {
+        RtagItem.edit(targetItem){
+            it.set("PublicBukkitValues", "enchantmentslots:enchantment_slots", slots)
+        }
+    }
 }

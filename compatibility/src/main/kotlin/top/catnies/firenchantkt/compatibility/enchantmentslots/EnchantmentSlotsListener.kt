@@ -10,7 +10,7 @@ class EnchantmentSlotsListener: Listener {
     // 注册附魔槽位相关物品
     @EventHandler
     fun onAnvilItemRegister(event: AnvilApplicableItemRegisterEvent) {
-        event.register.registerItem(SlotRune())
+        event.register.registerItem(SlotRuneImpl())
     }
 
     // 监听使用附魔书事件, 如果槽位不够则不处理

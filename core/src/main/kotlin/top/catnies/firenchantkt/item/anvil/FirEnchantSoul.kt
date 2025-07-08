@@ -91,10 +91,11 @@ class FirEnchantSoul: EnchantSoul {
         event: InventoryClickEvent,
         context: AnvilContext
     ) {
-        val usedAmount = readAndClearContextData(context.result!!).also { if (it <= 0) return }
+        val useAmount = context.result?.let { readAndClearContextData(it) }?.takeIf { it > 0 } ?: return
+        val anvilView = event.view as AnvilView
 
         // 触发事件
-        val useEvent = EnchantSoulUseEvent(context.viewer, event, event.view as AnvilView, context.firstItem, usedAmount, context.result!!)
+        val useEvent = EnchantSoulUseEvent(context.viewer, event, anvilView, context.firstItem, useAmount, context.result!!)
         Bukkit.getPluginManager().callEvent(useEvent)
         if (useEvent.isCancelled) {
             event.isCancelled = true
@@ -104,9 +105,13 @@ class FirEnchantSoul: EnchantSoul {
         // 计算使用的物品数量
         event.isCancelled = true
         val backItem = context.secondItem.clone()
-        val resultAmount = backItem.amount - usedAmount
+        val resultAmount = backItem.amount - useEvent.useAmount
         if (resultAmount <= 0) event.view.setItem(1, ItemStack.empty())
         else event.view.setItem(1, backItem.apply { amount = resultAmount })
+
+        // 光标给物品
+        anvilView.setCursor(useEvent.resultItem)
+        context.viewer.playSound(context.viewer.location, "block.anvil.use", 1f, 1f)
     }
 
     // 夹带私货, 把部分数据缓存到物品.
