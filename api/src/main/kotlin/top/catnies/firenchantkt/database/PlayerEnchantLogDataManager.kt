@@ -9,7 +9,7 @@ interface PlayerEnchantLogDataManager {
      *
      * @return 玩家附魔日志数据实例列表
      */
-    fun getList(): MutableList<PlayerEnchantLogData?>?
+    fun getList(max: Int = -1): MutableList<PlayerEnchantLogData?>?
 
     /**
      * 获取指定玩家UUID的玩家附魔日志数据实例列表
@@ -17,7 +17,7 @@ interface PlayerEnchantLogDataManager {
      * @param uuid 玩家UUID
      * @return 玩家附魔日志数据实例列表
      */
-    fun getList(uuid: UUID?): MutableList<PlayerEnchantLogData?>?
+    fun getList(uuid: UUID?, max: Int = -1): MutableList<PlayerEnchantLogData?>?
 
     /**
      * 获取指定附魔ID的玩家附魔日志数据实例列表
@@ -25,7 +25,7 @@ interface PlayerEnchantLogDataManager {
      * @param enchantment 附魔ID
      * @return 玩家附魔日志数据实例列表
      */
-    fun getList(enchantment: String?): MutableList<PlayerEnchantLogData?>?
+    fun getList(enchantment: String?, max: Int = -1): MutableList<PlayerEnchantLogData?>?
 
     /**
      * 获取指定玩家UUID下指定附魔ID的玩家附魔日志数据实例列表
@@ -34,7 +34,7 @@ interface PlayerEnchantLogDataManager {
      * @param enchantment 附魔ID
      * @return 玩家附魔日志数据实例列表
      */
-    fun getList(uuid: UUID?, enchantment: String?): MutableList<PlayerEnchantLogData?>?
+    fun getList(uuid: UUID?, enchantment: String?, max: Int = -1): MutableList<PlayerEnchantLogData?>?
 
     /**
      * 更新指定玩家附魔日志数据实例 在数据库中的数据
