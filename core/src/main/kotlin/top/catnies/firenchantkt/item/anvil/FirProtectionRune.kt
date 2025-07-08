@@ -39,7 +39,8 @@ class FirProtectionRune(): ProtectionRune {
         if (isEnabled) {
             itemProvider = config.PROTECTION_RUNE_ITEM_PROVIDER?.let { FirItemProviderRegistry.instance.getItemProvider(it) }
             if (itemProvider == null) {
-                Bukkit.getConsoleSender().sendTranslatableComponent(RESOURCE_HOOK_ITEM_PROVIDER_NOT_FOUND, config.fileName, "protection-rune", config.PROTECTION_RUNE_ITEM_PROVIDER ?: "null")
+                Bukkit.getConsoleSender()
+                    .sendTranslatableComponent(RESOURCE_HOOK_ITEM_PROVIDER_NOT_FOUND, config.fileName, "protection-rune", config.PROTECTION_RUNE_ITEM_PROVIDER ?: "null")
                 isEnabled = false
                 return
             }
@@ -47,7 +48,8 @@ class FirProtectionRune(): ProtectionRune {
             itemID = config.PROTECTION_RUNE_ITEM_ID
             val item = itemID?.let { itemProvider?.getItemById(it) }
             if (item == null) {
-                Bukkit.getConsoleSender().sendTranslatableComponent(RESOURCE_HOOK_ITEM_NOT_FOUND, config.fileName, "protection-rune", itemID ?: "null")
+                Bukkit.getConsoleSender()
+                    .sendTranslatableComponent(RESOURCE_HOOK_ITEM_NOT_FOUND, config.fileName, "protection-rune", itemID ?: "null")
                 isEnabled = false
                 return
             }

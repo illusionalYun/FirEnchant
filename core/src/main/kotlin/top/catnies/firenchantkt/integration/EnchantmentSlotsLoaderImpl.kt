@@ -34,7 +34,7 @@ class EnchantmentSlotsLoaderImpl private constructor(): EnchantmentSlotsLoader {
                 return
             }
 
-            SlotRuneImpl.itemID = config.PROTECTION_RUNE_ITEM_ID
+            SlotRuneImpl.itemID = config.SLOT_RUNE_ITEM_ID
             val item = SlotRuneImpl.itemID?.let { SlotRuneImpl.itemProvider?.getItemById(it) }
             if (item == null) {
                 Bukkit.getConsoleSender().sendTranslatableComponent(RESOURCE_HOOK_ITEM_NOT_FOUND, config.fileName, "slot-rune", SlotRuneImpl.itemID ?: "null")

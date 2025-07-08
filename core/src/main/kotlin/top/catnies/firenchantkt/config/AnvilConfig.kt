@@ -69,7 +69,7 @@ class AnvilConfig private constructor():
 
         /*魔咒之魂设置*/
         ENCHANT_SOUL_ENABLE = config().getBoolean("enchant-soul.enable", false)
-        if (PROTECTION_RUNE_ENABLE) {
+        if (ENCHANT_SOUL_ENABLE) {
             ENCHANT_SOUL_ITEM_PROVIDER = config().getString("enchant-soul.hooked-plugin")
             ENCHANT_SOUL_ITEM_ID = config().getString("enchant-soul.hooked-id")
             ENCHANT_SOUL_EXP = config().getInt("enchant-soul.exp", 3)
