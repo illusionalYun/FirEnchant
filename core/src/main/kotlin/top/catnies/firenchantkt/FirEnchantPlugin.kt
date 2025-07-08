@@ -1,5 +1,6 @@
 package top.catnies.firenchantkt
 
+import org.bukkit.Bukkit
 import org.bukkit.plugin.java.JavaPlugin
 import top.catnies.firenchantkt.command.CommandManager
 import top.catnies.firenchantkt.config.ConfigManager
@@ -35,15 +36,16 @@ class FirEnchantPlugin: JavaPlugin() {
         FirEnchantmentManager.instance // 系统魔咒管理器
         CommandManager.instance // 命令管理器
         ListenerManger.instance // 事件监听管理器
+        FirEnchantDatabaseManager.getInstance() // 数据库控制器
+        FirPlayerEnchantLogDataManager.getInstance() // 玩家附魔日志数据控制器
 
         IntegrationManager.instance // 关联插件集成管理器
 
-        FirItemProviderRegistry.instance // 物品集成注册表
-        FirAnvilItemRegistry.instance // 铁砧物品注册表
-        FirEnchantingTableRegistry.instance // 附魔台物品注册表
-
-        FirEnchantDatabaseManager.getInstance() // 数据库控制器
-        FirPlayerEnchantLogDataManager.getInstance() // 玩家附魔日志数据控制器
+        Bukkit.getScheduler().runTaskLater(this, Runnable {
+            FirItemProviderRegistry.instance // 物品集成注册表
+            FirAnvilItemRegistry.instance // 铁砧物品注册表
+            FirEnchantingTableRegistry.instance // 附魔台物品注册表
+        }, 3000L)
 
         logger.info("FirEnchant enabled!")
     }
