@@ -9,7 +9,7 @@ import javax.annotation.Nullable
 class NexoItemProvider private constructor(
     override val enabled: Boolean
 ): ItemProvider {
-    constructor(): this(Bukkit.getPluginManager().isPluginEnabled("Nexo"))
+    constructor(): this(Bukkit.getPluginManager().getPlugin("Nexo") != null)
 
     @Nullable
     override fun getItemById(id: String): ItemStack? {
