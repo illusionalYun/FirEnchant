@@ -1,7 +1,7 @@
-package top.catnies.firenchantkt.condition.impl.math
+package top.catnies.firenchantkt.engine.condition.math
 
-import top.catnies.firenchantkt.args.ArgumentKey
-import top.catnies.firenchantkt.condition.AbstractCondition
+import top.catnies.firenchantkt.engine.args.ArgumentKey
+import top.catnies.firenchantkt.engine.AbstractCondition
 
 class LessThenOrEqualImpl(
     args: Map<String, Any>,

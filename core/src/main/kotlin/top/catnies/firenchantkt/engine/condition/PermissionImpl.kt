@@ -1,8 +1,8 @@
-package top.catnies.firenchantkt.condition.impl
+package top.catnies.firenchantkt.engine.condition
 
 import org.bukkit.command.CommandSender
-import top.catnies.firenchantkt.args.ArgumentKey
-import top.catnies.firenchantkt.condition.AbstractCondition
+import top.catnies.firenchantkt.engine.args.ArgumentKey
+import top.catnies.firenchantkt.engine.AbstractCondition
 
 class PermissionImpl(
     args: Map<String, Any?>

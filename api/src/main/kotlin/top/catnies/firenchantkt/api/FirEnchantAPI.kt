@@ -4,7 +4,7 @@ import net.kyori.adventure.key.Key
 import org.bukkit.inventory.ItemStack
 import org.jetbrains.annotations.NotNull
 import org.jetbrains.annotations.Nullable
-import top.catnies.firenchantkt.condition.ConditionRegistry
+import top.catnies.firenchantkt.engine.ConditionRegistry
 import top.catnies.firenchantkt.database.PlayerEnchantLogDataManager
 import top.catnies.firenchantkt.enchantment.EnchantmentData
 import top.catnies.firenchantkt.enchantment.EnchantmentManager

@@ -1,4 +1,4 @@
-package top.catnies.firenchantkt.condition
+package top.catnies.firenchantkt.engine.condition
 
 interface Condition {
     fun getType(): String

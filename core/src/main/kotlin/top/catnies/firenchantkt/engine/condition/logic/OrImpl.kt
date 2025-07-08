@@ -1,10 +1,10 @@
-package top.catnies.firenchantkt.condition.impl.logic
+package top.catnies.firenchantkt.engine.condition.logic
 
 import org.bukkit.command.CommandSender
 import org.bukkit.configuration.ConfigurationSection
-import top.catnies.firenchantkt.args.ArgumentKey
-import top.catnies.firenchantkt.condition.AbstractCondition
-import top.catnies.firenchantkt.condition.ConditionManager
+import top.catnies.firenchantkt.engine.args.ArgumentKey
+import top.catnies.firenchantkt.engine.AbstractCondition
+import top.catnies.firenchantkt.engine.ConditionManager
 
 class OrImpl(
     args: Map<String, Any>,

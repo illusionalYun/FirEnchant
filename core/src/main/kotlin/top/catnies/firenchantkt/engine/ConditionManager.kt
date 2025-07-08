@@ -1,4 +1,4 @@
-package top.catnies.firenchantkt.condition
+package top.catnies.firenchantkt.engine
 
 import org.bukkit.command.CommandSender
 import org.bukkit.configuration.ConfigurationSection

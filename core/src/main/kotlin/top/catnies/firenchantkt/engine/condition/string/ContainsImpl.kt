@@ -1,7 +1,7 @@
-package top.catnies.firenchantkt.condition.impl.string
+package top.catnies.firenchantkt.engine.condition.string
 
-import top.catnies.firenchantkt.args.ArgumentKey
-import top.catnies.firenchantkt.condition.AbstractCondition
+import top.catnies.firenchantkt.engine.args.ArgumentKey
+import top.catnies.firenchantkt.engine.AbstractCondition
 
 class ContainsImpl(
     args: Map<String, Any>,

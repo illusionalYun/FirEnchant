@@ -1,4 +1,6 @@
-package top.catnies.firenchantkt.condition
+package top.catnies.firenchantkt.engine
+
+import top.catnies.firenchantkt.engine.condition.Condition
 
 /**
  *

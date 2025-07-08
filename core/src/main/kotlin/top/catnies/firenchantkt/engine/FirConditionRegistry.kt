@@ -1,20 +1,22 @@
-package top.catnies.firenchantkt.condition
+package top.catnies.firenchantkt.engine
 
 import top.catnies.firenchantkt.api.ServiceContainer
-import top.catnies.firenchantkt.condition.impl.PermissionImpl
-import top.catnies.firenchantkt.condition.impl.list.ListContainsImpl
-import top.catnies.firenchantkt.condition.impl.logic.AndImpl
-import top.catnies.firenchantkt.condition.impl.logic.IfImpl
-import top.catnies.firenchantkt.condition.impl.logic.OrImpl
-import top.catnies.firenchantkt.condition.impl.math.GreaterThanImpl
-import top.catnies.firenchantkt.condition.impl.math.GreaterThanOrEqualImpl
-import top.catnies.firenchantkt.condition.impl.math.LessThenImpl
-import top.catnies.firenchantkt.condition.impl.math.LessThenOrEqualImpl
-import top.catnies.firenchantkt.condition.impl.string.ContainsImpl
-import top.catnies.firenchantkt.condition.impl.string.EqualsIgnoreCaseImpl
-import top.catnies.firenchantkt.condition.impl.string.EqualsImpl
+import top.catnies.firenchantkt.engine.condition.Condition
+import top.catnies.firenchantkt.engine.condition.PermissionImpl
+import top.catnies.firenchantkt.engine.condition.list.ListContainsImpl
+import top.catnies.firenchantkt.engine.condition.logic.AndImpl
+import top.catnies.firenchantkt.engine.condition.logic.IfImpl
+import top.catnies.firenchantkt.engine.condition.logic.OrImpl
+import top.catnies.firenchantkt.engine.condition.math.GreaterThanImpl
+import top.catnies.firenchantkt.engine.condition.math.GreaterThanOrEqualImpl
+import top.catnies.firenchantkt.engine.condition.math.LessThenImpl
+import top.catnies.firenchantkt.engine.condition.math.LessThenOrEqualImpl
+import top.catnies.firenchantkt.engine.condition.string.ContainsImpl
+import top.catnies.firenchantkt.engine.condition.string.EqualsIgnoreCaseImpl
+import top.catnies.firenchantkt.engine.condition.string.EqualsImpl
 
 class FirConditionRegistry private constructor() : ConditionRegistry {
+
     companion object {
         val instance by lazy {
             FirConditionRegistry().also {
@@ -55,6 +57,7 @@ class FirConditionRegistry private constructor() : ConditionRegistry {
         return registry.remove(name) != null
     }
 
+    @Suppress("UNCHECKED_CAST")
     override fun <T : Condition> getCondition(name: String): Class<T> {
         return registry[name] as Class<T>
     }

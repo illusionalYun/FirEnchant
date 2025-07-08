@@ -1,9 +1,9 @@
-package top.catnies.firenchantkt.condition.impl.string
+package top.catnies.firenchantkt.engine.condition.string
 
-import top.catnies.firenchantkt.args.ArgumentKey
-import top.catnies.firenchantkt.condition.AbstractCondition
+import top.catnies.firenchantkt.engine.args.ArgumentKey
+import top.catnies.firenchantkt.engine.AbstractCondition
 
-class EqualsImpl(
+class EqualsIgnoreCaseImpl(
     args: Map<String, Any>,
 ) : AbstractCondition(args) {
     @ArgumentKey(["s", "string"])
@@ -13,7 +13,7 @@ class EqualsImpl(
     private lateinit var value: String
 
     override fun getType(): String {
-        return "equals"
+        return "equals_ignore_case"
     }
 
     override fun require(): Boolean {
@@ -21,7 +21,7 @@ class EqualsImpl(
     }
 
     override fun check(): Boolean {
-        return string == value
+        return string.equals(value, true)
     }
 
 }

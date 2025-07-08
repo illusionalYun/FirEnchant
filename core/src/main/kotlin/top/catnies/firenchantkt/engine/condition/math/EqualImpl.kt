@@ -1,9 +1,9 @@
-package top.catnies.firenchantkt.condition.impl.math
+package top.catnies.firenchantkt.engine.condition.math
 
-import top.catnies.firenchantkt.args.ArgumentKey
-import top.catnies.firenchantkt.condition.AbstractCondition
+import top.catnies.firenchantkt.engine.args.ArgumentKey
+import top.catnies.firenchantkt.engine.AbstractCondition
 
-class GreaterThanImpl(
+class EqualImpl(
     args: Map<String, Any>,
 ) : AbstractCondition(args) {
     @ArgumentKey(["v1", "value1"])
@@ -13,7 +13,7 @@ class GreaterThanImpl(
     private var value2: Double = 0.0
 
     override fun getType(): String {
-        return ">"
+        return "=="
     }
 
     override fun require(): Boolean {
@@ -21,7 +21,7 @@ class GreaterThanImpl(
     }
 
     override fun check(): Boolean {
-        return value1 > value2
+        return value1 == value2
     }
 
 }
