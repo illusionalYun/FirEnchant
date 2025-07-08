@@ -43,7 +43,7 @@ class FirEnchantSoul: EnchantSoul {
         if (isEnabled) {
             itemProvider = config.ENCHANT_SOUL_ITEM_PROVIDER?.let { FirItemProviderRegistry.instance.getItemProvider(it) }
             if (itemProvider == null) {
-                Bukkit.getConsoleSender().sendTranslatableComponent(RESOURCE_HOOK_ITEM_PROVIDER_NOT_FOUND, config.fileName, config.ENCHANT_SOUL_ITEM_PROVIDER ?: "未设置")
+                Bukkit.getConsoleSender().sendTranslatableComponent(RESOURCE_HOOK_ITEM_PROVIDER_NOT_FOUND, config.fileName, "enchant-soul", config.ENCHANT_SOUL_ITEM_PROVIDER ?: "null")
                 isEnabled = false
                 return
             }
@@ -51,7 +51,7 @@ class FirEnchantSoul: EnchantSoul {
             itemID = config.ENCHANT_SOUL_ITEM_ID
             val item = itemID?.let { itemProvider?.getItemById(it) }
             if (item == null) {
-                Bukkit.getConsoleSender().sendTranslatableComponent(RESOURCE_HOOK_ITEM_NOT_FOUND, config.fileName, itemID ?: "未设置")
+                Bukkit.getConsoleSender().sendTranslatableComponent(RESOURCE_HOOK_ITEM_NOT_FOUND, config.fileName, "enchant-soul", itemID ?: "null")
                 isEnabled = false
                 return
             }

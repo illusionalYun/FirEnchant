@@ -20,8 +20,7 @@ class AnvilConfig private constructor():
     var EB_FAILURE_CORRECTION_MINMAX_ENABLED: Boolean = false    // 最大最小失败率强制控制功能
     var EB_FAILURE_CORRECTION_MINMAX_MIN: Int = 15               // 低于此失败率的附魔书将必定成功
     var EB_FAILURE_CORRECTION_MINMAX_MAX: Int = 90               // 高于此失败率的附魔书将必定失败
-    var EB_FAILURE_CORRECTION_HISTORY_ENABLE: Boolean = false       // 附魔书的成功/失败历史记录功能
-    lateinit var EB_FAILURE_CORRECTION_HISTORY_CACHE_TYPE: String   // 存储历史记录的方法
+    var EB_FAILURE_CORRECTION_HISTORY_ENABLE: Boolean = false    // 附魔书的成功/失败历史记录功能
     lateinit var EB_MERGE_FAILURE_INHERITANCE: String   // 当两本附魔书合并的结果附魔书的失败率处理模式
     lateinit var EB_MERGE_EXP_COST_MODE: String         // 经验值消耗模式
     var EB_MERGE_EXP_FIXED_VALUE: Int = 18              // 固定模式的值
@@ -59,7 +58,6 @@ class AnvilConfig private constructor():
         EB_FAILURE_CORRECTION_MINMAX_MIN = config().getInt("enchanted-book.failure-correction.min-max-limit.min-success", 15)
         EB_FAILURE_CORRECTION_MINMAX_MAX = config().getInt("enchanted-book.failure-correction.min-max-limit.max-failure", 90)
         EB_FAILURE_CORRECTION_HISTORY_ENABLE = config().getBoolean("enchanted-book.failure-correction.history-compensation.enable", false)
-        EB_FAILURE_CORRECTION_HISTORY_CACHE_TYPE = config().getString("enchanted-book.failure-correction.history-compensation.cache-type", "PDC")!!
         EB_MERGE_FAILURE_INHERITANCE = config().getString("enchanted-book.use-enchanted-book.failure-inheritance", "DEFAULT")!!
         EB_MERGE_EXP_COST_MODE = config().getString("enchanted-book.use-enchanted-book.exp.cost-mode", "FIXED")!!
         EB_MERGE_EXP_FIXED_VALUE = config().getInt("enchanted-book.use-enchanted-book.exp.fixed-value", 18)
@@ -67,8 +65,8 @@ class AnvilConfig private constructor():
         /*魔咒之魂设置*/
         ENCHANT_SOUL_ENABLE = config().getBoolean("enchant-soul.enable", false)
         if (PROTECTION_RUNE_ENABLE) {
-            ENCHANT_SOUL_ITEM_PROVIDER = config().getString("enchant-soul.hooked-plugin")!!
-            ENCHANT_SOUL_ITEM_ID = config().getString("enchant-soul.hooked-id")!!
+            ENCHANT_SOUL_ITEM_PROVIDER = config().getString("enchant-soul.hooked-plugin")
+            ENCHANT_SOUL_ITEM_ID = config().getString("enchant-soul.hooked-id")
             ENCHANT_SOUL_EXP = config().getInt("enchant-soul.exp", 3)
             ENCHANT_SOUL_REDUCE_FAILURE = config().getInt("enchant-soul.reduce-failure", 3)
             ENCHANT_SOUL_MIN_FAILURE = config().getInt("enchant-soul.min-failure", 5)
@@ -78,8 +76,8 @@ class AnvilConfig private constructor():
         /*保护符文设置*/
         PROTECTION_RUNE_ENABLE = config().getBoolean("protection-rune.enable", false)
         if (PROTECTION_RUNE_ENABLE) {
-            PROTECTION_RUNE_ITEM_PROVIDER = config().getString("protection-rune.hooked-plugin")!!
-            PROTECTION_RUNE_ITEM_ID = config().getString("protection-rune.hooked-id")!!
+            PROTECTION_RUNE_ITEM_PROVIDER = config().getString("protection-rune.hooked-plugin")
+            PROTECTION_RUNE_ITEM_ID = config().getString("protection-rune.hooked-id")
             PROTECTION_RUNE_EXP = config().getInt("protection-rune.exp", 18)
         }
 
