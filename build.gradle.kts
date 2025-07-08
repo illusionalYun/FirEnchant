@@ -73,6 +73,7 @@ tasks {
         dependsOn(":nms:v1_21_R3:reobfJar")
         dependsOn(":nms:v1_21_R4:reobfJar")
         dependsOn(":nms:v1_21_R5:reobfJar")
+        mergeServiceFiles()
 
         relocate("cn.chengzhiya", "${project.group}.firenchantkt.libs.cn.chengzhiya")
         relocate("com.saicone", "${project.group}.firenchantkt.libs.com.saicone")

@@ -8,6 +8,7 @@ import top.catnies.firenchantkt.database.impl.FirPlayerEnchantLogDataManager
 import top.catnies.firenchantkt.enchantment.FirEnchantmentManager
 import top.catnies.firenchantkt.integration.FirItemProviderRegistry
 import top.catnies.firenchantkt.integration.IntegrationManager
+import top.catnies.firenchantkt.integration.NMSHandlerHolder
 import top.catnies.firenchantkt.item.FirAnvilItemRegistry
 import top.catnies.firenchantkt.item.FirEnchantingTableRegistry
 import top.catnies.firenchantkt.language.TranslationManager
@@ -26,8 +27,9 @@ class FirEnchantPlugin: JavaPlugin() {
         instance = this
     }
 
-
     override fun onEnable() {
+        NMSHandlerHolder.instance // NMS持有者
+
         ConfigManager.instance // 配置文件管理器
         TranslationManager.instance // 语言管理器
         FirEnchantmentManager.instance // 系统魔咒管理器

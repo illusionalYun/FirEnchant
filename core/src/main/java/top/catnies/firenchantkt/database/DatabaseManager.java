@@ -23,6 +23,5 @@ public interface DatabaseManager {
     /**
      * 初始化表
      */
-    default void initTable() {
-    }
+    default void initTable() {}
 }
