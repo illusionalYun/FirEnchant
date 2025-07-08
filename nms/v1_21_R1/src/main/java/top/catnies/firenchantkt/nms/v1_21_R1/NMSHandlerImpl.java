@@ -28,7 +28,7 @@ public class NMSHandlerImpl implements NMSHandler {
         ItemEnchantments.Mutable mutable = new ItemEnchantments.Mutable(EnchantmentHelper.getEnchantmentsForCrafting(nmsItem.copy()));
         int i = 0;
 
-        boolean hasStoredEnchantments = nmsItem2.has(DataComponents.STORED_ENCHANTMENTS);
+        boolean hasStoredEnchantments = nmsItem2.has(DataComponents.STORED_ENCHANTMENTS) || nmsItem2.has(DataComponents.ENCHANTMENTS);
         ItemEnchantments enchantments = EnchantmentHelper.getEnchantmentsForCrafting(nmsItem2);
         boolean validEnchant = false;
         boolean invalidEnchant = false;
