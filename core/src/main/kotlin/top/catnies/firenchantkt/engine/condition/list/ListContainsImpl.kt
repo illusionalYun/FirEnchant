@@ -12,16 +12,7 @@ class ListContainsImpl(
     @ArgumentKey(["v", "value"])
     private lateinit var value: String
 
-    override fun getType(): String {
-        return "list_contains"
-    }
-
-    override fun require(): Boolean {
-        return true
-    }
-
-    override fun check(): Boolean {
-        return list.contains(value)
-    }
-
+    override fun getType() = "list_contains"
+    override fun require() = true
+    override fun check() = list.contains(value)
 }

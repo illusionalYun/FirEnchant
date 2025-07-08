@@ -9,16 +9,7 @@ class IfImpl(
     @ArgumentKey(["v", "value"])
     private var value: Boolean = false
 
-    override fun getType(): String {
-        return "if"
-    }
-
-    override fun require(): Boolean {
-        return true
-    }
-
-    override fun check(): Boolean {
-        return value
-    }
-
+    override fun getType() = "if"
+    override fun require() = true
+    override fun check() = value
 }

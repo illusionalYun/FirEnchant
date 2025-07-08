@@ -12,16 +12,8 @@ class EqualsIgnoreCaseImpl(
     @ArgumentKey(["v", "value"])
     private lateinit var value: String
 
-    override fun getType(): String {
-        return "equals_ignore_case"
-    }
-
-    override fun require(): Boolean {
-        return true
-    }
-
-    override fun check(): Boolean {
-        return string.equals(value, true)
-    }
+    override fun getType() = "equals_ignore_case"
+    override fun require() = true
+    override fun check() = string.equals(value, true)
 
 }

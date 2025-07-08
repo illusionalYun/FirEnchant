@@ -4,14 +4,10 @@ import org.bukkit.command.CommandSender
 import org.bukkit.configuration.ConfigurationSection
 import top.catnies.firenchantkt.api.FirEnchantAPI
 
-class ConditionManager {
-    companion object {
-        @JvmStatic
-        val instance by lazy { ConditionManager() }
-    }
+object ConditionHelper {
 
-    fun check(user: CommandSender, type: String, args: MutableMap<String, Any>): Boolean {
-        args["user"] = user
+    fun CommandSender.checkCondition(type: String, args: MutableMap<String, Any>): Boolean {
+        args["user"] = this
         var finalType = type
 
         var not = false
@@ -26,17 +22,13 @@ class ConditionManager {
         return not != condition.check()
     }
 
-    fun check(user: CommandSender, config: ConfigurationSection): Boolean {
+    fun CommandSender.checkCondition(config: ConfigurationSection): Boolean {
         val type = config.getString("type")!!
-        val args = mutableMapOf<String, Any>()
-        config.getKeys(false).forEach {
-            args[it] = config.get(it)!!
-        }
-
-        return check(user, type, args)
+        val args = config.getKeys(false).associateWith { config.get(it)!! }.toMutableMap()
+        return checkCondition(type, args)
     }
 
-    fun check(user: CommandSender, configList: List<ConfigurationSection>): Boolean {
-        return configList.all { check(user, it) }
-    }
+
+    fun CommandSender.checkCondition(configList: List<ConfigurationSection>) = configList.all { checkCondition( it) }
+
 }

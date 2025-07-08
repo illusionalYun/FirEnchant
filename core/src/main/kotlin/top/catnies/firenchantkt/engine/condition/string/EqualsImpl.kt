@@ -12,16 +12,8 @@ class EqualsImpl(
     @ArgumentKey(["v", "value"])
     private lateinit var value: String
 
-    override fun getType(): String {
-        return "equals"
-    }
-
-    override fun require(): Boolean {
-        return true
-    }
-
-    override fun check(): Boolean {
-        return string == value
-    }
+    override fun getType() = "equals"
+    override fun require() = true
+    override fun check() = string == value
 
 }

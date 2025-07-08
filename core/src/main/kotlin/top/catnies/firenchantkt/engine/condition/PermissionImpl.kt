@@ -13,15 +13,8 @@ class PermissionImpl(
     @ArgumentKey(["perm", "permission"])
     private lateinit var permission: String
 
-    override fun getType(): String {
-        return "permission"
-    }
+    override fun getType() = "permission"
+    override fun require() = true
+    override fun check() = user.hasPermission(permission)
 
-    override fun require(): Boolean {
-        return true
-    }
-
-    override fun check(): Boolean {
-        return user.hasPermission(permission)
-    }
 }

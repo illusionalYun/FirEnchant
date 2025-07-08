@@ -12,16 +12,8 @@ class GreaterThanImpl(
     @ArgumentKey(["v2", "value2"])
     private var value2: Double = 0.0
 
-    override fun getType(): String {
-        return ">"
-    }
-
-    override fun require(): Boolean {
-        return true
-    }
-
-    override fun check(): Boolean {
-        return value1 > value2
-    }
+    override fun getType() = ">"
+    override fun require() = true
+    override fun check() = value1 > value2
 
 }

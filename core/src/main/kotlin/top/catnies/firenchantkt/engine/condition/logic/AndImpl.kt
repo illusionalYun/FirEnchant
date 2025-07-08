@@ -4,7 +4,7 @@ import org.bukkit.command.CommandSender
 import org.bukkit.configuration.ConfigurationSection
 import top.catnies.firenchantkt.engine.args.ArgumentKey
 import top.catnies.firenchantkt.engine.AbstractCondition
-import top.catnies.firenchantkt.engine.ConditionManager
+import top.catnies.firenchantkt.engine.ConditionHelper.checkCondition
 
 class AndImpl(
     args: Map<String, Any>,
@@ -15,16 +15,8 @@ class AndImpl(
     @ArgumentKey(["conditions", "condition"])
     private lateinit var conditions: List<ConfigurationSection>
 
-    override fun getType(): String {
-        return "&&"
-    }
-
-    override fun require(): Boolean {
-        return true
-    }
-
-    override fun check(): Boolean {
-        return ConditionManager.instance.check(user, conditions)
-    }
+    override fun getType() = "&&"
+    override fun require() = true
+    override fun check() = user.checkCondition(conditions)
 
 }
