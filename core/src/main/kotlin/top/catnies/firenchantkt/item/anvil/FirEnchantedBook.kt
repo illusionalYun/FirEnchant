@@ -16,9 +16,12 @@ import top.catnies.firenchantkt.api.event.anvilapplicable.EnchantedBookPreUseEve
 import top.catnies.firenchantkt.api.event.anvilapplicable.EnchantedBookUseEvent
 import top.catnies.firenchantkt.config.AnvilConfig
 import top.catnies.firenchantkt.context.AnvilContext
+import top.catnies.firenchantkt.database.PlayerEnchantLogData
+import top.catnies.firenchantkt.database.PlayerEnchantLogDataManager
 import top.catnies.firenchantkt.enchantment.EnchantmentSetting
 import top.catnies.firenchantkt.enchantment.FirEnchantmentSettingFactory
 import top.catnies.firenchantkt.util.ItemUtils.isCompatibleWithEnchantment
+import java.util.Random
 import kotlin.math.max
 import kotlin.math.min
 
@@ -84,8 +87,8 @@ class FirEnchantedBook : EnchantedBook {
 
 
     override fun onCost(event: InventoryClickEvent, context: AnvilContext) {
-        val setting = FirEnchantmentSettingFactory.fromItemStack(context.secondItem)!!
         val firstSetting = FirEnchantmentSettingFactory.fromItemStack(context.firstItem)
+        val setting = FirEnchantmentSettingFactory.fromItemStack(context.secondItem)!!
         val originEnchantment = setting.data.originEnchantment
         val resultItem = context.result!!
         val anvilView = event.view as AnvilView
@@ -104,7 +107,7 @@ class FirEnchantedBook : EnchantedBook {
             context.firstItem.isCompatibleWithEnchantment(originEnchantment, setting.level) -> {
                 val useEvent = EnchantedBookUseEvent(
                     context.viewer, event, anvilView, context.firstItem, setting, resultItem,
-                    isSuccess(context.viewer, setting.failure)
+                    isSuccess(context.viewer, originEnchantment.key.asString(), anvilView.repairCost, setting.failure)
                 )
                 Bukkit.getPluginManager().callEvent(useEvent)
                 if (useEvent.isCancelled) {
@@ -164,8 +167,19 @@ class FirEnchantedBook : EnchantedBook {
     }
 
     // 根据失败率判断是否成功
-    private fun isSuccess(player: Player, failure: Int): Boolean {
+    private fun isSuccess(player: Player, enchantment: String, level: Int, failure: Int): Boolean {
         // TODO (研究一下更合适的算法, 纯随机玩家表示受不了, 另外要注意config里可能会有兜底和其他方案)
-        return true
+        val random = (0..100).random()
+        val success = random < failure
+
+        val log = PlayerEnchantLogData()
+        log.player = player.uniqueId
+        log.enchantment = enchantment
+        log.takeLevel = level
+        log.random = random
+        log.isSuccess = success
+        FirEnchantAPI.playerEnchantLogDataManager.invoke().update(log, true)
+
+        return success
     }
 }
