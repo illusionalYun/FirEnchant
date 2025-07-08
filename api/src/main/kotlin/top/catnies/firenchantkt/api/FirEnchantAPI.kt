@@ -14,6 +14,7 @@ import top.catnies.firenchantkt.integration.ItemProviderRegistry
 import top.catnies.firenchantkt.item.AnvilItemRegistry
 import top.catnies.firenchantkt.item.EnchantingTableItemRegistry
 import top.catnies.firenchantkt.item.FixTableItemRegistry
+import top.catnies.firenchantkt.item.anvil.PowerRune
 import top.catnies.firenchantkt.item.anvil.ProtectionRune
 import top.catnies.firenchantkt.item.fixtable.BrokenGear
 
@@ -84,6 +85,24 @@ object FirEnchantAPI {
     fun removeProtectionRune(item: ItemStack) {
         val protectionRune = ServiceContainer.get(AnvilItemRegistry::class.java).getItem(ProtectionRune::class.java) ?: throw IllegalStateException("ProtectionRune is not registered.")
         protectionRune.removeProtectionRune(item)
+    }
+
+
+    /**
+     * 升级符文的相关检查, 检查物品, 使用.
+     */
+    @NotNull
+    fun getPowerRuneChance(powerRuneItem: ItemStack): Int {
+        val powerRune = ServiceContainer.get(AnvilItemRegistry::class.java).getItem(PowerRune::class.java) ?: throw IllegalStateException("PowerRune is not registered.")
+        return powerRune.getChance(powerRuneItem)
+    }
+    fun canUsePowerRune(item: ItemStack): Boolean {
+        val powerRune = ServiceContainer.get(AnvilItemRegistry::class.java).getItem(PowerRune::class.java) ?: throw IllegalStateException("PowerRune is not registered.")
+        return powerRune.canUpgrade(item)
+    }
+    fun applyPowerRune(item: ItemStack) {
+        val powerRune = ServiceContainer.get(AnvilItemRegistry::class.java).getItem(PowerRune::class.java) ?: throw IllegalStateException("PowerRune is not registered.")
+        powerRune.upgrade(item)
     }
 
 

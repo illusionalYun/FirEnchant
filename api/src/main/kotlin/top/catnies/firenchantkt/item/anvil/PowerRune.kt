@@ -5,7 +5,7 @@ import top.catnies.firenchantkt.item.AnvilApplicable
 
 interface PowerRune: AnvilApplicable {
 
-    // 获取升级符文的成功率
+    // 获取升级符文的成功率, 无效返回 0.
     fun getChance(item: ItemStack): Int
 
     // 检查一件物品能不能使用升级符文升级

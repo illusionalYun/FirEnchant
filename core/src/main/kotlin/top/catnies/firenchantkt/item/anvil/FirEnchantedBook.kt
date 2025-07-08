@@ -49,6 +49,7 @@ class FirEnchantedBook : EnchantedBook {
 
         when {
             // 如果第一件物品也是附魔书, 触发合并逻辑.
+            // TODO 应当也受到 REPAIR_COST 的影响. 转换成 Setting 是否需要额外保留 REPAIR_COST?
             isEnchantedBookMerge(firstSetting, setting) -> {
                 // 计算结果
                 val resultSetting = FirEnchantmentSettingFactory.fromAnother(firstSetting!!).apply {
