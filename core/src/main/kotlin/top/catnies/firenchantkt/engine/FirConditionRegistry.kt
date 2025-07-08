@@ -1,6 +1,8 @@
 package top.catnies.firenchantkt.engine
 
+import org.bukkit.Bukkit
 import top.catnies.firenchantkt.api.ServiceContainer
+import top.catnies.firenchantkt.api.event.ConditionRegisterEvent
 import top.catnies.firenchantkt.engine.condition.Condition
 import top.catnies.firenchantkt.engine.condition.PermissionImpl
 import top.catnies.firenchantkt.engine.condition.list.ListContainsImpl
@@ -47,6 +49,7 @@ class FirConditionRegistry private constructor() : ConditionRegistry {
         registerCondition("permission", PermissionImpl::class.java)
 
         ServiceContainer.register(ConditionRegistry::class.java, this)
+        Bukkit.getPluginManager().callEvent(ConditionRegisterEvent(this))
     }
 
     override fun <T : Condition> registerCondition(name: String, condition: Class<T>) {
