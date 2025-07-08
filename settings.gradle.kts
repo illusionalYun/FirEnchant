@@ -15,3 +15,8 @@ pluginManagement {
         maven("https://repo.papermc.io/repository/maven-public/") // Paper Weight
     }
 }
+
+plugins {
+    // add toolchain resolver
+    id("org.gradle.toolchains.foojay-resolver-convention") version "0.9.0"
+}

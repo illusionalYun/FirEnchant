@@ -1,5 +1,6 @@
 package top.catnies.firenchantkt.item.anvil
 
+import io.papermc.paper.datacomponent.DataComponentTypes
 import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.entity.Player
@@ -10,9 +11,9 @@ import org.bukkit.inventory.view.AnvilView
 import top.catnies.firenchantkt.FirEnchantPlugin
 import top.catnies.firenchantkt.api.FirEnchantAPI
 import top.catnies.firenchantkt.api.event.anvilapplicable.EnchantedBookMergeEvent
-import top.catnies.firenchantkt.api.event.anvilapplicable.EnchantedBookUseEvent
 import top.catnies.firenchantkt.api.event.anvilapplicable.EnchantedBookPreMergeEvent
 import top.catnies.firenchantkt.api.event.anvilapplicable.EnchantedBookPreUseEvent
+import top.catnies.firenchantkt.api.event.anvilapplicable.EnchantedBookUseEvent
 import top.catnies.firenchantkt.config.AnvilConfig
 import top.catnies.firenchantkt.context.AnvilContext
 import top.catnies.firenchantkt.enchantment.EnchantmentSetting
@@ -21,7 +22,7 @@ import top.catnies.firenchantkt.util.ItemUtils.isCompatibleWithEnchantment
 import kotlin.math.max
 import kotlin.math.min
 
-class FirEnchantedBook() : EnchantedBook {
+class FirEnchantedBook : EnchantedBook {
 
     companion object {
         val plugin = FirEnchantPlugin.instance
@@ -51,7 +52,8 @@ class FirEnchantedBook() : EnchantedBook {
             else getMergeRepairCost(firstSetting, setting)
 
             // 触发事件
-            val enchantedBookPreMergeEvent = EnchantedBookPreMergeEvent(context.viewer, event, costExp, firstSetting, setting, resultSetting)
+            val enchantedBookPreMergeEvent =
+                EnchantedBookPreMergeEvent(context.viewer, event, costExp, firstSetting, setting, resultSetting)
             Bukkit.getPluginManager().callEvent(enchantedBookPreMergeEvent)
             if (enchantedBookPreMergeEvent.isCancelled) return
 
@@ -63,14 +65,29 @@ class FirEnchantedBook() : EnchantedBook {
         // 如果第一件物品是普通物品, 检查是否可以附魔.
         else if (context.firstItem.isCompatibleWithEnchantment(originEnchantment)) {
             // 计算结果
-            val resultItem = context.firstItem.clone().apply { addEnchantment(setting.data.originEnchantment, setting.level) }
+            val resultItem = context.firstItem.clone()
+            val oldLevel = resultItem.getEnchantmentLevel(setting.data.originEnchantment);
+            var level = setting.level
+            if (oldLevel >= setting.level) {
+                return
+            }
+
+            if (oldLevel == setting.level) {
+                level++
+            }
+
+            val repairCost: Int = resultItem.getDataOrDefault(DataComponentTypes.REPAIR_COST, 0)!!
 
             // 计算经验消耗
             val costExp = if (config.EB_USE_EXP_COST_MODE.uppercase() == "FIXED") config.EB_USE_EXP_FIXED_VALUE
-            else getUseRepairCost(context.firstItem, setting)
+            else getUseRepairCost(context.firstItem, setting, level, repairCost)
+
+            resultItem.setData(DataComponentTypes.REPAIR_COST, repairCost * 2 + 1)
+            resultItem.addEnchantment(setting.data.originEnchantment, setting.level)
 
             // 触发事件
-            val enchantedBookPreUseEvent = EnchantedBookPreUseEvent(context.viewer, event, costExp, context.firstItem, setting, resultItem)
+            val enchantedBookPreUseEvent =
+                EnchantedBookPreUseEvent(context.viewer, event, costExp, context.firstItem, setting, resultItem)
             Bukkit.getPluginManager().callEvent(enchantedBookPreUseEvent)
             if (enchantedBookPreUseEvent.isCancelled) return
 
@@ -93,7 +110,8 @@ class FirEnchantedBook() : EnchantedBook {
             val anvilView = event.view as AnvilView
 
             // 触发事件
-            val enchantedBookMergeEvent = EnchantedBookMergeEvent(context.viewer, event, anvilView, firstSetting!!, setting, resultItem)
+            val enchantedBookMergeEvent =
+                EnchantedBookMergeEvent(context.viewer, event, anvilView, firstSetting!!, setting, resultItem)
             Bukkit.getPluginManager().callEvent(enchantedBookMergeEvent)
             if (enchantedBookMergeEvent.isCancelled) {
                 event.isCancelled = true
@@ -165,7 +183,10 @@ class FirEnchantedBook() : EnchantedBook {
     }
 
     // 根据模式计算合并附魔书时最终附魔书的失败率
-    private fun getMergeEnchantmentFailureRate(firstSetting: EnchantmentSetting, secondSetting: EnchantmentSetting): Int {
+    private fun getMergeEnchantmentFailureRate(
+        firstSetting: EnchantmentSetting,
+        secondSetting: EnchantmentSetting
+    ): Int {
         return when (config.EB_MERGE_FAILURE_INHERITANCE) {
             "HIGHER" -> max(firstSetting.failure, secondSetting.failure)
             "LOWER" -> min(firstSetting.failure, secondSetting.failure)
@@ -174,6 +195,7 @@ class FirEnchantedBook() : EnchantedBook {
                 val max = max(firstSetting.failure, secondSetting.failure)
                 (min..max).random()
             }
+
             else -> firstSetting.failure
         }
     }
@@ -183,8 +205,9 @@ class FirEnchantedBook() : EnchantedBook {
     private fun getMergeRepairCost(firstSetting: EnchantmentSetting, secondSetting: EnchantmentSetting): Int {
         return 10
     }
-    private fun getUseRepairCost(item: ItemStack, setting: EnchantmentSetting): Int {
-        return 10
+
+    private fun getUseRepairCost(item: ItemStack, setting: EnchantmentSetting, level: Int, repairCost: Int): Int {
+        return setting.data.originEnchantment.anvilCost * level + repairCost
     }
 
     // 根据失败率判断是否成功

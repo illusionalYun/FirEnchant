@@ -11,11 +11,14 @@ dependencies {
     implementation(project(":core"))
     implementation(project(":api"))
     implementation(project(":compatibility"))
-    implementation(project(path = ":nms:v1_21_R1", configuration = "reobf"))
-    implementation(project(path = ":nms:v1_21_R2", configuration = "reobf"))
-    implementation(project(path = ":nms:v1_21_R3", configuration = "reobf"))
-    implementation(project(path = ":nms:v1_21_R4", configuration = "reobf"))
-    implementation(project(path = ":nms:v1_21_R5", configuration = "reobf"))
+    implementation(project(path = ":nms:v1_21_R1"))
+    implementation(project(path = ":nms:v1_21_R2"))
+    implementation(project(path = ":nms:v1_21_R3"))
+    implementation(project(path = ":nms:v1_21_R4"))
+    implementation(project(path = ":nms:v1_21_R5"))
+    apply(plugin = "com.gradleup.shadow")
+
+    group = "top.catnies"
 }
 
 
@@ -24,9 +27,6 @@ allprojects {
     // 应用插件到子项目
     apply(plugin = "java")
     apply(plugin = "org.jetbrains.kotlin.jvm")
-    apply(plugin = "com.gradleup.shadow")
-
-    group = "top.catnies"
     version = "${rootProject.properties["project.version"]}"
     kotlin.jvmToolchain(21)
     java.sourceCompatibility = JavaVersion.VERSION_21
@@ -49,14 +49,15 @@ allprojects {
 
     dependencies {
         compileOnly("io.papermc.paper:paper-api:${rootProject.properties["server.paper.version"]}") // PAPER
-        implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8") // Kotlin STD
+        compileOnly("org.jetbrains.kotlin:kotlin-stdlib-jdk8") // Kotlin STD
+
         compileOnly("org.projectlombok:lombok:${rootProject.properties["lib.lombok.version"]}") // Lombok
         annotationProcessor("org.projectlombok:lombok:${rootProject.properties["lib.lombok.version"]}") // Lombok
 
         // 依赖库
         implementation("cn.chengzhiya:MHDF-Scheduler:${rootProject.properties["lib.mhdf.scheduler.version"]}") // Scheduler
-        implementation("com.saicone.rtag:rtag:${rootProject.properties["lib.rtag.version"]}") // RTag
-        implementation("com.saicone.rtag:rtag-item:${rootProject.properties["lib.rtag.version"]}") // RTag
+        compileOnly("com.saicone.rtag:rtag:${rootProject.properties["lib.rtag.version"]}") // RTag
+        compileOnly("com.saicone.rtag:rtag-item:${rootProject.properties["lib.rtag.version"]}") // RTag
     }
 }
 
@@ -83,6 +84,10 @@ tasks {
 
         archiveFileName.set("${project.name}-${project.version}.jar")
         destinationDirectory.set(file("$rootDir/target"))
+
+        manifest {
+            attributes["paperweight-mappings-namespace"] = "mojang"
+        }
     }
 
     runServer {

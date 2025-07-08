@@ -1,6 +1,7 @@
 package top.catnies.firenchantkt.enchantment
 
 import com.saicone.rtag.RtagItem
+import io.papermc.paper.datacomponent.DataComponentTypes
 import org.bukkit.inventory.ItemStack
 import top.catnies.firenchantkt.util.ItemUtils.nullOrAir
 
@@ -26,7 +27,9 @@ class FirEnchantmentSetting(
     }
 
     // 注入自定义数据
+    @Suppress("UnstableApiUsage")
     private fun injectCustomData(item: ItemStack): ItemStack {
+        item.setData(DataComponentTypes.MAX_STACK_SIZE, 1)
         RtagItem.of(item). let { tag ->
             tag.set(data.key.asString(), "FirEnchant", "Enchantment")
             tag.set(level, "FirEnchant", "Level")
