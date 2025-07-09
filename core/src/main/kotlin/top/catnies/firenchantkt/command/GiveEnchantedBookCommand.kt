@@ -10,12 +10,12 @@ import io.papermc.paper.command.brigadier.argument.ArgumentTypes
 import io.papermc.paper.command.brigadier.argument.range.IntegerRangeProvider
 import io.papermc.paper.command.brigadier.argument.resolvers.selector.PlayerSelectorArgumentResolver
 import io.papermc.paper.registry.RegistryKey
-import net.kyori.adventure.text.Component
 import org.bukkit.enchantments.Enchantment
 import top.catnies.firenchantkt.api.FirEnchantAPI
 import top.catnies.firenchantkt.language.MessageConstants.COMMAND_GIVE_BOOK_ENCHANTMENT_NOT_FOUND
 import top.catnies.firenchantkt.language.MessageConstants.COMMAND_GIVE_BOOK_ENCHANTMENT_SUCCESS_RECEIVE
 import top.catnies.firenchantkt.util.MessageUtils.sendTranslatableComponent
+import top.catnies.firenchantkt.util.PlayerUtils.giveOrDrop
 import java.util.concurrent.ThreadLocalRandom
 
 /**
@@ -44,7 +44,8 @@ object GiveEnchantedBookCommand: AbstractCommand() {
     }
 
     override fun execute(context: CommandContext<CommandSourceStack>): Int {
-        val enchantmentKey = context.getArgument("enchantment", Enchantment::class.java).key()
+        val enchantment = context.getArgument("enchantment", Enchantment::class.java)
+        val enchantmentKey = enchantment.key()
         val levelRange = context.getArgument("level", IntegerRangeProvider::class.java)
         val failureRange = context.getArgument("failure", IntegerRangeProvider::class.java)
         val consumedSoulsRange = if (context.nodes.last().node.name == "consumedSouls") context.getArgument("consumedSouls", IntegerRangeProvider::class.java) else null
@@ -63,11 +64,11 @@ object GiveEnchantedBookCommand: AbstractCommand() {
         val targetResolver = context.getArgument("player", PlayerSelectorArgumentResolver::class.java)
         val players = targetResolver.resolve(context.source)
         players.forEach { player ->
-            player.inventory.addItem(enchantmentSetting.toItemStack())
+            player.giveOrDrop(enchantmentSetting.toItemStack())
             player.sendTranslatableComponent(COMMAND_GIVE_BOOK_ENCHANTMENT_SUCCESS_RECEIVE, context.source.sender.name, enchantmentKey.asString(), level.toString(), failure.toString(), consumedSouls.toString())
         }
-
-        context.source.sender.sendTranslatableComponent(COMMAND_GIVE_BOOK_ENCHANTMENT_SUCCESS_RECEIVE, players.toString(), enchantmentKey.asString(), level.toString(), failure.toString(), consumedSouls.toString())
+        val receivers = players.map { it.name }.toString()
+        context.source.sender.sendTranslatableComponent(COMMAND_GIVE_BOOK_ENCHANTMENT_SUCCESS_RECEIVE, receivers, enchantmentKey.asString(), level.toString(), failure.toString(), consumedSouls.toString())
         return Command.SINGLE_SUCCESS
     }
 
@@ -78,14 +79,14 @@ object GiveEnchantedBookCommand: AbstractCommand() {
             throw IllegalArgumentException("Range 不能为空.")
         }
         if (!range.hasLowerBound() || !range.hasUpperBound()) {
-            throw IllegalArgumentException("Range 必须有上下界.");
+            throw IllegalArgumentException("Range 必须有上下界.")
         }
 
         val lower = range.lowerEndpoint()
         val upper = range.upperEndpoint()
 
         if (lower > upper) {
-            throw IllegalArgumentException("调整后的范围无效");
+            throw IllegalArgumentException("调整后的范围无效")
         }
 
         return ThreadLocalRandom.current().nextInt(lower, upper + 1)
