@@ -1,3 +1,46 @@
 # 这个文件主要负责配置将插件附魔书转换成魔咒之魂的功能。
 # 如果您发现了任何Bug/需要寻求帮助，您可以在我们的售后群联系 “那谁QQ1286071831” 进行反馈处理;
 
+# 菜单设置
+menu-setting:
+  # 菜单标题
+  title: "<white><shift:-8><image:minecraft:soul_decompose>"
+  # 菜单结构
+  structure:
+    - "X # # # # # # # ?"
+    - "I I I I I I I I I"
+    - "I I I I I I I I I"
+    - "I I I I I I I I I"
+    - "# # # # # # # # #"
+    - "# # # # O # # # #"
+  # 放入附魔书的物品栏槽位
+  input-slot: 'I'
+  # 输出材料的物品槽位
+  output-slot: 'O'
+  # 其他自定义槽位, 请勿和上方的槽位冲突
+  custom-items:
+    'X':
+      hooked-plugin: "Vanilla"
+      hooked-id: PAPER
+      item-name: "<red>关闭"
+      lore: []
+      amount: 1
+      custom-model-data: 31001
+      item-model: "minecraft:item/paper"
+      click-actions:
+        - type: send_message    # 发送消息
+          content: ""
+        - type: play_sound      # 点击音效
+          sound: "ui.button.click"
+        - type: close_inventory # 关闭菜单
+    '?':
+      hooked-plugin: "Vanilla"
+      hooked-id: PAPER
+      item-name: "<yellow>提示"
+      lore:
+        - "§7你可以在这里将附魔书转换成魔咒之尘。"
+      amount: 1
+      custom-model-data: 31001
+      click-actions:
+        - type: play_sound      # 点击音效
+          sound: "ui.button.click"
