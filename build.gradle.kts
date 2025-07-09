@@ -88,6 +88,15 @@ tasks {
         dependsOn(jar)
         minecraftVersion("1.21.7")
 
+        // 在运行服务器之前执行部分插件依赖复制
+        doFirst {
+            copy {
+                from("$rootDir/compatibility/libs")
+                into("$rootDir/run/plugins")
+                duplicatesStrategy = DuplicatesStrategy.INCLUDE
+            }
+        }
+
         downloadPlugins {
             hangar("PlaceholderAPI", "2.11.6")
         }
