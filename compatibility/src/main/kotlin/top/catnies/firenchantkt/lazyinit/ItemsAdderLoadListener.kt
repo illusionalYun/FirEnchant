@@ -11,6 +11,7 @@ class ItemsAdderLoadListener(
 
     @EventHandler
     fun onItemsAdderLoad(event: ItemsAdderLoadDataEvent){
+        if (plugin.isInitializedRegistry) return
         plugin.initRegistry()
     }
 

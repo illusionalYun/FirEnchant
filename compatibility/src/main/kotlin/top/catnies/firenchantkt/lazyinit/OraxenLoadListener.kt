@@ -11,6 +11,7 @@ class OraxenLoadListener(
 
     @EventHandler
     fun onOraxenItemsLoad(event: OraxenItemsLoadedEvent){
+        if (plugin.isInitializedRegistry) return
         plugin.initRegistry()
     }
 

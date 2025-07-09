@@ -11,6 +11,7 @@ class NexoLoadListener(
 
     @EventHandler
     fun onNexoItemsLoad(event: NexoItemsLoadedEvent){
+        if (plugin.isInitializedRegistry) return
         plugin.initRegistry()
     }
 

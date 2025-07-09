@@ -29,6 +29,7 @@ class FirEnchantPlugin: JavaPlugin(), FirEnchant {
         var instance by Delegates.notNull<FirEnchantPlugin>()
     }
 
+    override var isInitializedRegistry = false
 
     override fun onLoad() {
         instance = this
@@ -91,6 +92,11 @@ class FirEnchantPlugin: JavaPlugin(), FirEnchant {
 
     // 初始化注册表
     override fun initRegistry() {
+        if (isInitializedRegistry) {
+            logger.warning("警告, 插件试图重复初始化注册表, 不应发生这样的问题, 请联系开发者反馈.")
+            return
+        }
+        isInitializedRegistry = true
         IntegrationManager.instance // 关联插件集成管理器
 
         FirItemProviderRegistry.instance // 物品集成注册表

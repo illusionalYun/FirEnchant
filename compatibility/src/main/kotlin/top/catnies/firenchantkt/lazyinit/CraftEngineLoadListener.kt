@@ -11,6 +11,7 @@ class CraftEngineLoadListener(
 
     @EventHandler
     fun onCraftEngineLoad(event: CraftEngineReloadEvent){
+        if (plugin.isInitializedRegistry) return
         plugin.initRegistry()
     }
 

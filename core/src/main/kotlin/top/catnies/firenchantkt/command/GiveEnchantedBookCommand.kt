@@ -13,6 +13,7 @@ import io.papermc.paper.registry.RegistryKey
 import org.bukkit.enchantments.Enchantment
 import top.catnies.firenchantkt.api.FirEnchantAPI
 import top.catnies.firenchantkt.language.MessageConstants.COMMAND_GIVE_BOOK_ENCHANTMENT_NOT_FOUND
+import top.catnies.firenchantkt.language.MessageConstants.COMMAND_GIVE_BOOK_ENCHANTMENT_SUCCESS_EXECUTE
 import top.catnies.firenchantkt.language.MessageConstants.COMMAND_GIVE_BOOK_ENCHANTMENT_SUCCESS_RECEIVE
 import top.catnies.firenchantkt.util.MessageUtils.sendTranslatableComponent
 import top.catnies.firenchantkt.util.PlayerUtils.giveOrDrop
@@ -68,7 +69,7 @@ object GiveEnchantedBookCommand: AbstractCommand() {
             player.sendTranslatableComponent(COMMAND_GIVE_BOOK_ENCHANTMENT_SUCCESS_RECEIVE, context.source.sender.name, enchantmentKey, level.toString(), failure.toString(), consumedSouls.toString())
         }
         val receivers = players.map { it.name }.toString()
-        context.source.sender.sendTranslatableComponent(COMMAND_GIVE_BOOK_ENCHANTMENT_SUCCESS_RECEIVE, receivers, enchantmentKey, level.toString(), failure.toString(), consumedSouls.toString())
+        context.source.sender.sendTranslatableComponent(COMMAND_GIVE_BOOK_ENCHANTMENT_SUCCESS_EXECUTE, receivers, enchantmentKey, level.toString(), failure.toString(), consumedSouls.toString())
         return Command.SINGLE_SUCCESS
     }
 
