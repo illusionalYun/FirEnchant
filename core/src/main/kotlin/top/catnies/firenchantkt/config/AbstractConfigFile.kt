@@ -4,6 +4,8 @@ import org.bukkit.configuration.file.YamlConfiguration
 import top.catnies.firenchantkt.FirEnchantPlugin
 import java.io.File
 import kotlin.properties.Delegates
+import kotlin.properties.ReadWriteProperty
+import kotlin.reflect.KProperty
 
 abstract class AbstractConfigFile(
     val fileName: String
@@ -36,5 +38,18 @@ abstract class AbstractConfigFile(
     fun reload() {
         initFile()
         loadConfig()
+    }
+
+    // 自定义属性委托
+    protected class ConfigProperty<T>(private val defaultValue: T) : ReadWriteProperty<Any?, T> {
+        private var value: T = defaultValue
+
+        override fun getValue(thisRef: Any?, property: KProperty<*>): T {
+            return value
+        }
+
+        override fun setValue(thisRef: Any?, property: KProperty<*>, value: T) {
+            this.value = value
+        }
     }
 }
