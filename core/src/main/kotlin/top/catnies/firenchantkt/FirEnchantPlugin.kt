@@ -17,6 +17,7 @@ import top.catnies.firenchantkt.language.TranslationManager
 import top.catnies.firenchantkt.lazyinit.CraftEngineLoadListener
 import top.catnies.firenchantkt.lazyinit.ItemsAdderLoadListener
 import top.catnies.firenchantkt.lazyinit.NexoLoadListener
+import top.catnies.firenchantkt.lazyinit.OraxenLoadListener
 import top.catnies.firenchantkt.listener.ListenerManger
 import top.catnies.firenchantkt.util.MessageUtils.sendTranslatableComponent
 import kotlin.properties.Delegates
@@ -71,6 +72,11 @@ class FirEnchantPlugin: JavaPlugin(), FirEnchant {
             Bukkit.getPluginManager().getPlugin("Nexo") != null -> {
                 Bukkit.getPluginManager().registerEvents(NexoLoadListener(this), this)
                 Bukkit.getConsoleSender().sendTranslatableComponent(PLUGIN_COMPATIBILITY_HOOK_SUCCESS, "Nexo")
+            }
+            // Oraxen
+            Bukkit.getPluginManager().getPlugin("Oraxen") != null -> {
+                Bukkit.getPluginManager().registerEvents(OraxenLoadListener(this), this)
+                Bukkit.getConsoleSender().sendTranslatableComponent(PLUGIN_COMPATIBILITY_HOOK_SUCCESS, "Oraxen")
             }
             // ItemsAdder
             Bukkit.getPluginManager().getPlugin("ItemsAdder") != null -> {
