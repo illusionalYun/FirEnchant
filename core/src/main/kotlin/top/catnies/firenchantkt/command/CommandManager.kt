@@ -3,6 +3,7 @@ package top.catnies.firenchantkt.command
 import io.papermc.paper.command.brigadier.Commands
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents
 import top.catnies.firenchantkt.FirEnchantPlugin
+import top.catnies.firenchantkt.command.openmenu.ExtractSoulMenuCommand
 
 class CommandManager private constructor() {
     val plugin get() = FirEnchantPlugin.instance
@@ -24,12 +25,19 @@ class CommandManager private constructor() {
         // 为根命令添加权限检查
         val root = Commands.literal("firenchant").requires {
             return@requires it.sender.hasPermission("firenchant.command")
+        }.apply {
+            // 添加子命令
+            then(VersionCommand.create()) // 版本命令
+            then(ReloadCommand.create()) // 重载插件命令
+            then(GiveEnchantedBookCommand.create()) // 给予附魔书命令
         }
 
-        // 添加子命令
-        root.then(VersionCommand.create()) // 版本命令
-        root.then(ReloadCommand.create()) // 重载插件命令
-        root.then(GiveEnchantedBookCommand.create()) // 给予附魔书命令
+        // 开启菜单命令
+        val menuRoot = Commands.literal("openmenu").requires {
+            return@requires it.sender.hasPermission("firenchant.command.openmenu")
+        }.also { root.then(it) }.apply {
+            then(ExtractSoulMenuCommand.create()) // 灵魂提取菜单
+        }
 
         // 注册命令到服务器
         val lifecycleEventManager = plugin.lifecycleManager

@@ -4,6 +4,7 @@ database.connect.error: "<#96f896>[FirEnchant] <red>插件无法连接到数据�
 
 command.no_permission: "<#96f896>[FirEnchant] <red>您没有权限执行此命令。</red>"
 command.reload.success: "<#96f896>[FirEnchant] <#cef8f5>配置文件重新加载完成，耗时 <green><arg:0></green> 毫秒。</#cef8f5>"
+command.console.cant_execute: "<#96f896>[FirEnchant] <#cef8f5>控制台不能执行这条命令喵，如果命令中有玩家参数请补全参数！"
 command.give_book.enchantment.not_found: "<#96f896>[FirEnchant] <#cef8f5>魔咒 <arg:0> 不存在，请检查您的命令合法性。</#cef8f5>"
 command.give_book.enchantment.success.receive: "<#96f896>[FirEnchant] <#cef8f5>成功收到了来自 <arg:0> 给予的 <arg:1> 附魔书(等级 <arg:2>, 失败率 <arg:3>, 灵魂使用次数 <arg:4>)。</#cef8f5>"
 command.give_book.enchantment.success.execute: "<#96f896>[FirEnchant] <#cef8f5>成功给予 <arg:0> 玩家 <arg:1> 附魔书(等级 <arg:2>, 失败率 <arg:3>, 灵魂使用次数 <arg:4>)。</#cef8f5>"
@@ -13,6 +14,7 @@ resource.enchantment.file.provider.not_found: "<#96f896>[FirEnchant] <red>魔咒
 resource.enchantment.file.item.not_found: "<#96f896>[FirEnchant] <red>魔咒 <arg:0> 的配置文件中指定了物品 <arg:1> 不存在，魔咒数据无法正常加载，请修正后再试。</red>"
 resource.hook.item_provider.not_found: "<#96f896>[FirEnchant] <red>在 <arg:0> 配置文件中 <arg:1> 指定的物品提供插件 <arg:2> 不存在或不受支持，请修正后再试。</red>"
 resource.hook.item.not_found: "<#96f896>[FirEnchant] <red>在 <arg:0> 配置文件中 <arg:1> 指定的物品ID <arg:2> 不存在，请修正后再试。</red>"
+resource.menu.structure.error: "<#96f896>[FirEnchant] <red>在 <arg:0> 配置文件中设置的菜单结构错误，请修正后再试。</red>"
 
 plugin.compatibility.hook.success: "<#96f896>[FirEnchant] <#cef8f5>检查到服务器存在插件 <arg:0> ，已进行关联兼容。"
 plugin.condition.args.invalid: "<#96f896>[FirEnchant] <#cef8f5>检查到配置条件 <arg:0> 缺少 <arg:1> 参数，请检查后再试。"
