@@ -18,8 +18,7 @@ class RecipeListener: Listener {
     fun onPrepareAnvilEvent(event: PrepareAnvilEvent){
         if (event.inventory.viewers.isEmpty()) return
         val player = event.inventory.viewers.first() as? Player ?: return
-        val firstItem = event.inventory.getItem(0) ?: return
-        val secondItem = event.inventory.getItem(1) ?: return
+        val (firstItem, secondItem) = event.inventory.getItem(0) to event.inventory.getItem(1)
         if (firstItem.nullOrAir() || secondItem.nullOrAir()) return
 
         // 找到物品对应的处理器
@@ -35,8 +34,7 @@ class RecipeListener: Listener {
     fun onPrepareResultEvent(event: PrepareResultEvent) {
         if (event.inventory.viewers.isEmpty()) return
         val player = event.inventory.viewers.first() as? Player ?: return
-        val firstItem = event.inventory.getItem(0) ?: return
-        val secondItem = event.inventory.getItem(1) ?: return
+        val (firstItem, secondItem) = event.inventory.getItem(0) to event.inventory.getItem(1)
         if (firstItem.nullOrAir() || secondItem.nullOrAir()) return
 
         // 找到物品对应的处理器

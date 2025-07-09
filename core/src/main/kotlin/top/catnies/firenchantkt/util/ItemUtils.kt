@@ -4,11 +4,15 @@ import com.saicone.rtag.item.ItemTagStream
 import io.papermc.paper.datacomponent.DataComponentTypes
 import org.bukkit.enchantments.Enchantment
 import org.bukkit.inventory.ItemStack
+import kotlin.contracts.ExperimentalContracts
+import kotlin.contracts.contract
 
 object ItemUtils {
 
     // 判断物品是否是 null 或 空气
+    @OptIn(ExperimentalContracts::class)
     fun ItemStack?.nullOrAir(): Boolean {
+        contract { returns(false) implies (this@nullOrAir != null) }
         this ?: return true
         return this.type.isAir
     }
