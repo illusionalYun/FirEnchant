@@ -22,7 +22,7 @@ class CommandManager private constructor() {
 
     // 注册命令
     private fun registerCommands() {
-        // 为根命令添加权限检查
+        // 根命令
         val root = Commands.literal("firenchant").requires {
             return@requires it.sender.hasPermission("firenchant.command")
         }.apply {
@@ -32,12 +32,12 @@ class CommandManager private constructor() {
             then(GiveEnchantedBookCommand.create()) // 给予附魔书命令
         }
 
-        // 开启菜单命令
+        // 菜单命令
         val menuRoot = Commands.literal("openmenu").requires {
             return@requires it.sender.hasPermission("firenchant.command.openmenu")
-        }.also { root.then(it) }.apply {
+        }.apply {
             then(ExtractSoulMenuCommand.create()) // 灵魂提取菜单
-        }
+        }.also { root.then(it) }
 
         // 注册命令到服务器
         val lifecycleEventManager = plugin.lifecycleManager

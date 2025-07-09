@@ -7,8 +7,8 @@ import org.bukkit.event.inventory.PrepareAnvilEvent
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.view.AnvilView
 import top.catnies.firenchantkt.FirEnchantPlugin
-import top.catnies.firenchantkt.api.event.anvilapplicable.EnchantSoulPreUseEvent
-import top.catnies.firenchantkt.api.event.anvilapplicable.EnchantSoulUseEvent
+import top.catnies.firenchantkt.api.event.anvil.EnchantSoulPreUseEvent
+import top.catnies.firenchantkt.api.event.anvil.EnchantSoulUseEvent
 import top.catnies.firenchantkt.config.AnvilConfig
 import top.catnies.firenchantkt.context.AnvilContext
 import top.catnies.firenchantkt.enchantment.EnchantmentSetting

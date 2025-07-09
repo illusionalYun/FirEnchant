@@ -1,17 +1,23 @@
-package top.catnies.firenchantkt.api.event.anvilapplicable
+package top.catnies.firenchantkt.api.event.anvil
 
 import org.bukkit.entity.Player
 import org.bukkit.event.Cancellable
 import org.bukkit.event.HandlerList
 import org.bukkit.event.inventory.PrepareAnvilEvent
 import org.bukkit.event.player.PlayerEvent
-import org.bukkit.inventory.ItemStack
+import top.catnies.firenchantkt.enchantment.EnchantmentSetting
 
-class ProtectionRunePreUseEvent(
+/**
+ * 当两本附魔书放入铁砧, 试图合并时触发.
+ * 事件如果取消了, 插件将不会处理它, 将会进行原版逻辑.
+ */
+class EnchantedBookPreMergeEvent(
     player: Player,
     val event: PrepareAnvilEvent,
     var costExp: Int,
-    val firstItem: ItemStack
+    val firstSetting: EnchantmentSetting,
+    val secondSetting: EnchantmentSetting,
+    var resultSetting: EnchantmentSetting
 ) : PlayerEvent(player), Cancellable {
 
     companion object {

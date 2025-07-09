@@ -2,8 +2,8 @@ package top.catnies.firenchantkt.compatibility.enchantmentslots
 
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
-import top.catnies.firenchantkt.api.event.anvilapplicable.AnvilApplicableItemRegisterEvent
-import top.catnies.firenchantkt.api.event.anvilapplicable.EnchantedBookPreUseEvent
+import top.catnies.firenchantkt.api.event.anvil.AnvilApplicableItemRegisterEvent
+import top.catnies.firenchantkt.api.event.anvil.EnchantedBookPreUseEvent
 
 class EnchantmentSlotsListener: Listener {
 

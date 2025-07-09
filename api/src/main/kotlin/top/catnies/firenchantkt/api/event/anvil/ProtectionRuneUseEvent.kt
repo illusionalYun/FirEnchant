@@ -1,4 +1,4 @@
-package top.catnies.firenchantkt.api.event.anvilapplicable
+package top.catnies.firenchantkt.api.event.anvil
 
 import org.bukkit.entity.Player
 import org.bukkit.event.Cancellable
@@ -8,16 +8,11 @@ import org.bukkit.event.player.PlayerEvent
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.view.AnvilView
 
-/**
- * 需要安装 EnchantmentSLots 4.4.0 +
- * 才可以在配置中启用这个物品.
- */
-class SlotRuneUseEvent(
+class ProtectionRuneUseEvent(
     player: Player,
     val event: InventoryClickEvent,
     val anvilView: AnvilView,
     val firstItem: ItemStack,
-    var usedAmount: Int,
     var resultItem: ItemStack
 ) : PlayerEvent(player), Cancellable {
 

@@ -7,8 +7,8 @@ import org.bukkit.event.inventory.PrepareAnvilEvent
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.view.AnvilView
 import top.catnies.firenchantkt.FirEnchantPlugin
-import top.catnies.firenchantkt.api.event.anvilapplicable.ProtectionRunePreUseEvent
-import top.catnies.firenchantkt.api.event.anvilapplicable.ProtectionRuneUseEvent
+import top.catnies.firenchantkt.api.event.anvil.ProtectionRunePreUseEvent
+import top.catnies.firenchantkt.api.event.anvil.ProtectionRuneUseEvent
 import top.catnies.firenchantkt.config.AnvilConfig
 import top.catnies.firenchantkt.context.AnvilContext
 import top.catnies.firenchantkt.integration.FirItemProviderRegistry

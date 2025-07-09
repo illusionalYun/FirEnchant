@@ -1,22 +1,18 @@
-package top.catnies.firenchantkt.api.event.anvilapplicable
+package top.catnies.firenchantkt.api.event.anvil
 
 import org.bukkit.entity.Player
 import org.bukkit.event.Cancellable
 import org.bukkit.event.HandlerList
-import org.bukkit.event.inventory.InventoryClickEvent
+import org.bukkit.event.inventory.PrepareAnvilEvent
 import org.bukkit.event.player.PlayerEvent
 import org.bukkit.inventory.ItemStack
-import org.bukkit.inventory.view.AnvilView
-import top.catnies.firenchantkt.enchantment.EnchantmentSetting
 
-class EnchantedBookUseEvent(
+class PowerRunePreUseEvent(
     player: Player,
-    val event: InventoryClickEvent,
-    val anvilView: AnvilView,
-    val firstItem: ItemStack,
-    val secondSetting: EnchantmentSetting,
-    var resultItem: ItemStack,
-    var isSuccess: Boolean
+    val event: PrepareAnvilEvent,
+    var costExp: Int,
+    var successChance: Int,
+    val firstItem: ItemStack
 ) : PlayerEvent(player), Cancellable {
 
     companion object {
@@ -31,7 +27,7 @@ class EnchantedBookUseEvent(
     private var isCancelled = false
 
     override fun getHandlers(): HandlerList {
-        return AnvilApplicableItemRegisterEvent.Companion.HANDLER_LIST
+        return HANDLER_LIST
     }
 
     override fun isCancelled(): Boolean {
@@ -41,4 +37,5 @@ class EnchantedBookUseEvent(
     override fun setCancelled(cancel: Boolean) {
         isCancelled = cancel
     }
+
 }

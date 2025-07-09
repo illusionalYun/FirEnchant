@@ -1,4 +1,4 @@
-package top.catnies.firenchantkt.api.event.anvilapplicable
+package top.catnies.firenchantkt.api.event.anvil
 
 import org.bukkit.entity.Player
 import org.bukkit.event.Cancellable
@@ -6,12 +6,14 @@ import org.bukkit.event.HandlerList
 import org.bukkit.event.inventory.PrepareAnvilEvent
 import org.bukkit.event.player.PlayerEvent
 import org.bukkit.inventory.ItemStack
+import top.catnies.firenchantkt.enchantment.EnchantmentSetting
 
-class PowerRunePreUseEvent(
+class EnchantSoulPreUseEvent(
     player: Player,
     val event: PrepareAnvilEvent,
+    var useAmount: Int,
     var costExp: Int,
-    var successChance: Int,
+    var resultSetting: EnchantmentSetting,
     val firstItem: ItemStack
 ) : PlayerEvent(player), Cancellable {
 

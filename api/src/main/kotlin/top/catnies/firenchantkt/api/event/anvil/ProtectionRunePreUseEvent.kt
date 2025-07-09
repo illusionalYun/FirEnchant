@@ -1,19 +1,17 @@
-package top.catnies.firenchantkt.api.event.anvilapplicable
+package top.catnies.firenchantkt.api.event.anvil
 
 import org.bukkit.entity.Player
 import org.bukkit.event.Cancellable
 import org.bukkit.event.HandlerList
-import org.bukkit.event.inventory.InventoryClickEvent
+import org.bukkit.event.inventory.PrepareAnvilEvent
 import org.bukkit.event.player.PlayerEvent
 import org.bukkit.inventory.ItemStack
-import org.bukkit.inventory.view.AnvilView
 
-class ProtectionRuneUseEvent(
+class ProtectionRunePreUseEvent(
     player: Player,
-    val event: InventoryClickEvent,
-    val anvilView: AnvilView,
-    val firstItem: ItemStack,
-    var resultItem: ItemStack
+    val event: PrepareAnvilEvent,
+    var costExp: Int,
+    val firstItem: ItemStack
 ) : PlayerEvent(player), Cancellable {
 
     companion object {

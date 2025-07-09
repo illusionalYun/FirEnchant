@@ -3,7 +3,7 @@ package top.catnies.firenchantkt.item
 import org.bukkit.Bukkit
 import org.bukkit.inventory.ItemStack
 import top.catnies.firenchantkt.api.ServiceContainer
-import top.catnies.firenchantkt.api.event.enchantingapplicable.EnchantingApplicableItemRegisterEvent
+import top.catnies.firenchantkt.api.event.enchantingtable.EnchantingApplicableItemRegisterEvent
 
 class FirEnchantingTableRegistry: EnchantingTableItemRegistry {
 

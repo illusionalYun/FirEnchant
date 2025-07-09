@@ -7,8 +7,8 @@ import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.inventory.PrepareAnvilEvent
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.view.AnvilView
-import top.catnies.firenchantkt.api.event.anvilapplicable.SlotRunePreUseEvent
-import top.catnies.firenchantkt.api.event.anvilapplicable.SlotRuneUseEvent
+import top.catnies.firenchantkt.api.event.anvil.SlotRunePreUseEvent
+import top.catnies.firenchantkt.api.event.anvil.SlotRuneUseEvent
 import top.catnies.firenchantkt.context.AnvilContext
 import top.catnies.firenchantkt.integration.ItemProvider
 import top.catnies.firenchantkt.item.anvil.SlotRune

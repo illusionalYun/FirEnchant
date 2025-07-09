@@ -1,4 +1,4 @@
-package top.catnies.firenchantkt.api.event.anvilapplicable
+package top.catnies.firenchantkt.api.event.anvil
 
 import org.bukkit.event.Event
 import org.bukkit.event.HandlerList

@@ -5,6 +5,7 @@ import org.bukkit.entity.Player
 import top.catnies.firenchantkt.FirEnchantPlugin
 import top.catnies.firenchantkt.config.ExtractSoulSetting
 import xyz.xenondevs.invui.gui.Gui
+import xyz.xenondevs.invui.gui.structure.Structure
 import xyz.xenondevs.invui.inventory.VirtualInventory
 import xyz.xenondevs.invui.window.Window
 
@@ -14,11 +15,15 @@ class FirExtractSoulMenu(
 
     companion object {
         val plugin = FirEnchantPlugin.instance
+        val config = ExtractSoulSetting.instance
     }
 
-    val config = ExtractSoulSetting.instance
+    private val buildTask = Runnable{
+        buildBaseGui()
+        buildWindow()
+    }
+
     val title = config.MENU_TITLE
-    val structure = config.MENU_STRUCTURE
     val structureArray = config.MENU_STRUCTURE_ARRAY
     val inputSlot = config.MENU_INPUT_SLOT
     val outputSlot = config.MENU_OUTPUT_SLOT
@@ -28,19 +33,15 @@ class FirExtractSoulMenu(
 
     // 创建并且打开菜单
     override fun openMenu(data: Map<String, Any>, async: Boolean) {
-        val task = Runnable {
-            buildBaseGui()
-            buildWindow()
-            window!!.open()
-        }
-        if (async) MHDFScheduler.getAsyncScheduler().runTask(plugin, task)
-        else task.run()
+        if (async) MHDFScheduler.getAsyncScheduler().runTask(plugin, buildTask) else buildTask.run()
+        window!!.open()
     }
 
     // 创建 GUI
     private fun buildBaseGui() {
         val inputInventory = VirtualInventory(getMarkCount(inputSlot))
         val outputInventory = VirtualInventory(getMarkCount(outputSlot))
+        val structure = Structure(*structureArray)
         gui = Gui.normal()
             .setStructure(structure)
             .addIngredient(inputSlot, inputInventory)

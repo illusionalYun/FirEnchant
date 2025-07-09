@@ -8,8 +8,8 @@ import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.view.AnvilView
 import top.catnies.firenchantkt.FirEnchantPlugin
 import top.catnies.firenchantkt.api.FirEnchantAPI
-import top.catnies.firenchantkt.api.event.anvilapplicable.PowerRunePreUseEvent
-import top.catnies.firenchantkt.api.event.anvilapplicable.PowerRuneUseEvent
+import top.catnies.firenchantkt.api.event.anvil.PowerRunePreUseEvent
+import top.catnies.firenchantkt.api.event.anvil.PowerRuneUseEvent
 import top.catnies.firenchantkt.config.AnvilConfig
 import top.catnies.firenchantkt.context.AnvilContext
 import kotlin.random.Random

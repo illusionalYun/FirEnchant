@@ -1,20 +1,20 @@
-package top.catnies.firenchantkt.api.event.anvilapplicable
+package top.catnies.firenchantkt.api.event.anvil
 
 import org.bukkit.entity.Player
 import org.bukkit.event.Cancellable
 import org.bukkit.event.HandlerList
-import org.bukkit.event.inventory.PrepareAnvilEvent
+import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.player.PlayerEvent
 import org.bukkit.inventory.ItemStack
-import top.catnies.firenchantkt.enchantment.EnchantmentSetting
+import org.bukkit.inventory.view.AnvilView
 
-class EnchantSoulPreUseEvent(
+class PowerRuneUseEvent(
     player: Player,
-    val event: PrepareAnvilEvent,
-    var useAmount: Int,
-    var costExp: Int,
-    var resultSetting: EnchantmentSetting,
-    val firstItem: ItemStack
+    val event: InventoryClickEvent,
+    val anvilView: AnvilView,
+    val firstItem: ItemStack,
+    var isSuccess: Boolean,
+    var resultItem: ItemStack
 ) : PlayerEvent(player), Cancellable {
 
     companion object {

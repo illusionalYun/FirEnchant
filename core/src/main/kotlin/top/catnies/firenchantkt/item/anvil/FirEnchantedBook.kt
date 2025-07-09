@@ -3,7 +3,6 @@ package top.catnies.firenchantkt.item.anvil
 import io.papermc.paper.datacomponent.DataComponentTypes
 import org.bukkit.Bukkit
 import org.bukkit.Material
-import org.bukkit.configuration.ConfigurationSection
 import org.bukkit.entity.Player
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.inventory.PrepareAnvilEvent
@@ -11,10 +10,10 @@ import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.view.AnvilView
 import top.catnies.firenchantkt.FirEnchantPlugin
 import top.catnies.firenchantkt.api.FirEnchantAPI
-import top.catnies.firenchantkt.api.event.anvilapplicable.EnchantedBookMergeEvent
-import top.catnies.firenchantkt.api.event.anvilapplicable.EnchantedBookPreMergeEvent
-import top.catnies.firenchantkt.api.event.anvilapplicable.EnchantedBookPreUseEvent
-import top.catnies.firenchantkt.api.event.anvilapplicable.EnchantedBookUseEvent
+import top.catnies.firenchantkt.api.event.anvil.EnchantedBookMergeEvent
+import top.catnies.firenchantkt.api.event.anvil.EnchantedBookPreMergeEvent
+import top.catnies.firenchantkt.api.event.anvil.EnchantedBookPreUseEvent
+import top.catnies.firenchantkt.api.event.anvil.EnchantedBookUseEvent
 import top.catnies.firenchantkt.config.AnvilConfig
 import top.catnies.firenchantkt.context.AnvilContext
 import top.catnies.firenchantkt.database.PlayerEnchantLogData
@@ -22,6 +21,7 @@ import top.catnies.firenchantkt.enchantment.EnchantmentSetting
 import top.catnies.firenchantkt.enchantment.FirEnchantmentSettingFactory
 import top.catnies.firenchantkt.language.MessageConstants.ANVIL_ENCHANTED_BOOK_USE_FAIL
 import top.catnies.firenchantkt.language.MessageConstants.ANVIL_ENCHANTED_BOOK_USE_PROTECT_FAIL
+import top.catnies.firenchantkt.util.ItemUtils.addRepairCost
 import top.catnies.firenchantkt.util.ItemUtils.isCompatibleWithEnchantment
 import top.catnies.firenchantkt.util.MessageUtils.sendTranslatableComponent
 import kotlin.math.max
@@ -49,11 +49,11 @@ class FirEnchantedBook : EnchantedBook {
 
         when {
             // 如果第一件物品也是附魔书, 触发合并逻辑.
-            // TODO 应当也受到 REPAIR_COST 的影响. 转换成 Setting 是否需要额外保留 REPAIR_COST?
             isEnchantedBookMerge(firstSetting, setting) -> {
                 // 计算结果
                 val resultSetting = FirEnchantmentSettingFactory.fromAnother(firstSetting!!).apply {
-                    // TODO, 当概率行为为 RANDOM 时, 不应该在结果里显示实际的概率, 否则玩家可以通过来回放置附魔书刷出想要的失败率.
+                    // TODO, 当概率行为为 RANDOM 时, 不应该在结果里显示实际的概率, 否则玩家可以通过来回放置附魔书刷出想要的失败率. ?
+                    // TODO, 直接存入临时数据到物品还得加密, 要不还是不支持RANDOM吧.
                     failure = getMergeEnchantmentFailureRate(firstSetting, setting)
                     level++
                 }
@@ -67,8 +67,8 @@ class FirEnchantedBook : EnchantedBook {
                 Bukkit.getPluginManager().callEvent(mergeEvent)
                 if (mergeEvent.isCancelled) return
 
-                // 显示结果
-                event.result = resultSetting.toItemStack()
+                // 显示结果, 添加 RepairCost.
+                event.result = resultSetting.toItemStack().apply { this.addRepairCost() }
                 event.view.repairCost = mergeEvent.costExp
             }
 

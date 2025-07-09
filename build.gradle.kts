@@ -79,6 +79,8 @@ tasks {
         dependsOn(":nms:v1_21_R5:reobfJar")
         mergeServiceFiles()
 
+        manifest.attributes("paperweight-mappings-namespace" to "spigot")
+
         archiveFileName.set("${project.name}-${project.version}.jar")
         destinationDirectory.set(file("$rootDir/target"))
     }
