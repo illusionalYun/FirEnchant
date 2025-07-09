@@ -57,7 +57,7 @@ object GiveEnchantedBookCommand: AbstractCommand() {
 
         // 没有找到魔咒
         if (enchantmentSetting == null) {
-            context.source.sender.sendTranslatableComponent(COMMAND_GIVE_BOOK_ENCHANTMENT_NOT_FOUND, enchantmentKey.asString())
+            context.source.sender.sendTranslatableComponent(COMMAND_GIVE_BOOK_ENCHANTMENT_NOT_FOUND, enchantmentKey)
             return Command.SINGLE_SUCCESS
         }
 
@@ -65,10 +65,10 @@ object GiveEnchantedBookCommand: AbstractCommand() {
         val players = targetResolver.resolve(context.source)
         players.forEach { player ->
             player.giveOrDrop(enchantmentSetting.toItemStack())
-            player.sendTranslatableComponent(COMMAND_GIVE_BOOK_ENCHANTMENT_SUCCESS_RECEIVE, context.source.sender.name, enchantmentKey.asString(), level.toString(), failure.toString(), consumedSouls.toString())
+            player.sendTranslatableComponent(COMMAND_GIVE_BOOK_ENCHANTMENT_SUCCESS_RECEIVE, context.source.sender.name, enchantmentKey, level.toString(), failure.toString(), consumedSouls.toString())
         }
         val receivers = players.map { it.name }.toString()
-        context.source.sender.sendTranslatableComponent(COMMAND_GIVE_BOOK_ENCHANTMENT_SUCCESS_RECEIVE, receivers, enchantmentKey.asString(), level.toString(), failure.toString(), consumedSouls.toString())
+        context.source.sender.sendTranslatableComponent(COMMAND_GIVE_BOOK_ENCHANTMENT_SUCCESS_RECEIVE, receivers, enchantmentKey, level.toString(), failure.toString(), consumedSouls.toString())
         return Command.SINGLE_SUCCESS
     }
 
