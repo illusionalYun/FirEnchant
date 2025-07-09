@@ -5,6 +5,8 @@ import com.mojang.brigadier.builder.LiteralArgumentBuilder
 import com.mojang.brigadier.context.CommandContext
 import io.papermc.paper.command.brigadier.CommandSourceStack
 import io.papermc.paper.command.brigadier.Commands
+import top.catnies.firenchantkt.language.MessageConstants.COMMAND_VERSION_SUCCESS
+import top.catnies.firenchantkt.util.MessageUtils.sendTranslatableComponent
 
 /**
  * 版本信息.
@@ -25,7 +27,7 @@ object VersionCommand: AbstractCommand() {
 
     // 执行命令
     override fun execute(context: CommandContext<CommandSourceStack>): Int {
-        context.source.sender.sendRichMessage("<#96f896>[FirEnchant] <#cef8f5>Plugin Version is ${plugin.pluginMeta.version} .")
+        context.source.sender.sendTranslatableComponent(COMMAND_VERSION_SUCCESS, plugin.pluginMeta.version)
         return Command.SINGLE_SUCCESS
     }
 }

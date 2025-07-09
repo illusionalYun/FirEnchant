@@ -6,6 +6,7 @@ object MessageConstants {
 
     const val COMMAND_NO_PERMISSION = "command.no_permission"
     const val COMMAND_RELOAD_SUCCESS = "command.reload.success"
+    const val COMMAND_VERSION_SUCCESS = "command.version.success"
     const val COMMAND_CONSOLE_CANT_EXECUTE = "command.console.cant_execute"
     const val COMMAND_GIVE_BOOK_ENCHANTMENT_NOT_FOUND = "command.give_book.enchantment.not_found"
     const val COMMAND_GIVE_BOOK_ENCHANTMENT_SUCCESS_RECEIVE = "command.give_book.enchantment.success.receive"
