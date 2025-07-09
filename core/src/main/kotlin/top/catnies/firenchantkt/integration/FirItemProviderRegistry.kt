@@ -18,8 +18,6 @@ class FirItemProviderRegistry private constructor(): ItemProviderRegistry {
     companion object {
         @JvmStatic
         val instance by lazy { FirItemProviderRegistry().apply {
-            // TODO 使用翻译键
-            println("进入了物品提供的load方法")
             load()
         } }
 

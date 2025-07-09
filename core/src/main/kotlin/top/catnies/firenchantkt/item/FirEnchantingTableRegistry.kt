@@ -10,9 +10,9 @@ class FirEnchantingTableRegistry: EnchantingTableItemRegistry {
     private val items = mutableListOf<EnchantingTableApplicable>()
 
     companion object {
-        val instance: FirEnchantingTableRegistry by lazy { FirEnchantingTableRegistry().also {
-            println("附魔台尝试注册")
-            it.load()
+        @JvmStatic
+        val instance: FirEnchantingTableRegistry by lazy { FirEnchantingTableRegistry().apply {
+            load()
         } }
     }
 

@@ -16,9 +16,9 @@ class FirAnvilItemRegistry: AnvilItemRegistry {
     private val items = mutableListOf<AnvilApplicable>()
 
     companion object {
-        val instance: FirAnvilItemRegistry by lazy { FirAnvilItemRegistry().also {
-            println("铁砧尝试注册")
-            it.load()
+        @JvmStatic
+        val instance: FirAnvilItemRegistry by lazy { FirAnvilItemRegistry().apply {
+            load()
         } }
     }
 

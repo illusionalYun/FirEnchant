@@ -11,9 +11,9 @@ class IntegrationManager private constructor() {
     var logger = FirEnchantPlugin.instance.logger
 
     companion object {
-        val instance by lazy { IntegrationManager().also {
-            println("进入了集成的load方法")
-            it.load()
+        @JvmStatic
+        val instance by lazy { IntegrationManager().apply {
+            load()
         }}
     }
 
@@ -40,7 +40,7 @@ class IntegrationManager private constructor() {
     fun reload() {}
 
     // 发送插件关联启动消息
-    private fun sendPluginHookedMessage(name: String) {
+    fun sendPluginHookedMessage(name: String) {
         Bukkit.getConsoleSender().sendTranslatableComponent(
             PLUGIN_COMPATIBILITY_HOOK_SUCCESS,
             name
