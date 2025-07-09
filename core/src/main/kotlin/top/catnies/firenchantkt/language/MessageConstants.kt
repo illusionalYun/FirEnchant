@@ -6,6 +6,9 @@ object MessageConstants {
 
     const val COMMAND_NO_PERMISSION = "command.no_permission"
     const val COMMAND_RELOAD_SUCCESS = "command.reload.success"
+    const val COMMAND_GIVE_BOOK_ENCHANTMENT_NOT_FOUND = "command.give_book.enchantment.not_found"
+    const val COMMAND_GIVE_BOOK_ENCHANTMENT_SUCCESS_RECEIVE = "command.give_book.enchantment.success.receive"
+    const val COMMAND_GIVE_BOOK_ENCHANTMENT_SUCCESS_EXECUTE = "command.give_book.enchantment.success.execute"
 
     const val RESOURCE_ENCHANTMENT_FILE_ERROR = "resource.enchantment.file.error"
     const val RESOURCE_ENCHANTMENT_FILE_PROVIDER_NOT_FOUND = "resource.enchantment.file.provider.not_found"

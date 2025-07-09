@@ -13,6 +13,9 @@ import io.papermc.paper.registry.RegistryKey
 import net.kyori.adventure.text.Component
 import org.bukkit.enchantments.Enchantment
 import top.catnies.firenchantkt.api.FirEnchantAPI
+import top.catnies.firenchantkt.language.MessageConstants.COMMAND_GIVE_BOOK_ENCHANTMENT_NOT_FOUND
+import top.catnies.firenchantkt.language.MessageConstants.COMMAND_GIVE_BOOK_ENCHANTMENT_SUCCESS_RECEIVE
+import top.catnies.firenchantkt.util.MessageUtils.sendTranslatableComponent
 import java.util.concurrent.ThreadLocalRandom
 
 /**
@@ -51,9 +54,9 @@ object GiveEnchantedBookCommand: AbstractCommand() {
         val consumedSouls = consumedSoulsRange?.range()?.let { getRandomFromRange(it) } ?: 0
         val enchantmentSetting = FirEnchantAPI.getSettingsByData(enchantmentKey, level, failure, consumedSouls)
 
+        // 没有找到魔咒
         if (enchantmentSetting == null) {
-            // TODO 翻译文本
-            println("enchantmentSetting is null")
+            context.source.sender.sendTranslatableComponent(COMMAND_GIVE_BOOK_ENCHANTMENT_NOT_FOUND, enchantmentKey.asString())
             return Command.SINGLE_SUCCESS
         }
 
@@ -61,12 +64,10 @@ object GiveEnchantedBookCommand: AbstractCommand() {
         val players = targetResolver.resolve(context.source)
         players.forEach { player ->
             player.inventory.addItem(enchantmentSetting.toItemStack())
-            // TODO 翻译文本
-            player.sendMessage { Component.text("give enchanted book to 6666") }
+            player.sendTranslatableComponent(COMMAND_GIVE_BOOK_ENCHANTMENT_SUCCESS_RECEIVE, context.source.sender.name, enchantmentKey.asString(), level.toString(), failure.toString(), consumedSouls.toString())
         }
 
-        // TODO 翻译文本
-        println("give enchanted book to $players")
+        context.source.sender.sendTranslatableComponent(COMMAND_GIVE_BOOK_ENCHANTMENT_SUCCESS_RECEIVE, players.toString(), enchantmentKey.asString(), level.toString(), failure.toString(), consumedSouls.toString())
         return Command.SINGLE_SUCCESS
     }
 
