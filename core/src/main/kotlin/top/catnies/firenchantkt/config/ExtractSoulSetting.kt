@@ -11,7 +11,7 @@ class ExtractSoulSetting private constructor():
 
     companion object {
         @JvmStatic
-        val instance by lazy { ExtractSoulSetting() }
+        val instance by lazy { ExtractSoulSetting().apply { loadConfig() } }
     }
 
     val fallbackMenuStructure = arrayOf(
@@ -24,11 +24,10 @@ class ExtractSoulSetting private constructor():
     )
 
     /*菜单设置*/
-    var MENU_TITLE: String = "Extract Soul Menu"
-    lateinit var MENU_STRUCTURE: Structure
-    var MENU_STRUCTURE_ARRAY: Array<String> = fallbackMenuStructure
-    var MENU_INPUT_SLOT: Char = 'I'
-    var MENU_OUTPUT_SLOT: Char = 'O'
+    var MENU_TITLE: String by ConfigProperty("Extract Soul Menu")
+    var MENU_STRUCTURE_ARRAY: Array<String> by ConfigProperty(fallbackMenuStructure)
+    var MENU_INPUT_SLOT: Char by ConfigProperty('I')
+    var MENU_OUTPUT_SLOT: Char by ConfigProperty('O')
 
 
     // 加载数据
@@ -36,10 +35,8 @@ class ExtractSoulSetting private constructor():
         /*菜单设置*/
         MENU_TITLE = config().getString("menu-setting.title", "Extract Soul Menu")!!
         try { config().getStringList("menu-setting.structure").toTypedArray()
-                .also { MENU_STRUCTURE = Structure(*it) }
-                .also { MENU_STRUCTURE_ARRAY = it }
-        } catch (event: IllegalArgumentException) {
-            MENU_STRUCTURE = Structure(*MENU_STRUCTURE_ARRAY)
+                .also { Structure(*it); MENU_STRUCTURE_ARRAY = it } // 测试合法性然后再赋值
+        } catch (exception: IllegalArgumentException) {
             Bukkit.getConsoleSender().sendTranslatableComponent(RESOURCE_MENU_STRUCTURE_ERROR, fileName) }
         MENU_INPUT_SLOT = config().getString("menu-setting.input-slot", "I")?.first() ?: 'I'
         MENU_OUTPUT_SLOT = config().getString("menu-setting.output-slot", "O")?.first() ?: 'O'

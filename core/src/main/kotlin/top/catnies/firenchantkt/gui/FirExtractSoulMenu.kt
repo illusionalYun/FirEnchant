@@ -33,7 +33,8 @@ class FirExtractSoulMenu(
 
     // 创建并且打开菜单
     override fun openMenu(data: Map<String, Any>, async: Boolean) {
-        if (async) MHDFScheduler.getAsyncScheduler().runTask(plugin, buildTask) else buildTask.run()
+//        if (async) MHDFScheduler.getAsyncScheduler().runTask(plugin, buildTask) else buildTask.run()
+        buildTask.run()
         window!!.open()
     }
 
@@ -66,11 +67,5 @@ class FirExtractSoulMenu(
 
 
     // 统计 Structure 里有多少个某种 Slot 字符
-    private fun getMarkCount(char: Char): Int {
-        return structureArray.sumOf { line ->
-            line.count { c ->
-                c == char
-            }
-        }
-    }
+    private fun getMarkCount(char: Char) = structureArray.sumOf { it.count { c -> c == char } }
 }

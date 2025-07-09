@@ -8,48 +8,48 @@ class AnvilConfig private constructor():
 
     companion object {
         @JvmStatic
-        val instance by lazy { AnvilConfig() }
+        val instance by lazy { AnvilConfig().apply { loadConfig() } }
     }
 
     /*原版附魔书设置*/
-    var VEB_DENY_USE: Boolean = false      // 是否禁用原版附魔书.
+    var VEB_DENY_USE: Boolean by ConfigProperty(false)      // 是否禁用原版附魔书.
 
     /*附魔书设置*/
-    lateinit var EB_USE_EXP_COST_MODE: String    // 经验值消耗模式
-    var EB_USE_EXP_FIXED_VALUE: Int = 18         // 固定模式的值
-    var EB_FAILURE_CORRECTION_MINMAX_ENABLED: Boolean = false    // 最大最小失败率强制控制功能
-    var EB_FAILURE_CORRECTION_MINMAX_MIN: Int = 15               // 低于此失败率的附魔书将必定成功
-    var EB_FAILURE_CORRECTION_MINMAX_MAX: Int = 90               // 高于此失败率的附魔书将必定失败
-    var EB_FAILURE_CORRECTION_HISTORY_ENABLE: Boolean = false    // 附魔书的成功/失败历史记录功能
-    lateinit var EB_MERGE_FAILURE_INHERITANCE: String   // 当两本附魔书合并的结果附魔书的失败率处理模式
-    lateinit var EB_MERGE_EXP_COST_MODE: String         // 经验值消耗模式
-    var EB_MERGE_EXP_FIXED_VALUE: Int = 18              // 固定模式的值
+    var EB_USE_EXP_COST_MODE: String by ConfigProperty("FIXED")    // 经验值消耗模式
+    var EB_USE_EXP_FIXED_VALUE: Int by ConfigProperty(18)         // 固定模式的值
+    var EB_FAILURE_CORRECTION_MINMAX_ENABLED: Boolean by ConfigProperty(false)    // 最大最小失败率强制控制功能
+    var EB_FAILURE_CORRECTION_MINMAX_MIN: Int by ConfigProperty(15)               // 低于此失败率的附魔书将必定成功
+    var EB_FAILURE_CORRECTION_MINMAX_MAX: Int by ConfigProperty(90)               // 高于此失败率的附魔书将必定失败
+    var EB_FAILURE_CORRECTION_HISTORY_ENABLE: Boolean by ConfigProperty(false)    // 附魔书的成功/失败历史记录功能
+    var EB_MERGE_FAILURE_INHERITANCE: String by ConfigProperty("DEFAULT")   // 当两本附魔书合并的结果附魔书的失败率处理模式
+    var EB_MERGE_EXP_COST_MODE: String by ConfigProperty("FIXED")           // 经验值消耗模式
+    var EB_MERGE_EXP_FIXED_VALUE: Int by ConfigProperty(18)                 // 固定模式的值
 
     /*魔咒之魂设置*/
-    var ENCHANT_SOUL_ENABLE: Boolean = false             // 开启魔咒之魂道具
-    var ENCHANT_SOUL_ITEM_PROVIDER: String? = null       // 魔咒之魂的道具提供者
-    var ENCHANT_SOUL_ITEM_ID: String? = null             // 魔咒之魂的道具ID
-    var ENCHANT_SOUL_EXP: Int = 3                        // 魔咒之魂消耗的经验等级
-    var ENCHANT_SOUL_REDUCE_FAILURE: Int = 3             // 每个魔咒之魂可降低附魔书的失败率
-    var ENCHANT_SOUL_MIN_FAILURE: Int = 5                // 附魔书最多可以使用魔咒之魂降低到的失败率
-    var ENCHANT_SOUL_MAX_USE_SOULS: Int = 12             // 附魔书最多可以使用的魔咒之魂数量
+    var ENCHANT_SOUL_ENABLE: Boolean by ConfigProperty(false)             // 开启魔咒之魂道具
+    var ENCHANT_SOUL_ITEM_PROVIDER: String? by ConfigProperty(null)       // 魔咒之魂的道具提供者
+    var ENCHANT_SOUL_ITEM_ID: String? by ConfigProperty(null)             // 魔咒之魂的道具ID
+    var ENCHANT_SOUL_EXP: Int by ConfigProperty(3)                        // 魔咒之魂消耗的经验等级
+    var ENCHANT_SOUL_REDUCE_FAILURE: Int by ConfigProperty(3)             // 每个魔咒之魂可降低附魔书的失败率
+    var ENCHANT_SOUL_MIN_FAILURE: Int by ConfigProperty(5)                // 附魔书最多可以使用魔咒之魂降低到的失败率
+    var ENCHANT_SOUL_MAX_USE_SOULS: Int by ConfigProperty(12)             // 附魔书最多可以使用的魔咒之魂数量
 
     /*保护符文设置*/
-    var PROTECTION_RUNE_ENABLE: Boolean = false             // 开启保护符文道具
-    var PROTECTION_RUNE_ITEM_PROVIDER: String? = null       // 保护符文的道具提供者
-    var PROTECTION_RUNE_ITEM_ID: String? = null             // 保护符文的道具ID
-    var PROTECTION_RUNE_EXP: Int = 18                       // 保护符文消耗的经验等级
+    var PROTECTION_RUNE_ENABLE: Boolean by ConfigProperty(false)             // 开启保护符文道具
+    var PROTECTION_RUNE_ITEM_PROVIDER: String? by ConfigProperty(null)       // 保护符文的道具提供者
+    var PROTECTION_RUNE_ITEM_ID: String? by ConfigProperty(null)             // 保护符文的道具ID
+    var PROTECTION_RUNE_EXP: Int by ConfigProperty(18)                       // 保护符文消耗的经验等级
 
     /*升级符文设置*/
-    var POWER_RUNE_ENABLE: Boolean = false              // 开启升级符文道具
-    var POWER_RUNE_BREAK_FAILED_ITEM: Boolean = false   // 升级符文失败时损坏装备
-    var POWER_RUNE_EXP: Int = 25                        // 升级符文消耗的经验等级
+    var POWER_RUNE_ENABLE: Boolean by ConfigProperty(false)              // 开启升级符文道具
+    var POWER_RUNE_BREAK_FAILED_ITEM: Boolean by ConfigProperty(false)   // 升级符文失败时损坏装备
+    var POWER_RUNE_EXP: Int by ConfigProperty(25)                        // 升级符文消耗的经验等级
 
     /*拓展符文设置*/
-    var SLOT_RUNE_ENABLE: Boolean = false               // 开启拓展符文道具
-    var SLOT_RUNE_ITEM_PROVIDER: String? = null         // 拓展符文的道具提供者
-    var SLOT_RUNE_ITEM_ID: String? = null               // 拓展符文的道具ID
-    var SLOT_RUNE_EXP: Int = 12                         // 拓展符文消耗的经验等级
+    var SLOT_RUNE_ENABLE: Boolean by ConfigProperty(false)               // 开启拓展符文道具
+    var SLOT_RUNE_ITEM_PROVIDER: String? by ConfigProperty(null)         // 拓展符文的道具提供者
+    var SLOT_RUNE_ITEM_ID: String? by ConfigProperty(null)               // 拓展符文的道具ID
+    var SLOT_RUNE_EXP: Int by ConfigProperty(12)                         // 拓展符文消耗的经验等级
 
 
     override fun loadConfig() {

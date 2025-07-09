@@ -1,25 +1,24 @@
 package top.catnies.firenchantkt.config
 
-
 class SettingsConfig private constructor():
     AbstractConfigFile("settings.yml")
 {
 
     companion object {
         @JvmStatic
-        val instance by lazy { SettingsConfig() }
+        val instance by lazy { SettingsConfig().apply { loadConfig() } }
     }
 
     /* 基础配置 */
-    lateinit var LANGUAGE: String // 语言
+    var LANGUAGE: String by ConfigProperty("zh_CN") // 语言
 
     /* 数据库 */
-    lateinit var DATABASE_TYPE: String
-    lateinit var DATABASE_MYSQL_HOST: String
-    lateinit var DATABASE_MYSQL_DATABASE: String
-    lateinit var DATABASE_MYSQL_USER: String
-    lateinit var DATABASE_MYSQL_PASSWORD: String
-    lateinit var DATABASE_H2_FILE: String
+    var DATABASE_TYPE: String by ConfigProperty("h2")
+    var DATABASE_MYSQL_HOST: String by ConfigProperty("127.0.0.1:3306")
+    var DATABASE_MYSQL_DATABASE: String by ConfigProperty("firenchant")
+    var DATABASE_MYSQL_USER: String by ConfigProperty("root")
+    var DATABASE_MYSQL_PASSWORD: String by ConfigProperty("root")
+    var DATABASE_H2_FILE: String by ConfigProperty("database.db")
 
 
     override fun loadConfig() {

@@ -151,8 +151,7 @@ class FirEnchantedBook : EnchantedBook {
 
                 // 没有保护符文
                 else {
-//                    anvilView.setItem(0, FirEnchantAPI.toBrokenGear(context.firstItem))
-                    anvilView.setItem(0, context.firstItem)
+                    anvilView.setItem(0, FirEnchantAPI.toBrokenGear(context.firstItem))
                     anvilView.setCursor(ItemStack(Material.SAND))
                     context.viewer.playSound(context.viewer.location, "block.anvil.destroy", 1f, 1f)
                     context.viewer.sendTranslatableComponent(ANVIL_ENCHANTED_BOOK_USE_FAIL)

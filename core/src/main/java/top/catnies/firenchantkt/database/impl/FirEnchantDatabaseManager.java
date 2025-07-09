@@ -29,14 +29,14 @@ public class FirEnchantDatabaseManager extends AbstractDatabaseManager {
     // 创建数据库配置
     private void crateDatabaseConfig() {
         DatabaseConfig databaseConfig = new DatabaseConfig();
-        databaseConfig.setType(SettingsConfig.getInstance().DATABASE_TYPE);
+        databaseConfig.setType(SettingsConfig.getInstance().getDATABASE_TYPE());
 
-        databaseConfig.setHost(SettingsConfig.getInstance().DATABASE_MYSQL_HOST);
-        databaseConfig.setDatabase(SettingsConfig.getInstance().DATABASE_MYSQL_DATABASE);
-        databaseConfig.setUser(SettingsConfig.getInstance().DATABASE_MYSQL_USER);
-        databaseConfig.setPassword(SettingsConfig.getInstance().DATABASE_MYSQL_PASSWORD);
+        databaseConfig.setHost(SettingsConfig.getInstance().getDATABASE_MYSQL_HOST());
+        databaseConfig.setDatabase(SettingsConfig.getInstance().getDATABASE_MYSQL_DATABASE());
+        databaseConfig.setUser(SettingsConfig.getInstance().getDATABASE_MYSQL_USER());
+        databaseConfig.setPassword(SettingsConfig.getInstance().getDATABASE_MYSQL_PASSWORD());
 
-        File h2 = new File(FirEnchantPlugin.getInstance().getDataFolder(), SettingsConfig.getInstance().DATABASE_H2_FILE);
+        File h2 = new File(FirEnchantPlugin.getInstance().getDataFolder(), SettingsConfig.getInstance().getDATABASE_H2_FILE());
         databaseConfig.setFile(h2);
 
         this.setConfig(databaseConfig);

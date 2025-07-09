@@ -26,7 +26,6 @@ class CommandManager private constructor() {
         val root = Commands.literal("firenchant").requires {
             return@requires it.sender.hasPermission("firenchant.command")
         }.apply {
-            // 添加子命令
             then(VersionCommand.create()) // 版本命令
             then(ReloadCommand.create()) // 重载插件命令
             then(GiveEnchantedBookCommand.create()) // 给予附魔书命令

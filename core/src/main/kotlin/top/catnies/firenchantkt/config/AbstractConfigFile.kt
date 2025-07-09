@@ -15,7 +15,6 @@ abstract class AbstractConfigFile(
 
     init {
         initFile()
-        loadConfig()
     }
 
     // 初始化文件
