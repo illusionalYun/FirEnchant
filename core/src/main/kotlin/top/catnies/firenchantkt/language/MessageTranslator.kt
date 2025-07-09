@@ -54,10 +54,12 @@ object MessageTranslator : MiniMessageTranslator(
         while (i < chars.size) {
             if (isColorCode(chars[i])) {
                 stringBuilder.append(chars[i])
+                i++
                 continue
             }
             if (i + 1 >= chars.size) {
                 stringBuilder.append(chars[i])
+                i++
                 continue
             }
             when (chars[i + 1]) {
@@ -109,6 +111,7 @@ object MessageTranslator : MiniMessageTranslator(
 
                 else -> {
                     stringBuilder.append(chars[i])
+                    i++
                     continue
                 }
             }

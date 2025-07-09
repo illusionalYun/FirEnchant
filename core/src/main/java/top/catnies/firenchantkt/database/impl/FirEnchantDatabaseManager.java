@@ -15,6 +15,7 @@ public class FirEnchantDatabaseManager extends AbstractDatabaseManager {
     private static FirEnchantDatabaseManager instance;
 
     private FirEnchantDatabaseManager() {}
+
     public static FirEnchantDatabaseManager getInstance() {
         if (instance == null) {
             instance = new FirEnchantDatabaseManager();
@@ -47,7 +48,9 @@ public class FirEnchantDatabaseManager extends AbstractDatabaseManager {
         try {
             TableUtils.createTableIfNotExists(getConnectionSource(), PlayerEnchantLogData.class);
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            if (!e.getCause().toString().contains("Duplicate key name")) {
+                throw new RuntimeException(e);
+            }
         }
     }
 }

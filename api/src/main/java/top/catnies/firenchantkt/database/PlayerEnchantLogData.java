@@ -13,9 +13,9 @@ import java.util.UUID;
 public class PlayerEnchantLogData {
     @DatabaseField(generatedId = true)
     private int id;
-    @DatabaseField(index = true, indexName = "idx_player", canBeNull = false)
+    @DatabaseField(index = true, canBeNull = false)
     private UUID player;
-    @DatabaseField(index = true, indexName = "idx_enchantment", canBeNull = false)
+    @DatabaseField(index = true, canBeNull = false)
     private String enchantment;
     @DatabaseField(canBeNull = false)
     private int takeLevel;
