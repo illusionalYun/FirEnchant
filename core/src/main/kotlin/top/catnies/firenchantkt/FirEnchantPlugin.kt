@@ -1,5 +1,10 @@
 package top.catnies.firenchantkt
 
+import cn.chengzhiya.mhdfscheduler.scheduler.MHDFScheduler
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import org.bukkit.Bukkit
 import org.bukkit.plugin.java.JavaPlugin
 import top.catnies.firenchantkt.command.CommandManager
@@ -20,15 +25,28 @@ import top.catnies.firenchantkt.lazyinit.NexoLoadListener
 import top.catnies.firenchantkt.lazyinit.OraxenLoadListener
 import top.catnies.firenchantkt.listener.ListenerManger
 import top.catnies.firenchantkt.util.MessageUtils.sendTranslatableComponent
+import top.catnies.firenchantkt.util.TaskUtils.plugin
+import kotlin.coroutines.CoroutineContext
 import kotlin.properties.Delegates
 
-class FirEnchantPlugin: JavaPlugin(), FirEnchant {
+class FirEnchantPlugin: JavaPlugin(), FirEnchant, CoroutineScope {
 
     companion object {
         @JvmStatic
         var instance by Delegates.notNull<FirEnchantPlugin>()
+            private set
     }
 
+    // 协程同步 Dispatcher
+    val mainDispatcher = object : CoroutineDispatcher() {
+        override fun dispatch(context: CoroutineContext, block: Runnable) {
+            if (Bukkit.isPrimaryThread()) block.run()
+            else MHDFScheduler.getGlobalRegionScheduler().runTask(plugin, block)
+        }
+    }
+
+    private val job = SupervisorJob()
+    override val coroutineContext: CoroutineContext = job + Dispatchers.IO
     override var isInitializedRegistry = false
 
     override fun onLoad() {
@@ -47,6 +65,11 @@ class FirEnchantPlugin: JavaPlugin(), FirEnchant {
         registerLateInitListener()
 
         logger.info("FirEnchant Plugin Enabled!")
+    }
+
+    override fun onDisable() {
+        job.cancel()
+        logger.info("FirEnchant Plugin Disabled!")
     }
 
     // 插件重载
@@ -104,4 +127,6 @@ class FirEnchantPlugin: JavaPlugin(), FirEnchant {
         FirAnvilItemRegistry.instance // 铁砧物品注册表
         FirEnchantingTableRegistry.instance // 附魔台物品注册表
     }
+
+
 }

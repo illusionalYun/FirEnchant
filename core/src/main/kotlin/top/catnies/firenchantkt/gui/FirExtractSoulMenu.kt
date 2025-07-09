@@ -1,6 +1,7 @@
 package top.catnies.firenchantkt.gui
 
-import cn.chengzhiya.mhdfscheduler.scheduler.MHDFScheduler
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.bukkit.entity.Player
 import top.catnies.firenchantkt.FirEnchantPlugin
 import top.catnies.firenchantkt.config.ExtractSoulSetting
@@ -18,11 +19,6 @@ class FirExtractSoulMenu(
         val config = ExtractSoulSetting.instance
     }
 
-    private val buildTask = Runnable{
-        buildBaseGui()
-        buildWindow()
-    }
-
     val title = config.MENU_TITLE
     val structureArray = config.MENU_STRUCTURE_ARRAY
     val inputSlot = config.MENU_INPUT_SLOT
@@ -33,9 +29,19 @@ class FirExtractSoulMenu(
 
     // 创建并且打开菜单
     override fun openMenu(data: Map<String, Any>, async: Boolean) {
-//        if (async) MHDFScheduler.getAsyncScheduler().runTask(plugin, buildTask) else buildTask.run()
-        buildTask.run()
-        window!!.open()
+        if (async) {
+            plugin.launch {
+                buildBaseGui()
+                buildWindow()
+                withContext(plugin.mainDispatcher) {
+                    window?.open()
+                }
+            }
+        } else {
+            buildBaseGui()
+            buildWindow()
+            window!!.open()
+        }
     }
 
     // 创建 GUI
