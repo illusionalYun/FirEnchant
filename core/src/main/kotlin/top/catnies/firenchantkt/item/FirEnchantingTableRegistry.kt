@@ -11,6 +11,7 @@ class FirEnchantingTableRegistry: EnchantingTableItemRegistry {
 
     companion object {
         val instance: FirEnchantingTableRegistry by lazy { FirEnchantingTableRegistry().also {
+            println("附魔台尝试注册")
             it.load()
         } }
     }

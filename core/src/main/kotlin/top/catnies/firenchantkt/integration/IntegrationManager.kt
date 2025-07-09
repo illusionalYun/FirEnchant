@@ -12,6 +12,7 @@ class IntegrationManager private constructor() {
 
     companion object {
         val instance by lazy { IntegrationManager().also {
+            println("进入了集成的load方法")
             it.load()
         }}
     }

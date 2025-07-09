@@ -39,13 +39,11 @@ class FirEnchantPlugin: JavaPlugin() {
         FirEnchantDatabaseManager.getInstance() // 数据库控制器
         FirPlayerEnchantLogDataManager.getInstance() // 玩家附魔日志数据控制器
 
-        Bukkit.getScheduler().runTaskLater(this, Runnable {
-            IntegrationManager.instance // 关联插件集成管理器
+        IntegrationManager.instance // 关联插件集成管理器
 
-            FirItemProviderRegistry.instance // 物品集成注册表
-            FirAnvilItemRegistry.instance // 铁砧物品注册表
-            FirEnchantingTableRegistry.instance // 附魔台物品注册表
-        }, 3000L)
+        FirItemProviderRegistry.instance // 物品集成注册表
+        FirAnvilItemRegistry.instance // 铁砧物品注册表
+        FirEnchantingTableRegistry.instance // 附魔台物品注册表
 
         logger.info("FirEnchant enabled!")
     }

@@ -46,7 +46,7 @@ class SlotRuneImpl: SlotRune {
         if (getReamingSlots(context.viewer, context.firstItem) <= 0) return
         val slotCount = EnchantmentSlotsUtil.getCurrentEnchantmentSlotCount(context.viewer, context.firstItem)
         val maxSlotCount = EnchantmentSlotsUtil.getMaxEnchantmentSlots(context.viewer, context.firstItem)
-        val useAmount = getCanUseAmount(slotCount, maxSlotCount, context.firstItem.amount).takeIf { it > 0 } ?: return
+        val useAmount = getCanUseAmount(slotCount, maxSlotCount, context.secondItem.amount).takeIf { it > 0 } ?: return
 
         // 事件
         val preUseEvent = SlotRunePreUseEvent(context.viewer, event, useAmount * costExp, slotCount, slotCount + useAmount, useAmount, context.firstItem)

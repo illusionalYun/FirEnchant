@@ -17,6 +17,7 @@ class FirAnvilItemRegistry: AnvilItemRegistry {
 
     companion object {
         val instance: FirAnvilItemRegistry by lazy { FirAnvilItemRegistry().also {
+            println("铁砧尝试注册")
             it.load()
         } }
     }

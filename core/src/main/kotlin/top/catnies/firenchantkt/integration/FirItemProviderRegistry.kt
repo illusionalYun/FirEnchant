@@ -19,9 +19,8 @@ class FirItemProviderRegistry private constructor(): ItemProviderRegistry {
         @JvmStatic
         val instance by lazy { FirItemProviderRegistry().apply {
             // TODO 使用翻译键
-            logger.info("Loading integration...")
+            println("进入了物品提供的load方法")
             load()
-            logger.info("Integration loaded!")
         } }
 
         @JvmStatic
