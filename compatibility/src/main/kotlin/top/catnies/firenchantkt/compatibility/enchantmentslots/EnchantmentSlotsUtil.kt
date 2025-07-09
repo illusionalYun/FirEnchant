@@ -63,7 +63,7 @@ object EnchantmentSlotsUtil {
      */
     fun setEnchantmentSlots(targetItem: ItemStack, slots: Int) {
         RtagItem.edit(targetItem){
-            it.set("PublicBukkitValues", "enchantmentslots:enchantment_slots", slots)
+            it.set(slots, "PublicBukkitValues", "enchantmentslots:enchantment_slots")
         }
     }
 }
