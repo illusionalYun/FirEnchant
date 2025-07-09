@@ -15,8 +15,12 @@ public class FirEnchantPluginLoader implements PluginLoader {
         resolver.addRepository(new RemoteRepository.Builder("alibaba-central", "default", "https://maven.aliyun.com/repository/public").build());
         resolver.addRepository(new RemoteRepository.Builder("jitpack", "default", "https://jitpack.io").build());
 
-        // Kotlin STD
+        // Kotlin STD, Coroutines
         resolver.addDependency(new Dependency(new DefaultArtifact("org.jetbrains.kotlin:kotlin-stdlib-jdk8:2.1.21"), null));
+        resolver.addDependency(new Dependency(new DefaultArtifact("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.1"), null));
+        resolver.addDependency(new Dependency(new DefaultArtifact("org.jetbrains.kotlinx:kotlinx-coroutines-jdk9:1.8.1"), null));
+//        resolver.addDependency(new Dependency(new DefaultArtifact("com.github.shynixn.mccoroutine:mccoroutine-bukkit-api:2.22.0"), null));
+//        resolver.addDependency(new Dependency(new DefaultArtifact("com.github.shynixn.mccoroutine:mccoroutine-bukkit-core:2.22.0"), null));
 
         // RTag
         resolver.addDependency(new Dependency(new DefaultArtifact("com.saicone.rtag:rtag:1.5.11"), null));
