@@ -2,6 +2,7 @@ dependencies {
     implementation(project(":api"))
     implementation(project(":compatibility"))
     implementation("xyz.xenondevs.invui:invui:${rootProject.properties["lib.invui.version"]}") // InvUI
+    implementation("xyz.xenondevs.invui:invui-kotlin:${rootProject.properties["lib.invui.version"]}") // InvUI
 
     compileOnly("io.lettuce:lettuce-core:${rootProject.properties["lib.lettuce.version"]}") {
         exclude("io.netty", "*")

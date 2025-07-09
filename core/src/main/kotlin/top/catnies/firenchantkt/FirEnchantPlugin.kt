@@ -27,6 +27,8 @@ class FirEnchantPlugin: JavaPlugin(), FirEnchant {
     companion object {
         @JvmStatic
         var instance by Delegates.notNull<FirEnchantPlugin>()
+        var isInitialized = false
+            private set
     }
 
 
@@ -91,6 +93,8 @@ class FirEnchantPlugin: JavaPlugin(), FirEnchant {
 
     // 初始化注册表
     override fun initRegistry() {
+        if (isInitialized) return
+        isInitialized = true
         IntegrationManager.instance // 关联插件集成管理器
 
         FirItemProviderRegistry.instance // 物品集成注册表
