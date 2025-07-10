@@ -38,6 +38,13 @@ class CommandManager private constructor() {
             then(ExtractSoulMenuCommand.create()) // 灵魂提取菜单
         }.also { root.then(it) }
 
+        // Debug命令
+        val debugRoot = Commands.literal("debug").requires {
+            return@requires it.sender.hasPermission("firenchant.command.debug")
+        }.apply {
+            // TODO 检查目标位置有效书架数量
+        }.also { root.then(it) }
+
         // 注册命令到服务器
         val lifecycleEventManager = plugin.lifecycleManager
         lifecycleEventManager.registerEventHandler(LifecycleEvents.COMMANDS) {
