@@ -16,6 +16,9 @@ import top.catnies.firenchantkt.util.MessageUtils.sendTranslatableComponent
 
 object ExtractSoulMenuCommand : AbstractCommand() {
 
+    private val permission = "firenchant.command.openmenu.extract-soul"
+    private val permissionOther = "firenchant.command.openmenu.extract-soul.other"
+
     override fun create(): LiteralArgumentBuilder<CommandSourceStack> {
         return Commands.literal("extract-soul")
             .requires { VersionCommand.requires(it) }
@@ -26,11 +29,11 @@ object ExtractSoulMenuCommand : AbstractCommand() {
     }
 
     override fun requires(requirement: CommandSourceStack): Boolean {
-        return requirement.sender.hasPermission("firenchant.command.openmenu.extract-soul")
+        return requirement.sender.hasPermission(permission)
     }
 
     private fun requiresOther(requirement: CommandSourceStack): Boolean {
-        return requirement.sender.hasPermission("firenchant.command.openmenu.extract-soul.other")
+        return requirement.sender.hasPermission(permissionOther)
     }
 
     override fun execute(context: CommandContext<CommandSourceStack>): Int {

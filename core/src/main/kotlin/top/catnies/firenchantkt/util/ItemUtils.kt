@@ -51,4 +51,6 @@ object ItemUtils {
         this.setData(DataComponentTypes.REPAIR_COST, cost + count)
     }
 
+    // TODO 从配置文件节点解析物品
+
 }

@@ -29,7 +29,7 @@ menu-setting:
       item-model: "minecraft:item/paper"
       click-actions:
         - type: send_message    # 发送消息
-          content: ""
+          content: "我草666"
         - type: play_sound      # 点击音效
           sound: "ui.button.click"
         - type: close_inventory # 关闭菜单

@@ -3,6 +3,7 @@ package top.catnies.firenchantkt.engine
 import org.bukkit.command.CommandSender
 import org.bukkit.configuration.ConfigurationSection
 import top.catnies.firenchantkt.api.FirEnchantAPI
+import top.catnies.firenchantkt.util.YamlUtils.getConfigurationSectionList
 
 object EngineHelper {
 
@@ -23,12 +24,14 @@ object EngineHelper {
         return isNot != condition.check()
     }
 
+    // 检查
     fun CommandSender.checkCondition(config: ConfigurationSection): Boolean {
         val type = config.getString("type")!!
         val args = config.getKeys(false).associateWith { config.get(it)!! }.toMutableMap()
         return checkCondition(type, args)
     }
 
+    // 检查一组条件
     fun CommandSender.checkCondition(configList: List<ConfigurationSection>) = configList.all { checkCondition( it) }
 
 
@@ -43,11 +46,22 @@ object EngineHelper {
         action.execute()
     }
 
-    // 传入节点执行动作, 检查条件. TODO
+    // 传入节点执行动作, 检查条件.
     fun CommandSender.executeActionWithConditions(config: ConfigurationSection) {
         val type = config.getString("type")!!
-        val conditions = config.getConfigurationSection("conditions") ?: return executeAction(config.name, mutableMapOf())
-        // 获取 configList: List<ConfigurationSection> ????
+        val conditionsList = config.getConfigurationSectionList("conditions")
+        if (conditionsList.isEmpty()) return executeAction(type, mutableMapOf())
+
+        if (conditionsList.all { checkCondition(it) }) {
+            val args = config.getKeys(false).associateWith { config.get(it)!! }.toMutableMap()
+            executeAction(type, args)
+            return
+        }
+    }
+
+    // 传入节点列表
+    fun CommandSender.executeActionsWithConditions(configList: List<ConfigurationSection>) {
+        configList.forEach { executeActionWithConditions(it) }
     }
 
 }

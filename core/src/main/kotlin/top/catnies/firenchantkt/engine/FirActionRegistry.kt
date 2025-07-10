@@ -3,6 +3,7 @@ package top.catnies.firenchantkt.engine
 import org.bukkit.Bukkit
 import top.catnies.firenchantkt.api.ServiceContainer
 import top.catnies.firenchantkt.api.event.ActionRegisterEvent
+import top.catnies.firenchantkt.engine.actions.CloseInventoryAction
 import top.catnies.firenchantkt.engine.actions.SendMessageAction
 import top.catnies.firenchantkt.language.MessageConstants.ENGINE_ACTION_NOT_FOUND
 import top.catnies.firenchantkt.util.MessageUtils.sendTranslatableComponent
@@ -18,6 +19,7 @@ class FirActionRegistry: ActionRegistry {
 
     fun load() {
         registerAction("send_message", SendMessageAction::class.java)
+        registerAction("close_inventory", CloseInventoryAction::class.java)
 
         ServiceContainer.register(ActionRegistry::class.java, this)
         Bukkit.getPluginManager().callEvent(ActionRegisterEvent(this))
