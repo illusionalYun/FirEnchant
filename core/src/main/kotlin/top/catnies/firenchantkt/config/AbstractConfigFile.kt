@@ -41,14 +41,14 @@ abstract class AbstractConfigFile(
     }
 
     // 自定义属性委托
-    protected class ConfigProperty<T>(private val defaultValue: T) : ReadWriteProperty<Any?, T> {
+    protected class ConfigProperty<T>(private val defaultValue: T) : ReadWriteProperty<AbstractConfigFile, T> {
         private var value: T = defaultValue
 
-        override fun getValue(thisRef: Any?, property: KProperty<*>): T {
+        override fun getValue(thisRef: AbstractConfigFile, property: KProperty<*>): T {
             return value
         }
 
-        override fun setValue(thisRef: Any?, property: KProperty<*>, value: T) {
+        override fun setValue(thisRef: AbstractConfigFile, property: KProperty<*>, value: T) {
             this.value = value
         }
     }

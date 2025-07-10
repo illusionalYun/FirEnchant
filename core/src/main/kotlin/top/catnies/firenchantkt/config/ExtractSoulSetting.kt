@@ -1,9 +1,13 @@
 package top.catnies.firenchantkt.config
 
 import org.bukkit.Bukkit
+import org.bukkit.entity.Player
+import org.bukkit.event.inventory.InventoryClickEvent
+import org.bukkit.inventory.ItemStack
 import top.catnies.firenchantkt.language.MessageConstants.RESOURCE_MENU_STRUCTURE_ERROR
 import top.catnies.firenchantkt.util.MessageUtils.sendTranslatableComponent
 import xyz.xenondevs.invui.gui.structure.Structure
+import java.util.function.BiFunction
 
 class ExtractSoulSetting private constructor():
     AbstractConfigFile("modules/extract_soul.yml")
@@ -28,6 +32,7 @@ class ExtractSoulSetting private constructor():
     var MENU_STRUCTURE_ARRAY: Array<String> by ConfigProperty(fallbackMenuStructure)
     var MENU_INPUT_SLOT: Char by ConfigProperty('I')
     var MENU_OUTPUT_SLOT: Char by ConfigProperty('O')
+    var MENU_CUSTOM_ITEMS: Map<String, Map<ItemStack, BiFunction<Player, InventoryClickEvent, Unit>>> by ConfigProperty(emptyMap())
 
 
     // 加载数据
@@ -40,6 +45,11 @@ class ExtractSoulSetting private constructor():
             Bukkit.getConsoleSender().sendTranslatableComponent(RESOURCE_MENU_STRUCTURE_ERROR, fileName) }
         MENU_INPUT_SLOT = config().getString("menu-setting.input-slot", "I")?.first() ?: 'I'
         MENU_OUTPUT_SLOT = config().getString("menu-setting.output-slot", "O")?.first() ?: 'O'
+
+        // TODO 读取配置文件, 尝试构建物品, 尝试构建点击逻辑链, 保存.
+        config().getConfigurationSection("menu-setting.custom-items")?.let {
+
+        }
     }
 
 
