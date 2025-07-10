@@ -20,12 +20,18 @@ object ExtractSoulMenuCommand: AbstractCommand() {
     override fun create(): LiteralArgumentBuilder<CommandSourceStack> {
         return Commands.literal("extract-soul")
             .requires { VersionCommand.requires(it) }
+            .executes { execute(it) }
             .then(Commands.argument("player", ArgumentTypes.player())
+                .requires { requiresOther(it) }
                 .executes { execute(it) })
     }
 
     override fun requires(requirement: CommandSourceStack): Boolean {
         return requirement.sender.hasPermission("firenchant.command.openmenu.extract-soul")
+    }
+
+    private fun requiresOther(requirement: CommandSourceStack): Boolean {
+        return requirement.sender.hasPermission("firenchant.command.openmenu.extract-soul.other")
     }
 
     override fun execute(context: CommandContext<CommandSourceStack>): Int {
