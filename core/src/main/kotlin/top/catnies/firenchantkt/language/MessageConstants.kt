@@ -23,6 +23,11 @@ object MessageConstants {
     const val PLUGIN_COMPATIBILITY_HOOK_SUCCESS = "plugin.compatibility.hook.success"
     const val PLUGIN_CONDITION_ARGS_INVALID = "plugin.condition.args.invalid"
 
+    const val ENGINE_CONDITION_NOT_FOUND = "engine.condition.not_found"
+    const val ENGINE_CONDITION_ARGS_NOT_FOUND = "engine.condition.args.not_found"
+    const val ENGINE_ACTION_NOT_FOUND = "engine.action.not_found"
+    const val ENGINE_ACTION_ARGS_NOT_FOUND = "engine.action.args.not_found"
+
     const val ANVIL_ENCHANTED_BOOK_USE_FAIL = "anvil.enchanted.book.use.fail"
     const val ANVIL_ENCHANTED_BOOK_USE_PROTECT_FAIL = "anvil.enchanted.book.use.protect.fail"
 }

@@ -4,6 +4,8 @@ import org.bukkit.Bukkit
 import top.catnies.firenchantkt.api.ServiceContainer
 import top.catnies.firenchantkt.api.event.ActionRegisterEvent
 import top.catnies.firenchantkt.engine.actions.SendMessageAction
+import top.catnies.firenchantkt.language.MessageConstants.ENGINE_ACTION_NOT_FOUND
+import top.catnies.firenchantkt.util.MessageUtils.sendTranslatableComponent
 
 class FirActionRegistry: ActionRegistry {
 
@@ -33,6 +35,9 @@ class FirActionRegistry: ActionRegistry {
     }
 
     override fun getAction(name: String): Class<out Action>? {
+        if (registry[name] == null) {
+            Bukkit.getConsoleSender().sendTranslatableComponent(ENGINE_ACTION_NOT_FOUND, name)
+        }
         return registry[name]
     }
 

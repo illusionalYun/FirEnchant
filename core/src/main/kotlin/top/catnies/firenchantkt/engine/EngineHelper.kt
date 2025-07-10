@@ -16,7 +16,8 @@ object EngineHelper {
         // 如果type开头是! , 就返回 substring + true, 否则 原字符串 + false
         val (finalType, isNot) = if (type.startsWith('!')) (type.substring(1) to true) else (type to false)
 
-        val conditionClass = conditionRegistry.getCondition(finalType) ?: throw IllegalArgumentException("试图检查不存在的条件: $type ,请检查配置文件后再试.")
+        // 如果条件不存在，会发出警告，然后忽略它。
+        val conditionClass = conditionRegistry.getCondition(finalType) ?: return true
         val condition = conditionClass.getDeclaredConstructor(args.javaClass).newInstance(args)
 
         return isNot != condition.check()
@@ -35,7 +36,8 @@ object EngineHelper {
     fun CommandSender.executeAction(type: String, args: MutableMap<String, Any>) {
         args["user"] = this
 
-        val actionClass = actionRegistry.getAction(type) ?: throw IllegalArgumentException("试图执行不存在的动作: $type ,请检查配置文件后再试.")
+        // 如果动作不存在，会发出警告，然后忽略它。
+        val actionClass = actionRegistry.getAction(type) ?: return
         val action = actionClass.getDeclaredConstructor(args.javaClass).newInstance(args)
 
         action.execute()
@@ -43,7 +45,9 @@ object EngineHelper {
 
     // 传入节点执行动作, 检查条件. TODO
     fun CommandSender.executeActionWithConditions(config: ConfigurationSection) {
-
+        val type = config.getString("type")!!
+        val conditions = config.getConfigurationSection("conditions") ?: return executeAction(config.name, mutableMapOf())
+        // 获取 configList: List<ConfigurationSection> ????
     }
 
 }

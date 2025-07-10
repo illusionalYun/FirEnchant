@@ -15,6 +15,8 @@ import top.catnies.firenchantkt.engine.condition.math.LessThenOrEqualImpl
 import top.catnies.firenchantkt.engine.condition.string.ContainsImpl
 import top.catnies.firenchantkt.engine.condition.string.EqualsIgnoreCaseImpl
 import top.catnies.firenchantkt.engine.condition.string.EqualsImpl
+import top.catnies.firenchantkt.language.MessageConstants.ENGINE_CONDITION_NOT_FOUND
+import top.catnies.firenchantkt.util.MessageUtils.sendTranslatableComponent
 
 class FirConditionRegistry private constructor() : ConditionRegistry {
 
@@ -60,6 +62,9 @@ class FirConditionRegistry private constructor() : ConditionRegistry {
     }
 
     override fun getCondition(name: String): Class<out Condition>? {
+        if (registry[name] == null) {
+            Bukkit.getConsoleSender().sendTranslatableComponent(ENGINE_CONDITION_NOT_FOUND, name)
+        }
         return registry[name]
     }
 }
