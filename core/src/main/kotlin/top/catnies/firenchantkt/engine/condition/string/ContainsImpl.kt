@@ -1,6 +1,6 @@
 package top.catnies.firenchantkt.engine.condition.string
 
-import top.catnies.firenchantkt.engine.args.ArgumentKey
+import top.catnies.firenchantkt.engine.ArgumentKey
 import top.catnies.firenchantkt.engine.AbstractCondition
 
 class ContainsImpl(

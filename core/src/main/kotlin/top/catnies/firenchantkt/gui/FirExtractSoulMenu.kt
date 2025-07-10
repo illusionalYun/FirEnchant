@@ -5,6 +5,7 @@ import kotlinx.coroutines.withContext
 import org.bukkit.entity.Player
 import top.catnies.firenchantkt.FirEnchantPlugin
 import top.catnies.firenchantkt.config.ExtractSoulSetting
+import top.catnies.firenchantkt.util.TaskUtils
 import xyz.xenondevs.invui.gui.Gui
 import xyz.xenondevs.invui.gui.structure.Structure
 import xyz.xenondevs.invui.inventory.VirtualInventory
@@ -30,13 +31,10 @@ class FirExtractSoulMenu(
     // 创建并且打开菜单
     override fun openMenu(data: Map<String, Any>, async: Boolean) {
         if (async) {
-            plugin.launch {
-                buildBaseGui()
-                buildWindow()
-                withContext(plugin.mainDispatcher) {
-                    window?.open() ?: throw IllegalStateException("构建菜单时出现错误，请保存错误日志联系开发者解决.")
-                }
-            }
+            TaskUtils.runAsyncTaskWithSyncCallback(
+                async = { buildBaseGui(); buildWindow() },
+                callback = { window?.open() ?: throw IllegalStateException("构建菜单时出现错误，请保存错误日志联系开发者解决.") }
+            )
         } else {
             buildBaseGui()
             buildWindow()
@@ -60,6 +58,7 @@ class FirExtractSoulMenu(
         return
     }
 
+
     // 创建 Window
     private fun buildWindow() {
         window = Window.single {
@@ -69,9 +68,6 @@ class FirExtractSoulMenu(
             it.build()
         }
     }
-
-
-    //
 
 
     // 统计 Structure 里有多少个某种 Slot 字符

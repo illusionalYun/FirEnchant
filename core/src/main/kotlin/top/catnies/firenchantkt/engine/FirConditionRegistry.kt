@@ -3,7 +3,6 @@ package top.catnies.firenchantkt.engine
 import org.bukkit.Bukkit
 import top.catnies.firenchantkt.api.ServiceContainer
 import top.catnies.firenchantkt.api.event.ConditionRegisterEvent
-import top.catnies.firenchantkt.engine.condition.Condition
 import top.catnies.firenchantkt.engine.condition.PermissionImpl
 import top.catnies.firenchantkt.engine.condition.list.ListContainsImpl
 import top.catnies.firenchantkt.engine.condition.logic.AndImpl

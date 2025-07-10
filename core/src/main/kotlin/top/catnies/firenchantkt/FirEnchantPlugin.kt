@@ -116,7 +116,7 @@ class FirEnchantPlugin: JavaPlugin(), FirEnchant, CoroutineScope {
     // 初始化注册表
     override fun initRegistry() {
         if (isInitializedRegistry) {
-            logger.warning("警告, 插件试图重复初始化注册表, 不应发生这样的问题, 请联系开发者反馈.")
+            logger.warning("警告，插件试图重复初始化注册表，不应发生这样的问题，请保存错误日志，联系开发者反馈修复。")
             return
         }
         isInitializedRegistry = true

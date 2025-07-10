@@ -1,7 +1,5 @@
 package top.catnies.firenchantkt.engine
 
-import top.catnies.firenchantkt.engine.condition.Condition
-
 /**
  * 条件系统注册表
  */
