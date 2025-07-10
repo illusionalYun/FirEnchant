@@ -2,7 +2,7 @@ package top.catnies.firenchantkt.engine.condition.logic
 
 import org.bukkit.command.CommandSender
 import org.bukkit.configuration.ConfigurationSection
-import top.catnies.firenchantkt.engine.args.ArgumentKey
+import top.catnies.firenchantkt.engine.ArgumentKey
 import top.catnies.firenchantkt.engine.AbstractCondition
 import top.catnies.firenchantkt.engine.ConditionHelper.checkCondition
 

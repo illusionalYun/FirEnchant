@@ -1,7 +1,7 @@
 package top.catnies.firenchantkt.engine.condition
 
 import org.bukkit.command.CommandSender
-import top.catnies.firenchantkt.engine.args.ArgumentKey
+import top.catnies.firenchantkt.engine.ArgumentKey
 import top.catnies.firenchantkt.engine.AbstractCondition
 
 class PermissionImpl(

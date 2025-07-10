@@ -32,4 +32,16 @@ object MessageUtils {
     fun Audience.sendTranslatableComponent(key: String, vararg args: Any) {
         this.sendTranslatableComponent(key, this, *args)
     }
+
+
+    /**
+     * 将字符串解析成组件, 自动处理 PlaceholderAPI 和 LegacyColor.
+     * @param ptr PAPI 解析者
+     * @return 文本组件.
+     */
+    fun String.renderToComponent(ptr: Pointered? = null): Component{
+        // TODO (
+        return Component.text(this)
+    }
+
 }
