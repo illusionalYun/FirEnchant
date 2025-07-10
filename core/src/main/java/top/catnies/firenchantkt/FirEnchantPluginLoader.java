@@ -7,6 +7,7 @@ import org.eclipse.aether.artifact.DefaultArtifact;
 import org.eclipse.aether.graph.Dependency;
 import org.eclipse.aether.repository.RemoteRepository;
 
+// TODO 版本信息是否可以从配置文件读取?
 public class FirEnchantPluginLoader implements PluginLoader {
 
     @Override

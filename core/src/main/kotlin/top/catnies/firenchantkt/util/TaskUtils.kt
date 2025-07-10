@@ -26,7 +26,7 @@ object TaskUtils {
     // 运行多个异步任务并在全部完成后执行同步回调
     fun runAsyncTasksWithSyncCallback(delay: Long = 0, vararg tasks: () -> Unit, callback: () -> Unit) {
         if (tasks.isEmpty()) {
-            // 没任时直接回调
+            // 没任务时直接回调
             MHDFScheduler.getGlobalRegionScheduler().runTask(plugin, callback)
             return
         }

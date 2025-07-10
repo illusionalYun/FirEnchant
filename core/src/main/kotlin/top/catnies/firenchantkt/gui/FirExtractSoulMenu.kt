@@ -34,13 +34,13 @@ class FirExtractSoulMenu(
                 buildBaseGui()
                 buildWindow()
                 withContext(plugin.mainDispatcher) {
-                    window?.open()
+                    window?.open() ?: throw IllegalStateException("构建菜单时出现错误，请保存错误日志联系开发者解决.")
                 }
             }
         } else {
             buildBaseGui()
             buildWindow()
-            window!!.open()
+            window?.open() ?: throw IllegalStateException("构建菜单时出现错误，请保存错误日志联系开发者解决.")
         }
     }
 
@@ -60,7 +60,6 @@ class FirExtractSoulMenu(
         return
     }
 
-
     // 创建 Window
     private fun buildWindow() {
         window = Window.single {
@@ -70,6 +69,9 @@ class FirExtractSoulMenu(
             it.build()
         }
     }
+
+
+    //
 
 
     // 统计 Structure 里有多少个某种 Slot 字符

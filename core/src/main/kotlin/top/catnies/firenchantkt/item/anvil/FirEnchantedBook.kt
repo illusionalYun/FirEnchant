@@ -178,11 +178,9 @@ class FirEnchantedBook : EnchantedBook {
         return when (config.EB_MERGE_FAILURE_INHERITANCE) {
             "HIGHER" -> max(firstSetting.failure, secondSetting.failure)
             "LOWER" -> min(firstSetting.failure, secondSetting.failure)
-            "RANDOM" -> {
-                val min = min(firstSetting.failure, secondSetting.failure)
-                val max = max(firstSetting.failure, secondSetting.failure)
-                (min..max).random()
-            }
+            "RANDOM" -> listOf(firstSetting.failure, secondSetting.failure).let {
+                (it.minOrNull() ?: 50)..(it.maxOrNull() ?: 100)
+            }.random()
 
             else -> firstSetting.failure
         }
