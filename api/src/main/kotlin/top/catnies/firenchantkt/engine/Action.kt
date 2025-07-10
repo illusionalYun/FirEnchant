@@ -5,6 +5,6 @@ interface Action {
 
     fun getType(): String
 
-    fun execute(): Boolean
+    fun execute()
 
 }

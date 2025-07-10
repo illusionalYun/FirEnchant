@@ -12,6 +12,8 @@ import top.catnies.firenchantkt.config.ConfigManager
 import top.catnies.firenchantkt.database.impl.FirEnchantDatabaseManager
 import top.catnies.firenchantkt.database.impl.FirPlayerEnchantLogDataManager
 import top.catnies.firenchantkt.enchantment.FirEnchantmentManager
+import top.catnies.firenchantkt.engine.FirActionRegistry
+import top.catnies.firenchantkt.engine.FirConditionRegistry
 import top.catnies.firenchantkt.integration.FirItemProviderRegistry
 import top.catnies.firenchantkt.integration.IntegrationManager
 import top.catnies.firenchantkt.integration.NMSHandlerHolder
@@ -122,6 +124,8 @@ class FirEnchantPlugin: JavaPlugin(), FirEnchant, CoroutineScope {
         isInitializedRegistry = true
         IntegrationManager.instance // 关联插件集成管理器
 
+        FirConditionRegistry.instance // 条件注册表
+        FirActionRegistry.instance // 动作注册表
         FirItemProviderRegistry.instance // 物品集成注册表
         FirEnchantmentManager.instance // 系统魔咒管理器
         FirAnvilItemRegistry.instance // 铁砧物品注册表

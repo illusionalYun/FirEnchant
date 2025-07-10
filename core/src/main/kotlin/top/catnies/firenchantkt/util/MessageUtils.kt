@@ -1,9 +1,12 @@
 package top.catnies.firenchantkt.util
 
+import me.clip.placeholderapi.PlaceholderAPI
 import net.kyori.adventure.audience.Audience
 import net.kyori.adventure.pointer.Pointered
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.minimessage.translation.Argument
+import org.bukkit.entity.Player
+import top.catnies.firenchantkt.language.MessageTranslator
 
 
 object MessageUtils {
@@ -40,8 +43,12 @@ object MessageUtils {
      * @return 文本组件.
      */
     fun String.renderToComponent(ptr: Pointered? = null): Component{
-        // TODO (
-        return Component.text(this)
+        val player = ptr as? Player
+        val parsed = PlaceholderAPI.setPlaceholders(player, this).apply {
+            MessageTranslator.legacyColorToMiniMessage(this)
+            MessageTranslator.legacyToMiniMessage(this)
+        }
+        return Component.text(parsed)
     }
 
 }

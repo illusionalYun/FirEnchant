@@ -1,7 +1,4 @@
-package top.catnies.firenchantkt.engine.condition
-
-import top.catnies.firenchantkt.engine.Action
-import top.catnies.firenchantkt.engine.ArgumentKey
+package top.catnies.firenchantkt.engine
 
 abstract class AbstractAction(
     args: Map<String, Any?>

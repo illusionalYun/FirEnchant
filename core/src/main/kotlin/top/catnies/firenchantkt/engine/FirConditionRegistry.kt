@@ -39,7 +39,7 @@ class FirConditionRegistry private constructor() : ConditionRegistry {
 
         registerCondition("contains", ContainsImpl::class.java)
         registerCondition("equals_ignore_case", EqualsIgnoreCaseImpl::class.java)
-        registerCondition("equals", EqualsImpl::class.java)
+//        registerCondition("equals", EqualsImpl::class.java)
 
         registerCondition("&&", AndImpl::class.java)
         registerCondition("||", OrImpl::class.java)

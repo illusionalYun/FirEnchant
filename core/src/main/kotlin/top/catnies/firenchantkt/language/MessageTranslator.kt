@@ -35,7 +35,7 @@ object MessageTranslator : MiniMessageTranslator(
      * @param legacy 旧版颜色字符文本
      * @return miniMessage格式文本
      */
-    private fun legacyColorToMiniMessage(legacy: String): String {
+    fun legacyColorToMiniMessage(legacy: String): String {
         var message = legacy
         message = message.replace("&#", "#")
         return message.replace("(?!:)(?<!<)#([0-9a-fA-F]{6})(?!>)(?!:)".toRegex(), "<#$1>")
@@ -47,7 +47,7 @@ object MessageTranslator : MiniMessageTranslator(
      * @param legacy 旧版颜色字符文本
      * @return miniMessage格式文本
      */
-    private fun legacyToMiniMessage(legacy: String): String {
+    fun legacyToMiniMessage(legacy: String): String {
         val stringBuilder = StringBuilder()
         val chars = legacy.toCharArray()
         var i = 0

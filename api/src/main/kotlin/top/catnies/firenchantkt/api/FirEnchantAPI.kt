@@ -10,6 +10,7 @@ import top.catnies.firenchantkt.enchantment.EnchantmentData
 import top.catnies.firenchantkt.enchantment.EnchantmentManager
 import top.catnies.firenchantkt.enchantment.EnchantmentSetting
 import top.catnies.firenchantkt.enchantment.EnchantmentSettingFactory
+import top.catnies.firenchantkt.engine.ActionRegistry
 import top.catnies.firenchantkt.integration.ItemProviderRegistry
 import top.catnies.firenchantkt.item.AnvilItemRegistry
 import top.catnies.firenchantkt.item.EnchantingTableItemRegistry
@@ -29,6 +30,8 @@ object FirEnchantAPI {
     val enchantingTableItemRegistry: () -> EnchantingTableItemRegistry = { ServiceContainer.get(EnchantingTableItemRegistry::class.java) }
     // 条件注册表
     val conditionRegistry: () -> ConditionRegistry = { ServiceContainer.get(ConditionRegistry::class.java) }
+    // 动作注册表
+    val actionRegistry: () -> ActionRegistry = { ServiceContainer.get(ActionRegistry::class.java) }
     // 玩家附魔日志控制器
     val playerEnchantLogDataManager: () -> PlayerEnchantLogDataManager = { ServiceContainer.get(PlayerEnchantLogDataManager::class.java) }
 
