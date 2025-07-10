@@ -12,7 +12,7 @@ import top.catnies.firenchantkt.util.MessageUtils.sendTranslatableComponent
 /**
  * 插件重载命令
  */
-object ReloadCommand: AbstractCommand() {
+object ReloadCommand : AbstractCommand() {
 
     // 注册命令
     override fun create(): LiteralArgumentBuilder<CommandSourceStack> {

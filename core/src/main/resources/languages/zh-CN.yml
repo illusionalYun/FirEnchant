@@ -6,6 +6,7 @@ command.no_permission: "<#96f896>[FirEnchant] <red>您没有权限执行此命�
 command.reload.success: "<#96f896>[FirEnchant] <#cef8f5>配置文件重新加载完成，耗时 <green><arg:0></green> 毫秒。</#cef8f5>"
 command.version.success: "<#96f896>[FirEnchant] <#cef8f5>插件当前版本号为 <arg:0> 。</#cef8f5>"
 command.console.cant_execute: "<#96f896>[FirEnchant] <#cef8f5>控制台不能执行这条命令喵，如果命令中有玩家参数请补全参数！"
+command.debug.get_location_book_shelf_count.execute: "<#96f896>[FirEnchant] <#cef8f5>在 <arg:0> 世界 <arg:1> <args:2> <arg:3> 有 <arg:4> 个有效书架在附近!"
 command.give_book.enchantment.not_found: "<#96f896>[FirEnchant] <#cef8f5>魔咒 <arg:0> 不存在，请检查您的命令合法性。</#cef8f5>"
 command.give_book.enchantment.success.receive: "<#96f896>[FirEnchant] <#cef8f5>成功收到了来自 <arg:0> 给予的 <arg:1> 附魔书(等级 <arg:2>, 失败率 <arg:3>, 灵魂使用次数 <arg:4>)。</#cef8f5>"
 command.give_book.enchantment.success.execute: "<#96f896>[FirEnchant] <#cef8f5>成功给予 <arg:0> 玩家 <arg:1> 附魔书(等级 <arg:2>, 失败率 <arg:3>, 灵魂使用次数 <arg:4>)。</#cef8f5>"

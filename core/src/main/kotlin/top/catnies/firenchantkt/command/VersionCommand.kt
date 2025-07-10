@@ -11,7 +11,7 @@ import top.catnies.firenchantkt.util.MessageUtils.sendTranslatableComponent
 /**
  * 版本信息.
  */
-object VersionCommand: AbstractCommand() {
+object VersionCommand : AbstractCommand() {
 
     // 注册命令
     override fun create(): LiteralArgumentBuilder<CommandSourceStack> {

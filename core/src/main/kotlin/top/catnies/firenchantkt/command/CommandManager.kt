@@ -3,6 +3,8 @@ package top.catnies.firenchantkt.command
 import io.papermc.paper.command.brigadier.Commands
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents
 import top.catnies.firenchantkt.FirEnchantPlugin
+import top.catnies.firenchantkt.command.debug.GetLocationBookShelfCountCommand
+import top.catnies.firenchantkt.command.debug.GetNextEnchantingTableResultCommand
 import top.catnies.firenchantkt.command.openmenu.ExtractSoulMenuCommand
 
 class CommandManager private constructor() {
@@ -18,7 +20,7 @@ class CommandManager private constructor() {
         registerCommands()
     }
 
-    fun reload () {}
+    fun reload() {}
 
     // 注册命令
     private fun registerCommands() {
@@ -42,7 +44,8 @@ class CommandManager private constructor() {
         val debugRoot = Commands.literal("debug").requires {
             return@requires it.sender.hasPermission("firenchant.command.debug")
         }.apply {
-            // TODO 检查目标位置有效书架数量
+            then(GetLocationBookShelfCountCommand.create())
+            then(GetNextEnchantingTableResultCommand.create())
         }.also { root.then(it) }
 
         // 注册命令到服务器

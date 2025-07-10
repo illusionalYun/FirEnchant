@@ -110,7 +110,7 @@ public class NMSHandlerImpl implements NMSHandler {
      * @return 附魔实例列表
      */
     private List<EnchantmentInstance> selectEnchantment(RandomSource random, org.bukkit.inventory.ItemStack itemStack, int level, int cost, Set<Enchantment> enchantmentList) {
-        ItemStack nmsItem = ((CraftItemStack) itemStack).handle;
+        ItemStack nmsItem = CraftItemStack.asNMSCopy(itemStack);;
 
         List<EnchantmentInstance> list = Lists.newArrayList();
 

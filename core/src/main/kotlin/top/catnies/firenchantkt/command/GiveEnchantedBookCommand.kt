@@ -22,21 +22,21 @@ import java.util.concurrent.ThreadLocalRandom
 /**
  * 给予附魔书.
  */
-object GiveEnchantedBookCommand: AbstractCommand() {
+object GiveEnchantedBookCommand : AbstractCommand() {
 
     override fun create(): LiteralArgumentBuilder<CommandSourceStack> {
         return Commands.literal("giveenchantedbook").requires { VersionCommand.requires(it) }
             .then(Commands.argument("player", ArgumentTypes.players())
-                    .then(Commands.argument("enchantment", ArgumentTypes.resource(RegistryKey.ENCHANTMENT))
-                        .then(Commands.argument("level", ArgumentTypes.integerRange())
-                            .then(Commands.argument("failure", ArgumentTypes.integerRange())
+                .then(Commands.argument("enchantment", ArgumentTypes.resource(RegistryKey.ENCHANTMENT))
+                    .then(Commands.argument("level", ArgumentTypes.integerRange())
+                        .then(Commands.argument("failure", ArgumentTypes.integerRange())
+                            .executes { execute(it) }
+                            .then(Commands.argument("consumedSouls", ArgumentTypes.integerRange())
                                 .executes { execute(it) }
-                                .then(Commands.argument("consumedSouls", ArgumentTypes.integerRange())
-                                    .executes { execute(it) }
-                                )
                             )
                         )
                     )
+                )
             )
     }
 
@@ -49,7 +49,10 @@ object GiveEnchantedBookCommand: AbstractCommand() {
         val enchantmentKey = enchantment.key()
         val levelRange = context.getArgument("level", IntegerRangeProvider::class.java)
         val failureRange = context.getArgument("failure", IntegerRangeProvider::class.java)
-        val consumedSoulsRange = if (context.nodes.last().node.name == "consumedSouls") context.getArgument("consumedSouls", IntegerRangeProvider::class.java) else null
+        val consumedSoulsRange = if (context.nodes.last().node.name == "consumedSouls") context.getArgument(
+            "consumedSouls",
+            IntegerRangeProvider::class.java
+        ) else null
 
         val level = getRandomFromRange(levelRange.range())
         val failure = getRandomFromRange(failureRange.range())
@@ -66,10 +69,24 @@ object GiveEnchantedBookCommand: AbstractCommand() {
         val players = targetResolver.resolve(context.source)
         players.forEach { player ->
             player.giveOrDrop(enchantmentSetting.toItemStack())
-            player.sendTranslatableComponent(COMMAND_GIVE_BOOK_ENCHANTMENT_SUCCESS_RECEIVE, context.source.sender.name, enchantmentKey, level.toString(), failure.toString(), consumedSouls.toString())
+            player.sendTranslatableComponent(
+                COMMAND_GIVE_BOOK_ENCHANTMENT_SUCCESS_RECEIVE,
+                context.source.sender.name,
+                enchantmentKey,
+                level.toString(),
+                failure.toString(),
+                consumedSouls.toString()
+            )
         }
         val receivers = players.map { it.name }.toString()
-        context.source.sender.sendTranslatableComponent(COMMAND_GIVE_BOOK_ENCHANTMENT_SUCCESS_EXECUTE, receivers, enchantmentKey, level.toString(), failure.toString(), consumedSouls.toString())
+        context.source.sender.sendTranslatableComponent(
+            COMMAND_GIVE_BOOK_ENCHANTMENT_SUCCESS_EXECUTE,
+            receivers,
+            enchantmentKey,
+            level.toString(),
+            failure.toString(),
+            consumedSouls.toString()
+        )
         return Command.SINGLE_SUCCESS
     }
 
