@@ -8,12 +8,14 @@ import xyz.xenondevs.invui.item.ItemProvider
 import xyz.xenondevs.invui.item.impl.AbstractItem
 
 class MenuItem(
-    val itemProvider: ItemProvider,
+    private val menuItemProvider: ItemProvider,
     val actionTemplates: List<ConfigActionTemplate>
 ): AbstractItem() {
 
     constructor(itemProvider: ItemProvider): this(itemProvider, emptyList())
     constructor(itemProvider: ItemProvider, actionTemplate: ConfigActionTemplate): this(itemProvider, listOf(actionTemplate))
+
+    override fun getItemProvider(): ItemProvider = menuItemProvider
 
     override fun handleClick(clickType: ClickType, player: Player, event: InventoryClickEvent) {
         val args = mutableMapOf<String, Any?>()
