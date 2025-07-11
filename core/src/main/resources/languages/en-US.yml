@@ -1,4 +1,30 @@
 lang-version: 1
 
-command.reload.success: "<white>[FirEnchant] Configs reloaded in <green><arg:0></green> ms.</white>"
-resource.enchantment.file.error: "<white>[FirEnchant] Error at init enchantment <red><arg:0></red> , please check file then reload.</white>"
+database.connect.error: "<#96f896>[FirEnchant] <red>Plugin cannot connect to database, please check database configuration.</red>"
+
+command.no_permission: "<#96f896>[FirEnchant] <red>You don't have permission to execute this command.</red>"
+command.reload.success: "<#96f896>[FirEnchant] <#cef8f5>Configuration files reloaded successfully, took <green><arg:0></green> milliseconds.</#cef8f5>"
+command.version.success: "<#96f896>[FirEnchant] <#cef8f5>Plugin current version is <arg:0>.</#cef8f5>"
+command.console.cant_execute: "<#96f896>[FirEnchant] <#cef8f5>Console cannot execute this command, if the command has player parameters please complete the parameters!"
+command.debug.get_location_book_shelf_count.execute: "<#96f896>[FirEnchant] <#cef8f5>At world <arg:0> location <arg:1> <args:2> <arg:3> there are <arg:4> valid bookshelves nearby!"
+command.give_book.enchantment.not_found: "<#96f896>[FirEnchant] <#cef8f5>Enchantment <arg:0> does not exist, please check your command validity.</#cef8f5>"
+command.give_book.enchantment.success.receive: "<#96f896>[FirEnchant] <#cef8f5>Successfully received <arg:1> enchanted book from <arg:0> (level <arg:2>, failure rate <arg:3>, soul usage count <arg:4>).</#cef8f5>"
+command.give_book.enchantment.success.execute: "<#96f896>[FirEnchant] <#cef8f5>Successfully gave player <arg:0> the <arg:1> enchanted book (level <arg:2>, failure rate <arg:3>, soul usage count <arg:4>).</#cef8f5>"
+
+resource.enchantment.file.error: "<#96f896>[FirEnchant] <red>The configuration file format for enchantment <arg:0> is incorrect, enchantment data cannot be loaded properly, please correct it and try again.</red>"
+resource.enchantment.file.provider.not_found: "<#96f896>[FirEnchant] <red>The item provider plugin <arg:1> specified in the configuration file for enchantment <arg:0> does not exist or is not supported, enchantment data cannot be loaded properly, please correct it and try again.</red>"
+resource.enchantment.file.item.not_found: "<#96f896>[FirEnchant] <red>The item <arg:1> specified in the configuration file for enchantment <arg:0> does not exist, enchantment data cannot be loaded properly, please correct it and try again.</red>"
+resource.hook.item_provider.not_found: "<#96f896>[FirEnchant] <red>In configuration file <arg:0>, the item provider plugin <arg:2> specified in <arg:1> does not exist or is not supported, please correct it and try again.</red>"
+resource.hook.item.not_found: "<#96f896>[FirEnchant] <red>In configuration file <arg:0>, the item ID <arg:2> specified in <arg:1> does not exist, please correct it and try again.</red>"
+resource.menu.structure.error: "<#96f896>[FirEnchant] <red>The menu structure set in configuration file <arg:0> is incorrect, please correct it and try again.</red>"
+
+plugin.compatibility.hook.success: "<#96f896>[FirEnchant] <#cef8f5>Detected plugin <arg:0> on server, compatibility integration has been applied."
+plugin.condition.args.invalid: "<#96f896>[FirEnchant] <#cef8f5>Detected that configuration condition <arg:0> is missing <arg:1> parameter, please check and try again."
+
+engine.condition.not_found: "<#96f896>[FirEnchant] <#cef8f5>Found non-existent condition <arg:0> in configuration file, condition will be ignored, please check and try again."
+engine.condition.args.not_found: "<#96f896>[FirEnchant] <#cef8f5>Condition <arg:0> in configuration file is missing required parameter <arg:1>, please check and try again."
+engine.action.not_found: "<#96f896>[FirEnchant] <#cef8f5>Found non-existent action <arg:0> in configuration file, action will be ignored, please check and try again."
+engine.action.args.not_found: "<#96f896>[FirEnchant] <#cef8f5>Action <arg:0> in configuration file is missing required parameter <arg:1>, please check and try again."
+
+anvil.enchanted.book.use.fail: "<#96f896>[FirEnchant] <#cef8f5>Oops, enchantment failed and your equipment is damaged! Don't worry, you can repair it at the repair table!"
+anvil.enchanted.book.use.protect.fail: "<#96f896>[FirEnchant] <#cef8f5>Oops, enchantment failed but your equipment is not damaged, the protection rune on the equipment has been consumed."
