@@ -21,10 +21,10 @@ resource.menu.structure.error: "<#96f896>[FirEnchant] <red>在 <arg:0> 配置文
 plugin.compatibility.hook.success: "<#96f896>[FirEnchant] <#cef8f5>检查到服务器存在插件 <arg:0> ，已进行关联兼容。"
 plugin.condition.args.invalid: "<#96f896>[FirEnchant] <#cef8f5>检查到配置条件 <arg:0> 缺少 <arg:1> 参数，请检查后再试。"
 
-engine.condition.not_found: "<#96f896>[FirEnchant] <#cef8f5>配置文件中发现不存在的条件 <arg:0> ，条件将会被忽略，请检查后再试。"
-engine.condition.args.not_found: "<#96f896>[FirEnchant] <#cef8f5>配置文件中的条件 <arg:0> 缺少必须的参数 <arg:1> ，请检查后再试。"
-engine.action.not_found: "<#96f896>[FirEnchant] <#cef8f5>配置文件中发现不存在的动作 <arg:0> ，动作将会被忽略，请检查后再试。"
-engine.action.args.not_found: "<#96f896>[FirEnchant] <#cef8f5>配置文件中的动作 <arg:0> 缺少必须的参数 <arg:1> ，请检查后再试。"
+config.action.type.unknown: "<#96f896>[FirEnchant] <red>未知的动作类型 <arg:0>，该动作将被忽略。</red>"
+config.condition.type.unknown: "<#96f896>[FirEnchant] <red>未知的条件类型 <arg:0>，该条件将被忽略。</red>"
+config.action.invalid.custom_item: "<#96f896>[FirEnchant] <red>自定义物品 '<arg:0>' 的动作配置无效：缺少必需参数 <arg:1>。</red>"
+config.condition.invalid.custom_item: "<#96f896>[FirEnchant] <red>自定义物品 '<arg:0>' 的条件配置无效：缺少必需参数 <arg:1>。</red>"
 
 anvil.enchanted.book.use.fail: "<#96f896>[FirEnchant] <#cef8f5>啊哦，附魔失败了，你的装备破损了！ 不过别担心，你可以在修复桌上修复它！"
 anvil.enchanted.book.use.protect.fail: "<#96f896>[FirEnchant] <#cef8f5>啊哦，附魔失败了，你的装备没有破损，装备上的保护符文被消耗了。"

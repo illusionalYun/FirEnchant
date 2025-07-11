@@ -21,10 +21,10 @@ resource.menu.structure.error: "<#96f896>[FirEnchant] <red>The menu structure se
 plugin.compatibility.hook.success: "<#96f896>[FirEnchant] <#cef8f5>Detected plugin <arg:0> on server, compatibility integration has been applied."
 plugin.condition.args.invalid: "<#96f896>[FirEnchant] <#cef8f5>Detected that configuration condition <arg:0> is missing <arg:1> parameter, please check and try again."
 
-engine.condition.not_found: "<#96f896>[FirEnchant] <#cef8f5>Found non-existent condition <arg:0> in configuration file, condition will be ignored, please check and try again."
-engine.condition.args.not_found: "<#96f896>[FirEnchant] <#cef8f5>Condition <arg:0> in configuration file is missing required parameter <arg:1>, please check and try again."
-engine.action.not_found: "<#96f896>[FirEnchant] <#cef8f5>Found non-existent action <arg:0> in configuration file, action will be ignored, please check and try again."
-engine.action.args.not_found: "<#96f896>[FirEnchant] <#cef8f5>Action <arg:0> in configuration file is missing required parameter <arg:1>, please check and try again."
+config.action.type.unknown: "<#96f896>[FirEnchant] <red>Unknown action type <arg:0>, action will be ignored.</red>"
+config.condition.type.unknown: "<#96f896>[FirEnchant] <red>Unknown condition type <arg:0>, condition will be ignored.</red>"
+config.action.invalid.custom_item: "<#96f896>[FirEnchant] <red>Invalid action configuration for custom item '<arg:0>': missing required arguments <arg:1>.</red>"
+config.condition.invalid.custom_item: "<#96f896>[FirEnchant] <red>Invalid condition configuration for custom item '<arg:0>': missing required arguments <arg:1>.</red>"
 
 anvil.enchanted.book.use.fail: "<#96f896>[FirEnchant] <#cef8f5>Oops, enchantment failed and your equipment is damaged! Don't worry, you can repair it at the repair table!"
 anvil.enchanted.book.use.protect.fail: "<#96f896>[FirEnchant] <#cef8f5>Oops, enchantment failed but your equipment is not damaged, the protection rune on the equipment has been consumed."

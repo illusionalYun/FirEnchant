@@ -43,7 +43,7 @@ menu-setting:
       lore:
         - "§7你可以在这里将附魔书转换成魔咒之尘。"
       amount: 1
-      custom-model-data: 31001
+      item-model: "minecraft:apple"
       click-actions:
         - type: play_sound      # 点击音效
           sound: "ui.button.click"

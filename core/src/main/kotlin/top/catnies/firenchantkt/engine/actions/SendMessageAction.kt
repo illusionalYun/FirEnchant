@@ -9,7 +9,7 @@ class SendMessageAction(
     var args: Map<String, Any?>
 ): AbstractAction(args) {
 
-    @ArgumentKey(["user"])
+    @ArgumentKey(["user"], autoInject = true)
     private lateinit var user: CommandSender
 
     @ArgumentKey(["content", "message"])
