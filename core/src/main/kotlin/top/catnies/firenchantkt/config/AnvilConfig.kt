@@ -102,4 +102,6 @@ class AnvilConfig private constructor():
         }
     }
 
+    override fun loadLatePartConfig() {}
+
 }

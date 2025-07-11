@@ -32,4 +32,6 @@ class SettingsConfig private constructor():
         DATABASE_H2_FILE = config().getString("database.h2.file", "database.db")!!
     }
 
+    override fun loadLatePartConfig() {}
+
 }

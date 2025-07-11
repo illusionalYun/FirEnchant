@@ -73,7 +73,7 @@ enchant-soul:
   enable: true
   # 魔咒之魂使用的物品
   hooked-plugin: "CraftEngine"
-  hooked-id: "enchantment:enchantment_o_soul"
+  hooked-id: "enchantment:ashes_o_enchantment"
   # 使用每个魔咒之魂消耗的经验等级
   exp: 3
   # 每个魔咒之魂可降低多少附魔书的失败率?

@@ -15,6 +15,13 @@ class ConfigManager private constructor() {
 
     // 重载所有配置
     fun reload() {
-        configs.forEach { it.reload() }
+        configs.forEach {
+            it.reload()
+        }
+    }
+
+    // 加载延迟加载的配置
+    fun loadConfigsLatePart() {
+        configs.forEach { it.loadLatePart() }
     }
 }

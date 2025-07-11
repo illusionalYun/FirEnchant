@@ -130,6 +130,8 @@ class FirEnchantPlugin: JavaPlugin(), FirEnchant, CoroutineScope {
         FirEnchantmentManager.instance // 系统魔咒管理器
         FirAnvilItemRegistry.instance // 铁砧物品注册表
         FirEnchantingTableRegistry.instance // 附魔台物品注册表
+
+        ConfigManager.instance.loadConfigsLatePart() // 加载延迟加载的配置部分
     }
 
 
