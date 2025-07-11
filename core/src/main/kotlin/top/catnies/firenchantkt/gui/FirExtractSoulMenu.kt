@@ -3,6 +3,7 @@ package top.catnies.firenchantkt.gui
 import org.bukkit.entity.Player
 import top.catnies.firenchantkt.FirEnchantPlugin
 import top.catnies.firenchantkt.config.ExtractSoulSetting
+import top.catnies.firenchantkt.util.ItemUtils.nullOrAir
 import top.catnies.firenchantkt.util.PlayerUtils.giveOrDropList
 import top.catnies.firenchantkt.util.TaskUtils
 import xyz.xenondevs.invui.gui.Gui
@@ -23,6 +24,7 @@ class FirExtractSoulMenu(
     val structureArray = config.MENU_STRUCTURE_ARRAY
     val inputSlot = config.MENU_INPUT_SLOT
     val outputSlot = config.MENU_OUTPUT_SLOT
+    val customItems = config.MENU_CUSTOM_ITEMS
 
     var gui: Gui? = null
     var window: Window? = null
@@ -77,7 +79,13 @@ class FirExtractSoulMenu(
 
     // 添加自定义物品
     private fun addCustomItems(building: Gui.Builder.Normal) {
-        return
+        customItems
+            .filter { getMarkCount(it.key) > 0 }
+            .filterNot { it.value.first.nullOrAir() }
+            .forEach { (char, pair) ->
+                val menuItem = MenuItem({ s -> pair.first!! }, pair.second)
+                building.addIngredient(char, menuItem)
+            }
     }
 
     // 统计 Structure 里有多少个某种 Slot 字符

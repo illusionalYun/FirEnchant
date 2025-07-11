@@ -33,7 +33,7 @@ class ExtractSoulSetting private constructor():
     var MENU_STRUCTURE_ARRAY: Array<String> by ConfigProperty(fallbackMenuStructure)
     var MENU_INPUT_SLOT: Char by ConfigProperty('I')
     var MENU_OUTPUT_SLOT: Char by ConfigProperty('O')
-    var MENU_CUSTOM_ITEMS: Map<String, Pair<ItemStack?, List<ConfigActionTemplate>>> by ConfigProperty(emptyMap())
+    var MENU_CUSTOM_ITEMS: Map<Char, Pair<ItemStack?, List<ConfigActionTemplate>>> by ConfigProperty(emptyMap())
 
 
     // 加载数据
@@ -53,7 +53,7 @@ class ExtractSoulSetting private constructor():
 
         // 1. 读取配置文件, 尝试构建物品, 尝试构建点击逻辑链并缓存.
         config().getConfigurationSection("menu-setting.custom-items")?.let { customItemsSection ->
-            val customItems = mutableMapOf<String, Pair<ItemStack?, List<ConfigActionTemplate>>>()
+            val customItems = mutableMapOf<Char, Pair<ItemStack?, List<ConfigActionTemplate>>>()
             customItemsSection.getKeys(false).forEach { key ->
                 val itemSection = customItemsSection.getConfigurationSection(key)
                 itemSection?.let { section ->
@@ -78,7 +78,7 @@ class ExtractSoulSetting private constructor():
                             }
                         }
                     }
-                    customItems[key] = itemStack to actionTemplates
+                    customItems[key.first()] = itemStack to actionTemplates
                 }
             }
             MENU_CUSTOM_ITEMS = customItems
