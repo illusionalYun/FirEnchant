@@ -7,9 +7,9 @@ object PlayerUtils {
 
     // 给予物品或掉落在地上
     fun Player.giveOrDrop(vararg items: ItemStack) {
-        this.giveOrDrop(items.toList())
+        this.giveOrDropList(items.toList())
     }
-    fun Player.giveOrDrop(items: List<ItemStack>) {
+    fun Player.giveOrDropList(items: List<ItemStack>) {
         val drop = this.inventory.addItem(*items.toTypedArray())
         if (drop.isNotEmpty()) {
             drop.values.forEach { this.world.dropItem(this.location, it) }
