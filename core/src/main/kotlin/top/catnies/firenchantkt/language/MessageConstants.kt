@@ -25,6 +25,8 @@ object MessageConstants {
     const val CONFIG_CONDITION_TYPE_UNKNOWN = "config.condition.type.unknown"
     const val CONFIG_ACTION_INVALID_ARGS = "config.action.invalid.args"
     const val CONFIG_CONDITION_INVALID_ARGS = "config.condition.invalid.args"
+    const val CONFIG_ACTION_RUNTIME_ARGS_CAST_FAIL = "config.action.runtime.args.cast_fail"
+    const val CONFIG_CONDITION_RUNTIME_ARGS_CAST_FAIL = "config.condition.runtime.args.cast_fail"
 
     const val ANVIL_ENCHANTED_BOOK_USE_FAIL = "anvil.enchanted.book.use.fail"
     const val ANVIL_ENCHANTED_BOOK_USE_PROTECT_FAIL = "anvil.enchanted.book.use.protect.fail"

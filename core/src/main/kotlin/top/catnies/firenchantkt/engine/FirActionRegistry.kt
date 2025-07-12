@@ -1,5 +1,6 @@
 package top.catnies.firenchantkt.engine
 
+import com.google.common.collect.HashBiMap
 import org.bukkit.Bukkit
 import top.catnies.firenchantkt.api.ServiceContainer
 import top.catnies.firenchantkt.api.event.ActionRegisterEvent
@@ -14,7 +15,8 @@ class FirActionRegistry: ActionRegistry {
         }
     }
 
-    private val registry = mutableMapOf<String, Class<out Action>>()
+    // 双向映射表, 方便根据 string / class 查找对应的值.
+    private val registry = HashBiMap.create<String, Class<out Action>>()
 
     fun load() {
         registerAction("send_message", SendMessageAction::class.java)
@@ -38,6 +40,10 @@ class FirActionRegistry: ActionRegistry {
 
     override fun getAction(name: String): Class<out Action>? {
         return registry[name]
+    }
+
+    override fun getActionName(action: Class<out Action>): String? {
+        return registry.inverse()[action]
     }
 
 }

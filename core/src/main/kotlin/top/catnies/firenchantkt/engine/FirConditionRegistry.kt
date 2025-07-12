@@ -1,5 +1,6 @@
 package top.catnies.firenchantkt.engine
 
+import com.google.common.collect.HashBiMap
 import org.bukkit.Bukkit
 import top.catnies.firenchantkt.api.ServiceContainer
 import top.catnies.firenchantkt.api.event.ConditionRegisterEvent
@@ -25,7 +26,8 @@ class FirConditionRegistry private constructor() : ConditionRegistry {
         }
     }
 
-    private val registry = mutableMapOf<String, Class<out Condition>>()
+    // 双向映射表, 方便根据 string / class 查找对应的值.
+    private val registry = HashBiMap.create<String, Class<out Condition>>()
 
     fun load() {
         registerCondition("<", LessThenCondition::class.java)
@@ -57,5 +59,9 @@ class FirConditionRegistry private constructor() : ConditionRegistry {
 
     override fun getCondition(name: String): Class<out Condition>? {
         return registry[name]
+    }
+
+    override fun getConditionName(condition: Class<out Condition>): String? {
+        return registry.inverse()[condition]
     }
 }

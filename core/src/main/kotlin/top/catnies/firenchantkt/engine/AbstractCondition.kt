@@ -1,5 +1,9 @@
 package top.catnies.firenchantkt.engine
 
+import org.bukkit.Bukkit
+import top.catnies.firenchantkt.api.FirEnchantAPI
+import top.catnies.firenchantkt.language.MessageConstants.CONFIG_CONDITION_RUNTIME_ARGS_CAST_FAIL
+import top.catnies.firenchantkt.util.MessageUtils.sendTranslatableComponent
 import kotlin.reflect.KMutableProperty
 import kotlin.reflect.full.declaredMemberProperties
 import kotlin.reflect.full.findAnnotation
@@ -28,18 +32,23 @@ abstract class AbstractCondition(
                     prop.setter.call(this, convertedValue)
                 } catch (e: Exception) {
                     // 如果转换失败，尝试直接注入原值
-                    try {
-                        prop.setter.call(this, value)
+                    try { prop.setter.call(this, value)
                     } catch (innerE: Exception) {
-                        // 记录错误信息并跳过此字段
-                        println("Failed to inject value for property ${prop.name}: ${innerE.message}")
+                        // 记录错误信息
+                        val conditionName = FirEnchantAPI.conditionRegistry().getConditionName(this::class.java)
+                        val argKey = prop.findAnnotation<ArgumentKey>()?.args?.joinToString(" , ")
+                        Bukkit.getConsoleSender().sendTranslatableComponent(
+                            CONFIG_CONDITION_RUNTIME_ARGS_CAST_FAIL,
+                            conditionName ?: "Unknown",
+                            argKey ?: "Unknown"
+                        )
                     }
                 }
             }
         }
     }
 
-    // 类型转换函数，支持常见类型的转换
+    // 类型转换,试图把传入的类型转换成目标类型.
     private fun convertValue(value: Any?, targetType: KType): Any? {
         if (value == null) return null
         val targetClass = targetType.classifier as? kotlin.reflect.KClass<*> ?: return value

@@ -14,4 +14,7 @@ interface ConditionRegistry {
     // 获取条件类
     fun getCondition(name: String): Class<out Condition>?
 
+    // 根据类型获取条件名称
+    fun getConditionName(condition: Class<out Condition>): String?
+
 }

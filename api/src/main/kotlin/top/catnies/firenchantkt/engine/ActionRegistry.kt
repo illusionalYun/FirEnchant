@@ -12,4 +12,7 @@ interface ActionRegistry {
     // 获取点击动作类
     fun getAction(name: String): Class<out Action>?
 
+    // 根据类获取名称
+    fun getActionName(action: Class<out Action>): String?
+
 }
