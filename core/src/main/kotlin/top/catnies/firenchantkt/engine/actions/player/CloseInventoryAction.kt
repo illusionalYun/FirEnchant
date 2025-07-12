@@ -1,4 +1,4 @@
-package top.catnies.firenchantkt.engine.actions
+package top.catnies.firenchantkt.engine.actions.player
 
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player

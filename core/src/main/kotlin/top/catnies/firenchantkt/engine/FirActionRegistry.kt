@@ -3,7 +3,7 @@ package top.catnies.firenchantkt.engine
 import org.bukkit.Bukkit
 import top.catnies.firenchantkt.api.ServiceContainer
 import top.catnies.firenchantkt.api.event.ActionRegisterEvent
-import top.catnies.firenchantkt.engine.actions.CloseInventoryAction
+import top.catnies.firenchantkt.engine.actions.player.CloseInventoryAction
 import top.catnies.firenchantkt.engine.actions.SendMessageAction
 
 class FirActionRegistry: ActionRegistry {
