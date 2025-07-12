@@ -8,10 +8,7 @@ import top.catnies.firenchantkt.engine.condition.list.ListContainsImpl
 import top.catnies.firenchantkt.engine.condition.logic.AndImpl
 import top.catnies.firenchantkt.engine.condition.logic.IfImpl
 import top.catnies.firenchantkt.engine.condition.logic.OrImpl
-import top.catnies.firenchantkt.engine.condition.math.GreaterThanImpl
-import top.catnies.firenchantkt.engine.condition.math.GreaterThanOrEqualImpl
-import top.catnies.firenchantkt.engine.condition.math.LessThenImpl
-import top.catnies.firenchantkt.engine.condition.math.LessThenOrEqualImpl
+import top.catnies.firenchantkt.engine.condition.math.*
 import top.catnies.firenchantkt.engine.condition.string.ContainsImpl
 import top.catnies.firenchantkt.engine.condition.string.EqualsIgnoreCaseImpl
 import top.catnies.firenchantkt.engine.condition.string.EqualsImpl
@@ -33,13 +30,13 @@ class FirConditionRegistry private constructor() : ConditionRegistry {
 
         registerCondition("<", LessThenImpl::class.java)
         registerCondition("<=", LessThenOrEqualImpl::class.java)
-        registerCondition("==", EqualsImpl::class.java)
+        registerCondition("==", EqualImpl::class.java)
         registerCondition(">=", GreaterThanOrEqualImpl::class.java)
         registerCondition(">", GreaterThanImpl::class.java)
 
         registerCondition("contains", ContainsImpl::class.java)
         registerCondition("equals_ignore_case", EqualsIgnoreCaseImpl::class.java)
-//        registerCondition("equals", EqualsImpl::class.java)
+        registerCondition("equals", EqualsImpl::class.java)
 
         registerCondition("&&", AndImpl::class.java)
         registerCondition("||", OrImpl::class.java)
