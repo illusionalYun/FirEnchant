@@ -10,13 +10,15 @@ class SendMessageAction(
 ): AbstractAction(args) {
 
     @ArgumentKey(["player"], autoInject = true)
-    private lateinit var player: Player
+    private var player: Player? = null
 
     @ArgumentKey(["content", "message"])
     private lateinit var content: String
 
     override fun execute() {
-        content.renderToComponent(player).also { player.sendMessage(it) }
+        player?.let {
+            content.renderToComponent(player).also { player!!.sendMessage(it) }
+        }
     }
 
 }

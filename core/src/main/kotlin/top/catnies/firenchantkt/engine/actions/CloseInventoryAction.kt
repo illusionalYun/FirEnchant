@@ -8,10 +8,10 @@ class CloseInventoryAction(
     args: Map<String, Any?>
 ) : AbstractAction(args) {
 
-    @ArgumentKey(["player"])
-    private lateinit var player: Player
+    @ArgumentKey(["player"], autoInject = true)
+    private var player: Player? = null
 
     override fun execute() {
-        player.closeInventory()
+        player?.closeInventory()
     }
 }

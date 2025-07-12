@@ -5,15 +5,31 @@ data class ConfigConditionTemplate(
     val type: String,
     val conditionClass: Class<out Condition>,
     val staticArgs: Map<String, Any?>,
-    val missingRequiredArgs: List<String> = emptyList(),
-    val isValid: Boolean = missingRequiredArgs.isEmpty()
 ) {
 
     // 检查条件是否通过
     fun check(runtimeArgs: Map<String, Any?> = emptyMap()): Boolean {
-        if (!isValid) return false
         val combinedArgs = staticArgs.toMutableMap()
         combinedArgs.putAll(runtimeArgs)
-        return conditionClass.getDeclaredConstructor(Map::class.java).newInstance(combinedArgs).check()
+        
+        return try {
+            conditionClass.getDeclaredConstructor(Map::class.java).newInstance(combinedArgs).check()
+        } catch (e: Exception) {
+            e.printStackTrace()
+            // 如果条件检查失败，返回 false 而不是抛出异常
+            false
+        }
+    }
+    
+    // 创建条件实例
+    fun createInstance(runtimeArgs: Map<String, Any?> = emptyMap()): Condition? {
+        val combinedArgs = staticArgs.toMutableMap()
+        combinedArgs.putAll(runtimeArgs)
+        
+        return try {
+            conditionClass.getDeclaredConstructor(Map::class.java).newInstance(combinedArgs)
+        } catch (e: Exception) {
+            null
+        }
     }
 }

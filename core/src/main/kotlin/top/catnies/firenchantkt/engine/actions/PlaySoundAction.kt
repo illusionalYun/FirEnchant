@@ -11,23 +11,25 @@ class PlaySoundAction(
 ) : AbstractAction(args) {
 
     @ArgumentKey(["player"], autoInject = true)
-    private lateinit var player: Player
+    private var player: Player? = null
 
     @ArgumentKey(["sound"])
     private lateinit var sound: String
 
-    @ArgumentKey(["source"], required = false)
+    @ArgumentKey(["source"])
     private var source = Sound.Source.MASTER
 
-    @ArgumentKey(["volume"], required = false)
+    @ArgumentKey(["volume"])
     private var volume = 1.0f
 
-    @ArgumentKey(["pitch"], required = false)
+    @ArgumentKey(["pitch"])
     private var pitch = 1.0f
 
     override fun execute() {
-        val sound = Sound.sound(Key.key(sound), source, volume, pitch)
-        player.playSound(sound)
+        player?.let {
+            val sound = Sound.sound(Key.key(sound), source, volume, pitch)
+            it.playSound(sound)
+        }
     }
 
 }

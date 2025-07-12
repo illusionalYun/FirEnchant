@@ -20,8 +20,8 @@ class MenuItem(
 
     override fun handleClick(clickType: ClickType, player: Player, event: InventoryClickEvent) {
         val args = mutableMapOf<String, Any?>()
-        args["player"] = player
         args["checkSource"] = RunSource.MENUCLICK
+        args["player"] = player
         args["clickType"] = clickType
         args["event"] = event
         actionTemplates.forEach {

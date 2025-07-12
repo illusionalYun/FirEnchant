@@ -1,19 +1,16 @@
 package top.catnies.firenchantkt.engine.condition.logic
 
-import org.bukkit.command.CommandSender
-import org.bukkit.configuration.ConfigurationSection
-import top.catnies.firenchantkt.engine.ArgumentKey
 import top.catnies.firenchantkt.engine.AbstractCondition
-import top.catnies.firenchantkt.engine.EngineHelper.checkCondition
+import top.catnies.firenchantkt.engine.ArgumentKey
+import top.catnies.firenchantkt.engine.ConfigConditionTemplate
 
 class OrCondition(
     args: Map<String, Any>,
 ) : AbstractCondition(args) {
-    @ArgumentKey(["user"])
-    private lateinit var user: CommandSender
 
-    @ArgumentKey(["conditions", "condition"])
-    private lateinit var conditions: List<ConfigurationSection>
+    @ArgumentKey(["conditions"])
+    private lateinit var conditions: List<ConfigConditionTemplate>
 
-    override fun check() = conditions.any { user.checkCondition(it) }
+    override fun check() = conditions.any { it.check(args) }
+
 }

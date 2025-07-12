@@ -4,12 +4,10 @@ import org.bukkit.Bukkit
 import top.catnies.firenchantkt.api.ServiceContainer
 import top.catnies.firenchantkt.api.event.ConditionRegisterEvent
 import top.catnies.firenchantkt.engine.condition.player.PermissionCondition
-import top.catnies.firenchantkt.engine.condition.logic.ListContainsCondition
 import top.catnies.firenchantkt.engine.condition.logic.AndCondition
 import top.catnies.firenchantkt.engine.condition.logic.EqualCondition
 import top.catnies.firenchantkt.engine.condition.logic.GreaterThanCondition
 import top.catnies.firenchantkt.engine.condition.logic.GreaterThanOrEqualCondition
-import top.catnies.firenchantkt.engine.condition.logic.IfCondition
 import top.catnies.firenchantkt.engine.condition.logic.LessThenCondition
 import top.catnies.firenchantkt.engine.condition.logic.LessThenOrEqualCondition
 import top.catnies.firenchantkt.engine.condition.logic.OrCondition
@@ -30,8 +28,6 @@ class FirConditionRegistry private constructor() : ConditionRegistry {
     private val registry = mutableMapOf<String, Class<out Condition>>()
 
     fun load() {
-        registerCondition("list_contains", ListContainsCondition::class.java)
-
         registerCondition("<", LessThenCondition::class.java)
         registerCondition("<=", LessThenOrEqualCondition::class.java)
         registerCondition("==", EqualCondition::class.java)
@@ -44,7 +40,6 @@ class FirConditionRegistry private constructor() : ConditionRegistry {
 
         registerCondition("&&", AndCondition::class.java)
         registerCondition("||", OrCondition::class.java)
-        registerCondition("if", IfCondition::class.java)
 
         registerCondition("permission", PermissionCondition::class.java)
 
