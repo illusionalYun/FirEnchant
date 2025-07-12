@@ -1,9 +1,9 @@
-package top.catnies.firenchantkt.engine.condition.list
+package top.catnies.firenchantkt.engine.condition.logic
 
-import top.catnies.firenchantkt.engine.ArgumentKey
 import top.catnies.firenchantkt.engine.AbstractCondition
+import top.catnies.firenchantkt.engine.ArgumentKey
 
-class ListContainsImpl(
+class ListContainsCondition(
     args: Map<String, Any>,
 ) : AbstractCondition(args) {
     @ArgumentKey(["list"])
@@ -12,7 +12,5 @@ class ListContainsImpl(
     @ArgumentKey(["v", "value"])
     private lateinit var value: String
 
-    override fun getType() = "list_contains"
-    override fun require() = true
     override fun check() = list.contains(value)
 }

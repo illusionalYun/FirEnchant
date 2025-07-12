@@ -4,6 +4,7 @@ import org.bukkit.entity.Player
 import org.bukkit.event.inventory.ClickType
 import org.bukkit.event.inventory.InventoryClickEvent
 import top.catnies.firenchantkt.engine.ConfigActionTemplate
+import top.catnies.firenchantkt.engine.RunSource
 import xyz.xenondevs.invui.item.ItemProvider
 import xyz.xenondevs.invui.item.impl.AbstractItem
 
@@ -19,7 +20,8 @@ class MenuItem(
 
     override fun handleClick(clickType: ClickType, player: Player, event: InventoryClickEvent) {
         val args = mutableMapOf<String, Any?>()
-        args["user"] = player
+        args["player"] = player
+        args["checkSource"] = RunSource.MENUCLICK
         args["clickType"] = clickType
         args["event"] = event
         actionTemplates.forEach {

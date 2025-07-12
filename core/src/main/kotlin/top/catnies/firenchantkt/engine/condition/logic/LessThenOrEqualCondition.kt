@@ -1,9 +1,9 @@
-package top.catnies.firenchantkt.engine.condition.math
+package top.catnies.firenchantkt.engine.condition.logic
 
 import top.catnies.firenchantkt.engine.ArgumentKey
 import top.catnies.firenchantkt.engine.AbstractCondition
 
-class GreaterThanOrEqualImpl(
+class LessThenOrEqualCondition(
     args: Map<String, Any>,
 ) : AbstractCondition(args) {
     @ArgumentKey(["v1", "value1"])
@@ -12,8 +12,5 @@ class GreaterThanOrEqualImpl(
     @ArgumentKey(["v2", "value2"])
     private var value2: Double = 0.0
 
-    override fun getType() = ">="
-    override fun require() = true
-    override fun check() = value1 >= value2
-
+    override fun check() = value1 <= value2
 }

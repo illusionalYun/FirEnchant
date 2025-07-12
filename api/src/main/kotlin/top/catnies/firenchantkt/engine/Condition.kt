@@ -2,10 +2,12 @@ package top.catnies.firenchantkt.engine
 
 interface Condition {
 
-    fun getType(): String
+    // 启用条件的条件
+    fun require(): Boolean {
+        return true
+    }
 
-    fun require(): Boolean
-
+    // 检查条件
     fun check(): Boolean
 
 }

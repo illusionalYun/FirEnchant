@@ -9,15 +9,15 @@ abstract class AbstractCondition(
     open val args: Map<String, Any?>
 ) : Condition {
 
+    @ArgumentKey(["runSource"], autoInject = true, true, "触发运行的操作, 用于标记和判断.")
+    protected lateinit var runSource: RunSource
+
     init {
         this::class.declaredMemberProperties.forEach { prop ->
             val annotation = prop.findAnnotation<ArgumentKey>() ?: return@forEach
 
             // 从注解的参数里找到第一个args里有的参数
-            val value = annotation.args.firstNotNullOfOrNull { this.args[it] }
-            if (value == null) {
-                throw IllegalStateException("没有找到参数 ${prop.name}, 此错误不应出现, 请联系开发者检查.")
-            }
+            val value = annotation.args.firstNotNullOfOrNull { this.args[it] } ?: return@forEach
 
             // 注入字段
             prop.isAccessible = true

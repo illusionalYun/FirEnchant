@@ -6,7 +6,7 @@ import top.catnies.firenchantkt.engine.ArgumentKey
 import top.catnies.firenchantkt.engine.AbstractCondition
 import top.catnies.firenchantkt.engine.EngineHelper.checkCondition
 
-class AndImpl(
+class OrCondition(
     args: Map<String, Any>,
 ) : AbstractCondition(args) {
     @ArgumentKey(["user"])
@@ -15,8 +15,5 @@ class AndImpl(
     @ArgumentKey(["conditions", "condition"])
     private lateinit var conditions: List<ConfigurationSection>
 
-    override fun getType() = "&&"
-    override fun require() = true
-    override fun check() = user.checkCondition(conditions)
-
+    override fun check() = conditions.any { user.checkCondition(it) }
 }

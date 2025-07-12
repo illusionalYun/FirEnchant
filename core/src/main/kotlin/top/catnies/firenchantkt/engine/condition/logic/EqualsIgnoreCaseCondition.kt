@@ -1,9 +1,10 @@
-package top.catnies.firenchantkt.engine.condition.string
+package top.catnies.firenchantkt.engine.condition.logic
 
 import top.catnies.firenchantkt.engine.ArgumentKey
 import top.catnies.firenchantkt.engine.AbstractCondition
 
-class ContainsImpl(
+// TODO Papi解析?
+class EqualsIgnoreCaseCondition(
     args: Map<String, Any>,
 ) : AbstractCondition(args) {
     @ArgumentKey(["s", "string"])
@@ -12,7 +13,6 @@ class ContainsImpl(
     @ArgumentKey(["v", "value"])
     private lateinit var value: String
 
-    override fun getType() = "contains"
-    override fun require() = true
-    override fun check() = string.contains(value)
+    override fun check() = string.equals(value, true)
+
 }

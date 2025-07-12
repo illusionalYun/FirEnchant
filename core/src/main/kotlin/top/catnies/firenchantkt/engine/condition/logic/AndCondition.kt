@@ -6,16 +6,16 @@ import top.catnies.firenchantkt.engine.ArgumentKey
 import top.catnies.firenchantkt.engine.AbstractCondition
 import top.catnies.firenchantkt.engine.EngineHelper.checkCondition
 
-class OrImpl(
+// TODO 递归解析?
+class AndCondition(
     args: Map<String, Any>,
 ) : AbstractCondition(args) {
-    @ArgumentKey(["user"])
+
+    @ArgumentKey(["user"], autoInject = true)
     private lateinit var user: CommandSender
 
     @ArgumentKey(["conditions", "condition"])
     private lateinit var conditions: List<ConfigurationSection>
 
-    override fun getType() = "||"
-    override fun require() = true
-    override fun check() = conditions.any { user.checkCondition(it) }
+    override fun check() = user.checkCondition(conditions)
 }
