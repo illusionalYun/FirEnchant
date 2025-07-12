@@ -1,5 +1,6 @@
 package top.catnies.firenchantkt.engine
 
+@Retention(AnnotationRetention.RUNTIME)
 annotation class ArgumentKey(
     val args: Array<String>,
     val autoInject: Boolean = false,

@@ -4,12 +4,23 @@ import me.clip.placeholderapi.PlaceholderAPI
 import net.kyori.adventure.audience.Audience
 import net.kyori.adventure.pointer.Pointered
 import net.kyori.adventure.text.Component
+import net.kyori.adventure.text.minimessage.MiniMessage
+import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver
 import net.kyori.adventure.text.minimessage.translation.Argument
 import org.bukkit.entity.Player
 import top.catnies.firenchantkt.language.MessageTranslator
+import top.catnies.firenchantkt.language.tags.PlaceholderTag
 
 
 object MessageUtils {
+
+    val miniMessage = MiniMessage.builder()
+        .tags(TagResolver.builder()
+            .resolver(TagResolver.standard())
+            .resolver(PlaceholderTag) // Papi标签解析器
+            .build()
+    ).build()
+
     /**
      * 发送一个可翻译组件给目标.
      *
@@ -44,11 +55,9 @@ object MessageUtils {
      */
     fun String.renderToComponent(ptr: Pointered? = null): Component{
         val player = ptr as? Player
-        val parsed = PlaceholderAPI.setPlaceholders(player, this).apply {
-            MessageTranslator.legacyColorToMiniMessage(this)
-            MessageTranslator.legacyToMiniMessage(this)
-        }
-        return Component.text(parsed)
+        val parsed = PlaceholderAPI.setPlaceholders(player, this)
+        val miniMessageText = MessageTranslator.legacyToMiniMessage(MessageTranslator.legacyColorToMiniMessage(parsed));
+        return miniMessage.deserialize(miniMessageText)
     }
 
 }

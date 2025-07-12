@@ -1,8 +1,5 @@
 package top.catnies.firenchantkt.util
 
-import io.papermc.paper.datacomponent.DataComponentTypes
-import net.kyori.adventure.key.Key
-import net.kyori.adventure.text.minimessage.MiniMessage
 import org.bukkit.Bukkit
 import org.bukkit.configuration.ConfigurationSection
 import org.bukkit.configuration.file.YamlConfiguration
@@ -14,6 +11,7 @@ import top.catnies.firenchantkt.engine.ConfigActionTemplate
 import top.catnies.firenchantkt.engine.ConfigConditionTemplate
 import top.catnies.firenchantkt.integration.FirItemProviderRegistry
 import top.catnies.firenchantkt.language.MessageConstants
+import top.catnies.firenchantkt.util.MessageUtils.renderToComponent
 import top.catnies.firenchantkt.util.MessageUtils.sendTranslatableComponent
 import java.io.StringReader
 
@@ -37,17 +35,37 @@ object YamlUtils {
         val itemProvider = FirItemProviderRegistry.instance.getItemProvider(hookedPlugin) ?: return null
         val item = itemProvider.getItemById(hookedId) ?: return null
 
-        // 可选参数:
-        // 设置Amount
-        // 设置Name
-        // 设置Lore
-        // 设置CustomModelData
-        // 设置ItemModel
-        // 设置皮革马凯颜色
-        // 设置烟火之星颜色
-        // 设置物品耐久度
+        val builder = ItemBuilder.builder().setItem(item)
+        section.getString("item-name")
+            ?.let { builder.setDisplayName(it.renderToComponent()) }
 
-        return item
+        section.getStringList("lore")
+            .map { it.renderToComponent() }
+            .let { builder.setLore(it) }
+
+        section.getString("item-model")
+            ?.let { builder.setItemModel(it) }
+
+        section.getDouble("custom-model-data")
+            .let { builder.setCustomModelData(it.toFloat()) }
+
+        section.getInt("amount", 1)
+            .let { builder.setAmount(it) }
+
+        section.getConfigurationSection("dyed-color")
+            ?.let {
+                builder.setColor(it.getInt("alpine", 1), it.getInt("red"), it.getInt("green"), it.getInt("blue"))
+            }
+
+        section.getConfigurationSection("firework-color")
+            ?.let {
+                builder.setFireworkStarColor(it.getInt("alpine", 1), it.getInt("red"), it.getInt("green"), it.getInt("blue"))
+            }
+
+        section.getString("durability")
+            ?.let { builder.setDurability(section.getInt("durability")) }
+
+        return builder.build()
     }
     
     // 解析Action模板列表

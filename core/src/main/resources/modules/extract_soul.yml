@@ -25,8 +25,19 @@ menu-setting:
       item-name: "<red>关闭"
       lore: []
       amount: 1
+      durability: 1
       custom-model-data: 31001
       item-model: "minecraft:item/paper"
+      dyed-color:
+        alpine: 1
+        red: 255
+        green: 255
+        blue: 255
+      firework-color:
+        alpine: 1
+        red: 255
+        green: 255
+        blue: 255
       click-actions:
         - type: send_message    # 发送消息
           content: "我草666"

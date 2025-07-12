@@ -5,8 +5,7 @@ abstract class AbstractAction(
 ): Action {
 
     init {
-        for (field in this.javaClass.declaredFields) {
-            // TODO get不到
+        for (field in this::class.java.declaredFields) {
             val key = field.getAnnotation(ArgumentKey::class.java) ?: continue
             field.isAccessible = true
 
