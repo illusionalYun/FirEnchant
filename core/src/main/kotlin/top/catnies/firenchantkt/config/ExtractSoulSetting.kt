@@ -3,11 +3,11 @@ package top.catnies.firenchantkt.config
 import org.bukkit.Bukkit
 import org.bukkit.inventory.ItemStack
 import top.catnies.firenchantkt.engine.ConfigActionTemplate
-import top.catnies.firenchantkt.language.MessageConstants.CONFIG_ACTION_INVALID_CUSTOM_ITEM
-import top.catnies.firenchantkt.language.MessageConstants.CONFIG_CONDITION_INVALID_CUSTOM_ITEM
 import top.catnies.firenchantkt.language.MessageConstants.RESOURCE_MENU_STRUCTURE_ERROR
+import top.catnies.firenchantkt.util.ConfigParser
+import top.catnies.firenchantkt.util.ItemUtils.nullOrAir
 import top.catnies.firenchantkt.util.MessageUtils.sendTranslatableComponent
-import top.catnies.firenchantkt.util.YamlUtils
+import top.catnies.firenchantkt.util.YamlUtils.getConfigurationSectionList
 import xyz.xenondevs.invui.gui.structure.Structure
 
 class ExtractSoulSetting private constructor():
@@ -53,38 +53,31 @@ class ExtractSoulSetting private constructor():
 
         // 1. 读取配置文件, 尝试构建物品, 尝试构建点击逻辑链并缓存.
         config().getConfigurationSection("menu-setting.custom-items")?.let { customItemsSection ->
-            val customItems = mutableMapOf<Char, Pair<ItemStack?, List<ConfigActionTemplate>>>()
-            customItemsSection.getKeys(false).forEach { key ->
-                val itemSection = customItemsSection.getConfigurationSection(key)
+            val customItems = mutableMapOf<Char, Pair<ItemStack?, List<ConfigActionTemplate>>>() // 创建结果列表
+
+            customItemsSection.getKeys(false).forEach { itemSectionKey ->
+                // 解析物品节点如 'X', '?' 等节点
+                val itemSection = customItemsSection.getConfigurationSection(itemSectionKey) // 这些 key 就是 如 'X', '?' 等
                 itemSection?.let { section ->
-                    // 解析物品和动作模板并缓存
-                    val (itemStack, actionTemplates) = YamlUtils.parseItemWithActionsFromConfig(section)
-                    // 验证配置并记录错误
-                    actionTemplates.forEach { template ->
-                        if (!template.isValid) {
-                            Bukkit.getConsoleSender().sendTranslatableComponent(
-                                CONFIG_ACTION_INVALID_CUSTOM_ITEM,
-                                key,
-                                template.missingRequiredArgs.joinToString(", ")
-                            )
-                        }
-                        template.conditions.forEach { condition ->
-                            if (!condition.isValid) {
-                                Bukkit.getConsoleSender().sendTranslatableComponent(
-                                    CONFIG_CONDITION_INVALID_CUSTOM_ITEM,
-                                    key,
-                                    condition.missingRequiredArgs.joinToString(", ")
-                                )
-                            }
-                        }
+                    // 使用节点构建物品
+                    val itemStack = ConfigParser.parseItemFromConfig(section, fileName, itemSectionKey)
+                    // 获取动作节点, 解析动作
+                    val actionList = section.getConfigurationSectionList("click-actions")
+                    val actionTemplates = actionList.mapNotNull { actionNode ->
+                        ConfigParser.parseActionTemplate(actionNode, fileName, itemSectionKey)
                     }
-                    customItems[key.first()] = itemStack to actionTemplates
+                    if (itemStack.nullOrAir()) return@forEach // 如果物品是空则跳过保存, 延迟处理是想要继续解析物品动作一类的并给予警告, 虽然物品无效整个节点都无效就是了.
+                    // 保存到结果列表里
+                    customItems[itemSectionKey.first()] = itemStack to actionTemplates
                 }
             }
+
             MENU_CUSTOM_ITEMS = customItems
         }
 
-
     }
+
+
+
 
 }

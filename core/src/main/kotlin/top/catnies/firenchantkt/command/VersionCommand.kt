@@ -30,4 +30,5 @@ object VersionCommand : AbstractCommand() {
         context.source.sender.sendTranslatableComponent(COMMAND_VERSION_SUCCESS, plugin.pluginMeta.version)
         return Command.SINGLE_SUCCESS
     }
+
 }

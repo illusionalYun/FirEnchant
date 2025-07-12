@@ -4,7 +4,6 @@ package top.catnies.firenchantkt.language
 object MessageConstants {
     const val DATABASE_CONNECT_ERROR = "database.connect.error"
 
-    const val COMMAND_NO_PERMISSION = "command.no_permission"
     const val COMMAND_RELOAD_SUCCESS = "command.reload.success"
     const val COMMAND_VERSION_SUCCESS = "command.version.success"
     const val COMMAND_CONSOLE_CANT_EXECUTE = "command.console.cant_execute"
@@ -21,12 +20,11 @@ object MessageConstants {
     const val RESOURCE_MENU_STRUCTURE_ERROR = "resource.menu.structure.error"
 
     const val PLUGIN_COMPATIBILITY_HOOK_SUCCESS = "plugin.compatibility.hook.success"
-    const val PLUGIN_CONDITION_ARGS_INVALID = "plugin.condition.args.invalid"
 
     const val CONFIG_ACTION_TYPE_UNKNOWN = "config.action.type.unknown"
     const val CONFIG_CONDITION_TYPE_UNKNOWN = "config.condition.type.unknown"
-    const val CONFIG_ACTION_INVALID_CUSTOM_ITEM = "config.action.invalid.custom_item"
-    const val CONFIG_CONDITION_INVALID_CUSTOM_ITEM = "config.condition.invalid.custom_item"
+    const val CONFIG_ACTION_INVALID_ARGS = "config.action.invalid.args"
+    const val CONFIG_CONDITION_INVALID_ARGS = "config.condition.invalid.args"
 
     const val ANVIL_ENCHANTED_BOOK_USE_FAIL = "anvil.enchanted.book.use.fail"
     const val ANVIL_ENCHANTED_BOOK_USE_PROTECT_FAIL = "anvil.enchanted.book.use.protect.fail"
