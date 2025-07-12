@@ -6,8 +6,8 @@ import top.catnies.firenchantkt.engine.AbstractAction
 import top.catnies.firenchantkt.engine.ArgumentKey
 
 class CloseInventoryAction(
-    var args: Map<String, Any?>
-): AbstractAction(args) {
+    args: Map<String, Any?>
+) : AbstractAction(args) {
 
     @ArgumentKey(["user"])
     private lateinit var user: CommandSender

@@ -6,7 +6,7 @@ import top.catnies.firenchantkt.engine.AbstractAction
 import top.catnies.firenchantkt.util.MessageUtils.renderToComponent
 
 class SendMessageAction(
-    var args: Map<String, Any?>
+    args: Map<String, Any?>
 ): AbstractAction(args) {
 
     @ArgumentKey(["user"], autoInject = true)

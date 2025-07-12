@@ -50,6 +50,7 @@ allprojects {
     dependencies {
         compileOnly("io.papermc.paper:paper-api:${rootProject.properties["server.paper.version"]}") // PAPER
         compileOnly("org.jetbrains.kotlin:kotlin-stdlib-jdk8") // Kotlin STD
+        compileOnly("org.jetbrains.kotlin:kotlin-reflect:2.1.21") // Kotlin Reflect
         compileOnly("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.1") // Kotlin Coroutines
         compileOnly("org.jetbrains.kotlinx:kotlinx-coroutines-jdk9:1.8.1") // Kotlin Coroutines
 //        compileOnly("com.github.shynixn.mccoroutine:mccoroutine-bukkit-api:2.22.0")

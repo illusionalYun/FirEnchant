@@ -1,27 +1,28 @@
 package top.catnies.firenchantkt.engine
 
-import org.bukkit.Bukkit
-import top.catnies.firenchantkt.language.MessageConstants
-import top.catnies.firenchantkt.util.MessageUtils.sendTranslatableComponent
+import kotlin.reflect.KMutableProperty
+import kotlin.reflect.full.declaredMemberProperties
+import kotlin.reflect.full.findAnnotation
+import kotlin.reflect.jvm.isAccessible
 
 abstract class AbstractCondition(
-    args: Map<String, Any?>
+    open val args: Map<String, Any?>
 ) : Condition {
-    init {
-        for (field in this.javaClass.fields) {
-            val key = field.getAnnotation(ArgumentKey::class.java) ?: continue
 
-            for (arg in key.args) {
-                if (args.containsKey(arg)) {
-                    field.set(this, args[arg])
-                    break
-                }
+    init {
+        this::class.declaredMemberProperties.forEach { prop ->
+            val annotation = prop.findAnnotation<ArgumentKey>() ?: return@forEach
+
+            // 从注解的参数里找到第一个args里有的参数
+            val value = annotation.args.firstNotNullOfOrNull { this.args[it] }
+            if (value == null) {
+                throw IllegalStateException("没有找到参数 ${prop.name}, 此错误不应出现, 请联系开发者检查.")
             }
 
-            if (field.get(this) == null) {
-                Bukkit.getConsoleSender()
-                    .sendTranslatableComponent(MessageConstants.PLUGIN_CONDITION_ARGS_INVALID, getType(), key.args.toString())
-                throw IllegalArgumentException()
+            // 注入字段
+            prop.isAccessible = true
+            if (prop is KMutableProperty<*>) {
+                prop.setter.call(this, value)
             }
         }
     }
@@ -30,7 +31,7 @@ abstract class AbstractCondition(
         if (!require()) {
             return false
         }
-
         return check()
     }
+
 }
