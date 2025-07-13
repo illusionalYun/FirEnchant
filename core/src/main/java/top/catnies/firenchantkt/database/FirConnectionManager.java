@@ -55,6 +55,7 @@ public class FirConnectionManager implements ConnectionManager {
                 hikariConfig.setPassword(config.getDATABASE_MYSQL_PASSWORD());
                 connection = new MysqlConnection(hikariConfig);
                 connection.connect();
+                // TODO (DAO数据类的字段仍然有问题, 要研究一下OrmLite的完整用法)
                 enchantingHistoryData = MySQLEnchantingHistoryData.getInstance();
                 enchantLogData = MySQLEnchantLogData.getInstance();
                 itemRepairData = MySQLItemRepairData.getInstance();
@@ -62,7 +63,7 @@ public class FirConnectionManager implements ConnectionManager {
             // 初始化Sqlite数据库的连接
             case "sqlite" -> {
                 String fileName = config.getDATABASE_SQLITE_FILE();
-                String url = "jdbc:sqlite:plugins/FirOnlineTime/" + fileName;
+                String url = "jdbc:sqlite:plugins/FirEnchantKt/" + fileName;
                 connection = new SQLiteConnection(url);
                 connection.connect();
                 enchantingHistoryData = SQLiteEnchantingHistoryData.getInstance();

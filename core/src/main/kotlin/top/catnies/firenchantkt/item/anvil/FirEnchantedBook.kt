@@ -193,37 +193,38 @@ class FirEnchantedBook : EnchantedBook {
 
     // 根据失败率判断是否成功
     private fun isSuccess(player: Player, enchantment: String, level: Int, baseFailure: Int): Boolean {
-        val manager = FirEnchantAPI.playerEnchantLogDataManager()
-
-        // 1. 获取玩家历史记录（最近20次）
-        val logList = manager.getList(player.uniqueId, 20)
-
-        // 2. 计算连续失败次数（心理补偿核心）
-        val consecutiveFails = logList!!.takeLastWhile { !it!!.isSuccess }.size
-
-        // 3. 动态调整实际成功率（补偿公式）
-        val actualFailure = when {
-            consecutiveFails >= 5 -> baseFailure + 40  // 保底：连续5次失败后大幅提升概率
-            consecutiveFails >= 3 -> baseFailure + 20  // 补偿：连续3次失败后中等提升
-            else -> baseFailure
-        }.coerceAtMost(95)  // 上限95%避免必成
-
-        // 4. 概率判定
-        val random = (0..100).random()
-        val success = random < actualFailure
-
-        // 5. 记录日志
-        val log = EnchantLogDataTable().apply {
-            this.player = player.uniqueId
-            this.enchantment = enchantment
-            this.takeLevel = level
-            this.random = random
-            this.isSuccess = success
-            this.baseFailure = baseFailure
-            this.actualFailure = actualFailure
-        }
-        manager.update(log, true)
-
-        return success
+        return true
+//        val manager = FirEnchantAPI.playerEnchantLogDataManager()
+//
+//        // 1. 获取玩家历史记录（最近20次）
+//        val logList = manager.getList(player.uniqueId, 20)
+//
+//        // 2. 计算连续失败次数（心理补偿核心）
+//        val consecutiveFails = logList!!.takeLastWhile { !it!!.isSuccess }.size
+//
+//        // 3. 动态调整实际成功率（补偿公式）
+//        val actualFailure = when {
+//            consecutiveFails >= 5 -> baseFailure + 40  // 保底：连续5次失败后大幅提升概率
+//            consecutiveFails >= 3 -> baseFailure + 20  // 补偿：连续3次失败后中等提升
+//            else -> baseFailure
+//        }.coerceAtMost(95)  // 上限95%避免必成
+//
+//        // 4. 概率判定
+//        val random = (0..100).random()
+//        val success = random < actualFailure
+//
+//        // 5. 记录日志
+//        val log = EnchantLogDataTable().apply {
+//            this.player = player.uniqueId
+//            this.enchantment = enchantment
+//            this.takeLevel = level
+//            this.random = random
+//            this.isSuccess = success
+//            this.baseFailure = baseFailure
+//            this.actualFailure = actualFailure
+//        }
+//        manager.update(log, true)
+//
+//        return success
     }
 }

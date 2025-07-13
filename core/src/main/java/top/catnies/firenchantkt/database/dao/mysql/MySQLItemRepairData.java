@@ -1,8 +1,20 @@
 package top.catnies.firenchantkt.database.dao.mysql;
 
+import com.j256.ormlite.table.TableUtils;
+import org.bukkit.Bukkit;
+import top.catnies.firenchantkt.FirEnchantPlugin;
 import top.catnies.firenchantkt.api.ServiceContainer;
+import top.catnies.firenchantkt.database.FirConnectionManager;
 import top.catnies.firenchantkt.database.dao.AbstractDao;
 import top.catnies.firenchantkt.database.dao.ItemRepairData;
+import top.catnies.firenchantkt.database.entity.ItemRepairTable;
+import top.catnies.firenchantkt.util.MessageUtils;
+
+import java.sql.SQLException;
+import java.util.List;
+import java.util.UUID;
+
+import static top.catnies.firenchantkt.language.MessageConstants.DATABASE_TABLE_CREATE_ERROR;
 
 public class MySQLItemRepairData extends AbstractDao<ItemRepairData, Integer> implements ItemRepairData {
 
@@ -12,9 +24,69 @@ public class MySQLItemRepairData extends AbstractDao<ItemRepairData, Integer> im
     public static MySQLItemRepairData getInstance() {
         if (Instance == null) {
             Instance = new MySQLItemRepairData();
+            Instance.createTable();
             ServiceContainer.INSTANCE.register(ItemRepairData.class, Instance);
         }
         return Instance;
     }
 
+    private void createTable() {
+        try {
+            TableUtils.createTable(FirConnectionManager.getInstance().getConnectionSource(), ItemRepairTable.class);
+        } catch (SQLException e) {
+            MessageUtils.INSTANCE.sendTranslatableComponent(Bukkit.getConsoleSender(), DATABASE_TABLE_CREATE_ERROR, ItemRepairTable.class.getSimpleName());
+            e.printStackTrace();
+            Bukkit.getPluginManager().disablePlugin(FirEnchantPlugin.getInstance());
+        }
+    }
+
+    @Override
+    public void create(ItemRepairTable repairData) {
+
+    }
+
+    @Override
+    public void markAsCompleted(int id) {
+
+    }
+
+    @Override
+    public List<ItemRepairTable> getAllList() {
+        return List.of();
+    }
+
+    @Override
+    public List<ItemRepairTable> getAllActiveList() {
+        return List.of();
+    }
+
+    @Override
+    public List<ItemRepairTable> getAllCompletedList() {
+        return List.of();
+    }
+
+    @Override
+    public List<ItemRepairTable> getAllReceivedList() {
+        return List.of();
+    }
+
+    @Override
+    public List<ItemRepairTable> getByPlayer(UUID playerId) {
+        return List.of();
+    }
+
+    @Override
+    public List<ItemRepairTable> getByPlayerActive(UUID playerId) {
+        return List.of();
+    }
+
+    @Override
+    public List<ItemRepairTable> getByPlayerCompleted(UUID playerId) {
+        return List.of();
+    }
+
+    @Override
+    public List<ItemRepairTable> getByPlayerReceived(UUID playerId) {
+        return List.of();
+    }
 }

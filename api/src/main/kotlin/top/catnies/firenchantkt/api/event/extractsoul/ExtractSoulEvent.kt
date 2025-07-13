@@ -9,10 +9,11 @@ import top.catnies.firenchantkt.api.event.anvil.AnvilApplicableItemRegisterEvent
 
 /**
  * 当玩家在使用魔咒之魂提取时, 点击确认兑换触发
+ * 注意, 输入附魔书仅可读.
  */
 class ExtractSoulEvent(
     player: Player,
-    var removedEnchantedBooks: List<ItemStack?>,
+    val removedEnchantedBooks: List<ItemStack?>, // 不可变
     var resultItems: List<ItemStack>
 ): PlayerEvent(player), Cancellable {
 

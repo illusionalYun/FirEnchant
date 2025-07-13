@@ -3,6 +3,7 @@ package top.catnies.firenchantkt.language
 // 消息常量
 object MessageConstants {
     const val DATABASE_CONNECT_ERROR = "database.connect.error"
+    const val DATABASE_TABLE_CREATE_ERROR = "database.table.create.error"
 
     const val COMMAND_RELOAD_SUCCESS = "command.reload.success"
     const val COMMAND_VERSION_SUCCESS = "command.version.success"

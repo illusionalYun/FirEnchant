@@ -10,7 +10,6 @@ import top.catnies.firenchantkt.config.ExtractSoulSetting
 import top.catnies.firenchantkt.enchantment.FirEnchantmentSettingFactory
 import top.catnies.firenchantkt.engine.RunSource
 import top.catnies.firenchantkt.util.ItemUtils.nullOrAir
-import top.catnies.firenchantkt.util.PlayerUtils.giveOrDrop
 import top.catnies.firenchantkt.util.PlayerUtils.giveOrDropList
 import top.catnies.firenchantkt.util.TaskUtils
 import xyz.xenondevs.invui.gui.Gui

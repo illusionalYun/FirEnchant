@@ -1,6 +1,7 @@
 lang-version: 1
 
 database.connect.error: "<#96f896>[FirEnchant] <red>插件无法连接到数据库，请检查数据库配置。</red>"
+database.table.create.error: "<#96f896>[FirEnchant] <red>插件在建立数据库表 '<arg:0>' 时发送错误, 请检查数据库或联系开发者报告问题。"
 
 command.reload.success: "<#96f896>[FirEnchant] <#cef8f5>配置文件重新加载完成，耗时 <green><arg:0></green> 毫秒。</#cef8f5>"
 command.version.success: "<#96f896>[FirEnchant] <#cef8f5>插件当前版本号为 <arg:0> 。</#cef8f5>"
