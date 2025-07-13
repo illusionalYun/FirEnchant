@@ -1,5 +1,6 @@
 package top.catnies.firenchantkt.database.entity;
 
+import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 import lombok.AllArgsConstructor;
@@ -22,21 +23,21 @@ public class EnchantLogDataTable {
     @DatabaseField(generatedId = true)
     private int id;
 
-    @DatabaseField(index = true, canBeNull = false)
+    @DatabaseField(index = true, canBeNull = false, dataType = DataType.UUID)
     private UUID player;
 
-    @DatabaseField(index = true, canBeNull = false)
+    @DatabaseField(index = true, canBeNull = false, dataType = DataType.LONG_STRING)
     private String enchantment; // Json数据 {enchantment: key, level: 1}
 
-    @DatabaseField(canBeNull = false)
+    @DatabaseField(canBeNull = false, dataType = DataType.INTEGER)
     private int takeLevel;
 
-    @DatabaseField(canBeNull = false)
+    @DatabaseField(canBeNull = false, dataType = DataType.SHORT)
     private int failure;
 
-    @DatabaseField(canBeNull = false)
+    @DatabaseField(canBeNull = false, dataType = DataType.BOOLEAN)
     private boolean success;
 
-    @DatabaseField(canBeNull = false)
+    @DatabaseField(canBeNull = false, dataType = DataType.LONG)
     private long timestamp;
 }

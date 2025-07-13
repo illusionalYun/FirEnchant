@@ -1,5 +1,6 @@
 package top.catnies.firenchantkt.database.entity;
 
+import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 import lombok.AllArgsConstructor;
@@ -23,19 +24,19 @@ public class ItemRepairTable {
     @DatabaseField(generatedId = true)
     private int id;
     
-    @DatabaseField(canBeNull = false, index = true)
+    @DatabaseField(canBeNull = false, index = true, dataType = DataType.UUID)
     private UUID playerId;
     
-    @DatabaseField(canBeNull = false, columnDefinition = "TEXT")
+    @DatabaseField(canBeNull = false, dataType = DataType.LONG_STRING)
     private String itemData; // 序列化的物品数据
     
-    @DatabaseField(canBeNull = false)
+    @DatabaseField(canBeNull = false, dataType = DataType.LONG)
     private long startTime;
     
-    @DatabaseField(canBeNull = false)
+    @DatabaseField(canBeNull = false, dataType = DataType.LONG)
     private long duration; // 修复所需时间（毫秒）
     
-    @DatabaseField(canBeNull = false, defaultValue = "false")
+    @DatabaseField(canBeNull = false, defaultValue = "false", dataType = DataType.BOOLEAN)
     private boolean received = false;
     
     /**

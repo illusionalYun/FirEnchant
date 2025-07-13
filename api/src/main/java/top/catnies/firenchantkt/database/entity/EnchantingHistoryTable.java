@@ -1,5 +1,6 @@
 package top.catnies.firenchantkt.database.entity;
 
+import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 import lombok.AllArgsConstructor;
@@ -23,19 +24,19 @@ public class EnchantingHistoryTable {
     @DatabaseField(generatedId = true)
     private int id;
     
-    @DatabaseField(canBeNull = false, index = true)
+    @DatabaseField(canBeNull = false, index = true, dataType = DataType.UUID)
     private UUID playerId;
     
-    @DatabaseField(canBeNull = false)
+    @DatabaseField(canBeNull = false, dataType = DataType.LONG_STRING)
     private String inputItemData; // 物品类型
     
-    @DatabaseField(canBeNull = false)
+    @DatabaseField(canBeNull = false, dataType = DataType.LONG)
     private int seed; // 附魔种子
     
-    @DatabaseField(canBeNull = false, columnDefinition = "TEXT")
+    @DatabaseField(canBeNull = false, dataType = DataType.LONG_STRING)
     private String enchants; // JSON格式的预览结果 {enchantments: [{enchantment: key, level: 1}, {enchantment: key, level: 1}, {enchantment: key, level: 1}]}
 
-    @DatabaseField(canBeNull = false)
+    @DatabaseField(canBeNull = false, dataType = DataType.LONG)
     private long timestamp;
 }
 

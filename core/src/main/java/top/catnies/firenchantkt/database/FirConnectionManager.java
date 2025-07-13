@@ -55,7 +55,6 @@ public class FirConnectionManager implements ConnectionManager {
                 hikariConfig.setPassword(config.getDATABASE_MYSQL_PASSWORD());
                 connection = new MysqlConnection(hikariConfig);
                 connection.connect();
-                // TODO (DAO数据类的字段仍然有问题, 要研究一下OrmLite的完整用法)
                 enchantingHistoryData = MySQLEnchantingHistoryData.getInstance();
                 enchantLogData = MySQLEnchantLogData.getInstance();
                 itemRepairData = MySQLItemRepairData.getInstance();
