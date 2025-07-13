@@ -9,8 +9,7 @@ import org.bukkit.Bukkit
 import org.bukkit.plugin.java.JavaPlugin
 import top.catnies.firenchantkt.command.CommandManager
 import top.catnies.firenchantkt.config.ConfigManager
-import top.catnies.firenchantkt.database.impl.FirEnchantDatabaseManager
-import top.catnies.firenchantkt.database.impl.FirPlayerEnchantLogDataManager
+import top.catnies.firenchantkt.database.FirEnchantDatabaseManager
 import top.catnies.firenchantkt.enchantment.FirEnchantmentManager
 import top.catnies.firenchantkt.engine.FirActionRegistry
 import top.catnies.firenchantkt.engine.FirConditionRegistry
@@ -63,7 +62,7 @@ class FirEnchantPlugin: JavaPlugin(), FirEnchant, CoroutineScope {
         CommandManager.instance // 命令管理器
         ListenerManger.instance // 事件监听管理器
         FirEnchantDatabaseManager.getInstance() // 数据库控制器
-        FirPlayerEnchantLogDataManager.getInstance() // 玩家附魔日志数据控制器
+        FirPlayerEnchantLogData.getInstance() // 玩家附魔日志数据控制器
         registerLateInitListener()
 
         logger.info("FirEnchant Plugin Enabled!")

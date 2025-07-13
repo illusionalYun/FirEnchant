@@ -115,6 +115,7 @@ class FirExtractSoulMenu(
             // 移除有效附魔书
             val removedCount = inputInventory.removeIf(UpdateReason.SUPPRESSED) { !it.nullOrAir() && FirEnchantmentSettingFactory.fromItemStack(it) != null }
             if (removedCount > 0) {
+                // TODO 触发事件
                 // 发放物品
                 val resultItem = resultItem.apply {amount = removedCount}
                 player.giveOrDrop(resultItem)

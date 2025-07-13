@@ -1,14 +1,21 @@
-package top.catnies.firenchantkt.database.table;
+package top.catnies.firenchantkt.database.entity;
 
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.UUID;
 
+/**
+ * 记录玩家在铁砧上操作附魔书的历史记录
+ */
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @DatabaseTable(tableName = "firenchant_enchartlog")
 public class EnchantLogDataTable {
 

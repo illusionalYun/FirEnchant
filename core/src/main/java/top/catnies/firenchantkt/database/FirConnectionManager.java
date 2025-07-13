@@ -1,31 +1,34 @@
 package top.catnies.firenchantkt.database;
 
+import com.j256.ormlite.support.ConnectionSource;
 import com.zaxxer.hikari.HikariConfig;
 import lombok.SneakyThrows;
 import top.catnies.firenchantkt.config.SettingsConfig;
-import top.catnies.firenchantkt.database.impl.MysqlDatabase;
-import top.catnies.firenchantkt.database.impl.SQLiteDatabase;
+import top.catnies.firenchantkt.database.connection.MysqlConnection;
+import top.catnies.firenchantkt.database.connection.SQLiteConnection;
 
 @SuppressWarnings("unused")
-public class FirDatabaseManager implements DatabaseManager {
+public class FirConnectionManager implements ConnectionManager {
 
     // 单例
-    public static FirDatabaseManager instance;
-    private FirDatabaseManager() {}
-    public static FirDatabaseManager getInstance() {
+    private static FirConnectionManager instance;
+    private FirConnectionManager() {}
+    
+    public static FirConnectionManager getInstance() {
         if (instance == null) {
-            instance = new FirDatabaseManager();
+            instance = new FirConnectionManager();
             instance.initDatabase(); // 创建链接
         }
         return instance;
     }
 
-    private Database database;
+    private Connection connection;
 
     @Override
     public void initDatabase() {
         SettingsConfig config = SettingsConfig.getInstance();
         String type = config.getDATABASE_TYPE().toLowerCase();
+        
         switch (type) {
             // 初始化MySQL数据库的连接
             case "mysql" -> {
@@ -34,28 +37,30 @@ public class FirDatabaseManager implements DatabaseManager {
                 hikariConfig.setDriverClassName(config.getDATABASE_MYSQL_JDBC_CLASS());
                 hikariConfig.setUsername(config.getDATABASE_MYSQL_USER());
                 hikariConfig.setPassword(config.getDATABASE_MYSQL_PASSWORD());
-                database = new MysqlDatabase(hikariConfig);
+                connection = new MysqlConnection(hikariConfig);
+                connection.connect();
             }
             // 初始化Sqlite数据库的连接
             case "sqlite" -> {
                 String fileName = config.getDATABASE_SQLITE_FILE();
                 String url = "jdbc:sqlite:plugins/FirOnlineTime/" + fileName;
-                database = new SQLiteDatabase(url);
+                connection = new SQLiteConnection(url);
+                connection.connect();
             }
             default -> throw new RuntimeException("不支持的数据库类型: " + type);
         }
     }
 
-
     @Override
     @SneakyThrows
     public void close() {
-        database.close();
+        if (connection != null) {
+            connection.close();
+        }
     }
 
     @Override
-    public Database getConnectionSource() {
-        return database;
+    public ConnectionSource getConnectionSource() {
+        return connection != null ? connection.getConnectionSource() : null;
     }
-
 }

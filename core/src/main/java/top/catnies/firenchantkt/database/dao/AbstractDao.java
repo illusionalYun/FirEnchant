@@ -1,4 +1,4 @@
-package top.catnies.firenchantkt.database;
+package top.catnies.firenchantkt.database.dao;
 
 import cn.chengzhiya.mhdfscheduler.scheduler.MHDFScheduler;
 import com.j256.ormlite.dao.Dao;
@@ -6,21 +6,22 @@ import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.stmt.QueryBuilder;
 import lombok.SneakyThrows;
 import top.catnies.firenchantkt.FirEnchantPlugin;
-import top.catnies.firenchantkt.database.impl.FirEnchantDatabaseManager;
+import top.catnies.firenchantkt.database.FirConnectionManager;
 
 import java.lang.reflect.ParameterizedType;
 import java.sql.SQLException;
 import java.util.List;
 
 @SuppressWarnings("unchecked")
-public abstract class AbstractDaoManager<V, K> {
+public abstract class AbstractDao<V, K> {
+
     private final ThreadLocal<Dao<V, K>> daoThread =
             ThreadLocal.withInitial(() -> {
                 try {
                     ParameterizedType type = (ParameterizedType) getClass().getGenericSuperclass();
                     Class<V> clazz = (Class<V>) type.getActualTypeArguments()[0];
 
-                    return DaoManager.createDao(FirEnchantDatabaseManager.getInstance().getConnectionSource(), clazz);
+                    return DaoManager.createDao(FirConnectionManager.getInstance().getConnectionSource(), clazz);
                 } catch (SQLException e) {
                     throw new RuntimeException(e);
                 }
