@@ -16,7 +16,7 @@ import top.catnies.firenchantkt.api.event.anvil.EnchantedBookPreUseEvent
 import top.catnies.firenchantkt.api.event.anvil.EnchantedBookUseEvent
 import top.catnies.firenchantkt.config.AnvilConfig
 import top.catnies.firenchantkt.context.AnvilContext
-import top.catnies.firenchantkt.database.PlayerEnchantLogData
+import top.catnies.firenchantkt.database.table.EnchantLogDataTable
 import top.catnies.firenchantkt.enchantment.EnchantmentSetting
 import top.catnies.firenchantkt.enchantment.FirEnchantmentSettingFactory
 import top.catnies.firenchantkt.language.MessageConstants.ANVIL_ENCHANTED_BOOK_USE_FAIL
@@ -213,7 +213,7 @@ class FirEnchantedBook : EnchantedBook {
         val success = random < actualFailure
 
         // 5. 记录日志
-        val log = PlayerEnchantLogData().apply {
+        val log = EnchantLogDataTable().apply {
             this.player = player.uniqueId
             this.enchantment = enchantment
             this.takeLevel = level

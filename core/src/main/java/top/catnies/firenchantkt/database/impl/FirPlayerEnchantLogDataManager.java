@@ -6,12 +6,12 @@ import org.jetbrains.annotations.Nullable;
 import top.catnies.firenchantkt.api.ServiceContainer;
 import top.catnies.firenchantkt.database.AbstractDaoManager;
 import top.catnies.firenchantkt.database.PlayerEnchantLogDataManager;
-import top.catnies.firenchantkt.database.PlayerEnchantLogData;
+import top.catnies.firenchantkt.database.table.EnchantLogDataTable;
 
 import java.util.List;
 import java.util.UUID;
 
-public class FirPlayerEnchantLogDataManager extends AbstractDaoManager<PlayerEnchantLogData, Integer> implements PlayerEnchantLogDataManager {
+public class FirPlayerEnchantLogDataManager extends AbstractDaoManager<EnchantLogDataTable, Integer> implements PlayerEnchantLogDataManager {
     private static FirPlayerEnchantLogDataManager instance;
 
     public static FirPlayerEnchantLogDataManager getInstance() {
@@ -29,8 +29,8 @@ public class FirPlayerEnchantLogDataManager extends AbstractDaoManager<PlayerEnc
 
     @Nullable
     @Override
-    public List<PlayerEnchantLogData> getList(int max) {
-        QueryBuilder<PlayerEnchantLogData, Integer> queryBuilder = getQueryBuilder();
+    public List<EnchantLogDataTable> getList(int max) {
+        QueryBuilder<EnchantLogDataTable, Integer> queryBuilder = getQueryBuilder();
         queryBuilder.orderBy("id", false);
         if (max >= 0) {
             queryBuilder.limit((long) max);
@@ -41,8 +41,8 @@ public class FirPlayerEnchantLogDataManager extends AbstractDaoManager<PlayerEnc
 
     @Override
     @SneakyThrows
-    public List<PlayerEnchantLogData> getList(UUID uuid, int max) {
-        QueryBuilder<PlayerEnchantLogData, Integer> queryBuilder = getQueryBuilder();
+    public List<EnchantLogDataTable> getList(UUID uuid, int max) {
+        QueryBuilder<EnchantLogDataTable, Integer> queryBuilder = getQueryBuilder();
         queryBuilder.setWhere(queryBuilder.where()
                 .eq("player", uuid)
         );
@@ -56,8 +56,8 @@ public class FirPlayerEnchantLogDataManager extends AbstractDaoManager<PlayerEnc
 
     @Override
     @SneakyThrows
-    public List<PlayerEnchantLogData> getList(String enchantment, int max) {
-        QueryBuilder<PlayerEnchantLogData, Integer> queryBuilder = getQueryBuilder();
+    public List<EnchantLogDataTable> getList(String enchantment, int max) {
+        QueryBuilder<EnchantLogDataTable, Integer> queryBuilder = getQueryBuilder();
         queryBuilder.setWhere(queryBuilder.where()
                 .eq("enchantment", enchantment)
         );
@@ -71,8 +71,8 @@ public class FirPlayerEnchantLogDataManager extends AbstractDaoManager<PlayerEnc
 
     @Override
     @SneakyThrows
-    public List<PlayerEnchantLogData> getList(UUID uuid, String enchantment, int max) {
-        QueryBuilder<PlayerEnchantLogData, Integer> queryBuilder = getQueryBuilder();
+    public List<EnchantLogDataTable> getList(UUID uuid, String enchantment, int max) {
+        QueryBuilder<EnchantLogDataTable, Integer> queryBuilder = getQueryBuilder();
         queryBuilder.setWhere(queryBuilder.where()
                 .eq("player", uuid)
                 .and()

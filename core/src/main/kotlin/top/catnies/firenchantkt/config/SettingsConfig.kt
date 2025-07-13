@@ -13,23 +13,23 @@ class SettingsConfig private constructor():
     var LANGUAGE: String by ConfigProperty("zh_CN") // 语言
 
     /* 数据库 */
-    var DATABASE_TYPE: String by ConfigProperty("h2")
-    var DATABASE_MYSQL_HOST: String by ConfigProperty("127.0.0.1:3306")
-    var DATABASE_MYSQL_DATABASE: String by ConfigProperty("firenchant")
+    var DATABASE_TYPE: String by ConfigProperty("SQLite")
+    var DATABASE_SQLITE_FILE: String by ConfigProperty("database.db")
+    var DATABASE_MYSQL_JDBC_URL: String by ConfigProperty("jdbc:mysql://127.0.0.1:3306/minecraft")
+    var DATABASE_MYSQL_JDBC_CLASS: String by ConfigProperty("com.mysql.cj.jdbc.Driver")
     var DATABASE_MYSQL_USER: String by ConfigProperty("root")
     var DATABASE_MYSQL_PASSWORD: String by ConfigProperty("root")
-    var DATABASE_H2_FILE: String by ConfigProperty("database.db")
 
 
     override fun loadConfig() {
         LANGUAGE = config().getString("language", "zh_CN")!!
 
         DATABASE_TYPE = config().getString("database.type", "h2")!!
-        DATABASE_MYSQL_HOST = config().getString("database.mysql.host", "127.0.0.1:3306")!!
-        DATABASE_MYSQL_DATABASE = config().getString("database.mysql.database", "firenchant")!!
-        DATABASE_MYSQL_USER = config().getString("database.mysql.username", "root")!!
-        DATABASE_MYSQL_PASSWORD = config().getString("database.mysql.password", "root")!!
-        DATABASE_H2_FILE = config().getString("database.h2.file", "database.db")!!
+        DATABASE_SQLITE_FILE = config().getString("database.sqlite.file", "database.db")!!
+        DATABASE_MYSQL_JDBC_URL = config().getString("database.mysql.jdbc-url", "jdbc:mysql://127.0.0.1:3306/minecraft")!!
+        DATABASE_MYSQL_JDBC_CLASS = config().getString("database.mysql.jdbc-class", "com.mysql.cj.jdbc.Driver")!!
+        DATABASE_MYSQL_USER = config().getString("database.mysql.properties.user", "root")!!
+        DATABASE_MYSQL_PASSWORD = config().getString("database.mysql.properties.password", "root")!!
     }
 
     override fun loadLatePartConfig() {}

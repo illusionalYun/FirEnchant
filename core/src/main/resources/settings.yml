@@ -1,17 +1,19 @@
 # 配置文件版本, 勿动捏 ~
 file-version: 1
 
-# 语言配置, 请确保语言缩写是Locale可识别的, 如 en, zh_CN, zh_TW 等.
+# 服务端语言配置, 请确保语言缩写是Locale可识别的, 如 en, zh_CN, zh_TW 等.
 language: "zh-CN"
 
-# 数据库
+# 数据库配置
+# 修改数据库需要重启服务器, 请注意, 切换数据库时旧数据不会自动迁移.
 database:
-  # 数据库类型 (mysql h2)
-  type: "h2"
-  mysql:
-    host: "127.0.0.1:3306"
-    database: "firenchant"
-    user: "root"
-    password: "root"
-  h2:
+  # 数据库类型:  "Mysql, SQLite"
+  type: "SQLite"
+  sqlite:
     file: "database.db"
+  mysql:
+    jdbc-url: "jdbc:mysql://127.0.0.1:3306/minecraft?useSSL=false&autoReconnect=true"
+    jdbc-class: "com.mysql.cj.jdbc.Driver"
+    properties:
+      user: "root"
+      password: "root"

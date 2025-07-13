@@ -5,8 +5,7 @@ import lombok.SneakyThrows;
 import top.catnies.firenchantkt.FirEnchantPlugin;
 import top.catnies.firenchantkt.config.SettingsConfig;
 import top.catnies.firenchantkt.database.AbstractDatabaseManager;
-import top.catnies.firenchantkt.entity.DatabaseConfig;
-import top.catnies.firenchantkt.database.PlayerEnchantLogData;
+import top.catnies.firenchantkt.database.table.EnchantLogDataTable;
 
 import java.io.File;
 
@@ -46,7 +45,7 @@ public class FirEnchantDatabaseManager extends AbstractDatabaseManager {
     @SneakyThrows
     public void initTable() {
         try {
-            TableUtils.createTableIfNotExists(getConnectionSource(), PlayerEnchantLogData.class);
+            TableUtils.createTableIfNotExists(getConnectionSource(), EnchantLogDataTable.class);
         } catch (Exception e) {
             if (!e.getCause().toString().contains("Duplicate key name")) {
                 throw new RuntimeException(e);

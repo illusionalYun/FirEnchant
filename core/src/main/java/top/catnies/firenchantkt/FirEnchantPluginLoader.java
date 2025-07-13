@@ -32,7 +32,6 @@ public class FirEnchantPluginLoader implements PluginLoader {
         resolver.addDependency(new Dependency(new DefaultArtifact("com.j256.ormlite:ormlite-core:6.1"), null));
         resolver.addDependency(new Dependency(new DefaultArtifact("com.j256.ormlite:ormlite-jdbc:6.1"), null));
         resolver.addDependency(new Dependency(new DefaultArtifact("com.zaxxer:HikariCP:6.1.0"), null));
-        resolver.addDependency(new Dependency(new DefaultArtifact("com.h2database:h2:2.3.232"), null));
 
         // REDIS
         resolver.addDependency(new Dependency(new DefaultArtifact("io.lettuce:lettuce-core:6.5.5.RELEASE"), null));

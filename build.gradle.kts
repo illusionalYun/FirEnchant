@@ -58,6 +58,12 @@ allprojects {
         compileOnly("org.projectlombok:lombok:${rootProject.properties["lib.lombok.version"]}") // Lombok
         annotationProcessor("org.projectlombok:lombok:${rootProject.properties["lib.lombok.version"]}") // Lombok
 
+        // 数据库
+        compileOnly("com.j256.ormlite:ormlite-core:${rootProject.properties["lib.ormlite.version"]}") // ORMLite
+        compileOnly("com.j256.ormlite:ormlite-jdbc:${rootProject.properties["lib.ormlite.version"]}") // ORMLite
+        compileOnly("com.zaxxer:HikariCP:${rootProject.properties["lib.hikaricp.version"]}") { exclude("org.slf4j", "*") } // HikariCP
+        compileOnly("io.lettuce:lettuce-core:${rootProject.properties["lib.lettuce.version"]}") { exclude("io.netty", "*") } // Lettuce
+
         // 依赖库
         implementation("cn.chengzhiya:MHDF-Scheduler:${rootProject.properties["lib.mhdf.scheduler.version"]}") // Scheduler
         compileOnly("com.saicone.rtag:rtag:${rootProject.properties["lib.rtag.version"]}") // RTag

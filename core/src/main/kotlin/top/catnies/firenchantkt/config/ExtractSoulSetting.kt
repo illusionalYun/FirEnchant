@@ -85,7 +85,7 @@ class ExtractSoulSetting private constructor():
                 MENU_CUSTOM_ITEMS = customItems
             }
 
-            // 2. 尝试构建结果物品
+            // 2. 构建结果物品
             MENU_RESULT_ITEM_PROVIDER = config().getString("extract-item.result-hooked-plugin", null)
             MENU_RESULT_ITEM_ID = config().getString("extract-item.result-hooked-id", null)
             if (MENU_RESULT_ITEM_PROVIDER == null) {
