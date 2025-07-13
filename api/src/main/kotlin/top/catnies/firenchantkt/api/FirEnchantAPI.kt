@@ -4,6 +4,7 @@ import net.kyori.adventure.key.Key
 import org.bukkit.inventory.ItemStack
 import org.jetbrains.annotations.NotNull
 import org.jetbrains.annotations.Nullable
+import top.catnies.firenchantkt.database.ConnectionManager
 import top.catnies.firenchantkt.engine.ConditionRegistry
 import top.catnies.firenchantkt.enchantment.EnchantmentData
 import top.catnies.firenchantkt.enchantment.EnchantmentManager
@@ -31,9 +32,9 @@ object FirEnchantAPI {
     val conditionRegistry: () -> ConditionRegistry = { ServiceContainer.get(ConditionRegistry::class.java) }
     // 动作注册表
     val actionRegistry: () -> ActionRegistry = { ServiceContainer.get(ActionRegistry::class.java) }
-    // 玩家附魔日志控制器
-    val playerEnchantLogDataManager: () -> PlayerEnchantLogDataManager = { ServiceContainer.get(PlayerEnchantLogDataManager::class.java) }
 
+    // 数据库链接管理器
+    val connectionManager: () -> ConnectionManager = { ServiceContainer.get(ConnectionManager::class.java) }
 
     /**
      * 构建一本附魔书.

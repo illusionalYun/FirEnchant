@@ -2,11 +2,23 @@ package top.catnies.firenchantkt.database;
 
 import com.j256.ormlite.support.ConnectionSource;
 import com.zaxxer.hikari.HikariConfig;
+import lombok.Getter;
 import lombok.SneakyThrows;
+import top.catnies.firenchantkt.api.ServiceContainer;
 import top.catnies.firenchantkt.config.SettingsConfig;
 import top.catnies.firenchantkt.database.connection.MysqlConnection;
 import top.catnies.firenchantkt.database.connection.SQLiteConnection;
+import top.catnies.firenchantkt.database.dao.EnchantLogData;
+import top.catnies.firenchantkt.database.dao.EnchantingHistoryData;
+import top.catnies.firenchantkt.database.dao.ItemRepairData;
+import top.catnies.firenchantkt.database.dao.mysql.MySQLEnchantLogData;
+import top.catnies.firenchantkt.database.dao.mysql.MySQLEnchantingHistoryData;
+import top.catnies.firenchantkt.database.dao.mysql.MySQLItemRepairData;
+import top.catnies.firenchantkt.database.dao.sqlite.SQLiteEnchantLogData;
+import top.catnies.firenchantkt.database.dao.sqlite.SQLiteEnchantingHistoryData;
+import top.catnies.firenchantkt.database.dao.sqlite.SQLiteItemRepairData;
 
+@Getter
 @SuppressWarnings("unused")
 public class FirConnectionManager implements ConnectionManager {
 
@@ -18,11 +30,15 @@ public class FirConnectionManager implements ConnectionManager {
         if (instance == null) {
             instance = new FirConnectionManager();
             instance.initDatabase(); // 创建链接
+            ServiceContainer.INSTANCE.register(ConnectionManager.class, instance);
         }
         return instance;
     }
 
     private Connection connection;
+    private EnchantingHistoryData enchantingHistoryData;
+    private EnchantLogData enchantLogData;
+    private ItemRepairData itemRepairData;
 
     @Override
     public void initDatabase() {
@@ -39,6 +55,9 @@ public class FirConnectionManager implements ConnectionManager {
                 hikariConfig.setPassword(config.getDATABASE_MYSQL_PASSWORD());
                 connection = new MysqlConnection(hikariConfig);
                 connection.connect();
+                enchantingHistoryData = MySQLEnchantingHistoryData.getInstance();
+                enchantLogData = MySQLEnchantLogData.getInstance();
+                itemRepairData = MySQLItemRepairData.getInstance();
             }
             // 初始化Sqlite数据库的连接
             case "sqlite" -> {
@@ -46,10 +65,15 @@ public class FirConnectionManager implements ConnectionManager {
                 String url = "jdbc:sqlite:plugins/FirOnlineTime/" + fileName;
                 connection = new SQLiteConnection(url);
                 connection.connect();
+                enchantingHistoryData = SQLiteEnchantingHistoryData.getInstance();
+                enchantLogData = SQLiteEnchantLogData.getInstance();
+                itemRepairData = SQLiteItemRepairData.getInstance();
             }
             default -> throw new RuntimeException("不支持的数据库类型: " + type);
         }
     }
+
+
 
     @Override
     @SneakyThrows
