@@ -36,13 +36,13 @@ public class ItemRepairTable {
     private long duration; // 修复所需时间（毫秒）
     
     @DatabaseField(canBeNull = false, defaultValue = "false")
-    private boolean completed;
+    private boolean received = false;
     
     /**
      * 检查修复是否已经完成
      * @return 如果当前时间已超过修复完成时间则返回true
      */
-    public boolean isExpired() {
+    public boolean isCompleted() {
         return System.currentTimeMillis() >= (startTime + duration);
     }
     

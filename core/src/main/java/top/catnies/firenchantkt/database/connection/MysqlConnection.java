@@ -1,7 +1,9 @@
 package top.catnies.firenchantkt.database.connection;
 
+import com.j256.ormlite.jdbc.DataSourceConnectionSource;
 import com.j256.ormlite.support.ConnectionSource;
 import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import top.catnies.firenchantkt.FirEnchantPlugin;
@@ -25,14 +27,12 @@ public class MysqlConnection implements Connection {
     @Override
     public void connect() {
         try {
-            String jdbcUrl = config.getJdbcUrl();
-
+            // 创建HikariDataSource
+            HikariDataSource dataSource = new HikariDataSource(config);
             // 创建ORMLite连接源
-
-            // 设置用户名和密码
-            
+            connectionSource = new DataSourceConnectionSource(dataSource, dataSource.getJdbcUrl());
             // 测试连接
-
+            connectionSource.getReadWriteConnection(null);
         } catch (Exception e) {
             MessageUtils.INSTANCE.sendTranslatableComponent(Bukkit.getConsoleSender(), MessageConstants.DATABASE_CONNECT_ERROR);
             Bukkit.getPluginManager().disablePlugin(FirEnchantPlugin.getInstance());

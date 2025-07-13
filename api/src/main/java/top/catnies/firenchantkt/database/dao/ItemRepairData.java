@@ -14,54 +14,50 @@ public interface ItemRepairData {
      * 创建新的修复记录
      */
     void create(ItemRepairTable repairData);
-    
+
     /**
-     * 异步创建新的修复记录
+     * 标记记录为已领取
      */
-    void createAsync(ItemRepairTable repairData);
-    
+    void markAsCompleted(int id);
+
     /**
-     * 更新修复记录
+     * 获取所有玩家的修复记录
      */
-    void update(ItemRepairTable repairData);
-    
+    List<ItemRepairTable> getAllList();
+
     /**
-     * 异步更新修复记录
+     * 获取所有玩家正在修复中的记录
      */
-    void updateAsync(ItemRepairTable repairData);
-    
+    List<ItemRepairTable> getAllActiveList();
+
     /**
-     * 根据ID获取修复记录
+     * 获取所有玩家已修复完成但未领取的记录
      */
-    ItemRepairTable getById(int id);
-    
+    List<ItemRepairTable> getAllCompletedList();
+
+    /**
+     * 获取所有玩家已修复并且已领取的记录
+     */
+    List<ItemRepairTable> getAllReceivedList();
+
     /**
      * 获取玩家所有的修复记录
      */
     List<ItemRepairTable> getByPlayer(UUID playerId);
     
     /**
-     * 获取玩家未完成的修复记录
+     * 获取玩家正在修复中的记录
      */
-    List<ItemRepairTable> getActiveRepairs(UUID playerId);
-    
+    List<ItemRepairTable> getByPlayerActive(UUID playerId);
+
     /**
-     * 获取所有已过期但未标记完成的记录
+     * 获取玩家已修复完成但还未领取的记录
      */
-    List<ItemRepairTable> getExpiredRepairs();
-    
+    List<ItemRepairTable> getByPlayerCompleted(UUID playerId);
+
     /**
-     * 标记修复为完成
+     * 获取玩家已修复并且已经领取的记录
      */
-    void markAsCompleted(int id);
-    
-    /**
-     * 删除修复记录
-     */
-    void delete(int id);
-    
-    /**
-     * 异步删除修复记录
-     */
-    void deleteAsync(int id);
+    List<ItemRepairTable> getByPlayerReceived(UUID playerId);
+
 }
