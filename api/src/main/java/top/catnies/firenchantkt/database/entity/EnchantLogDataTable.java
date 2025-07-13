@@ -33,7 +33,7 @@ public class EnchantLogDataTable {
     private int takeLevel;
 
     @DatabaseField(canBeNull = false, dataType = DataType.SHORT)
-    private int failure;
+    private short failure;
 
     @DatabaseField(canBeNull = false, dataType = DataType.BOOLEAN)
     private boolean success;

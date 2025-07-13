@@ -31,7 +31,7 @@ public class EnchantingHistoryTable {
     private String inputItemData; // 物品类型
     
     @DatabaseField(canBeNull = false, dataType = DataType.LONG)
-    private int seed; // 附魔种子
+    private long seed; // 附魔种子
     
     @DatabaseField(canBeNull = false, dataType = DataType.LONG_STRING)
     private String enchants; // JSON格式的预览结果 {enchantments: [{enchantment: key, level: 1}, {enchantment: key, level: 1}, {enchantment: key, level: 1}]}
