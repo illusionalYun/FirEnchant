@@ -1,6 +1,9 @@
 # 这个文件主要负责配置将插件附魔书转换成魔咒之魂的功能。
 # 如果您发现了任何Bug/需要寻求帮助，您可以在我们的售后群联系 “那谁QQ1286071831” 进行反馈处理;
 
+# 启动功能, 如果关闭则无法打开菜单.
+enable: true
+
 # 菜单设置
 menu-setting:
   # 菜单标题
@@ -21,18 +24,18 @@ menu-setting:
   custom-items:
     'X':
       hooked-plugin: "Vanilla"
-      hooked-id: PAPER
+      hooked-id: LEATHER_HORSE_ARMOR
       item-name: "<red>关闭"
       lore: []
       amount: 1
       durability: 1
       custom-model-data: 31001
       item-model: "minecraft:item/paper"
-      dyed-color:
-        alpine: 1
-        red: 255
-        green: 255
-        blue: 255
+#      dyed-color: ?? 有问题的
+#        alpine: 1
+#        red: 255
+#        green: 255
+#        blue: 255
       firework-color:
         alpine: 1
         red: 255
@@ -58,3 +61,17 @@ menu-setting:
       click-actions:
         - type: play_sound      # 点击音效
           sound: "ui.button.click"
+
+
+# 提取设置
+# 玩家可以将附魔书放入提取菜单, 兑换成同等数量的目标物品.
+extract-item:
+  # 提取的结果物品
+  result-hooked-plugin: "CraftEngine"
+  result-hooked-id: "enchantment:ashes_o_enchantment"
+  # 提取数量至少 > 1 时, 触发的动作
+  click-actions:
+    - type: play_sound
+      sound: "ui.button.click"
+    - type: send_message
+      content: "天哪, 你竟然提取了一个魔咒之魂, 太几把牛波了!!!"

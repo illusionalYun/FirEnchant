@@ -20,6 +20,7 @@ object MessageConstants {
     const val RESOURCE_MENU_STRUCTURE_ERROR = "resource.menu.structure.error"
 
     const val PLUGIN_COMPATIBILITY_HOOK_SUCCESS = "plugin.compatibility.hook.success"
+    const val PLUGIN_FUNCTION_NOT_ENABLED = "plugin.function.not_enabled"
 
     const val CONFIG_ACTION_TYPE_UNKNOWN = "config.action.type.unknown"
     const val CONFIG_CONDITION_TYPE_UNKNOWN = "config.condition.type.unknown"

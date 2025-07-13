@@ -18,6 +18,7 @@ resource.hook.item.not_found: "<#96f896>[FirEnchant] <red>在 <arg:0> 配置文�
 resource.menu.structure.error: "<#96f896>[FirEnchant] <red>在 <arg:0> 配置文件中设置的菜单结构错误，请修正后再试。</red>"
 
 plugin.compatibility.hook.success: "<#96f896>[FirEnchant] <#cef8f5>检查到服务器存在插件 <arg:0> ，已进行关联兼容。"
+plugin.function.not_enabled: "<#96f896>[FirEnchant] <#cef8f5>服务器暂未开启此功能，或此功能配置存在错误配置被强制关闭，如需开启请修改检查配置文件 '<arg:0>' 修正后再尝试。"
 
 config.action.type.unknown: "<#96f896>[FirEnchant] <red>未知的动作类型 <arg:0>，该动作将被忽略。</red>"
 config.condition.type.unknown: "<#96f896>[FirEnchant] <red>未知的条件类型 <arg:0>，该条件将被忽略。</red>"

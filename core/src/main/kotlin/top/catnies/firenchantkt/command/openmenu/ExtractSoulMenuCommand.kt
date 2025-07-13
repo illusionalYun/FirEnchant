@@ -10,14 +10,16 @@ import io.papermc.paper.command.brigadier.argument.resolvers.selector.PlayerSele
 import org.bukkit.entity.Player
 import top.catnies.firenchantkt.command.AbstractCommand
 import top.catnies.firenchantkt.command.VersionCommand
+import top.catnies.firenchantkt.config.ExtractSoulSetting
 import top.catnies.firenchantkt.gui.FirExtractSoulMenu
 import top.catnies.firenchantkt.language.MessageConstants.COMMAND_CONSOLE_CANT_EXECUTE
+import top.catnies.firenchantkt.language.MessageConstants.PLUGIN_FUNCTION_NOT_ENABLED
 import top.catnies.firenchantkt.util.MessageUtils.sendTranslatableComponent
 
 object ExtractSoulMenuCommand : AbstractCommand() {
 
-    private val permission = "firenchant.command.openmenu.extract-soul"
-    private val permissionOther = "firenchant.command.openmenu.extract-soul.other"
+    private const val PERMISSION = "firenchant.command.openmenu.extract-soul"
+    private const val PERMISSION_OTHER = "firenchant.command.openmenu.extract-soul.other"
 
     override fun create(): LiteralArgumentBuilder<CommandSourceStack> {
         return Commands.literal("extract-soul")
@@ -29,18 +31,22 @@ object ExtractSoulMenuCommand : AbstractCommand() {
     }
 
     override fun requires(requirement: CommandSourceStack): Boolean {
-        return requirement.sender.hasPermission(permission)
+        return requirement.sender.hasPermission(PERMISSION)
     }
 
     private fun requiresOther(requirement: CommandSourceStack): Boolean {
-        return requirement.sender.hasPermission(permissionOther)
+        return requirement.sender.hasPermission(PERMISSION_OTHER)
     }
 
     override fun execute(context: CommandContext<CommandSourceStack>): Int {
-        val targetResolver = if (context.nodes.last().node.name == "player") context.getArgument(
-            "player",
-            PlayerSelectorArgumentResolver::class.java
-        ) else null
+        // 功能未开启或配置文件存在异常
+        if (!ExtractSoulSetting.instance.ENABLE) {
+            context.source.sender.sendTranslatableComponent(PLUGIN_FUNCTION_NOT_ENABLED, "extract-soul")
+            return Command.SINGLE_SUCCESS
+        }
+
+        val targetResolver = if (context.nodes.last().node.name == "player")
+            context.getArgument("player", PlayerSelectorArgumentResolver::class.java) else null
         val player = targetResolver?.resolve(context.source)?.get(0) ?: (context.source.sender as? Player)
         if (player == null) {
             context.source.sender.sendTranslatableComponent(COMMAND_CONSOLE_CANT_EXECUTE)

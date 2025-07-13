@@ -22,7 +22,7 @@ class MenuItem(
         val args = mutableMapOf<String, Any?>()
         args["checkSource"] = RunSource.MENUCLICK
         args["player"] = player
-        args["clickType"] = clickType
+        args["clickType"] = clickType.name
         args["event"] = event
         actionTemplates.forEach {
             it.executeIfAllowed(args)

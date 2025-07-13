@@ -16,13 +16,13 @@ class PlaySoundAction(
     @ArgumentKey(["sound"])
     private lateinit var sound: String
 
-    @ArgumentKey(["source"])
+    @ArgumentKey(["source"], required = false)
     private var source = Sound.Source.MASTER
 
-    @ArgumentKey(["volume"])
+    @ArgumentKey(["volume"], required = false)
     private var volume = 1.0f
 
-    @ArgumentKey(["pitch"])
+    @ArgumentKey(["pitch"], required = false)
     private var pitch = 1.0f
 
     override fun execute() {
