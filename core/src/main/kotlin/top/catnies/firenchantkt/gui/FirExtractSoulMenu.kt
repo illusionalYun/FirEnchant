@@ -1,9 +1,11 @@
 package top.catnies.firenchantkt.gui
 
+import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 import top.catnies.firenchantkt.FirEnchantPlugin
+import top.catnies.firenchantkt.api.event.extractsoul.ExtractSoulEvent
 import top.catnies.firenchantkt.config.ExtractSoulSetting
 import top.catnies.firenchantkt.enchantment.FirEnchantmentSettingFactory
 import top.catnies.firenchantkt.engine.RunSource
@@ -112,14 +114,20 @@ class FirExtractSoulMenu(
                 else return@SimpleItem resultItem.apply {amount = count}
             }
         ) { click: Click? ->
-            // 移除有效附魔书
-            val removedCount = inputInventory.removeIf(UpdateReason.SUPPRESSED) { !it.nullOrAir() && FirEnchantmentSettingFactory.fromItemStack(it) != null }
+            // 获取有效的附魔书
+            val preRemoved = inputInventory.items.filter { !it.nullOrAir() && FirEnchantmentSettingFactory.fromItemStack(it) != null }
+            val removedCount = preRemoved.size
             if (removedCount > 0) {
-                // TODO 触发事件
-                // 发放物品
+                // 结果物品
                 val resultItem = resultItem.apply {amount = removedCount}
-                player.giveOrDrop(resultItem)
-                outputItem.notifyWindows()
+                // 触发事件
+                val event = ExtractSoulEvent(player, preRemoved, mutableListOf(resultItem))
+                Bukkit.getPluginManager().callEvent(event)
+                if (event.isCancelled) return@SimpleItem
+                // 扣除物品
+                inputInventory.removeIf(UpdateReason.SUPPRESSED) { event.removedEnchantedBooks.contains(it) }
+                // 给予物品
+                player.giveOrDropList(event.resultItems)
                 // 执行动作
                 val runtimeArgs = mapOf(
                     "checkSource" to RunSource.MENUCLICK,
@@ -129,6 +137,8 @@ class FirExtractSoulMenu(
                     "removedCount" to removedCount
                 )
                 actions!!.forEach { it.executeIfAllowed(runtimeArgs) }
+                // 刷新按钮
+                outputItem.notifyWindows()
             }
         }
     }
