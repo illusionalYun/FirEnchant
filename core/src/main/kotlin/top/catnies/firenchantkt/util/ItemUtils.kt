@@ -2,6 +2,9 @@ package top.catnies.firenchantkt.util
 
 import com.saicone.rtag.item.ItemTagStream
 import io.papermc.paper.datacomponent.DataComponentTypes
+import io.papermc.paper.datacomponent.item.ItemLore
+import net.kyori.adventure.text.Component
+import net.kyori.adventure.text.TextComponent
 import org.bukkit.enchantments.Enchantment
 import org.bukkit.inventory.ItemStack
 import kotlin.contracts.ExperimentalContracts
@@ -51,9 +54,51 @@ object ItemUtils {
         this.setData(DataComponentTypes.REPAIR_COST, cost + count)
     }
 
-    // 将物品的Name和Lore替换的 ${Placeholder} 替换成实际的值
-    // TODO: 例如 Map = currentPage : 1, 就将 ${currentPage} 换成 1
+     // 将物品的 Name 和 Lore 中的占位符 ${placeholder} 替换成实际的值
+     // @param args 占位符映射表，例如 mapOf("currentPage" to "1") 会将 ${currentPage} 替换为 1
     fun ItemStack.replacePlaceholder(args: Map<String, String>) {
-        return
+        // 处理物品名称
+        getData(DataComponentTypes.ITEM_NAME)?.let { nameComponent ->
+            val replacedName = replaceComponentPlaceholders(nameComponent, args)
+            setData(DataComponentTypes.ITEM_NAME, replacedName)
+        }
+
+        // 处理物品 Lore
+        getData(DataComponentTypes.LORE)?.let { itemLore ->
+            val loreBuilder = ItemLore.lore()
+
+            itemLore.lines().forEach { line ->
+                val replacedLine = replaceComponentPlaceholders(line, args)
+                loreBuilder.addLine(replacedLine)
+            }
+
+            setData(DataComponentTypes.LORE, loreBuilder.build())
+        }
+    }
+
+    // 递归替换 Component 中的占位符
+    private fun replaceComponentPlaceholders(component: Component, args: Map<String, String>): Component {
+        return when (component) {
+            is TextComponent -> {
+                // 获取文本内容并替换占位符
+                var content = component.content()
+
+                // 遍历所有占位符进行替换
+                args.forEach { (key, value) ->
+                    val placeholder = "\${$key}"
+                    content = content.replace(placeholder, value)
+                }
+
+                // 创建新的 TextComponent
+                Component.text(content)
+                    .style(component.style()) // 保留原有样式
+                    .children(component.children().map { replaceComponentPlaceholders(it, args) }) // 递归处理子组件
+            }
+
+            else -> {
+                // 对于其他类型的组件，只处理子组件
+                component.children(component.children().map { replaceComponentPlaceholders(it, args) })
+            }
+        }
     }
 }

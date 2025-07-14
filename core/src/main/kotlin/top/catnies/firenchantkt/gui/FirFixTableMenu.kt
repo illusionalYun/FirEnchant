@@ -7,6 +7,7 @@ import top.catnies.firenchantkt.FirEnchantPlugin
 import top.catnies.firenchantkt.config.FixTableConfig
 import top.catnies.firenchantkt.database.entity.ItemRepairTable
 import top.catnies.firenchantkt.item.fixtable.FirBrokenGear
+import top.catnies.firenchantkt.util.ItemUtils.replacePlaceholder
 import top.catnies.firenchantkt.util.PlayerUtils.giveOrDropList
 import top.catnies.firenchantkt.util.TaskUtils
 import xyz.xenondevs.invui.gui.Gui
@@ -119,24 +120,23 @@ class FirFixTableMenu(
     private fun buildPageItem() {
         previousPageBottom = object :PageItem(false) {
             override fun getItemProvider(gui: PagedGui<*>): ItemProvider {
-                val builder = ItemBuilder(Material.GREEN_STAINED_GLASS_PANE)
-                builder.setDisplayName("Previous page")
-                    .addLoreLines(
-                        if (gui.hasPreviousPage()) "Go to page " + gui.currentPage + "/" + gui.pageAmount
-                        else "You can't go further back"
-                    )
-                return builder
+                // TODO 我觉得不能频繁使用 Clone?
+                val itemStack = previousPageItem!!.clone()
+                itemStack.replacePlaceholder(mutableMapOf(
+                    "currentPage" to "${gui.currentPage}",
+                    "pageAmount" to "${gui.pageAmount}"
+                ))
+                return ItemBuilder(itemStack)
             }
         }
         nextPageBottom = object :PageItem(true) {
             override fun getItemProvider(gui: PagedGui<*>): ItemProvider {
-                val builder = ItemBuilder(Material.RED_STAINED_GLASS_PANE)
-                builder.setDisplayName("Next page")
-                    .addLoreLines(
-                        if (gui.hasNextPage()) "Go to page " + (gui.currentPage + 2) + "/" + gui.pageAmount
-                        else "There are no more pages"
-                    )
-                return builder
+                val itemStack = nextPageItem!!.clone()
+                itemStack.replacePlaceholder(mutableMapOf(
+                    "currentPage" to "${gui.currentPage}",
+                    "pageAmount" to "${gui.pageAmount}"
+                ))
+                return ItemBuilder(itemStack)
             }
         }
     }
