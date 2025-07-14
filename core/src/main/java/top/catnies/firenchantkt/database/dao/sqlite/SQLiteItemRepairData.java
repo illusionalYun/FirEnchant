@@ -18,16 +18,17 @@ import static top.catnies.firenchantkt.language.MessageConstants.DATABASE_TABLE_
 
 public class SQLiteItemRepairData extends AbstractDao<ItemRepairData, Integer> implements ItemRepairData {
 
-    private static SQLiteItemRepairData Instance;
+    private static SQLiteItemRepairData instance;
+    private static final int CURRENT_VERSION = 1;
 
     private SQLiteItemRepairData(){}
     public static SQLiteItemRepairData getInstance() {
-        if (Instance == null) {
-            Instance = new SQLiteItemRepairData();
-            Instance.createTable();
-            ServiceContainer.INSTANCE.register(ItemRepairData.class, Instance);
+        if (instance == null) {
+            instance = new SQLiteItemRepairData();
+            instance.createTable();
+            ServiceContainer.INSTANCE.register(ItemRepairData.class, instance);
         }
-        return Instance;
+        return instance;
     }
 
     private void createTable() {
@@ -35,9 +36,7 @@ public class SQLiteItemRepairData extends AbstractDao<ItemRepairData, Integer> i
             TableUtils.createTableIfNotExists(FirConnectionManager.getInstance().getConnectionSource(), ItemRepairTable.class);
         } catch (SQLException e) {
             // ORMLite 中如果表存在还是会重复创建 index 索引,所以需要忽略这个报错
-            if (e.getCause() != null && e.getCause().toString().contains("Duplicate key name")) {
-                return;
-            }
+            // if (e.getCause() != null && e.getCause().toString().contains("Duplicate key name")) return;
             MessageUtils.INSTANCE.sendTranslatableComponent(Bukkit.getConsoleSender(), DATABASE_TABLE_CREATE_ERROR, ItemRepairTable.class.getSimpleName());
             e.printStackTrace();
             Bukkit.getPluginManager().disablePlugin(FirEnchantPlugin.getInstance());

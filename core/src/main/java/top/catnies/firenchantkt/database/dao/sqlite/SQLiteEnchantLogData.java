@@ -1,5 +1,6 @@
 package top.catnies.firenchantkt.database.dao.sqlite;
 
+import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 import org.bukkit.Bukkit;
 import top.catnies.firenchantkt.FirEnchantPlugin;
@@ -18,16 +19,20 @@ import static top.catnies.firenchantkt.language.MessageConstants.DATABASE_TABLE_
 
 public class SQLiteEnchantLogData extends AbstractDao<EnchantLogData, Integer> implements EnchantLogData{
 
-    private static SQLiteEnchantLogData Instance;
+    private static SQLiteEnchantLogData instance;
+    private static final int CURRENT_VERSION = 1;
+
+    private ConnectionSource source;
 
     private SQLiteEnchantLogData(){}
     public static SQLiteEnchantLogData getInstance() {
-        if (Instance == null) {
-            Instance = new SQLiteEnchantLogData();
-            Instance.createTable();
-            ServiceContainer.INSTANCE.register(EnchantLogData.class, Instance);
+        if (instance == null) {
+            instance = new SQLiteEnchantLogData();
+            instance.createTable();
+            instance.source = FirConnectionManager.getInstance().getConnectionSource();
+            ServiceContainer.INSTANCE.register(EnchantLogData.class, instance);
         }
-        return Instance;
+        return instance;
     }
 
     private void createTable() {
@@ -35,9 +40,7 @@ public class SQLiteEnchantLogData extends AbstractDao<EnchantLogData, Integer> i
             TableUtils.createTableIfNotExists(FirConnectionManager.getInstance().getConnectionSource(), EnchantLogDataTable.class);
         } catch (SQLException e) {
             // ORMLite 中如果表存在还是会重复创建 index 索引,所以需要忽略这个报错
-            if (e.getCause() != null && e.getCause().toString().contains("Duplicate key name")) {
-                return;
-            }
+            // if (e.getCause() != null && e.getCause().toString().contains("Duplicate key name")) return;
             MessageUtils.INSTANCE.sendTranslatableComponent(Bukkit.getConsoleSender(), DATABASE_TABLE_CREATE_ERROR, EnchantLogDataTable.class.getSimpleName());
             e.printStackTrace();
             Bukkit.getPluginManager().disablePlugin(FirEnchantPlugin.getInstance());
@@ -46,7 +49,6 @@ public class SQLiteEnchantLogData extends AbstractDao<EnchantLogData, Integer> i
 
     @Override
     public void insert(EnchantLogDataTable enchantLogDataTable) {
-
     }
 
     @Override

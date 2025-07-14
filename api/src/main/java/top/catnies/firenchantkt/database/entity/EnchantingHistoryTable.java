@@ -28,13 +28,22 @@ public class EnchantingHistoryTable {
     private UUID playerId;
     
     @DatabaseField(canBeNull = false, dataType = DataType.LONG_STRING)
-    private String inputItemData; // 物品类型
+    private String inputItemData; // 物品数据
     
     @DatabaseField(canBeNull = false, dataType = DataType.LONG)
     private long seed; // 附魔种子
-    
-    @DatabaseField(canBeNull = false, dataType = DataType.LONG_STRING)
-    private String enchants; // JSON格式的预览结果 {enchantments: [{enchantment: key, level: 1}, {enchantment: key, level: 1}, {enchantment: key, level: 1}]}
+
+    @DatabaseField(canBeNull = false, dataType = DataType.INTEGER)
+    private int bookShelfCount; // 书架数量
+
+    @DatabaseField(canBeNull = false, dataType = DataType.INTEGER)
+    private int enchantable; // 物品附魔能力值
+
+    @DatabaseField(canBeNull = false, dataType = DataType.STRING)
+    private String selectedEnchantment; // 选择的魔咒
+
+    @DatabaseField(canBeNull = false, dataType = DataType.INTEGER)
+    private int selectedEnchantmentLevel; // 选择的魔咒等级
 
     @DatabaseField(canBeNull = false, dataType = DataType.LONG)
     private long timestamp;

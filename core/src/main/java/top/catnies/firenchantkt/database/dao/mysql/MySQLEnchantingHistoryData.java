@@ -18,16 +18,17 @@ import static top.catnies.firenchantkt.language.MessageConstants.DATABASE_TABLE_
 
 public class MySQLEnchantingHistoryData extends AbstractDao<EnchantingHistoryData, Integer> implements EnchantingHistoryData {
 
-    private static MySQLEnchantingHistoryData Instance;
+    private static MySQLEnchantingHistoryData instance;
+    private static final int CURRENT_VERSION = 1;
 
     private MySQLEnchantingHistoryData(){}
     public static MySQLEnchantingHistoryData getInstance() {
-        if (Instance == null) {
-            Instance = new MySQLEnchantingHistoryData();
-            Instance.createTable();
-            ServiceContainer.INSTANCE.register(EnchantingHistoryData.class, Instance);
+        if (instance == null) {
+            instance = new MySQLEnchantingHistoryData();
+            instance.createTable();
+            ServiceContainer.INSTANCE.register(EnchantingHistoryData.class, instance);
         }
-        return Instance;
+        return instance;
     }
 
     private void createTable() {
@@ -35,9 +36,7 @@ public class MySQLEnchantingHistoryData extends AbstractDao<EnchantingHistoryDat
             TableUtils.createTableIfNotExists(FirConnectionManager.getInstance().getConnectionSource(), EnchantingHistoryTable.class);
         } catch (SQLException e) {
             // ORMLite 中如果表存在还是会重复创建 index 索引,所以需要忽略这个报错
-            if (e.getCause() != null && e.getCause().toString().contains("Duplicate key name")) {
-                return;
-            }
+            // if (e.getCause() != null && e.getCause().toString().contains("Duplicate key name")) return;
             MessageUtils.INSTANCE.sendTranslatableComponent(Bukkit.getConsoleSender(), DATABASE_TABLE_CREATE_ERROR, EnchantingHistoryTable.class.getSimpleName());
             e.printStackTrace();
             Bukkit.getPluginManager().disablePlugin(FirEnchantPlugin.getInstance());

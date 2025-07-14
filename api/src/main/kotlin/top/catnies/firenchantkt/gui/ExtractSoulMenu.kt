@@ -1,7 +1,5 @@
 package top.catnies.firenchantkt.gui
 
-import org.bukkit.entity.Player
-
 interface ExtractSoulMenu {
 
     // 打开菜单

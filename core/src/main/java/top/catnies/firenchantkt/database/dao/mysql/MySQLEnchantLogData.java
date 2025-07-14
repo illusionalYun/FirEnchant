@@ -18,16 +18,17 @@ import static top.catnies.firenchantkt.language.MessageConstants.DATABASE_TABLE_
 
 public class MySQLEnchantLogData extends AbstractDao<EnchantLogData, Integer> implements EnchantLogData {
 
-    private static MySQLEnchantLogData Instance;
+    private static MySQLEnchantLogData instance;
+    private static final int CURRENT_VERSION = 1;
 
     private MySQLEnchantLogData(){}
     public static MySQLEnchantLogData getInstance() {
-        if (Instance == null) {
-            Instance = new MySQLEnchantLogData();
-            Instance.createTable();
-            ServiceContainer.INSTANCE.register(EnchantLogData.class, Instance);
+        if (instance == null) {
+            instance = new MySQLEnchantLogData();
+            instance.createTable();
+            ServiceContainer.INSTANCE.register(EnchantLogData.class, instance);
         }
-        return Instance;
+        return instance;
     }
 
     private void createTable() {
@@ -35,9 +36,7 @@ public class MySQLEnchantLogData extends AbstractDao<EnchantLogData, Integer> im
             TableUtils.createTableIfNotExists(FirConnectionManager.getInstance().getConnectionSource(), EnchantLogDataTable.class);
         } catch (SQLException e) {
             // ORMLite 中如果表存在还是会重复创建 index 索引,所以需要忽略这个报错
-            if (e.getCause() != null && e.getCause().toString().contains("Duplicate key name")) {
-                return;
-            }
+            // if (e.getCause() != null && e.getCause().toString().contains("Duplicate key name")) return;
             MessageUtils.INSTANCE.sendTranslatableComponent(Bukkit.getConsoleSender(), DATABASE_TABLE_CREATE_ERROR, EnchantLogDataTable.class.getSimpleName());
             e.printStackTrace();
             Bukkit.getPluginManager().disablePlugin(FirEnchantPlugin.getInstance());
