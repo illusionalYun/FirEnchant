@@ -3,13 +3,16 @@ dependencies {
     implementation(project(":compatibility"))
 
     // InvUI
-    implementation("xyz.xenondevs.invui:invui:${rootProject.properties["lib.invui.version"]}") {
-        (1 .. 19).forEach { exclude("xyz.xenondevs.invui", "inventory-access-r$it") }
-    }
-    implementation("xyz.xenondevs.invui:invui-kotlin:${rootProject.properties["lib.invui.version"]}") {
-        exclude("org.jetbrains.kotlin", "*")
-        exclude("org.jetbrains.kotlinx", "*")
-    }
+    compileOnly("xyz.xenondevs.invui:invui-core:${rootProject.properties["lib.invui.version"]}")
+    compileOnly("xyz.xenondevs.invui:inventory-access-r20:${rootProject.properties["lib.invui.version"]}")
+    compileOnly("xyz.xenondevs.invui:inventory-access-r21:${rootProject.properties["lib.invui.version"]}")
+    compileOnly("xyz.xenondevs.invui:inventory-access-r22:${rootProject.properties["lib.invui.version"]}")
+    compileOnly("xyz.xenondevs.invui:inventory-access-r23:${rootProject.properties["lib.invui.version"]}")
+    compileOnly("xyz.xenondevs.invui:inventory-access-r24:${rootProject.properties["lib.invui.version"]}")
+//    compileOnly("xyz.xenondevs.invui:invui-kotlin:${rootProject.properties["lib.invui.version"]}") {
+//        exclude("org.jetbrains.kotlin", "*")
+//        exclude("org.jetbrains.kotlinx", "*")
+//    }
 
     compileOnly("me.clip:placeholderapi:${rootProject.properties["lib.placeholderapi.version"]}") // PlaceholderAPI
 }

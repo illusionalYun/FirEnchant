@@ -51,4 +51,9 @@ object ItemUtils {
         this.setData(DataComponentTypes.REPAIR_COST, cost + count)
     }
 
+    // 将物品的Name和Lore替换的 ${Placeholder} 替换成实际的值
+    // TODO: 例如 Map = currentPage : 1, 就将 ${currentPage} 换成 1
+    fun ItemStack.replacePlaceholder(args: Map<String, String>) {
+        return
+    }
 }

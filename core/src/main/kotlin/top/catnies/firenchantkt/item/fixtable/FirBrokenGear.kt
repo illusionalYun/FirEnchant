@@ -22,13 +22,13 @@ class FirBrokenGear: BrokenGear {
     val fallback: () -> ItemStack = { config.BROKEN_FALLBACK_WRAPPER_ITEM!! }
     val matches = config.BROKEN_MATCHES
 
-    override fun isBrokenGear(item: ItemStack): Boolean {
+    override fun isBrokenGear(item: ItemStack?): Boolean {
         if (item.nullOrAir() || !config.ENABLE) return false
         return RtagItem.of(item).hasTag("FirEnchant", "FixType")
     }
 
-    override fun toBrokenGear(item: ItemStack): ItemStack? {
-        if (isBrokenGear(item)) return null
+    override fun toBrokenGear(item: ItemStack?): ItemStack? {
+        if (item.nullOrAir() || isBrokenGear(item)) return null
         val wrapperItem = matches.find { it.matchItem(item) }?.wrapperItem ?: fallback()
 
         // 保存原物品
@@ -45,7 +45,7 @@ class FirBrokenGear: BrokenGear {
         return wrapper.apply { setData(DataComponentTypes.MAX_STACK_SIZE, 1) }
     }
 
-    override fun repairBrokenGear(item: ItemStack): ItemStack? {
+    override fun repairBrokenGear(item: ItemStack?): ItemStack? {
         if (!isBrokenGear(item)) return null
 
         val bytes = RtagItem.of(item).get<ByteArray>("FirEnchant", "FixType") ?: return item

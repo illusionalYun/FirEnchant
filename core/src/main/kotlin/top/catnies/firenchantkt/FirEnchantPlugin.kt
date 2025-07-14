@@ -28,6 +28,7 @@ import top.catnies.firenchantkt.lazyinit.OraxenLoadListener
 import top.catnies.firenchantkt.listener.ListenerManger
 import top.catnies.firenchantkt.util.MessageUtils.sendTranslatableComponent
 import top.catnies.firenchantkt.util.TaskUtils.plugin
+import xyz.xenondevs.invui.InvUI
 import kotlin.coroutines.CoroutineContext
 import kotlin.properties.Delegates
 
@@ -56,8 +57,9 @@ class FirEnchantPlugin: JavaPlugin(), FirEnchant, CoroutineScope {
     }
 
     override fun onEnable() {
-        NMSHandlerHolder.instance // NMS持有者
+        InvUI.getInstance().setPlugin(this) // GUI依赖库
 
+        NMSHandlerHolder.instance // NMS
         ConfigManager.instance // 配置文件管理器
         TranslationManager.instance // 语言管理器
         CommandManager.instance // 命令管理器

@@ -18,7 +18,7 @@ public interface ItemRepairData {
     /**
      * 标记记录为已领取
      */
-    void markAsCompleted(int id);
+    void markAsReceived(int id);
 
     /**
      * 获取所有玩家的修复记录
@@ -41,6 +41,11 @@ public interface ItemRepairData {
     List<ItemRepairTable> getAllReceivedList();
 
     /**
+     * 获取所有玩家正在修复中+已修复完成的记录
+     */
+    List<ItemRepairTable> getAllActiveAndCompletedList();
+
+    /**
      * 获取玩家所有的修复记录
      */
     List<ItemRepairTable> getByPlayer(UUID playerId);
@@ -59,5 +64,10 @@ public interface ItemRepairData {
      * 获取玩家已修复并且已经领取的记录
      */
     List<ItemRepairTable> getByPlayerReceived(UUID playerId);
+
+    /**
+     * 获取玩家正在修复中+已修复完成的记录
+     */
+    List<ItemRepairTable> getAllActiveAndCompletedList(UUID playerId);
 
 }

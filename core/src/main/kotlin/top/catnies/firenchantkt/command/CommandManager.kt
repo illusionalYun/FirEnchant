@@ -9,6 +9,7 @@ import top.catnies.firenchantkt.command.debug.GetLocationBookShelfCountCommand
 import top.catnies.firenchantkt.command.debug.GetNextEnchantingTableResultCommand
 import top.catnies.firenchantkt.command.debug.GetPlayerEnchantmentSeedCommand
 import top.catnies.firenchantkt.command.openmenu.ExtractSoulMenuCommand
+import top.catnies.firenchantkt.command.openmenu.FirFixTableMenuCommand
 
 class CommandManager private constructor() {
     val plugin get() = FirEnchantPlugin.instance
@@ -39,6 +40,7 @@ class CommandManager private constructor() {
             return@requires it.sender.hasPermission("firenchant.command.openmenu")
         }.apply {
             then(ExtractSoulMenuCommand.create()) // 灵魂提取菜单
+            then(FirFixTableMenuCommand.create()) // 修复装备菜单
         }.also { root.then(it) }
 
         // 破损物品命令

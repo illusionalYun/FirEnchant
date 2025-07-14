@@ -9,19 +9,19 @@ import io.papermc.paper.command.brigadier.argument.ArgumentTypes
 import io.papermc.paper.command.brigadier.argument.resolvers.selector.PlayerSelectorArgumentResolver
 import org.bukkit.entity.Player
 import top.catnies.firenchantkt.command.AbstractCommand
-import top.catnies.firenchantkt.config.ExtractSoulConfig
-import top.catnies.firenchantkt.gui.FirExtractSoulMenu
+import top.catnies.firenchantkt.config.FixTableConfig
+import top.catnies.firenchantkt.gui.FirFixTableMenu
 import top.catnies.firenchantkt.language.MessageConstants.COMMAND_CONSOLE_CANT_EXECUTE
 import top.catnies.firenchantkt.language.MessageConstants.PLUGIN_FUNCTION_NOT_ENABLED
 import top.catnies.firenchantkt.util.MessageUtils.sendTranslatableComponent
 
-object ExtractSoulMenuCommand : AbstractCommand() {
+object FirFixTableMenuCommand: AbstractCommand() {
 
-    private const val PERMISSION = "firenchant.command.openmenu.extract-soul"
-    private const val PERMISSION_OTHER = "firenchant.command.openmenu.extract-soul.other"
+    private const val PERMISSION = "firenchant.command.openmenu.fix-table"
+    private const val PERMISSION_OTHER = "firenchant.command.openmenu.fix-table.other"
 
     override fun create(): LiteralArgumentBuilder<CommandSourceStack> {
-        return Commands.literal("extract-soul")
+        return Commands.literal("fix-table")
             .requires { requires(it) }
             .executes { execute(it) }
             .then(Commands.argument("player", ArgumentTypes.player())
@@ -39,7 +39,7 @@ object ExtractSoulMenuCommand : AbstractCommand() {
 
     override fun execute(context: CommandContext<CommandSourceStack>): Int {
         // 功能未开启或配置文件存在异常
-        if (!ExtractSoulConfig.instance.ENABLE) {
+        if (!FixTableConfig.instance.ENABLE) {
             context.source.sender.sendTranslatableComponent(PLUGIN_FUNCTION_NOT_ENABLED, "extract-soul")
             return Command.SINGLE_SUCCESS
         }
@@ -52,8 +52,9 @@ object ExtractSoulMenuCommand : AbstractCommand() {
             return Command.SINGLE_SUCCESS
         }
 
-        FirExtractSoulMenu(player).openMenu(mutableMapOf(), true)
+        FirFixTableMenu(player).openMenu(mutableMapOf(), true)
         return Command.SINGLE_SUCCESS
     }
+
 
 }

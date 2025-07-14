@@ -3,12 +3,95 @@
 
 # 是否启用物品破损功能, 当物品在铁砧附魔失败时, 物品会转成破损状态.
 # 破损后的物品需要在修复工作台上进行修复;
-#
 enable: true
 
+# 菜单设置
+menu-setting:
+  # 菜单标题, 当没有放入可修复物品/放入了可修复物品时展示不同的标题
+  title-deny: "<white><shift:-8><image:minecraft:soul_decompose>"
+  title-accept: "<white><shift:-8><image:minecraft:soul_decompose>"
+  # 菜单结构
+  structure:
+    - "X # # # # # # # ?"
+    - "# # # # I # # # #"
+    - "# # # C C C # # #"
+    - "# P O O O O O N #"
+  # 放入破损物品的槽位
+  input-slot: 'I'
+  # 输出队列槽位
+  output-array:
+    slot: 'O'
+    # 队列最大长度
+    array-max-size: 10
+    # 队列物品不断刷新的时间
+    update-time: 20
+    # 附加在队列物品上的Lore
+    addition-lore:
+      - " "
+      - "&7该装备还需要花费 §e{cost_time}秒 &7才能修复完成"
+      - "&7shift+左键: 取消修复"
+      - "&7shift+右键: 花费 xx金币 和 xx等级 快速修复."
+  # 确认修复按钮
+  # 当放入可修复物品在菜单时, 按钮亮起时显示的内容
+  fix-bottom:
+    slot: 'C'
+    hooked-plugin: "Vanilla"
+    hooked-id: PAPER
+    custom-model-data: 31001
+    item-name: "<yellow>确认修复"
+    lore:
+      - "§7你可以将破损的物品寄存进行免费修复，"
+      - "§7但是需要花费 §e{cost_time}秒 §7的时间。"
+      - "§7 "
+      - "<#a5acb8>→ 点击进行修复"
+  # 队列上一页
+  previous-page:
+    slot: 'P'
+    hooked-plugin: "Vanilla"
+    hooked-id: PAPER
+    item-name: "<red>上一页"
+  # 队列下一页
+  next-page:
+    slot: 'N'
+    hooked-plugin: "Vanilla"
+    hooked-id: PAPER
+    item-name: "<red>下一页"
+  # 其他自定义槽位, 请勿和上方的槽位冲突
+  custom-items:
+    'X':
+      hooked-plugin: "Vanilla"
+      hooked-id: LEATHER_HORSE_ARMOR
+      item-name: "<red>关闭"
+      lore: []
+      amount: 1
+      durability: 1
+      custom-model-data: 31001
+      item-model: "minecraft:item/paper"
+      click-actions:
+        - type: send_message    # 发送消息
+          content: "我草666"
+        - type: play_sound      # 点击音效
+          sound: "ui.button.click"
+        - type: close_inventory # 关闭菜单
+          conditions:
+            - type: "permission"
+              permission: "admin"
+    '?':
+      hooked-plugin: "Vanilla"
+      hooked-id: PAPER
+      item-name: "<yellow>提示"
+      lore:
+        - "§7您可以把损坏的物品放入槽位内，然后选择修复方式。"
+      amount: 1
+      item-model: "minecraft:apple"
+      click-actions:
+        - type: play_sound      # 点击音效
+          sound: "ui.button.click"
+
+
 # 物品破损后, 物品的模型会发生变更.你需要指定物品破损之后的模型应该长什么样.
-# 为了一定的兼容性, 插件选择了物品破损时将原物品进行序列化, 存入wrapper物品内. 这么做的好处是可以让大部分的"被动"属性失效;
-# 然后会将原物品的 Name 和 Lore 进行转移包装.
+# 为了一定的兼容性, 插件选择了物品破损时将原物品进行序列化, 存入wrapper物品内, 然后将原物品的 Name 和 Lore 转移到Wrapper物品上.
+# 这么做的好处是可以让大部分的"被动"属性失效, 但是部分通过发包附加的lore无法转移.
 broken-item-model:
   # 当物品没有被下面的规则捕捉到时, 总需要一个包装.
   fallback-item:

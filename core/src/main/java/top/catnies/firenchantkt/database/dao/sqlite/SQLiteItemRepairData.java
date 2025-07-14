@@ -49,7 +49,7 @@ public class SQLiteItemRepairData extends AbstractDao<ItemRepairData, Integer> i
     }
 
     @Override
-    public void markAsCompleted(int id) {
+    public void markAsReceived(int id) {
 
     }
 
@@ -74,6 +74,11 @@ public class SQLiteItemRepairData extends AbstractDao<ItemRepairData, Integer> i
     }
 
     @Override
+    public List<ItemRepairTable> getAllActiveAndCompletedList() {
+        return List.of();
+    }
+
+    @Override
     public List<ItemRepairTable> getByPlayer(UUID playerId) {
         return List.of();
     }
@@ -90,6 +95,11 @@ public class SQLiteItemRepairData extends AbstractDao<ItemRepairData, Integer> i
 
     @Override
     public List<ItemRepairTable> getByPlayerReceived(UUID playerId) {
+        return List.of();
+    }
+
+    @Override
+    public List<ItemRepairTable> getAllActiveAndCompletedList(UUID playerId) {
         return List.of();
     }
 }
