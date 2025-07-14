@@ -32,8 +32,12 @@ public class SQLiteItemRepairData extends AbstractDao<ItemRepairData, Integer> i
 
     private void createTable() {
         try {
-            TableUtils.createTable(FirConnectionManager.getInstance().getConnectionSource(), ItemRepairTable.class);
+            TableUtils.createTableIfNotExists(FirConnectionManager.getInstance().getConnectionSource(), ItemRepairTable.class);
         } catch (SQLException e) {
+            // ORMLite 中如果表存在还是会重复创建 index 索引,所以需要忽略这个报错
+            if (e.getCause() != null && e.getCause().toString().contains("Duplicate key name")) {
+                return;
+            }
             MessageUtils.INSTANCE.sendTranslatableComponent(Bukkit.getConsoleSender(), DATABASE_TABLE_CREATE_ERROR, ItemRepairTable.class.getSimpleName());
             e.printStackTrace();
             Bukkit.getPluginManager().disablePlugin(FirEnchantPlugin.getInstance());
