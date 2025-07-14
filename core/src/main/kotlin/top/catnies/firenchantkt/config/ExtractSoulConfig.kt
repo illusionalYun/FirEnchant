@@ -2,24 +2,22 @@ package top.catnies.firenchantkt.config
 
 import org.bukkit.Bukkit
 import org.bukkit.inventory.ItemStack
-import top.catnies.firenchantkt.api.FirEnchantAPI
 import top.catnies.firenchantkt.engine.ConfigActionTemplate
-import top.catnies.firenchantkt.language.MessageConstants.RESOURCE_HOOK_ITEM_NOT_FOUND
-import top.catnies.firenchantkt.language.MessageConstants.RESOURCE_HOOK_ITEM_PROVIDER_NOT_FOUND
 import top.catnies.firenchantkt.language.MessageConstants.RESOURCE_MENU_STRUCTURE_ERROR
 import top.catnies.firenchantkt.util.ConfigParser
 import top.catnies.firenchantkt.util.ItemUtils.nullOrAir
 import top.catnies.firenchantkt.util.MessageUtils.sendTranslatableComponent
+import top.catnies.firenchantkt.util.YamlUtils
 import top.catnies.firenchantkt.util.YamlUtils.getConfigurationSectionList
 import xyz.xenondevs.invui.gui.structure.Structure
 
-class ExtractSoulSetting private constructor():
+class ExtractSoulConfig private constructor():
     AbstractConfigFile("modules/extract_soul.yml")
 {
 
     companion object {
         @JvmStatic
-        val instance by lazy { ExtractSoulSetting().apply { loadConfig() } }
+        val instance by lazy { ExtractSoulConfig().apply { loadConfig() } }
     }
 
     val fallbackMenuStructure = arrayOf(
@@ -54,7 +52,10 @@ class ExtractSoulSetting private constructor():
             try { config().getStringList("menu-setting.structure").toTypedArray()
                 .also { Structure(*it); MENU_STRUCTURE_ARRAY = it } // 测试合法性然后再赋值
             } catch (exception: IllegalArgumentException) {
-                Bukkit.getConsoleSender().sendTranslatableComponent(RESOURCE_MENU_STRUCTURE_ERROR, fileName) }
+                Bukkit.getConsoleSender().sendTranslatableComponent(RESOURCE_MENU_STRUCTURE_ERROR, fileName)
+                ENABLE = false
+                return
+            }
             MENU_INPUT_SLOT = config().getString("menu-setting.input-slot", "I")?.first() ?: 'I'
             MENU_OUTPUT_SLOT = config().getString("menu-setting.output-slot", "O")?.first() ?: 'O'
         }
@@ -88,19 +89,8 @@ class ExtractSoulSetting private constructor():
             // 2. 构建结果物品
             MENU_RESULT_ITEM_PROVIDER = config().getString("extract-item.result-hooked-plugin", null)
             MENU_RESULT_ITEM_ID = config().getString("extract-item.result-hooked-id", null)
-            if (MENU_RESULT_ITEM_PROVIDER == null) {
-                Bukkit.getConsoleSender().sendTranslatableComponent(RESOURCE_HOOK_ITEM_PROVIDER_NOT_FOUND, fileName, "extract-item.result-hooked-plugin", MENU_RESULT_ITEM_PROVIDER ?: "null")
-                ENABLE = false
-                return
-            }
-            if (MENU_RESULT_ITEM_ID == null) {
-                Bukkit.getConsoleSender().sendTranslatableComponent(RESOURCE_HOOK_ITEM_NOT_FOUND, fileName, "extract-item.result-hooked-id", MENU_RESULT_ITEM_ID ?: "null")
-                ENABLE = false
-                return
-            }
-            MENU_RESULT_ITEM = FirEnchantAPI.itemProviderRegistry().getItemProvider(MENU_RESULT_ITEM_PROVIDER!!)?.getItemById(MENU_RESULT_ITEM_ID!!)
+            MENU_RESULT_ITEM = YamlUtils.tryBuildItem(MENU_RESULT_ITEM_PROVIDER, MENU_RESULT_ITEM_ID, fileName, "extract-item.result-hooked-plugin")
             if (MENU_RESULT_ITEM.nullOrAir()) {
-                Bukkit.getConsoleSender().sendTranslatableComponent(RESOURCE_HOOK_ITEM_NOT_FOUND, fileName, "extract-item.result-hooked-id", MENU_RESULT_ITEM_ID ?: "null")
                 ENABLE = false
                 return
             }
