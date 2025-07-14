@@ -9,6 +9,7 @@ object MessageConstants {
     const val COMMAND_VERSION_SUCCESS = "command.version.success"
     const val COMMAND_CONSOLE_CANT_EXECUTE = "command.console.cant_execute"
     const val COMMAND_DEBUG_GET_LOCATION_BOOK_SHELF_COUNT_EXECUTE = "command.debug.get_location_book_shelf_count.execute"
+    const val COMMAND_DEBUG_GET_PLAYER_ENCHANTMENT_SEED_EXECUTE = "command.debug.get_player_enchantment_seed.execute"
     const val COMMAND_GIVE_BOOK_ENCHANTMENT_NOT_FOUND = "command.give_book.enchantment.not_found"
     const val COMMAND_GIVE_BOOK_ENCHANTMENT_SUCCESS_RECEIVE = "command.give_book.enchantment.success.receive"
     const val COMMAND_GIVE_BOOK_ENCHANTMENT_SUCCESS_EXECUTE = "command.give_book.enchantment.success.execute"

@@ -11,6 +11,14 @@ import java.util.Map;
 import java.util.Set;
 
 public interface NMSHandler {
+
+    /**
+     * 获取玩家的附魔种子
+     * @param player 玩家
+     * @return 种子
+     */
+    int getPlayerEnchantmentSeed(Player player);
+
     /**
      * 获取附魔台书架数量
      *

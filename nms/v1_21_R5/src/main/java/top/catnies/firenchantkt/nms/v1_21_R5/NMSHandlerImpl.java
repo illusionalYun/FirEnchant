@@ -25,6 +25,13 @@ import top.catnies.firenchantkt.nms.NMSHandler;
 import java.util.*;
 
 public class NMSHandlerImpl implements NMSHandler {
+
+    @Override
+    public int getPlayerEnchantmentSeed(Player player) {
+        net.minecraft.world.entity.player.Player nmsPlayer = ((CraftPlayer) player).getHandle();
+        return nmsPlayer.enchantmentSeed;
+    }
+
     @Override
     public int getEnchantmentTableBookShelf(Location location) {
         net.minecraft.world.level.Level nmsWorld = ((CraftWorld) location.getWorld()).getHandle();

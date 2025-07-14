@@ -5,6 +5,7 @@ import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents
 import top.catnies.firenchantkt.FirEnchantPlugin
 import top.catnies.firenchantkt.command.debug.GetLocationBookShelfCountCommand
 import top.catnies.firenchantkt.command.debug.GetNextEnchantingTableResultCommand
+import top.catnies.firenchantkt.command.debug.GetPlayerEnchantmentSeedCommand
 import top.catnies.firenchantkt.command.openmenu.ExtractSoulMenuCommand
 
 class CommandManager private constructor() {
@@ -19,8 +20,6 @@ class CommandManager private constructor() {
     private fun load() {
         registerCommands()
     }
-
-    fun reload() {}
 
     // 注册命令
     private fun registerCommands() {
@@ -44,8 +43,9 @@ class CommandManager private constructor() {
         val debugRoot = Commands.literal("debug").requires {
             return@requires it.sender.hasPermission("firenchant.command.debug")
         }.apply {
-            then(GetLocationBookShelfCountCommand.create())
-            then(GetNextEnchantingTableResultCommand.create())
+            then(GetLocationBookShelfCountCommand.create()) // 获取附近书架数量
+            then(GetNextEnchantingTableResultCommand.create()) // 预测附魔台结果
+            then(GetPlayerEnchantmentSeedCommand.create()) // 获取玩家附魔种子
         }.also { root.then(it) }
 
         // 注册命令到服务器
