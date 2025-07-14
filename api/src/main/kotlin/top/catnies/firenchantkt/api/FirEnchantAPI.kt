@@ -14,7 +14,6 @@ import top.catnies.firenchantkt.engine.ActionRegistry
 import top.catnies.firenchantkt.integration.ItemProviderRegistry
 import top.catnies.firenchantkt.item.AnvilItemRegistry
 import top.catnies.firenchantkt.item.EnchantingTableItemRegistry
-import top.catnies.firenchantkt.item.FixTableItemRegistry
 import top.catnies.firenchantkt.item.anvil.PowerRune
 import top.catnies.firenchantkt.item.anvil.ProtectionRune
 import top.catnies.firenchantkt.item.fixtable.BrokenGear
@@ -114,15 +113,15 @@ object FirEnchantAPI {
      */
     @NotNull
     fun isBrokenGear(item: ItemStack): Boolean {
-        val brokenGear = ServiceContainer.get(FixTableItemRegistry::class.java).getItem(BrokenGear::class.java) ?: throw IllegalStateException("BrokenGear is not registered.")
+        val brokenGear = ServiceContainer.get(BrokenGear::class.java)
         return brokenGear.isBrokenGear(item)
     }
     fun toBrokenGear(item: ItemStack): ItemStack? {
-        val brokenGear = ServiceContainer.get(FixTableItemRegistry::class.java).getItem(BrokenGear::class.java) ?: throw IllegalStateException("BrokenGear is not registered.")
+        val brokenGear = ServiceContainer.get(BrokenGear::class.java)
         return brokenGear.toBrokenGear(item)
     }
     fun repairBrokenGear(item: ItemStack): ItemStack? {
-        val brokenGear = ServiceContainer.get(FixTableItemRegistry::class.java).getItem(BrokenGear::class.java) ?: throw IllegalStateException("BrokenGear is not registered.")
+        val brokenGear = ServiceContainer.get(BrokenGear::class.java)
         if (!brokenGear.isBrokenGear(item)) return item
         return brokenGear.repairBrokenGear(item)
     }

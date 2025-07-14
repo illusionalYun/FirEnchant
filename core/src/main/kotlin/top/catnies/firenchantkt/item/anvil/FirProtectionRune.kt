@@ -11,11 +11,9 @@ import top.catnies.firenchantkt.api.event.anvil.ProtectionRunePreUseEvent
 import top.catnies.firenchantkt.api.event.anvil.ProtectionRuneUseEvent
 import top.catnies.firenchantkt.config.AnvilConfig
 import top.catnies.firenchantkt.context.AnvilContext
-import top.catnies.firenchantkt.integration.FirItemProviderRegistry
 import top.catnies.firenchantkt.integration.ItemProvider
-import top.catnies.firenchantkt.language.MessageConstants.RESOURCE_HOOK_ITEM_NOT_FOUND
-import top.catnies.firenchantkt.language.MessageConstants.RESOURCE_HOOK_ITEM_PROVIDER_NOT_FOUND
-import top.catnies.firenchantkt.util.MessageUtils.sendTranslatableComponent
+import top.catnies.firenchantkt.util.ItemUtils.nullOrAir
+import top.catnies.firenchantkt.util.YamlUtils
 
 class FirProtectionRune(): ProtectionRune {
 
@@ -37,22 +35,13 @@ class FirProtectionRune(): ProtectionRune {
     override fun load() {
         isEnabled = config.PROTECTION_RUNE_ENABLE
         if (isEnabled) {
-            itemProvider = config.PROTECTION_RUNE_ITEM_PROVIDER?.let { FirItemProviderRegistry.instance.getItemProvider(it) }
-            if (itemProvider == null) {
-                Bukkit.getConsoleSender()
-                    .sendTranslatableComponent(RESOURCE_HOOK_ITEM_PROVIDER_NOT_FOUND, config.fileName, "protection-rune", config.PROTECTION_RUNE_ITEM_PROVIDER ?: "null")
-                isEnabled = false
-                return
-            }
-
-            itemID = config.PROTECTION_RUNE_ITEM_ID
-            val item = itemID?.let { itemProvider?.getItemById(it) }
-            if (item == null) {
-                Bukkit.getConsoleSender()
-                    .sendTranslatableComponent(RESOURCE_HOOK_ITEM_NOT_FOUND, config.fileName, "protection-rune", itemID ?: "null")
-                isEnabled = false
-                return
-            }
+            val buildItem = YamlUtils.tryBuildItem(
+                config.PROTECTION_RUNE_ITEM_PROVIDER,
+                config.PROTECTION_RUNE_ITEM_ID,
+                config.fileName,
+                "protection-rune"
+            )
+            if (buildItem.nullOrAir()) isEnabled = false
         }
     }
 

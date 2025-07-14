@@ -10,7 +10,7 @@ import io.papermc.paper.command.brigadier.argument.resolvers.selector.PlayerSele
 import org.bukkit.entity.Player
 import top.catnies.firenchantkt.command.AbstractCommand
 import top.catnies.firenchantkt.command.VersionCommand
-import top.catnies.firenchantkt.config.ExtractSoulSetting
+import top.catnies.firenchantkt.config.ExtractSoulConfig
 import top.catnies.firenchantkt.gui.FirExtractSoulMenu
 import top.catnies.firenchantkt.language.MessageConstants.COMMAND_CONSOLE_CANT_EXECUTE
 import top.catnies.firenchantkt.language.MessageConstants.PLUGIN_FUNCTION_NOT_ENABLED
@@ -40,7 +40,7 @@ object ExtractSoulMenuCommand : AbstractCommand() {
 
     override fun execute(context: CommandContext<CommandSourceStack>): Int {
         // 功能未开启或配置文件存在异常
-        if (!ExtractSoulSetting.instance.ENABLE) {
+        if (!ExtractSoulConfig.instance.ENABLE) {
             context.source.sender.sendTranslatableComponent(PLUGIN_FUNCTION_NOT_ENABLED, "extract-soul")
             return Command.SINGLE_SUCCESS
         }

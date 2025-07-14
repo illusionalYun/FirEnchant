@@ -1,9 +1,8 @@
 package top.catnies.firenchantkt.item.fixtable
 
 import org.bukkit.inventory.ItemStack
-import top.catnies.firenchantkt.item.FixTableApplicable
 
-interface BrokenGear: FixTableApplicable {
+interface BrokenGear {
 
     /**
      * 检查物品是否是一件破损的装备物品.
@@ -13,13 +12,15 @@ interface BrokenGear: FixTableApplicable {
 
     /**
      * 将一件装备变成破损的形式.
+     * 如果不支持变化, 最后会返回 NULL;
      */
-    fun toBrokenGear(item: ItemStack): ItemStack
+    fun toBrokenGear(item: ItemStack): ItemStack?
 
 
     /**
      * 修复一件破损的装备.
+     * 如果不支持变化, 最后会返回 NULL;
      */
-    fun repairBrokenGear(item: ItemStack): ItemStack
+    fun repairBrokenGear(item: ItemStack): ItemStack?
 
 }

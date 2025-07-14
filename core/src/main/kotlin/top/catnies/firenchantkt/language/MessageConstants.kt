@@ -10,6 +10,10 @@ object MessageConstants {
     const val COMMAND_CONSOLE_CANT_EXECUTE = "command.console.cant_execute"
     const val COMMAND_DEBUG_GET_LOCATION_BOOK_SHELF_COUNT_EXECUTE = "command.debug.get_location_book_shelf_count.execute"
     const val COMMAND_DEBUG_GET_PLAYER_ENCHANTMENT_SEED_EXECUTE = "command.debug.get_player_enchantment_seed.execute"
+    const val COMMAND_BROKEN_GEAR_BREAK_MAIN_HAND_SUCCESS = "command.broken_gear.break_main_hand.success"
+    const val COMMAND_BROKEN_GEAR_BREAK_MAIN_HAND_FAIL = "command.broken_gear.break_main_hand.fail"
+    const val COMMAND_BROKEN_GEAR_FIX_MAIN_HAND_SUCCESS = "command.broken_gear.fix_main_hand.success"
+    const val COMMAND_BROKEN_GEAR_FIX_MAIN_HAND_FAIL = "command.broken_gear.fix_main_hand.fail"
     const val COMMAND_GIVE_BOOK_ENCHANTMENT_NOT_FOUND = "command.give_book.enchantment.not_found"
     const val COMMAND_GIVE_BOOK_ENCHANTMENT_SUCCESS_RECEIVE = "command.give_book.enchantment.success.receive"
     const val COMMAND_GIVE_BOOK_ENCHANTMENT_SUCCESS_EXECUTE = "command.give_book.enchantment.success.execute"
@@ -32,5 +36,6 @@ object MessageConstants {
     const val CONFIG_CONDITION_RUNTIME_ARGS_CAST_FAIL = "config.condition.runtime.args.cast_fail"
 
     const val ANVIL_ENCHANTED_BOOK_USE_FAIL = "anvil.enchanted.book.use.fail"
+    const val ANVIL_ENCHANTED_BOOK_USE_FAIL_BREAK = "anvil.enchanted.book.use.fail.break"
     const val ANVIL_ENCHANTED_BOOK_USE_PROTECT_FAIL = "anvil.enchanted.book.use.protect.fail"
 }

@@ -10,7 +10,8 @@ class ConfigManager private constructor() {
     private val configs = listOf(
         SettingsConfig.instance,
         AnvilConfig.instance,
-        ExtractSoulSetting.instance
+        ExtractSoulConfig.instance,
+        FixTableConfig.instance
     )
 
     // 重载所有配置

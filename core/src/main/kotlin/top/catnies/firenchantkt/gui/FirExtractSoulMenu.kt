@@ -6,7 +6,7 @@ import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 import top.catnies.firenchantkt.FirEnchantPlugin
 import top.catnies.firenchantkt.api.event.extractsoul.ExtractSoulEvent
-import top.catnies.firenchantkt.config.ExtractSoulSetting
+import top.catnies.firenchantkt.config.ExtractSoulConfig
 import top.catnies.firenchantkt.enchantment.FirEnchantmentSettingFactory
 import top.catnies.firenchantkt.engine.RunSource
 import top.catnies.firenchantkt.util.ItemUtils.nullOrAir
@@ -27,7 +27,7 @@ class FirExtractSoulMenu(
 
     companion object {
         val plugin = FirEnchantPlugin.instance
-        val config = ExtractSoulSetting.instance
+        val config = ExtractSoulConfig.instance
     }
 
     val title = config.MENU_TITLE

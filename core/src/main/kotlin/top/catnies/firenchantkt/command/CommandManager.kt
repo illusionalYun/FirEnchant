@@ -3,6 +3,8 @@ package top.catnies.firenchantkt.command
 import io.papermc.paper.command.brigadier.Commands
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents
 import top.catnies.firenchantkt.FirEnchantPlugin
+import top.catnies.firenchantkt.command.brokenitem.BreakMainHandItemCommand
+import top.catnies.firenchantkt.command.brokenitem.FixMainHandItemCommand
 import top.catnies.firenchantkt.command.debug.GetLocationBookShelfCountCommand
 import top.catnies.firenchantkt.command.debug.GetNextEnchantingTableResultCommand
 import top.catnies.firenchantkt.command.debug.GetPlayerEnchantmentSeedCommand
@@ -37,6 +39,14 @@ class CommandManager private constructor() {
             return@requires it.sender.hasPermission("firenchant.command.openmenu")
         }.apply {
             then(ExtractSoulMenuCommand.create()) // 灵魂提取菜单
+        }.also { root.then(it) }
+
+        // 破损物品命令
+        val brokenRoot = Commands.literal("brokengear").requires {
+            return@requires it.sender.hasPermission("firenchant.command.brokengear")
+        }.apply {
+            then(BreakMainHandItemCommand.create()) // 破坏主手物品
+            then(FixMainHandItemCommand.create()) // 修复主手物品
         }.also { root.then(it) }
 
         // Debug命令

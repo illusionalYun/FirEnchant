@@ -1,2 +1,109 @@
 # 这个文件主要负责配置将插件附魔书转换成魔咒之魂的功能。
 # 如果您发现了任何Bug/需要寻求帮助，您可以在我们的售后群联系 “那谁QQ1286071831” 进行反馈处理;
+
+# 是否启用物品破损功能, 当物品在铁砧附魔失败时, 物品会转成破损状态.
+# 破损后的物品需要在修复工作台上进行修复;
+#
+enable: true
+
+# 物品破损后, 物品的模型会发生变更.你需要指定物品破损之后的模型应该长什么样.
+# 为了一定的兼容性, 插件选择了物品破损时将原物品进行序列化, 存入wrapper物品内. 这么做的好处是可以让大部分的"被动"属性失效;
+# 然后会将原物品的 Name 和 Lore 进行转移包装.
+broken-item-model:
+  # 当物品没有被下面的规则捕捉到时, 总需要一个包装.
+  fallback-item:
+    hooked-plugin: "CraftEngine"
+    hooked-id: "enchantment:broken_sword"
+  # 这里会按照物品的ID进行捕捉, 找到第一个符合条件的模型设置. 所以如果有需要特殊指定破损状态的物品, 请将其写的尽可能靠前.
+  matches:
+    - match-item:   # 捕捉到的物品ID
+        - "CraftEngine|default:topaz_sword" # 捕捉CE的物品.
+        - "iron_sword"  # 捕捉原版的物品
+      wrapper-item:
+        hooked-plugin: "CraftEngine"
+        hooked-id: "enchantment:broken_sword"
+    - match-item:
+        - "iron_pickaxe"
+      wrapper-item:
+        hooked-plugin: "CraftEngine"
+        hooked-id: "enchantment:broken_sword"
+    - match-item:
+        - "iron_axe"
+      wrapper-item:
+        hooked-plugin: "CraftEngine"
+        hooked-id: "enchantment:broken_axe"
+    - match-item:
+        - "iron_shovel"
+      wrapper-item:
+        hooked-plugin: "CraftEngine"
+        hooked-id: "enchantment:broken_shovel"
+    - match-item:
+        - "iron_hoe"
+      wrapper-item:
+        hooked-plugin: "CraftEngine"
+        hooked-id: "enchantment:broken_hoe"
+    - match-item:
+        - "iron_helmet"
+      wrapper-item:
+        hooked-plugin: "CraftEngine"
+        hooked-id: "enchantment:broken_helmet"
+    - match-item:
+        - "iron_chestplate"
+      wrapper-item:
+        hooked-plugin: "CraftEngine"
+        hooked-id: "enchantment:broken_chestplate"
+    - match-item:
+        - "iron_leggings"
+      wrapper-item:
+        hooked-plugin: "CraftEngine"
+        hooked-id: "enchantment:broken_leggings"
+    - match-item:
+        - "iron_boots"
+      wrapper-item:
+        hooked-plugin: "CraftEngine"
+        hooked-id: "enchantment:broken_boots"
+    - match-item:
+        - "bow"
+      wrapper-item:
+        hooked-plugin: "CraftEngine"
+        hooked-id: "enchantment:broken_bow"
+    - match-item:
+        - "crossbow"
+      wrapper-item:
+        hooked-plugin: "CraftEngine"
+        hooked-id: "enchantment:broken_crossbow"
+    - match-item:
+        - "shield"
+      wrapper-item:
+        hooked-plugin: "CraftEngine"
+        hooked-id: "enchantment:broken_shield"
+    - match-item:
+        - "elytra"
+      wrapper-item:
+        hooked-plugin: "CraftEngine"
+        hooked-id: "enchantment:broken_elytra"
+    - match-item:
+        - "trident"
+      wrapper-item:
+        hooked-plugin: "CraftEngine"
+        hooked-id: "enchantment:broken_trident"
+    - match-item:
+        - "fishing_rod"
+      wrapper-item:
+        hooked-plugin: "CraftEngine"
+        hooked-id: "enchantment:broken_fishing_rod"
+    - match-item:
+        - "carrot_on_a_stick"
+      wrapper-item:
+        hooked-plugin: "CraftEngine"
+        hooked-id: "enchantment:broken_fishing_rod"
+    - match-item:
+        - "brush"
+      wrapper-item:
+        hooked-plugin: "CraftEngine"
+        hooked-id: "enchantment:broken_brush"
+    - match-item:
+        - "mace"
+      wrapper-item:
+        hooked-plugin: "CraftEngine"
+        hooked-id: "enchantment:broken_mace"

@@ -21,6 +21,9 @@ class AnvilConfig private constructor():
     var EB_FAILURE_CORRECTION_MINMAX_MIN: Int by ConfigProperty(15)               // 低于此失败率的附魔书将必定成功
     var EB_FAILURE_CORRECTION_MINMAX_MAX: Int by ConfigProperty(90)               // 高于此失败率的附魔书将必定失败
     var EB_FAILURE_CORRECTION_HISTORY_ENABLE: Boolean by ConfigProperty(false)    // 附魔书的成功/失败历史记录功能
+    var EB_FAIL_BACK_ENABLE: Boolean by ConfigProperty(false)           // 使用附魔书失败时是否给予补偿物品
+    var EB_FAIL_BACK_ITEM_PROVIDER: String? by ConfigProperty(null)     // 使用附魔书失败时给予补偿物品的提供者
+    var EB_FAIL_BACK_ITEM_ID: String? by ConfigProperty(null)           // 使用附魔书失败时给予补偿物品的ID
     var EB_MERGE_FAILURE_INHERITANCE: String by ConfigProperty("DEFAULT")   // 当两本附魔书合并的结果附魔书的失败率处理模式
     var EB_MERGE_EXP_COST_MODE: String by ConfigProperty("FIXED")           // 经验值消耗模式
     var EB_MERGE_EXP_FIXED_VALUE: Int by ConfigProperty(18)                 // 固定模式的值
@@ -63,6 +66,11 @@ class AnvilConfig private constructor():
         EB_FAILURE_CORRECTION_MINMAX_MIN = config().getInt("enchanted-book.failure-correction.min-max-limit.min-success", 15)
         EB_FAILURE_CORRECTION_MINMAX_MAX = config().getInt("enchanted-book.failure-correction.min-max-limit.max-failure", 90)
         EB_FAILURE_CORRECTION_HISTORY_ENABLE = config().getBoolean("enchanted-book.failure-correction.history-compensation.enable", false)
+        EB_FAIL_BACK_ENABLE = config().getBoolean("enchanted-book.use-enchanted-book.fail-back-item.enable", false)
+        if (EB_FAIL_BACK_ENABLE) {
+            EB_FAIL_BACK_ITEM_PROVIDER = config().getString("enchanted-book.use-enchanted-book.fail-back-item.hooked-plugin", null)
+            EB_FAIL_BACK_ITEM_ID = config().getString("enchanted-book.use-enchanted-book.fail-back-item.hooked-id", null)
+        }
         EB_MERGE_FAILURE_INHERITANCE = config().getString("enchanted-book.use-enchanted-book.failure-inheritance", "DEFAULT")!!
         EB_MERGE_EXP_COST_MODE = config().getString("enchanted-book.use-enchanted-book.exp.cost-mode", "FIXED")!!
         EB_MERGE_EXP_FIXED_VALUE = config().getInt("enchanted-book.use-enchanted-book.exp.fixed-value", 18)

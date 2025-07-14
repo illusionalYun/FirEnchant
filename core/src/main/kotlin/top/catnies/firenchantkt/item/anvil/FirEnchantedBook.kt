@@ -1,10 +1,7 @@
 package top.catnies.firenchantkt.item.anvil
 
 import io.papermc.paper.datacomponent.DataComponentTypes
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import org.bukkit.Bukkit
-import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.inventory.PrepareAnvilEvent
@@ -17,17 +14,21 @@ import top.catnies.firenchantkt.api.event.anvil.EnchantedBookPreMergeEvent
 import top.catnies.firenchantkt.api.event.anvil.EnchantedBookPreUseEvent
 import top.catnies.firenchantkt.api.event.anvil.EnchantedBookUseEvent
 import top.catnies.firenchantkt.config.AnvilConfig
+import top.catnies.firenchantkt.config.FixTableConfig
 import top.catnies.firenchantkt.context.AnvilContext
 import top.catnies.firenchantkt.database.FirConnectionManager
 import top.catnies.firenchantkt.database.entity.EnchantLogDataTable
 import top.catnies.firenchantkt.enchantment.EnchantmentSetting
 import top.catnies.firenchantkt.enchantment.FirEnchantmentSettingFactory
 import top.catnies.firenchantkt.language.MessageConstants.ANVIL_ENCHANTED_BOOK_USE_FAIL
+import top.catnies.firenchantkt.language.MessageConstants.ANVIL_ENCHANTED_BOOK_USE_FAIL_BREAK
 import top.catnies.firenchantkt.language.MessageConstants.ANVIL_ENCHANTED_BOOK_USE_PROTECT_FAIL
 import top.catnies.firenchantkt.util.ItemUtils.addRepairCost
 import top.catnies.firenchantkt.util.ItemUtils.isCompatibleWithEnchantment
+import top.catnies.firenchantkt.util.ItemUtils.nullOrAir
 import top.catnies.firenchantkt.util.MessageUtils.sendTranslatableComponent
 import top.catnies.firenchantkt.util.TaskUtils
+import top.catnies.firenchantkt.util.YamlUtils
 import kotlin.math.max
 import kotlin.math.min
 
@@ -40,6 +41,29 @@ class FirEnchantedBook : EnchantedBook {
     }
 
     val database = FirConnectionManager.getInstance().enchantLogData
+    var failBackEnable: Boolean = false
+    var failBackItem: ItemStack? = null
+
+
+    init {
+        load()
+    }
+
+    // 检查部分配置
+    override fun load() {
+        failBackEnable = config.EB_FAIL_BACK_ENABLE
+        if (failBackEnable) {
+            failBackItem = YamlUtils.tryBuildItem(
+                config.EB_FAIL_BACK_ITEM_PROVIDER,
+                config.EB_FAIL_BACK_ITEM_ID,
+                config.fileName,
+                "fail-back-item"
+            )
+            if (failBackItem.nullOrAir()) failBackEnable = false
+        }
+    }
+
+    override fun reload() = load()
 
     override fun matches(itemStack: ItemStack): Boolean {
         FirEnchantmentSettingFactory.fromItemStack(itemStack) ?: return false
@@ -164,18 +188,20 @@ class FirEnchantedBook : EnchantedBook {
                 // 检查保护符文功能是否开启, 物品有没有保护符文
                 if (FirEnchantAPI.hasProtectionRune(context.firstItem)) {
                     FirEnchantAPI.removeProtectionRune(context.firstItem)
-                    anvilView.setItem(0, context.firstItem)
-                    anvilView.setCursor(ItemStack(Material.SOUL_SAND))
+                    failBackItem?.let { anvilView.setCursor(it) }
                     context.viewer.playSound(context.viewer.location, "block.anvil.destroy", 1f, 1f)
                     context.viewer.sendTranslatableComponent(ANVIL_ENCHANTED_BOOK_USE_PROTECT_FAIL)
                 }
 
                 // 没有保护符文
                 else {
-                    anvilView.setItem(0, FirEnchantAPI.toBrokenGear(context.firstItem))
-                    anvilView.setCursor(ItemStack(Material.SAND))
+                    if (FixTableConfig.instance.ENABLE) {
+                        anvilView.setItem(0, FirEnchantAPI.toBrokenGear(context.firstItem))
+                        context.viewer.sendTranslatableComponent(ANVIL_ENCHANTED_BOOK_USE_FAIL_BREAK)
+                    } else context.viewer.sendTranslatableComponent(ANVIL_ENCHANTED_BOOK_USE_FAIL)
+
+                    failBackItem?.let { anvilView.setCursor(it) }
                     context.viewer.playSound(context.viewer.location, "block.anvil.destroy", 1f, 1f)
-                    context.viewer.sendTranslatableComponent(ANVIL_ENCHANTED_BOOK_USE_FAIL)
                 }
             }
         }
@@ -214,7 +240,7 @@ class FirEnchantedBook : EnchantedBook {
 
     // 根据失败率判断是否成功
     private fun isSuccess(player: Player, enchantment: String, level: Int, baseFailure: Int): Boolean {
-        return true
+//        return true
 //        val manager = FirEnchantAPI.playerEnchantLogDataManager()
 //
 //        // 1. 获取玩家历史记录（最近20次）
@@ -229,11 +255,11 @@ class FirEnchantedBook : EnchantedBook {
 //            consecutiveFails >= 3 -> baseFailure + 20  // 补偿：连续3次失败后中等提升
 //            else -> baseFailure
 //        }.coerceAtMost(95)  // 上限95%避免必成
-//
-//        // 4. 概率判定
-//        val random = (0..100).random()
-//        val success = random < actualFailure
-//
+
+        // 4. 概率判定
+        val random = (0..100).random()
+        val success = random > baseFailure
+
 //        // 5. 记录日志
 //        val log = EnchantLogDataTable().apply {
 //            this.player = player.uniqueId
@@ -245,7 +271,7 @@ class FirEnchantedBook : EnchantedBook {
 //            this.actualFailure = actualFailure
 //        }
 //        manager.update(log, true)
-//
-//        return success
+
+        return success
     }
 }

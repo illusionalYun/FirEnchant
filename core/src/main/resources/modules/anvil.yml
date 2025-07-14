@@ -35,19 +35,12 @@ enchanted-book:
       history-compensation:
         enable: false
 
-    # 行为设置, 当玩家使用附魔书后, 有可能会成功/失败.
-    # 如果成功或者失败了,应该执行什么操作? 默认配置提供一个示例, 你可以在失败时返回给玩家一件钻石.
-    # 具体支持的所有操作列表和条件列表, 请访问WIKI文档查看.
-    behaviors:
-      success: []
-      failed:
-        - type: set_cursor  # 设置光标物品
-          hooked_plugin: vanilla
-          hooked_id: DIAMOND
-          condition:            # 你还可以设置各种条件.
-            - type: permission  # 具有一定权限时
-              permission: game.op
-            - type: hasProtectionRune # 装备上有保护符文时
+    # 行为设置, 当玩家使用附魔书后, 有可能会失败.
+    # 如果失败了, 你可以选择给予玩家一个物品作为补偿.
+    fail-back-item:
+      enable: true
+      hooked-plugin: "CraftEngine"
+      hooked-id: "enchantment:ashes_o_enchantment"
 
   # 相同附魔书合并
   merge-enchanted-book:
