@@ -90,7 +90,7 @@ tasks {
         dependsOn(":nms:v1_21_R5:reobfJar")
         mergeServiceFiles()
 
-        manifest.attributes("paperweight-mappings-namespace" to "spigot")
+        manifest.attributes("paperweight-mappings-namespace" to "mojang")
 
         archiveFileName.set("${project.name}-${project.version}.jar")
         destinationDirectory.set(file("$rootDir/target"))
