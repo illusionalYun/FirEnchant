@@ -1,11 +1,14 @@
 package top.catnies.firenchantkt.nms.v1_21_R2;
 
+import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.tags.EnchantmentTags;
+import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
+import net.minecraft.util.random.WeightedRandom;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.EnchantmentInstance;
@@ -23,6 +26,8 @@ import org.bukkit.inventory.ItemStack;
 import top.catnies.firenchantkt.nms.NMSHandler;
 
 import java.util.*;
+
+import static net.minecraft.world.item.enchantment.EnchantmentHelper.filterCompatibleEnchantments;
 
 public class NMSHandlerImpl implements NMSHandler {
 
@@ -67,6 +72,104 @@ public class NMSHandlerImpl implements NMSHandler {
         }
 
         return enchantmentList;
+    }
+
+    @Override
+    public List<Map<Enchantment, Integer>> getPlayerNextEnchantmentTableResultByItemStack(Player player, int bookShelfCount, ItemStack itemStack) {
+        net.minecraft.world.entity.player.Player nmsPlayer = ((CraftPlayer) player).getHandle();
+        net.minecraft.world.item.ItemStack nmsItem = CraftItemStack.asNMSCopy(itemStack);
+
+        RandomSource random = RandomSource.create(nmsPlayer.enchantmentSeed);
+
+        int[] costs = new int[3];
+        for (int slot = 0; slot < 3; slot++) {
+            costs[slot] = this.getEnchantmentCost(random, slot, bookShelfCount);
+            if (costs[slot] < slot + 1) {
+                costs[slot] = 0;
+            }
+        }
+
+        List<Map<Enchantment, Integer>> results = new ArrayList<>();
+        for (int slot = 0; slot < costs.length; slot++) {
+            int cost = costs[slot];
+
+            Set<Enchantment> enchantmentList = getEnchantmentTableEnchantmentList(player.getWorld());
+            List<EnchantmentInstance> enchantmentInstanceList = this.getEnchantmentList(nmsPlayer.enchantmentSeed, nmsItem, slot, cost, enchantmentList);
+            if (enchantmentInstanceList.isEmpty()) continue;
+
+            EnchantmentInstance enchantmentInstance = enchantmentInstanceList.get(random.nextInt(enchantmentInstanceList.size()));
+
+            Map<Enchantment, Integer> optionMap = new HashMap<>();
+            Enchantment enchant = CraftEnchantment.minecraftHolderToBukkit(enchantmentInstance.enchantment);
+            optionMap.put(enchant, enchantmentInstance.level);
+
+            results.add(optionMap);
+        }
+
+        return results;
+    }
+
+    @Override
+    public List<Map<Enchantment, Integer>> getPlayerNextEnchantmentTableResultByEnchantmentList(Player player, int bookShelfCount, int enchantable, Set<Enchantment> enchantmentList) {
+        net.minecraft.world.entity.player.Player nmsPlayer = ((CraftPlayer) player).getHandle();
+        RandomSource random = RandomSource.create(nmsPlayer.enchantmentSeed);
+
+        int[] costs = new int[3];
+        for (int slot = 0; slot < 3; slot++) {
+            costs[slot] = this.getEnchantmentCost(random, slot, bookShelfCount);
+            if (costs[slot] < slot + 1) {
+                costs[slot] = 0;
+            }
+        }
+
+        List<Map<org.bukkit.enchantments.Enchantment, Integer>> results = new ArrayList<>();
+        for (int slot = 0; slot < costs.length; slot++) {
+            int cost = costs[slot];
+
+            List<EnchantmentInstance> resultList = new ArrayList<>(); // 结果集合
+
+            // 迷之计算, 见 `net.minecraft.world.item.enchantment.EnchantmentHelper` 行 `536` .
+            int level = cost;
+            level += 1 + random.nextInt(enchantable / 4 + 1) + random.nextInt(enchantable / 4 + 1);
+            float f = (random.nextFloat() + random.nextFloat() - 1.0F) * 0.15F;
+            level = Mth.clamp(Math.round(level + level * f), 1, Integer.MAX_VALUE);
+
+            List<EnchantmentInstance> tempList = new ArrayList<>(); // 临时集合
+            for (Holder<net.minecraft.world.item.enchantment.Enchantment> holder : enchantmentList.stream().map(CraftEnchantment::bukkitToMinecraftHolder).toList()) {
+                net.minecraft.world.item.enchantment.Enchantment enchantment = holder.value();
+
+                // 计算出具体的附魔, 见 `net.minecraft.world.item.enchantment.EnchantmentHelper` 行 `581` .
+                for (int level1 = enchantment.getMaxLevel(); level1 >= enchantment.getMinLevel(); level1--) {
+                    if (level >= enchantment.getMinCost(level1) && level <= enchantment.getMaxCost(level1)) {
+                        tempList.add(new EnchantmentInstance(holder, level1));
+                        break;
+                    }
+                }
+            }
+
+            // 迷之计算, 见 `net.minecraft.world.item.enchantment.EnchantmentHelper` 行 `540` .
+            if (!tempList.isEmpty()) {
+                WeightedRandom.getRandomItem(random, tempList).ifPresent(resultList::add);
+
+                while (random.nextInt(50) <= level) {
+                    if (!resultList.isEmpty()) filterCompatibleEnchantments(tempList, Util.lastOf(resultList));
+                    if (tempList.isEmpty()) break;
+                    WeightedRandom.getRandomItem(random, tempList).ifPresent(resultList::add);
+                    level /= 2;
+                }
+            }
+
+            if (resultList.isEmpty()) continue;
+            EnchantmentInstance enchantmentInstance = resultList.get(random.nextInt(resultList.size()));
+
+            Map<org.bukkit.enchantments.Enchantment, Integer> optionMap = new HashMap<>();
+            org.bukkit.enchantments.Enchantment enchant = CraftEnchantment.minecraftHolderToBukkit(enchantmentInstance.enchantment);
+            optionMap.put(enchant, enchantmentInstance.level);
+
+            results.add(optionMap);
+        }
+
+        return results;
     }
 
     @Override

@@ -1,6 +1,8 @@
 package top.catnies.firenchantkt.item.anvil
 
 import io.papermc.paper.datacomponent.DataComponentTypes
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.entity.Player
@@ -16,6 +18,7 @@ import top.catnies.firenchantkt.api.event.anvil.EnchantedBookPreUseEvent
 import top.catnies.firenchantkt.api.event.anvil.EnchantedBookUseEvent
 import top.catnies.firenchantkt.config.AnvilConfig
 import top.catnies.firenchantkt.context.AnvilContext
+import top.catnies.firenchantkt.database.FirConnectionManager
 import top.catnies.firenchantkt.database.entity.EnchantLogDataTable
 import top.catnies.firenchantkt.enchantment.EnchantmentSetting
 import top.catnies.firenchantkt.enchantment.FirEnchantmentSettingFactory
@@ -24,6 +27,7 @@ import top.catnies.firenchantkt.language.MessageConstants.ANVIL_ENCHANTED_BOOK_U
 import top.catnies.firenchantkt.util.ItemUtils.addRepairCost
 import top.catnies.firenchantkt.util.ItemUtils.isCompatibleWithEnchantment
 import top.catnies.firenchantkt.util.MessageUtils.sendTranslatableComponent
+import top.catnies.firenchantkt.util.TaskUtils
 import kotlin.math.max
 import kotlin.math.min
 
@@ -34,6 +38,8 @@ class FirEnchantedBook : EnchantedBook {
         val logger = plugin.logger
         val config = AnvilConfig.instance
     }
+
+    val database = FirConnectionManager.getInstance().enchantLogData
 
     override fun matches(itemStack: ItemStack): Boolean {
         FirEnchantmentSettingFactory.fromItemStack(itemStack) ?: return false
@@ -129,6 +135,21 @@ class FirEnchantedBook : EnchantedBook {
                 if (useEvent.isCancelled) {
                     event.isCancelled = true
                     return
+                }
+
+                // 记录数据
+                val logData = EnchantLogDataTable().apply {
+                    player = context.viewer.uniqueId
+                    usedEnchantment = originEnchantment.key.asString()
+                    usedEnchantmentLevel = setting.level
+                    takeLevel = anvilView.repairCost
+                    failure = setting.failure.toShort()
+                    isSuccess = useEvent.isSuccess
+                    timestamp = System.currentTimeMillis()
+                }
+                TaskUtils.runAsyncTask {
+                    database.insert(logData)
+                    // TODO 压入缓存
                 }
 
                 // 成功直接返回

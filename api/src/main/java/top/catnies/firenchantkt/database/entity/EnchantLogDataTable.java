@@ -26,8 +26,11 @@ public class EnchantLogDataTable {
     @DatabaseField(index = true, canBeNull = false, dataType = DataType.UUID)
     private UUID player;
 
-    @DatabaseField(index = true, canBeNull = false, dataType = DataType.LONG_STRING)
-    private String enchantment; // Json数据 {enchantment: key, level: 1}
+    @DatabaseField(index = true, canBeNull = false, dataType = DataType.STRING)
+    private String usedEnchantment; // key: value
+
+    @DatabaseField(index = true, canBeNull = false, dataType = DataType.INTEGER)
+    private int usedEnchantmentLevel;
 
     @DatabaseField(canBeNull = false, dataType = DataType.INTEGER)
     private int takeLevel;

@@ -8,6 +8,11 @@ object TaskUtils {
 
     val plugin = FirEnchantPlugin.instance
 
+    // 运行异步任务
+    fun runAsyncTask(task: () -> Unit) {
+        MHDFScheduler.getAsyncScheduler().runTask(plugin, task)
+    }
+
     // 运行异步任务并同步执行回调
     fun runAsyncTaskWithSyncCallback(async:() -> Unit, callback: () -> Unit, delay: Long = 0) {
         MHDFScheduler.getAsyncScheduler().runTaskLater( plugin, {

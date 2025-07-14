@@ -20,8 +20,7 @@ object GetLocationBookShelfCountCommand : AbstractCommand() {
     // /firenchantkt debug getBookShelfCount <world> <X> <Y> <Z>
     override fun create(): LiteralArgumentBuilder<CommandSourceStack> =
         Commands.literal("getLocationBookShelfCount")
-            .then(
-                Commands.argument("world", ArgumentTypes.world())
+            .then(Commands.argument("world", ArgumentTypes.world())
                     .then(Commands.argument("location", ArgumentTypes.blockPosition())
                         .executes { execute(it) })
             )
@@ -31,9 +30,7 @@ object GetLocationBookShelfCountCommand : AbstractCommand() {
     override fun execute(context: CommandContext<CommandSourceStack>): Int {
         val world = context.getArgument("world", World::class.java)
         val location = context.getArgument("location", BlockPositionResolver::class.java).resolve(context.source)
-
-        val count =
-            NMSHandlerHolder.getNMSHandler().getEnchantmentTableBookShelf(location.toLocation(world))
+        val count = NMSHandlerHolder.getNMSHandler().getEnchantmentTableBookShelf(location.toLocation(world))
 
         context.source.sender.sendTranslatableComponent(
             COMMAND_DEBUG_GET_LOCATION_BOOK_SHELF_COUNT_EXECUTE,

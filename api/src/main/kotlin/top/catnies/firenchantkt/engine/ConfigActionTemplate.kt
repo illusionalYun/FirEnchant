@@ -19,6 +19,7 @@ data class ConfigActionTemplate(
         return try {
             actionClass.getDeclaredConstructor(Map::class.java).newInstance(combinedArgs)
         } catch (e: Exception) {
+            e.printStackTrace()
             null
         }
     }

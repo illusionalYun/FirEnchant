@@ -22,7 +22,7 @@ object GetNextEnchantingTableResultCommand : AbstractCommand() {
             .then(
                 Commands.argument("player", ArgumentTypes.player())
                     .then(
-                        Commands.argument("count", IntegerArgumentType.integer(1, 15))
+                        Commands.argument("bookShelfCount", IntegerArgumentType.integer(1, 15))
                             .then(
                                 Commands.argument("item", ArgumentTypes.itemStack())
                                     .executes { execute(it) })))
@@ -33,15 +33,11 @@ object GetNextEnchantingTableResultCommand : AbstractCommand() {
     override fun execute(context: CommandContext<CommandSourceStack>): Int {
         val player =
             context.getArgument("player", PlayerSelectorArgumentResolver::class.java).resolve(context.source)[0]
-        val count = context.getArgument("count", Integer::class.java)
+        val count = context.getArgument("bookShelfCount", Integer::class.java)
         val item = context.getArgument("item", ItemStack::class.java)
 
-        val result =
-            NMSHandlerHolder.getNMSHandler()
-                .getPlayerNextEnchantmentTableResult(
-                    player, count.toInt(), ItemStack(item.type),
-                    NMSHandlerHolder.getNMSHandler().getEnchantmentTableEnchantmentList(player.world)
-                )
+        val result = NMSHandlerHolder.getNMSHandler()
+                .getPlayerNextEnchantmentTableResultByItemStack(player, count.toInt(), ItemStack(item.type))
         println(result)
 
         return Command.SINGLE_SUCCESS
