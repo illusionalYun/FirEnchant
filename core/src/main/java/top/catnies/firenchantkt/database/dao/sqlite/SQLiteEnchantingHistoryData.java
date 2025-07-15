@@ -16,7 +16,7 @@ import java.util.UUID;
 
 import static top.catnies.firenchantkt.language.MessageConstants.DATABASE_TABLE_CREATE_ERROR;
 
-public class SQLiteEnchantingHistoryData extends AbstractDao<EnchantingHistoryData, Integer> implements EnchantingHistoryData {
+public class SQLiteEnchantingHistoryData extends AbstractDao<EnchantingHistoryTable, Integer> implements EnchantingHistoryData {
 
     private static SQLiteEnchantingHistoryData instance;
     private static final int CURRENT_VERSION = 1;
@@ -45,36 +45,94 @@ public class SQLiteEnchantingHistoryData extends AbstractDao<EnchantingHistoryDa
 
     @Override
     public void create(EnchantingHistoryTable historyData) {
-
+        update(historyData, true);
     }
 
     @Override
     public void delete(int id) {
-
+        EnchantingHistoryTable item = getById(id);
+        if (item != null) {
+            delete(item, true);
+        }
     }
 
     @Override
     public void cleanupOldRecords(int daysToKeep) {
-
+        try {
+            long cutoffTime = System.currentTimeMillis() - (daysToKeep * 24L * 60L * 60L * 1000L);
+            List<EnchantingHistoryTable> oldRecords = queryForList(getQueryBuilder()
+                    .where()
+                    .lt("timestamp", cutoffTime)
+                    .queryBuilder());
+            for (EnchantingHistoryTable record : oldRecords) {
+                delete(record, true);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public List<EnchantingHistoryTable> getByPlayer(UUID playerId) {
-        return List.of();
+        try {
+            return queryForList(getQueryBuilder()
+                    .where()
+                    .eq("playerId", playerId)
+                    .queryBuilder());
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return List.of();
+        }
     }
 
     @Override
     public List<EnchantingHistoryTable> getByPlayerRecent(UUID playerId, int limit) {
-        return List.of();
+        try {
+            if (limit <= 0) {
+                return getByPlayer(playerId);
+            }
+            return queryForList(getQueryBuilder()
+                    .where()
+                    .eq("playerId", playerId)
+                    .queryBuilder()
+                    .orderBy("timestamp", false)
+                    .limit((long) limit));
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return List.of();
+        }
     }
 
     @Override
     public List<EnchantingHistoryTable> getByTimeRange(long startTime, long endTime, int limit) {
-        return List.of();
+        try {
+            if (limit <= 0) {
+                return queryForList(getQueryBuilder()
+                        .where()
+                        .between("timestamp", startTime, endTime)
+                        .queryBuilder()
+                        .orderBy("timestamp", false));
+            }
+            return queryForList(getQueryBuilder()
+                    .where()
+                    .between("timestamp", startTime, endTime)
+                    .queryBuilder()
+                    .orderBy("timestamp", false)
+                    .limit((long) limit));
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return List.of();
+        }
     }
 
     @Override
     public List<EnchantingHistoryTable> getRecent(int limit) {
-        return List.of();
+        if (limit <= 0) {
+            return queryForList(getQueryBuilder()
+                    .orderBy("timestamp", false));
+        }
+        return queryForList(getQueryBuilder()
+                .orderBy("timestamp", false)
+                .limit((long) limit));
     }
 }

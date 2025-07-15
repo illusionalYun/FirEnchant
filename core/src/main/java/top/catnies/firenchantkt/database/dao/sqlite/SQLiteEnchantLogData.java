@@ -17,7 +17,7 @@ import java.util.UUID;
 
 import static top.catnies.firenchantkt.language.MessageConstants.DATABASE_TABLE_CREATE_ERROR;
 
-public class SQLiteEnchantLogData extends AbstractDao<EnchantLogData, Integer> implements EnchantLogData{
+public class SQLiteEnchantLogData extends AbstractDao<EnchantLogDataTable, Integer> implements EnchantLogData{
 
     private static SQLiteEnchantLogData instance;
     private static final int CURRENT_VERSION = 1;
@@ -49,45 +49,111 @@ public class SQLiteEnchantLogData extends AbstractDao<EnchantLogData, Integer> i
 
     @Override
     public void insert(EnchantLogDataTable enchantLogDataTable) {
+        update(enchantLogDataTable, true);
     }
 
     @Override
     public void delete(int id) {
-
+        EnchantLogDataTable item = getById(id);
+        if (item != null) {
+            delete(item, true);
+        }
     }
 
     @Override
     public void cleanupOldRecords(int daysToKeep) {
-
+        try {
+            long cutoffTime = System.currentTimeMillis() - (daysToKeep * 24L * 60L * 60L * 1000L);
+            List<EnchantLogDataTable> oldRecords = queryForList(getQueryBuilder()
+                    .where()
+                    .lt("timestamp", cutoffTime)
+                    .queryBuilder());
+            for (EnchantLogDataTable record : oldRecords) {
+                delete(record, true);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public List<EnchantLogDataTable> getAllList() {
-        return List.of();
+        return getList();
     }
 
     @Override
     public List<EnchantLogDataTable> getCountList(int max) {
-        return List.of();
+        if (max <= 0) {
+            return getAllList();
+        }
+        return queryForList(getQueryBuilder()
+                .orderBy("timestamp", false)
+                .limit((long) max));
     }
 
     @Override
     public List<EnchantLogDataTable> getByPlayer(UUID uuid) {
-        return List.of();
+        try {
+            return queryForList(getQueryBuilder()
+                    .where()
+                    .eq("player", uuid)
+                    .queryBuilder());
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return List.of();
+        }
     }
 
     @Override
     public List<EnchantLogDataTable> getByPlayerRecent(UUID uuid, int max) {
-        return List.of();
+        try {
+            if (max <= 0) {
+                return getByPlayer(uuid);
+            }
+            return queryForList(getQueryBuilder()
+                    .where()
+                    .eq("player", uuid)
+                    .queryBuilder()
+                    .orderBy("timestamp", false)
+                    .limit((long) max));
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return List.of();
+        }
     }
 
     @Override
     public List<EnchantLogDataTable> getByPlayerAndEnchantment(UUID uuid, String enchantment) {
-        return List.of();
+        try {
+            return queryForList(getQueryBuilder()
+                    .where()
+                    .eq("player", uuid)
+                    .and()
+                    .eq("usedEnchantment", enchantment)
+                    .queryBuilder());
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return List.of();
+        }
     }
 
     @Override
     public List<EnchantLogDataTable> getByPlayerAndEnchantmentRecent(UUID uuid, String enchantment, int max) {
-        return List.of();
+        try {
+            if (max <= 0) {
+                return getByPlayerAndEnchantment(uuid, enchantment);
+            }
+            return queryForList(getQueryBuilder()
+                    .where()
+                    .eq("player", uuid)
+                    .and()
+                    .eq("usedEnchantment", enchantment)
+                    .queryBuilder()
+                    .orderBy("timestamp", false)
+                    .limit((long) max));
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return List.of();
+        }
     }
 }

@@ -21,6 +21,8 @@ import xyz.xenondevs.invui.item.impl.SimpleItem
 import xyz.xenondevs.invui.item.impl.controlitem.PageItem
 import xyz.xenondevs.invui.window.Window
 import java.util.function.Consumer
+import kotlin.math.max
+import kotlin.math.min
 
 class FirFixTableMenu(
     val player: Player
@@ -58,7 +60,7 @@ class FirFixTableMenu(
     var showBottom: Boolean = false
 
     /*数据对象*/
-    lateinit var activeData: List<ItemRepairTable> // 玩家正在修复+修复完成的物品列表
+    lateinit var activeData: List<ItemRepairTable> // 玩家正在修复 + 修复完成的物品列表
 
     // 打开菜单
     override fun openMenu(data: Map<String, Any>, async: Boolean) {
@@ -124,7 +126,9 @@ class FirFixTableMenu(
                 val itemStack = previousPageItem!!.clone()
                 itemStack.replacePlaceholder(mutableMapOf(
                     "currentPage" to "${gui.currentPage}",
-                    "pageAmount" to "${gui.pageAmount}"
+                    "pageAmount" to "${gui.pageAmount}",
+                    "previousPage" to "${max(0, gui.currentPage - 1)}",
+                    "nextPage" to "${min(gui.pageAmount, gui.currentPage + 1)}"
                 ))
                 return ItemBuilder(itemStack)
             }
@@ -134,7 +138,9 @@ class FirFixTableMenu(
                 val itemStack = nextPageItem!!.clone()
                 itemStack.replacePlaceholder(mutableMapOf(
                     "currentPage" to "${gui.currentPage}",
-                    "pageAmount" to "${gui.pageAmount}"
+                    "pageAmount" to "${gui.pageAmount}",
+                    "previousPage" to "${max(0, gui.currentPage - 1)}",
+                    "nextPage" to "${min(gui.pageAmount, gui.currentPage + 1)}"
                 ))
                 return ItemBuilder(itemStack)
             }

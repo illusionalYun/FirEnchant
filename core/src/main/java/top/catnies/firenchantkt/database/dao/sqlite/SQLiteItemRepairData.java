@@ -16,7 +16,7 @@ import java.util.UUID;
 
 import static top.catnies.firenchantkt.language.MessageConstants.DATABASE_TABLE_CREATE_ERROR;
 
-public class SQLiteItemRepairData extends AbstractDao<ItemRepairData, Integer> implements ItemRepairData {
+public class SQLiteItemRepairData extends AbstractDao<ItemRepairTable, Integer> implements ItemRepairData {
 
     private static SQLiteItemRepairData instance;
     private static final int CURRENT_VERSION = 1;
@@ -45,61 +45,153 @@ public class SQLiteItemRepairData extends AbstractDao<ItemRepairData, Integer> i
 
     @Override
     public void create(ItemRepairTable repairData) {
-
+        update(repairData, true);
     }
 
     @Override
     public void markAsReceived(int id) {
-
+        ItemRepairTable item = getById(id);
+        if (item != null) {
+            item.setReceived(true);
+            update(item, true);
+        }
     }
 
     @Override
     public List<ItemRepairTable> getAllList() {
-        return List.of();
+        return getList();
     }
 
     @Override
     public List<ItemRepairTable> getAllActiveList() {
-        return List.of();
+        try {
+            return queryForList(getQueryBuilder()
+                    .where()
+                    .eq("received", false)
+                    .and()
+                    .raw("(startTime + duration) > " + System.currentTimeMillis())
+                    .queryBuilder());
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return List.of();
+        }
     }
 
     @Override
     public List<ItemRepairTable> getAllCompletedList() {
-        return List.of();
+        try {
+            return queryForList(getQueryBuilder()
+                    .where()
+                    .eq("received", false)
+                    .and()
+                    .raw("(startTime + duration) <= " + System.currentTimeMillis())
+                    .queryBuilder());
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return List.of();
+        }
     }
 
     @Override
     public List<ItemRepairTable> getAllReceivedList() {
-        return List.of();
+        try {
+            return queryForList(getQueryBuilder()
+                    .where()
+                    .eq("received", true)
+                    .queryBuilder());
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return List.of();
+        }
     }
 
     @Override
     public List<ItemRepairTable> getAllActiveAndCompletedList() {
-        return List.of();
+        try {
+            return queryForList(getQueryBuilder()
+                    .where()
+                    .eq("received", false)
+                    .queryBuilder());
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return List.of();
+        }
     }
 
     @Override
     public List<ItemRepairTable> getByPlayer(UUID playerId) {
-        return List.of();
+        try {
+            return queryForList(getQueryBuilder()
+                    .where()
+                    .eq("playerId", playerId)
+                    .queryBuilder());
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return List.of();
+        }
     }
 
     @Override
     public List<ItemRepairTable> getByPlayerActive(UUID playerId) {
-        return List.of();
+        try {
+            return queryForList(getQueryBuilder()
+                    .where()
+                    .eq("playerId", playerId)
+                    .and()
+                    .eq("received", false)
+                    .and()
+                    .raw("(startTime + duration) > " + System.currentTimeMillis())
+                    .queryBuilder());
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return List.of();
+        }
     }
 
     @Override
     public List<ItemRepairTable> getByPlayerCompleted(UUID playerId) {
-        return List.of();
+        try {
+            return queryForList(getQueryBuilder()
+                    .where()
+                    .eq("playerId", playerId)
+                    .and()
+                    .eq("received", false)
+                    .and()
+                    .raw("(startTime + duration) <= " + System.currentTimeMillis())
+                    .queryBuilder());
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return List.of();
+        }
     }
 
     @Override
     public List<ItemRepairTable> getByPlayerReceived(UUID playerId) {
-        return List.of();
+        try {
+            return queryForList(getQueryBuilder()
+                    .where()
+                    .eq("playerId", playerId)
+                    .and()
+                    .eq("received", true)
+                    .queryBuilder());
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return List.of();
+        }
     }
 
     @Override
     public List<ItemRepairTable> getAllActiveAndCompletedList(UUID playerId) {
-        return List.of();
+        try {
+            return queryForList(getQueryBuilder()
+                    .where()
+                    .eq("playerId", playerId)
+                    .and()
+                    .eq("received", false)
+                    .queryBuilder());
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return List.of();
+        }
     }
 }
