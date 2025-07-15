@@ -31,9 +31,9 @@ object FirEnchantAPI {
     val conditionRegistry: () -> ConditionRegistry = { ServiceContainer.get(ConditionRegistry::class.java) }
     // 动作注册表
     val actionRegistry: () -> ActionRegistry = { ServiceContainer.get(ActionRegistry::class.java) }
-
     // 数据库链接管理器
     val connectionManager: () -> ConnectionManager = { ServiceContainer.get(ConnectionManager::class.java) }
+
 
     /**
      * 构建一本附魔书.
@@ -80,13 +80,13 @@ object FirEnchantAPI {
         val protectionRune = ServiceContainer.get(AnvilItemRegistry::class.java).getItem(ProtectionRune::class.java) ?: throw IllegalStateException("ProtectionRune is not registered.")
         return protectionRune.hasProtectionRune(item)
     }
-    fun addProtectionRune(item: ItemStack) {
+    fun addProtectionRune(item: ItemStack): Boolean {
         val protectionRune = ServiceContainer.get(AnvilItemRegistry::class.java).getItem(ProtectionRune::class.java) ?: throw IllegalStateException("ProtectionRune is not registered.")
-        protectionRune.addProtectionRune(item)
+        return protectionRune.addProtectionRune(item)
     }
-    fun removeProtectionRune(item: ItemStack) {
+    fun removeProtectionRune(item: ItemStack): Boolean {
         val protectionRune = ServiceContainer.get(AnvilItemRegistry::class.java).getItem(ProtectionRune::class.java) ?: throw IllegalStateException("ProtectionRune is not registered.")
-        protectionRune.removeProtectionRune(item)
+        return protectionRune.removeProtectionRune(item)
     }
 
 
@@ -102,9 +102,9 @@ object FirEnchantAPI {
         val powerRune = ServiceContainer.get(AnvilItemRegistry::class.java).getItem(PowerRune::class.java) ?: throw IllegalStateException("PowerRune is not registered.")
         return powerRune.canUpgrade(item)
     }
-    fun applyPowerRune(item: ItemStack) {
+    fun applyPowerRune(item: ItemStack): Boolean {
         val powerRune = ServiceContainer.get(AnvilItemRegistry::class.java).getItem(PowerRune::class.java) ?: throw IllegalStateException("PowerRune is not registered.")
-        powerRune.upgrade(item)
+        return powerRune.upgrade(item)
     }
 
 

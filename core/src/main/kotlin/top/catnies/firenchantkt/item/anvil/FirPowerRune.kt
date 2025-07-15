@@ -105,11 +105,13 @@ class FirPowerRune: PowerRune {
 
     override fun canUpgrade(item: ItemStack) = item.enchantments.any { (enchantment, level) -> level < enchantment.maxLevel }
 
-    override fun upgrade(item: ItemStack) {
+    override fun upgrade(item: ItemStack): Boolean {
         val canUpgradeMap = item.enchantments.filter { (enchantment, level) -> level < enchantment.maxLevel }
+        if (canUpgradeMap.isEmpty()) return false
         val entry = canUpgradeMap.entries.elementAt(Random.nextInt(canUpgradeMap.size))
         val newLevel = entry.value + 1
         item.addUnsafeEnchantment(entry.key, newLevel)
+        return true
     }
 
     // 夹带私货, 把部分数据缓存到物品.

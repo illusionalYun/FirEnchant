@@ -18,12 +18,12 @@ interface ProtectionRune: AnvilApplicable {
      * 移除物品上的保护符文.
      * @param item 物品
      */
-    fun removeProtectionRune(item: ItemStack)
+    fun removeProtectionRune(item: ItemStack): Boolean
 
 
     /**
      * 为物品添加保护符文.
      */
-    fun addProtectionRune(item: ItemStack)
+    fun addProtectionRune(item: ItemStack): Boolean
 
 }

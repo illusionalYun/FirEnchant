@@ -12,6 +12,6 @@ interface PowerRune: AnvilApplicable {
     fun canUpgrade(item: ItemStack): Boolean
 
     // 随机升级物品上的一个可升级魔咒, 如果没有可升级的, 则不会有变化.
-    fun upgrade(item: ItemStack)
+    fun upgrade(item: ItemStack): Boolean
 
 }

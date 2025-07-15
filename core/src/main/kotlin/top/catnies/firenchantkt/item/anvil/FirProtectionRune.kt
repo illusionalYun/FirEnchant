@@ -54,16 +54,26 @@ class FirProtectionRune(): ProtectionRune {
         }
     }
 
-    override fun removeProtectionRune(item: ItemStack) {
+    override fun removeProtectionRune(item: ItemStack): Boolean {
+        var success = false
         RtagItem.edit(item) { tag ->
-            tag.remove("FirEnchant", "HasProtection")
+            if (tag.hasTag("FirEnchant", "HasProtection")) {
+                tag.remove("FirEnchant", "HasProtection")
+                success = true
+            }
         }
+        return success
     }
 
-    override fun addProtectionRune(item: ItemStack) {
+    override fun addProtectionRune(item: ItemStack): Boolean {
+        var success = false
         RtagItem.edit(item) { tag ->
-            tag.set("yes", "FirEnchant", "HasProtection")
+            if (tag.get<String>("FirEnchant", "HasProtection") != "yes") {
+                tag.set("yes", "FirEnchant", "HasProtection")
+                success = true
+            }
         }
+        return success
     }
 
     override fun matches(itemStack: ItemStack): Boolean {
