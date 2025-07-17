@@ -44,7 +44,7 @@ public class MySQLItemRepairData extends AbstractDao<ItemRepairData, Integer> im
     }
 
     @Override
-    public void create(ItemRepairTable repairData) {
+    public void insert(ItemRepairTable repairData) {
 
     }
 
@@ -99,7 +99,7 @@ public class MySQLItemRepairData extends AbstractDao<ItemRepairData, Integer> im
     }
 
     @Override
-    public List<ItemRepairTable> getAllActiveAndCompletedList(UUID playerId) {
+    public List<ItemRepairTable> getByPlayerActiveAndCompletedList(UUID playerId) {
         return List.of();
     }
 }

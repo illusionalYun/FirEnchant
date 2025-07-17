@@ -13,7 +13,7 @@ public interface ItemRepairData {
     /**
      * 创建新的修复记录
      */
-    void create(ItemRepairTable repairData);
+    void insert(ItemRepairTable repairData);
 
     /**
      * 标记记录为已领取
@@ -68,6 +68,6 @@ public interface ItemRepairData {
     /**
      * 获取玩家正在修复中+已修复完成的记录
      */
-    List<ItemRepairTable> getAllActiveAndCompletedList(UUID playerId);
+    List<ItemRepairTable> getByPlayerActiveAndCompletedList(UUID playerId);
 
 }

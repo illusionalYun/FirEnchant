@@ -44,7 +44,7 @@ public class SQLiteItemRepairData extends AbstractDao<ItemRepairTable, Integer> 
     }
 
     @Override
-    public void create(ItemRepairTable repairData) {
+    public void insert(ItemRepairTable repairData) {
         update(repairData, true);
     }
 
@@ -181,7 +181,7 @@ public class SQLiteItemRepairData extends AbstractDao<ItemRepairTable, Integer> 
     }
 
     @Override
-    public List<ItemRepairTable> getAllActiveAndCompletedList(UUID playerId) {
+    public List<ItemRepairTable> getByPlayerActiveAndCompletedList(UUID playerId) {
         try {
             return queryForList(getQueryBuilder()
                     .where()
