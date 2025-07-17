@@ -10,4 +10,8 @@ class BrokenItemListener: Listener {
 
     // 禁止破损的物品触发一些被动?
 
+    // 禁止铁砧重命名
+
+    // 禁止附魔
+
 }
