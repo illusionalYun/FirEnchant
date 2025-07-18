@@ -97,8 +97,8 @@ class FirExtractSoulMenu(
             .filter { getMarkCount(it.key) > 0 }
             .filterNot { it.value.first.nullOrAir() }
             .forEach { (char, pair) ->
-                val menuItem = MenuItem({ s -> pair.first!! }, pair.second)
-                building.addIngredient(char, menuItem)
+                val menuCustomItem = MenuCustomItem({ s -> pair.first!! }, pair.second)
+                building.addIngredient(char, menuCustomItem)
             }
     }
 

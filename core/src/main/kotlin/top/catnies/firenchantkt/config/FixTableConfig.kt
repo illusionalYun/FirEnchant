@@ -37,7 +37,8 @@ class FixTableConfig private constructor():
     var MENU_OUTPUT_SLOT: Char by ConfigProperty('O')
     var MENU_OUTPUT_ARRAY_SIZE: Int by ConfigProperty(5)
     var MENU_OUTPUT_UPDATE_TIME: Int by ConfigProperty(20)
-    var MENU_OUTPUT_ADDITION_LORE: List<String> by ConfigProperty(mutableListOf())
+    var MENU_OUTPUT_ACTIVE_ADDITION_LORE: List<String> by ConfigProperty(mutableListOf())
+    var MENU_OUTPUT_COMPLETED_ADDITION_LORE: List<String> by ConfigProperty(mutableListOf())
 
     var MENU_FIX_SLOT: Char by ConfigProperty('C')
     var MENU_FIX_SLOT_ITEM: ItemStack? by ConfigProperty(null)
@@ -77,7 +78,8 @@ class FixTableConfig private constructor():
             MENU_OUTPUT_SLOT = config().getString("menu-setting.output-array.slot", "O")?.first() ?: 'O'
             MENU_OUTPUT_ARRAY_SIZE = config().getInt("menu-setting.output-array.array-max-size", 5)
             MENU_OUTPUT_UPDATE_TIME = config().getInt("menu-setting.output-array.update-time", 20)
-            MENU_OUTPUT_ADDITION_LORE = config().getStringList("menu-setting.output-array.addition-lore")
+            MENU_OUTPUT_ACTIVE_ADDITION_LORE = config().getStringList("menu-setting.output-array.addition-active-lore")
+            MENU_OUTPUT_COMPLETED_ADDITION_LORE = config().getStringList("menu-setting.output-array.addition-completed-lore")
 
             MENU_FIX_SLOT = config().getString("menu-setting.fix-bottom.slot", "C")?.first() ?: 'C'
             MENU_FIX_SLOT_ITEM = config().getConfigurationSection("menu-setting.fix-bottom")?.let { section ->

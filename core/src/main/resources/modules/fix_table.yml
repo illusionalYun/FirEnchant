@@ -26,11 +26,15 @@ menu-setting:
     # 队列物品不断刷新的时间
     update-time: 20
     # 附加在队列物品上的Lore
-    addition-lore:
+    addition-active-lore:
       - " "
       - "&7该装备还需要花费 §e{cost_time}秒 &7才能修复完成"
-      - "&7shift+左键: 取消修复"
-      - "&7shift+右键: 花费 xx金币 和 xx等级 快速修复."
+      - "&7左键: 取消修复"
+      - "&7右键: 花费 xx金币 和 xx等级 快速修复."
+    addition-completed-lore:
+      - " "
+      - "&7该装备已经修复完成了哦!"
+      - "&7左键: 取走物品"
   # 确认修复按钮
   # 当放入可修复物品在菜单时, 按钮亮起时显示的内容
   fix-bottom:
