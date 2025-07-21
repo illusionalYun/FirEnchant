@@ -2,6 +2,7 @@ package top.catnies.firenchantkt.gui
 
 import io.papermc.paper.datacomponent.DataComponentTypes
 import io.papermc.paper.datacomponent.item.ItemLore
+import kotlinx.coroutines.time.delay
 import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
@@ -65,7 +66,7 @@ class FirFixTableMenu(
     val completedAdditionLores = config.MENU_OUTPUT_COMPLETED_ADDITION_LORE
 
     /*构建时对象*/
-    lateinit var gui: Gui
+    lateinit var gui: PagedGui<Item>
     lateinit var window: Window
     lateinit var inputInventory: VirtualInventory
     lateinit var confirmBottom: SimpleItem
@@ -106,19 +107,22 @@ class FirFixTableMenu(
 
         // 禁止非破损物品放入, 同时刷新菜单标题.
         inputInventory.preUpdateHandler = Consumer { event ->
-            if (event.isSwap || event.isAdd) {
-                if (!brokenGear.isBrokenGear(event.newItem)) {
+            val isInputBrokenGear = brokenGear.isBrokenGear(event.newItem)
+            when {
+                (event.isAdd || event.isSwap) && isInputBrokenGear -> {
+                    TaskUtils.runAsyncTasksLater({ window.changeTitle(titleAccept) }, delay = 1L)
+                    showBottom = true
+                    confirmBottom.notifyWindows()
+                }
+                event.isRemove -> {
+                    TaskUtils.runAsyncTasksLater({ window.changeTitle(titleDeny) }, delay = 1L)
+                    showBottom = false
+                    confirmBottom.notifyWindows()
+                }
+                else -> {
                     event.isCancelled = true
                     return@Consumer
                 }
-                window.changeTitle(titleAccept)
-                showBottom = true
-                confirmBottom.notifyWindows()
-            }
-            if (event.isRemove) {
-                window.changeTitle(titleDeny)
-                showBottom = false
-                confirmBottom.notifyWindows()
             }
         }
     }
@@ -140,6 +144,9 @@ class FirFixTableMenu(
             inputInventory.removeIf(UpdateReason.SUPPRESSED) { !it.nullOrAir() }
             // 插入队列, 刷新队列
             addDataToRepairList(repairTable)
+            gui.setContent(repairList)
+            // 刷新自己
+            confirmBottom.notifyWindows()
         }
     }
 
@@ -147,7 +154,8 @@ class FirFixTableMenu(
     private fun buildPageItem() {
         previousPageBottom = object :PageItem(false) {
             override fun getItemProvider(gui: PagedGui<*>): ItemProvider {
-                // TODO 我觉得不能频繁使用 Clone?
+                if (gui.currentPage == 0) return ItemBuilder.EMPTY
+
                 val itemStack = previousPageItem!!.clone()
                 itemStack.replacePlaceholder(mutableMapOf(
                     "currentPage" to "${gui.currentPage}",
@@ -160,6 +168,8 @@ class FirFixTableMenu(
         }
         nextPageBottom = object :PageItem(true) {
             override fun getItemProvider(gui: PagedGui<*>): ItemProvider {
+                if (gui.currentPage == gui.pageAmount - 1) return ItemBuilder.EMPTY
+
                 val itemStack = nextPageItem!!.clone()
                 itemStack.replacePlaceholder(mutableMapOf(
                     "currentPage" to "${gui.currentPage}",
@@ -211,7 +221,6 @@ class FirFixTableMenu(
     // 创建修复队列
     private fun initRepairItems() {
         val activeData = itemRepairData.getByPlayerActiveAndCompletedList(player.uniqueId)
-        activeData.removeIf { it.isReceived }
         activeData.forEach { addDataToRepairList(it) }
     }
 
@@ -225,7 +234,14 @@ class FirFixTableMenu(
         else builder.addLoreLines(activeAdditionLores.map { line -> AdventureComponentWrapper(line.renderToComponent())})
         val autoUpdateItem = MenuRepairItem(itemRepairTable, outputUpdateTime, originItem, builder, { click ->
             // TODO 检查物品状态是完成or未完成
-            click.player.sendMessage("wocao 66666!")
+            if (itemRepairTable.isReceived) return@MenuRepairItem true
+            if (itemRepairTable.isCompleted) {
+                click.player.sendMessage("wocao 77777788888, 完成了!")
+                // TODO 给予物品
+            }
+            else {
+                click.player.sendMessage("wocao 77777788888, 还在修!")
+            }
             true
         })
         repairList.add(autoUpdateItem)
