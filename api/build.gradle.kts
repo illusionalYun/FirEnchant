@@ -2,10 +2,6 @@ plugins {
     id("maven-publish") // Maven Publish
 }
 
-dependencies {
-    compileOnly("com.j256.ormlite:ormlite-core:${rootProject.properties["lib.ormlite.version"]}")
-}
-
 // 发布到 Maven 仓库
 publishing {
     repositories {

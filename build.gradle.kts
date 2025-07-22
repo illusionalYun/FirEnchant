@@ -1,9 +1,11 @@
+import java.util.Properties
+
 // 插件
 plugins {
-    id("org.jetbrains.kotlin.jvm") version "2.1.21" // Kotlin
-    id("com.gradleup.shadow") version "9.0.0-beta6" // Shadow
-    id("xyz.jpenilla.run-paper") version "2.3.1" // Run Paper
-    id("io.papermc.paperweight.userdev") version "2.0.0-beta.17" apply false // Paper Weight
+    alias(libs.plugins.kotlin.jvm) // Kotlin
+    alias(libs.plugins.shadow) // Shadow
+    alias(libs.plugins.runpaper) // Run Paper
+    alias(libs.plugins.paperweight) apply false // Paper Weight
 }
 
 // 依赖所有子模块
@@ -27,7 +29,7 @@ allprojects {
     apply(plugin = "com.gradleup.shadow")
 
     group = "top.catnies"
-    version = "${rootProject.properties["project.version"]}"
+    version = rootProject.libs.versions.plugin.version.get()
     kotlin.jvmToolchain(21)
     java.sourceCompatibility = JavaVersion.VERSION_21
     java.targetCompatibility = JavaVersion.VERSION_21
@@ -48,26 +50,19 @@ allprojects {
     }
 
     dependencies {
-        compileOnly("io.papermc.paper:paper-api:${rootProject.properties["server.paper.version"]}") // PAPER
-        compileOnly("org.jetbrains.kotlin:kotlin-stdlib-jdk8") // Kotlin STD
-        compileOnly("org.jetbrains.kotlin:kotlin-reflect:2.1.21") // Kotlin Reflect
-        compileOnly("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.1") // Kotlin Coroutines
-        compileOnly("org.jetbrains.kotlinx:kotlinx-coroutines-jdk9:1.8.1") // Kotlin Coroutines
-//        compileOnly("com.github.shynixn.mccoroutine:mccoroutine-bukkit-api:2.22.0")
-//        compileOnly("com.github.shynixn.mccoroutine:mccoroutine-bukkit-core:2.22.0")
-        compileOnly("org.projectlombok:lombok:${rootProject.properties["lib.lombok.version"]}") // Lombok
-        annotationProcessor("org.projectlombok:lombok:${rootProject.properties["lib.lombok.version"]}") // Lombok
+        // 开发
+        compileOnly(rootProject.libs.paper.api) // PAPER
+        compileOnly(rootProject.libs.bundles.kotlin) // Kotlin Bundles
+        compileOnly(rootProject.libs.lombok) // Lombok
+        annotationProcessor(rootProject.libs.lombok) // Lombok
 
         // 数据库
-        compileOnly("com.j256.ormlite:ormlite-core:${rootProject.properties["lib.ormlite.version"]}") // ORMLite
-        compileOnly("com.j256.ormlite:ormlite-jdbc:${rootProject.properties["lib.ormlite.version"]}") // ORMLite
-        compileOnly("com.zaxxer:HikariCP:${rootProject.properties["lib.hikaricp.version"]}") { exclude("org.slf4j", "*") } // HikariCP
-        compileOnly("io.lettuce:lettuce-core:${rootProject.properties["lib.lettuce.version"]}") { exclude("io.netty", "*") } // Lettuce
+        compileOnly(rootProject.libs.bundles.mysql) // Mysql Bundles
 
         // 依赖库
-        implementation("cn.chengzhiya:MHDF-Scheduler:${rootProject.properties["lib.mhdf.scheduler.version"]}") // Scheduler
-        compileOnly("com.saicone.rtag:rtag:${rootProject.properties["lib.rtag.version"]}") // RTag
-        compileOnly("com.saicone.rtag:rtag-item:${rootProject.properties["lib.rtag.version"]}") // RTag
+        compileOnly(rootProject.libs.bundles.rtag) // RTag
+        compileOnly(rootProject.libs.placeholderapi) // PlaceholderAPI
+        implementation(rootProject.libs.mhdf.scheduler) // Scheduler
     }
 }
 
@@ -96,20 +91,17 @@ tasks {
         destinationDirectory.set(file("$rootDir/target"))
     }
 
+    // 展开 gradle.properties 到 resources
+    processResources {
+        dependsOn(generateVersionProperties)
+        from(generateVersionProperties.map { it.outputs })
+    }
+
+    // 调试测试
     runServer {
         dependsOn(shadowJar)
         dependsOn(jar)
         minecraftVersion("1.21.7")
-
-        // 在运行服务器之前执行部分插件依赖复制
-//        doFirst {
-//            copy {
-//                from("$rootDir/compatibility/libs")
-//                into("$rootDir/run/plugins")
-//                duplicatesStrategy = DuplicatesStrategy.INCLUDE
-//            }
-//        }
-
         downloadPlugins {
             hangar("PlaceholderAPI", "2.11.6")
         }
@@ -117,6 +109,7 @@ tasks {
 
 }
 
+// 调试测试环境
 tasks.withType(xyz.jpenilla.runtask.task.AbstractRun::class) {
     javaLauncher = javaToolchains.launcherFor {
         vendor = JvmVendorSpec.JETBRAINS
@@ -125,4 +118,31 @@ tasks.withType(xyz.jpenilla.runtask.task.AbstractRun::class) {
     jvmArgs("-Ddisable.watchdog=true")
     jvmArgs("-Xlog:redefine+class*=info")
     jvmArgs("-XX:+AllowEnhancedClassRedefinition")
+}
+
+// 生成版本信息资源文件
+val generateVersionProperties by tasks.registering {
+    val outputDir = layout.buildDirectory.dir("generated/resources")
+    outputs.dir(outputDir)
+
+    doLast {
+        val versionProps = Properties()
+
+        // 从 version catalog 获取版本信息
+        versionProps.setProperty("project.version", version.toString())
+        versionProps.setProperty("repository.central", "https://maven.aliyun.com/repository/public")
+
+        versionProps.setProperty("kotlin.version", libs.versions.kotlin.stdlib.get())
+        versionProps.setProperty("kotlinx-coroutines.version", libs.versions.kotlinx.coroutines.get())
+        versionProps.setProperty("ormlite.version", libs.versions.ormlite.get())
+        versionProps.setProperty("hikaricp.version", libs.versions.hikaricp.get())
+        versionProps.setProperty("rtag.version", libs.versions.rtag.get())
+        versionProps.setProperty("invui.version", libs.versions.invui.get())
+
+        val outputFile = outputDir.get().asFile.resolve("dependency-version.properties")
+        outputFile.parentFile.mkdirs()
+        outputFile.outputStream().use { output ->
+            versionProps.store(output, "Generated version information")
+        }
+    }
 }
