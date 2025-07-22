@@ -1,4 +1,4 @@
-package top.catnies.firenchantkt.gui
+package top.catnies.firenchantkt.gui.item
 
 import org.bukkit.entity.Player
 import org.bukkit.event.inventory.ClickType

@@ -1,6 +1,5 @@
 package top.catnies.firenchantkt.gui
 
-import io.papermc.paper.datacomponent.DataComponentTypes
 import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
@@ -10,6 +9,9 @@ import top.catnies.firenchantkt.database.FirConnectionManager
 import top.catnies.firenchantkt.database.dao.ItemRepairData
 import top.catnies.firenchantkt.database.entity.ItemRepairTable
 import top.catnies.firenchantkt.engine.RunSource
+import top.catnies.firenchantkt.gui.item.MenuCustomItem
+import top.catnies.firenchantkt.gui.item.MenuPageItem
+import top.catnies.firenchantkt.gui.item.MenuRepairItem
 import top.catnies.firenchantkt.item.fixtable.FirBrokenGear
 import top.catnies.firenchantkt.language.MessageConstants.FIXTABLE_REPAIR_ITEM_RECEIVE_FAIL
 import top.catnies.firenchantkt.language.MessageConstants.FIXTABLE_REPAIR_ITEM_RECEIVE_SUCCESS
@@ -29,10 +31,8 @@ import xyz.xenondevs.invui.gui.structure.Structure
 import xyz.xenondevs.invui.inventory.VirtualInventory
 import xyz.xenondevs.invui.inventory.event.UpdateReason
 import xyz.xenondevs.invui.item.Item
-import xyz.xenondevs.invui.item.ItemProvider
 import xyz.xenondevs.invui.item.builder.ItemBuilder
 import xyz.xenondevs.invui.item.impl.SimpleItem
-import xyz.xenondevs.invui.item.impl.controlitem.PageItem
 import xyz.xenondevs.invui.window.Window
 import java.util.function.Consumer
 import kotlin.math.max
@@ -170,12 +170,14 @@ class FirFixTableMenu(
             if (gui.currentPage == 0) return@MenuPageItem ItemStack.empty()
 
             val itemStack = previousPageItem.first!!.clone()
-            itemStack.replacePlaceholder(mutableMapOf(
-                "currentPage" to "${gui.currentPage}",
-                "pageAmount" to "${gui.pageAmount}",
-                "previousPage" to "${max(0, gui.currentPage - 1)}",
-                "nextPage" to "${min(gui.pageAmount, gui.currentPage + 1)}"
-            ))
+            itemStack.replacePlaceholder(
+                mutableMapOf(
+                    "currentPage" to "${gui.currentPage}",
+                    "pageAmount" to "${gui.pageAmount}",
+                    "previousPage" to "${max(0, gui.currentPage - 1)}",
+                    "nextPage" to "${min(gui.pageAmount, gui.currentPage + 1)}"
+                )
+            )
             return@MenuPageItem itemStack
         }
 
@@ -183,12 +185,14 @@ class FirFixTableMenu(
             if (gui.currentPage == gui.pageAmount - 1) return@MenuPageItem ItemStack.empty()
 
             val itemStack = nextPageItem.first!!.clone()
-            itemStack.replacePlaceholder(mutableMapOf(
-                "currentPage" to "${gui.currentPage}",
-                "pageAmount" to "${gui.pageAmount}",
-                "previousPage" to "${max(0, gui.currentPage - 1)}",
-                "nextPage" to "${min(gui.pageAmount, gui.currentPage + 1)}"
-            ))
+            itemStack.replacePlaceholder(
+                mutableMapOf(
+                    "currentPage" to "${gui.currentPage}",
+                    "pageAmount" to "${gui.pageAmount}",
+                    "previousPage" to "${max(0, gui.currentPage - 1)}",
+                    "nextPage" to "${min(gui.pageAmount, gui.currentPage + 1)}"
+                )
+            )
             return@MenuPageItem itemStack
         }
     }

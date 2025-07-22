@@ -1,4 +1,4 @@
-package top.catnies.firenchantkt.gui
+package top.catnies.firenchantkt.gui.item
 
 import org.bukkit.Bukkit
 import org.bukkit.inventory.ItemStack
