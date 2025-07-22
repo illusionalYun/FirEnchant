@@ -12,12 +12,12 @@ import top.catnies.firenchantkt.util.YamlUtils
 import top.catnies.firenchantkt.util.YamlUtils.getConfigurationSectionList
 import xyz.xenondevs.invui.gui.structure.Structure
 
-class FixTableConfig private constructor():
-    AbstractConfigFile("modules/fix_table.yml")
+class RepairTableConfig private constructor():
+    AbstractConfigFile("modules/repair_table.yml")
 {
     companion object {
         @JvmStatic
-        val instance by lazy { FixTableConfig().apply { loadConfig() } }
+        val instance by lazy { RepairTableConfig().apply { loadConfig() } }
     }
     val fallbackMenuStructure = arrayOf(
         "X.......?",
@@ -29,8 +29,8 @@ class FixTableConfig private constructor():
     var ENABLE: Boolean by ConfigProperty(false)
 
     /*菜单设置*/
-    var MENU_TITLE_DENY: String by ConfigProperty("Fix DENY Menu")
-    var MENU_TITLE_ACCEPT: String by ConfigProperty("Fix ACCEPT Menu")
+    var MENU_TITLE_DENY: String by ConfigProperty("Repair DENY Menu")
+    var MENU_TITLE_ACCEPT: String by ConfigProperty("Repair ACCEPT Menu")
     var MENU_STRUCTURE_ARRAY: Array<String> by ConfigProperty(fallbackMenuStructure)
     var MENU_INPUT_SLOT: Char by ConfigProperty('I')
 
@@ -40,8 +40,8 @@ class FixTableConfig private constructor():
     var MENU_OUTPUT_ACTIVE_ADDITION_LORE: List<String> by ConfigProperty(mutableListOf())
     var MENU_OUTPUT_COMPLETED_ADDITION_LORE: List<String> by ConfigProperty(mutableListOf())
 
-    var MENU_FIX_SLOT: Char by ConfigProperty('C')
-    var MENU_FIX_SLOT_ITEM: Pair<ItemStack?, List<ConfigActionTemplate>>? by ConfigProperty(null)
+    var MENU_REPAIR_SLOT: Char by ConfigProperty('C')
+    var MENU_REPAIR_SLOT_ITEM: Pair<ItemStack?, List<ConfigActionTemplate>>? by ConfigProperty(null)
 
     var MENU_PREPAGE_SLOT: Char by ConfigProperty('P')
     var MENU_PREPAGE_SLOT_ITEM: Pair<ItemStack?, List<ConfigActionTemplate>>? by ConfigProperty(null)
@@ -67,8 +67,8 @@ class FixTableConfig private constructor():
     // 等待注册表完成后延迟加载的部分
     override fun loadLatePartConfig() {
         if (ENABLE) {
-            MENU_TITLE_DENY = config().getString("menu-setting.title-deny", "Fix DENY Menu")!!
-            MENU_TITLE_ACCEPT = config().getString("menu-setting.title-accept", "Fix ACCEPT Menu")!!
+            MENU_TITLE_DENY = config().getString("menu-setting.title-deny", "Repair DENY Menu")!!
+            MENU_TITLE_ACCEPT = config().getString("menu-setting.title-accept", "Repair ACCEPT Menu")!!
             try { config().getStringList("menu-setting.structure").toTypedArray()
                 .also { Structure(*it); MENU_STRUCTURE_ARRAY = it } // 测试合法性然后再赋值
             } catch (exception: IllegalArgumentException) {
@@ -81,14 +81,14 @@ class FixTableConfig private constructor():
             MENU_OUTPUT_ACTIVE_ADDITION_LORE = config().getStringList("menu-setting.output-array.addition-active-lore")
             MENU_OUTPUT_COMPLETED_ADDITION_LORE = config().getStringList("menu-setting.output-array.addition-completed-lore")
 
-            MENU_FIX_SLOT = config().getString("menu-setting.fix-bottom.slot", "C")?.first() ?: 'C'
-            MENU_FIX_SLOT_ITEM = config().getConfigurationSection("menu-setting.fix-bottom")?.let { section ->
+            MENU_REPAIR_SLOT = config().getString("menu-setting.repair-bottom.slot", "C")?.first() ?: 'C'
+            MENU_REPAIR_SLOT_ITEM = config().getConfigurationSection("menu-setting.repair-bottom")?.let { section ->
                 // 使用节点构建物品
-                val itemStack = ConfigParser.parseItemFromConfig(section, fileName, "menu-setting.fix-bottom")
+                val itemStack = ConfigParser.parseItemFromConfig(section, fileName, "menu-setting.repair-bottom")
                 // 获取动作节点, 解析动作
                 val actionList = section.getConfigurationSectionList("click-actions")
                 val actionTemplates = actionList.mapNotNull {
-                    actionNode -> ConfigParser.parseActionTemplate(actionNode, fileName, "menu-setting.fix-bottom.click-actions")
+                    actionNode -> ConfigParser.parseActionTemplate(actionNode, fileName, "menu-setting.repair-bottom.click-actions")
                 }
                 itemStack to actionTemplates
             }

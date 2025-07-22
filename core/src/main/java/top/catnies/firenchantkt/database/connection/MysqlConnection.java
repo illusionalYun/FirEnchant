@@ -1,6 +1,7 @@
 package top.catnies.firenchantkt.database.connection;
 
 import com.j256.ormlite.jdbc.DataSourceConnectionSource;
+import com.j256.ormlite.logger.Level;
 import com.j256.ormlite.support.ConnectionSource;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
@@ -26,6 +27,7 @@ public class MysqlConnection implements Connection {
 
     @Override
     public void connect() {
+        com.j256.ormlite.logger.Logger.setGlobalLogLevel(Level.OFF);
         try {
             // 创建HikariDataSource
             HikariDataSource dataSource = new HikariDataSource(config);

@@ -4,7 +4,7 @@ import com.saicone.rtag.RtagItem
 import io.papermc.paper.datacomponent.DataComponentTypes
 import org.bukkit.inventory.ItemStack
 import top.catnies.firenchantkt.api.ServiceContainer
-import top.catnies.firenchantkt.config.FixTableConfig
+import top.catnies.firenchantkt.config.RepairTableConfig
 import top.catnies.firenchantkt.util.ItemUtils.deserializeFromBytes
 import top.catnies.firenchantkt.util.ItemUtils.nullOrAir
 import top.catnies.firenchantkt.util.ItemUtils.serializeToBytes
@@ -18,7 +18,7 @@ class FirBrokenGear: BrokenGear {
         } }
     }
 
-    val config = FixTableConfig.instance
+    val config = RepairTableConfig.instance
     val fallback: () -> ItemStack = { config.BROKEN_FALLBACK_WRAPPER_ITEM!! }
     val matches = config.BROKEN_MATCHES
 

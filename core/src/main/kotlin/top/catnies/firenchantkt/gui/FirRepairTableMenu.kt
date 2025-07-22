@@ -4,7 +4,7 @@ import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 import top.catnies.firenchantkt.FirEnchantPlugin
-import top.catnies.firenchantkt.config.FixTableConfig
+import top.catnies.firenchantkt.config.RepairTableConfig
 import top.catnies.firenchantkt.database.FirConnectionManager
 import top.catnies.firenchantkt.database.dao.ItemRepairData
 import top.catnies.firenchantkt.database.entity.ItemRepairTable
@@ -13,8 +13,8 @@ import top.catnies.firenchantkt.gui.item.MenuCustomItem
 import top.catnies.firenchantkt.gui.item.MenuPageItem
 import top.catnies.firenchantkt.gui.item.MenuRepairItem
 import top.catnies.firenchantkt.item.fixtable.FirBrokenGear
-import top.catnies.firenchantkt.language.MessageConstants.FIXTABLE_REPAIR_ITEM_RECEIVE_FAIL
-import top.catnies.firenchantkt.language.MessageConstants.FIXTABLE_REPAIR_ITEM_RECEIVE_SUCCESS
+import top.catnies.firenchantkt.language.MessageConstants.REPAIR_TABLE_REPAIR_ITEM_RECEIVE_FAIL
+import top.catnies.firenchantkt.language.MessageConstants.REPAIR_TABLE_REPAIR_ITEM_RECEIVE_SUCCESS
 import top.catnies.firenchantkt.util.ItemUtils.deserializeFromBytes
 import top.catnies.firenchantkt.util.ItemUtils.nullOrAir
 import top.catnies.firenchantkt.util.ItemUtils.replacePlaceholder
@@ -38,13 +38,13 @@ import java.util.function.Consumer
 import kotlin.math.max
 import kotlin.math.min
 
-class FirFixTableMenu(
+class FirRepairTableMenu(
     val player: Player
-): FixTableMenu {
+): RepairTableMenu {
 
     companion object {
         val plugin = FirEnchantPlugin.instance
-        val config = FixTableConfig.instance
+        val config = RepairTableConfig.instance
         val brokenGear = FirBrokenGear.instance
     }
 
@@ -54,8 +54,8 @@ class FirFixTableMenu(
     val structureArray = config.MENU_STRUCTURE_ARRAY
     val inputSlot = config.MENU_INPUT_SLOT
     val outputSlot = config.MENU_OUTPUT_SLOT
-    val fixSlot = config.MENU_FIX_SLOT
-    val fixSlotItem = config.MENU_FIX_SLOT_ITEM
+    val repairSlot = config.MENU_REPAIR_SLOT
+    val repairSlotItem = config.MENU_REPAIR_SLOT_ITEM
     val previousPageSlot = config.MENU_PREPAGE_SLOT
     val previousPageItem = config.MENU_PREPAGE_SLOT_ITEM
     val nextPageSlot = config.MENU_NEXTPAGE_SLOT
@@ -132,7 +132,7 @@ class FirFixTableMenu(
     private fun buildConfirmItem() {
         confirmBottom = SimpleItem({ s: String? ->
             if (!showBottom) return@SimpleItem ItemStack(Material.AIR)
-            else return@SimpleItem fixSlotItem!!.first!!
+            else return@SimpleItem repairSlotItem!!.first!!
         }) { click ->
             if (!showBottom) return@SimpleItem // 无显示时不做任何操作
 
@@ -142,7 +142,7 @@ class FirFixTableMenu(
             args["player"] = player
             args["clickType"] = click.clickType.name
             args["event"] = click.event
-            fixSlotItem?.second?.forEach { it.executeIfAllowed(args) }
+            repairSlotItem?.second?.forEach { it.executeIfAllowed(args) }
 
             // 执行修复功能
             val inputItem = inputInventory.items.first() ?: return@SimpleItem
@@ -203,7 +203,7 @@ class FirFixTableMenu(
             .setStructure(Structure(*structureArray))
             .addIngredient(outputSlot, Markers.CONTENT_LIST_SLOT_HORIZONTAL)
             .addIngredient(inputSlot, inputInventory)
-            .addIngredient(fixSlot, confirmBottom)
+            .addIngredient(repairSlot, confirmBottom)
             .addIngredient(previousPageSlot, previousPageBottom)
             .addIngredient(nextPageSlot, nextPageBottom)
             .setContent(repairList) // 翻页内容
@@ -256,11 +256,11 @@ class FirFixTableMenu(
                     itemRepairData.insert(itemRepairTable.apply { isReceived = true })
                     gui.setContent(repairList)
                     player.giveOrDrop(itemRepairTable.repairedItem)
-                    click.player.sendTranslatableComponent(FIXTABLE_REPAIR_ITEM_RECEIVE_SUCCESS)
+                    click.player.sendTranslatableComponent(REPAIR_TABLE_REPAIR_ITEM_RECEIVE_SUCCESS)
                 }
                 // 当装备还在修复中
                 else -> {
-                    click.player.sendTranslatableComponent(FIXTABLE_REPAIR_ITEM_RECEIVE_FAIL)
+                    click.player.sendTranslatableComponent(REPAIR_TABLE_REPAIR_ITEM_RECEIVE_FAIL)
                 }
             }
             true

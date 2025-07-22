@@ -37,5 +37,5 @@ anvil.enchanted.book.use.fail: "<#96f896>[FirEnchant] <#cef8f5>啊哦，附魔�
 anvil.enchanted.book.use.fail.break: "<#96f896>[FirEnchant] <#cef8f5>啊哦，附魔失败了，你的装备破损了！ 不过别担心，你可以在修复桌上修复它！"
 anvil.enchanted.book.use.protect.fail: "<#96f896>[FirEnchant] <#cef8f5>啊哦，附魔失败了，你的装备没有破损，装备上的保护符文被消耗了。"
 
-fixtable.repair_item.receive.success: "<#96f896>[FirEnchant] <#cef8f5>你成功领取了修复的装备。"
-fixtable.repair_item.receive.fail: "<#96f896>[FirEnchant] <#cef8f5>你的装备还在修复中哦~"
+repair_table.repair_item.receive.success: "<#96f896>[FirEnchant] <#cef8f5>你成功领取了修复的装备。"
+repair_table.repair_item.receive.fail: "<#96f896>[FirEnchant] <#cef8f5>你的装备还在修复中哦~"

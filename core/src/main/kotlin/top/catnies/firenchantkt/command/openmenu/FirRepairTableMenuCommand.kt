@@ -9,19 +9,19 @@ import io.papermc.paper.command.brigadier.argument.ArgumentTypes
 import io.papermc.paper.command.brigadier.argument.resolvers.selector.PlayerSelectorArgumentResolver
 import org.bukkit.entity.Player
 import top.catnies.firenchantkt.command.AbstractCommand
-import top.catnies.firenchantkt.config.FixTableConfig
-import top.catnies.firenchantkt.gui.FirFixTableMenu
+import top.catnies.firenchantkt.config.RepairTableConfig
+import top.catnies.firenchantkt.gui.FirRepairTableMenu
 import top.catnies.firenchantkt.language.MessageConstants.COMMAND_CONSOLE_CANT_EXECUTE
 import top.catnies.firenchantkt.language.MessageConstants.PLUGIN_FUNCTION_NOT_ENABLED
 import top.catnies.firenchantkt.util.MessageUtils.sendTranslatableComponent
 
-object FirFixTableMenuCommand: AbstractCommand() {
+object FirRepairTableMenuCommand: AbstractCommand() {
 
-    private const val PERMISSION = "firenchant.command.openmenu.fix-table"
-    private const val PERMISSION_OTHER = "firenchant.command.openmenu.fix-table.other"
+    private const val PERMISSION = "firenchant.command.openmenu.repair-table"
+    private const val PERMISSION_OTHER = "firenchant.command.openmenu.repair-table.other"
 
     override fun create(): LiteralArgumentBuilder<CommandSourceStack> {
-        return Commands.literal("fix-table")
+        return Commands.literal("repair-table")
             .requires { requires(it) }
             .executes { execute(it) }
             .then(Commands.argument("player", ArgumentTypes.player())
@@ -39,7 +39,7 @@ object FirFixTableMenuCommand: AbstractCommand() {
 
     override fun execute(context: CommandContext<CommandSourceStack>): Int {
         // 功能未开启或配置文件存在异常
-        if (!FixTableConfig.instance.ENABLE) {
+        if (!RepairTableConfig.instance.ENABLE) {
             context.source.sender.sendTranslatableComponent(PLUGIN_FUNCTION_NOT_ENABLED, "extract-soul")
             return Command.SINGLE_SUCCESS
         }
@@ -52,7 +52,7 @@ object FirFixTableMenuCommand: AbstractCommand() {
             return Command.SINGLE_SUCCESS
         }
 
-        FirFixTableMenu(player).openMenu(mutableMapOf(), true)
+        FirRepairTableMenu(player).openMenu(mutableMapOf(), true)
         return Command.SINGLE_SUCCESS
     }
 

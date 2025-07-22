@@ -14,7 +14,7 @@ import top.catnies.firenchantkt.api.event.anvil.EnchantedBookPreMergeEvent
 import top.catnies.firenchantkt.api.event.anvil.EnchantedBookPreUseEvent
 import top.catnies.firenchantkt.api.event.anvil.EnchantedBookUseEvent
 import top.catnies.firenchantkt.config.AnvilConfig
-import top.catnies.firenchantkt.config.FixTableConfig
+import top.catnies.firenchantkt.config.RepairTableConfig
 import top.catnies.firenchantkt.context.AnvilContext
 import top.catnies.firenchantkt.database.FirConnectionManager
 import top.catnies.firenchantkt.database.entity.EnchantLogDataTable
@@ -195,7 +195,7 @@ class FirEnchantedBook : EnchantedBook {
 
                 // 没有保护符文
                 else {
-                    if (FixTableConfig.instance.ENABLE) {
+                    if (RepairTableConfig.instance.ENABLE) {
                         anvilView.setItem(0, FirEnchantAPI.toBrokenGear(context.firstItem))
                         context.viewer.sendTranslatableComponent(ANVIL_ENCHANTED_BOOK_USE_FAIL_BREAK)
                     } else context.viewer.sendTranslatableComponent(ANVIL_ENCHANTED_BOOK_USE_FAIL)

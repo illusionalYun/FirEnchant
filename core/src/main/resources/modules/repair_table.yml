@@ -37,7 +37,7 @@ menu-setting:
       - "&7左键: 取走物品"
   # 确认修复按钮
   # 当放入可修复物品在菜单时, 按钮亮起时显示的内容
-  fix-bottom:
+  repair-bottom:
     slot: 'C'
     hooked-plugin: "Vanilla"
     hooked-id: PAPER
@@ -95,6 +95,63 @@ menu-setting:
       click-actions:
         - type: play_sound      # 点击音效
           sound: "ui.button.click"
+
+
+
+# 物品放入修复桌修复, 总是要付出一些代价的嘛;
+# 放入不同的物品, 需要花费不同的时间, 这个规则需要指定.
+# 不同的破损装备可以设计需要花费不同的时间, 例如携带魔咒更多的装备在修复时需要更多的时间才可以完成;
+repair-rule:
+  # 可选项：
+  # 1. 固定花费 "static"
+  # 2. 根据破损的物品上的附魔等级之和计算 "level", 例如锋利3+耐久2的剑, 记为5分;
+  # 3. 根据物品上附魔的数量计算 "count", 例如锋利3+耐久2的剑, 记为2分;
+  time-rule:
+    rule: "static"
+    rules:
+      # 固定花费配置 (秒)
+      static:
+        time: 600
+      # 等级和计算, 每级需要多少时间(秒), 如果没有魔咒, 则使用 fallback 设置的时间;
+      level:
+        time: 600
+        fallback: 450
+      # 魔咒数量和计算, 每个魔咒需要多少时间(秒), 如果没有魔咒, 则使用 fallback 设置的时间;
+      count:
+        time: 600
+        fallback: 450
+
+  # 正在修复队列中的装备, 允许玩家可以花费一定的货币和等级立刻完成;
+  quick-repair:
+    hooked-plugin: "Vault" # 使用哪个插件的货币? 支持 "Vault", "CoinEngine"
+    hooked-type: "ruby"    # 使用的插件的具体货币名称(如果有)
+    money:
+      pre-minute: 10    # 每剩余一分钟需要多少金币? (可填小数, 余数舍弃, 不足1向上补到1)
+      max-limited: 2000 # 最大金币上限
+      min-limited: 10   # 最小消耗金币
+    exp:
+      pre-minute: 0.5   # 每剩余一分钟需要多少经验等级? (可填小数, 余数舍弃, 不足1向上补到1)
+      max-limited: 2000 # 最大等级上限
+      min-limited: 10   # 最小消耗等级
+    click-actions:      # 在玩家使用金币和经验快速修复时, 还可以执行一些额外的操作, 例如播放音效, 发送消息等.
+      - type: play_sound      # 点击音效
+        sound: "ui.button.click"
+
+  # 优惠规则, 你可以为VIP或符合条件的玩家设置折扣;
+  # 需要注意的是, 检查会从上到下依次检查, 会在第一个符合条件的规则处停止, 你需要将优先级高的/折扣力度大的规则写在前面.
+  vip-cost:
+    # 权限组，可以加若干个
+    svip-group:
+      permission: firenchant.svip # 玩家拥有权限
+      time-magnification: 0.5     # 时间折扣, 如果玩家有firenchant.vip权限，那么修复物品的时间只需要设定的50%.
+      money-magnification: 0.5    # 金币折扣, 注意这项会和时间叠加, 那么计算出来的时间花费本身就打折了, 如你不希望有折扣, 可以设置更大值抵消折扣.
+      exp-magnification: 0.5      # 等级折扣, 注意这项会和时间叠加.
+    vip-group:
+      permission: firenchant.vip
+      time-magnification: 0.5
+      money-magnification: 1.0
+      exp-magnification: 1.0
+
 
 
 # 物品破损后, 物品的模型会发生变更.你需要指定物品破损之后的模型应该长什么样.
