@@ -51,8 +51,6 @@ public class FirEnchantPluginLoader implements PluginLoader {
         resolver.addDependency(new Dependency(new DefaultArtifact("org.jetbrains.kotlin:kotlin-reflect:" + KOTLIN), null));
         resolver.addDependency(new Dependency(new DefaultArtifact("org.jetbrains.kotlinx:kotlinx-coroutines-core:" + KOTLINX_COROUTINES), null));
         resolver.addDependency(new Dependency(new DefaultArtifact("org.jetbrains.kotlinx:kotlinx-coroutines-jdk9:" + KOTLINX_COROUTINES), null));
-//        resolver.addDependency(new Dependency(new DefaultArtifact("com.github.shynixn.mccoroutine:mccoroutine-bukkit-api:2.22.0"), null));
-//        resolver.addDependency(new Dependency(new DefaultArtifact("com.github.shynixn.mccoroutine:mccoroutine-bukkit-core:2.22.0"), null));
 
         // RTag
         resolver.addDependency(new Dependency(new DefaultArtifact("com.saicone.rtag:rtag:" + RTAG), null));

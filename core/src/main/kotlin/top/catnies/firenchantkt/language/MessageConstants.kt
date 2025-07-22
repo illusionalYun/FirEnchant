@@ -38,4 +38,7 @@ object MessageConstants {
     const val ANVIL_ENCHANTED_BOOK_USE_FAIL = "anvil.enchanted.book.use.fail"
     const val ANVIL_ENCHANTED_BOOK_USE_FAIL_BREAK = "anvil.enchanted.book.use.fail.break"
     const val ANVIL_ENCHANTED_BOOK_USE_PROTECT_FAIL = "anvil.enchanted.book.use.protect.fail"
+
+    const val FIXTABLE_REPAIR_ITEM_RECEIVE_SUCCESS = "fixtable.repair_item.receive.success"
+    const val FIXTABLE_REPAIR_ITEM_RECEIVE_FAIL = "fixtable.repair_item.receive.fail"
 }

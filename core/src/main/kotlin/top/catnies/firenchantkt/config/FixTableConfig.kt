@@ -41,13 +41,13 @@ class FixTableConfig private constructor():
     var MENU_OUTPUT_COMPLETED_ADDITION_LORE: List<String> by ConfigProperty(mutableListOf())
 
     var MENU_FIX_SLOT: Char by ConfigProperty('C')
-    var MENU_FIX_SLOT_ITEM: ItemStack? by ConfigProperty(null)
+    var MENU_FIX_SLOT_ITEM: Pair<ItemStack?, List<ConfigActionTemplate>>? by ConfigProperty(null)
 
     var MENU_PREPAGE_SLOT: Char by ConfigProperty('P')
-    var MENU_PREPAGE_SLOT_ITEM: ItemStack? by ConfigProperty(null)
+    var MENU_PREPAGE_SLOT_ITEM: Pair<ItemStack?, List<ConfigActionTemplate>>? by ConfigProperty(null)
 
     var MENU_NEXTPAGE_SLOT: Char by ConfigProperty('N')
-    var MENU_NEXTPAGE_SLOT_ITEM: ItemStack? by ConfigProperty(null)
+    var MENU_NEXTPAGE_SLOT_ITEM: Pair<ItemStack?, List<ConfigActionTemplate>>? by ConfigProperty(null)
 
     var MENU_CUSTOM_ITEMS: Map<Char, Pair<ItemStack?, List<ConfigActionTemplate>>> by ConfigProperty(emptyMap())
 
@@ -83,16 +83,38 @@ class FixTableConfig private constructor():
 
             MENU_FIX_SLOT = config().getString("menu-setting.fix-bottom.slot", "C")?.first() ?: 'C'
             MENU_FIX_SLOT_ITEM = config().getConfigurationSection("menu-setting.fix-bottom")?.let { section ->
-                ConfigParser.parseItemFromConfig(section, fileName, "menu-setting.fix-bottom") }
+                // 使用节点构建物品
+                val itemStack = ConfigParser.parseItemFromConfig(section, fileName, "menu-setting.fix-bottom")
+                // 获取动作节点, 解析动作
+                val actionList = section.getConfigurationSectionList("click-actions")
+                val actionTemplates = actionList.mapNotNull {
+                    actionNode -> ConfigParser.parseActionTemplate(actionNode, fileName, "menu-setting.fix-bottom.click-actions")
+                }
+                itemStack to actionTemplates
+            }
 
             MENU_PREPAGE_SLOT = config().getString("menu-setting.previous-page.slot", "P")?.first() ?: 'P'
             MENU_PREPAGE_SLOT_ITEM = config().getConfigurationSection("menu-setting.previous-page")?.let { section ->
-                ConfigParser.parseItemFromConfig(section, fileName, "menu-setting.previous-page")
+                // 使用节点构建物品
+                val itemStack = ConfigParser.parseItemFromConfig(section, fileName, "menu-setting.previous-page")
+                // 获取动作节点, 解析动作
+                val actionList = section.getConfigurationSectionList("click-actions")
+                val actionTemplates = actionList.mapNotNull {
+                        actionNode -> ConfigParser.parseActionTemplate(actionNode, fileName, "menu-setting.previous-page.click-actions")
+                }
+                itemStack to actionTemplates
             }
 
             MENU_NEXTPAGE_SLOT = config().getString("menu-setting.next-page.slot", "N")?.first() ?: 'N'
             MENU_NEXTPAGE_SLOT_ITEM = config().getConfigurationSection("menu-setting.next-page")?.let { section ->
-                ConfigParser.parseItemFromConfig(section, fileName, "menu-setting.next-page")
+                // 使用节点构建物品
+                val itemStack = ConfigParser.parseItemFromConfig(section, fileName, "menu-setting.next-page")
+                // 获取动作节点, 解析动作
+                val actionList = section.getConfigurationSectionList("click-actions")
+                val actionTemplates = actionList.mapNotNull {
+                        actionNode -> ConfigParser.parseActionTemplate(actionNode, fileName, "menu-setting.next-page.click-actions")
+                }
+                itemStack to actionTemplates
             }
 
             // 读取配置文件, 尝试构建物品, 尝试构建点击逻辑链并缓存.

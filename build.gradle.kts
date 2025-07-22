@@ -55,14 +55,13 @@ allprojects {
         compileOnly(rootProject.libs.bundles.kotlin) // Kotlin Bundles
         compileOnly(rootProject.libs.lombok) // Lombok
         annotationProcessor(rootProject.libs.lombok) // Lombok
-
         // 数据库
         compileOnly(rootProject.libs.bundles.mysql) // Mysql Bundles
-
         // 依赖库
-        compileOnly(rootProject.libs.bundles.rtag) // RTag
-        compileOnly(rootProject.libs.placeholderapi) // PlaceholderAPI
+        compileOnly(rootProject.libs.bundles.rtag) // RTag Bundles
         implementation(rootProject.libs.mhdf.scheduler) // Scheduler
+        // 兼容
+        compileOnly(rootProject.libs.placeholderapi) // PlaceholderAPI
     }
 }
 

@@ -53,27 +53,27 @@ class ItemBuilder private constructor() {
         return this
     }
 
-    fun setColor(alpine: Int = 1, red: Int, green: Int, blue: Int, shownInTooltip: Boolean = true): ItemBuilder {
-        this.item.setData(DataComponentTypes.DYED_COLOR, DyedItemColor.dyedItemColor(Color.fromARGB(alpine, red, green, blue), shownInTooltip))
-        return this
-    }
-
-    fun setFireworkStarColor(
-        alpine: Int = 1, red: Int, green: Int, blue: Int,
-        fadeAlpine: Int = 1, fadeRed : Int = red, fadeGreen: Int = green, fadeBlue: Int = blue,
-        trail: Boolean = false, twinkle: Boolean = false, shape: FireworkEffect.Type = FireworkEffect.Type.STAR
-    ): ItemBuilder {
-        if (this.item.type != Material.FIREWORK_STAR) return this
-        this.item.setData(DataComponentTypes.FIREWORK_EXPLOSION, FireworkEffect.builder()
-            .withColor(Color.fromARGB(alpine, red, green, blue))
-            .withFade(Color.fromARGB(fadeAlpine, fadeRed, fadeGreen, fadeBlue))
-            .trail(trail)
-            .flicker(twinkle)
-            .with(shape)
-            .build()
-        )
-        return this
-    }
+//    fun setColor(alpine: Int = 1, red: Int, green: Int, blue: Int, shownInTooltip: Boolean = true): ItemBuilder {
+//        this.item.setData(DataComponentTypes.DYED_COLOR, DyedItemColor.dyedItemColor(Color.fromARGB(alpine, red, green, blue), shownInTooltip))
+//        return this
+//    }
+//
+//    fun setFireworkStarColor(
+//        alpine: Int = 1, red: Int, green: Int, blue: Int,
+//        fadeAlpine: Int = 1, fadeRed : Int = red, fadeGreen: Int = green, fadeBlue: Int = blue,
+//        trail: Boolean = false, twinkle: Boolean = false, shape: FireworkEffect.Type = FireworkEffect.Type.STAR
+//    ): ItemBuilder {
+//        if (this.item.type != Material.FIREWORK_STAR) return this
+//        this.item.setData(DataComponentTypes.FIREWORK_EXPLOSION, FireworkEffect.builder()
+//            .withColor(Color.fromARGB(alpine, red, green, blue))
+//            .withFade(Color.fromARGB(fadeAlpine, fadeRed, fadeGreen, fadeBlue))
+//            .trail(trail)
+//            .flicker(twinkle)
+//            .with(shape)
+//            .build()
+//        )
+//        return this
+//    }
 
     fun setDurability(value: Int): ItemBuilder {
         this.item.setData(DataComponentTypes.DAMAGE, value)

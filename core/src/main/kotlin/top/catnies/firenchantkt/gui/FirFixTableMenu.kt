@@ -1,8 +1,6 @@
 package top.catnies.firenchantkt.gui
 
 import io.papermc.paper.datacomponent.DataComponentTypes
-import io.papermc.paper.datacomponent.item.ItemLore
-import kotlinx.coroutines.time.delay
 import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
@@ -11,17 +9,20 @@ import top.catnies.firenchantkt.config.FixTableConfig
 import top.catnies.firenchantkt.database.FirConnectionManager
 import top.catnies.firenchantkt.database.dao.ItemRepairData
 import top.catnies.firenchantkt.database.entity.ItemRepairTable
+import top.catnies.firenchantkt.engine.RunSource
 import top.catnies.firenchantkt.item.fixtable.FirBrokenGear
+import top.catnies.firenchantkt.language.MessageConstants.FIXTABLE_REPAIR_ITEM_RECEIVE_FAIL
+import top.catnies.firenchantkt.language.MessageConstants.FIXTABLE_REPAIR_ITEM_RECEIVE_SUCCESS
 import top.catnies.firenchantkt.util.ItemUtils.deserializeFromBytes
 import top.catnies.firenchantkt.util.ItemUtils.nullOrAir
 import top.catnies.firenchantkt.util.ItemUtils.replacePlaceholder
 import top.catnies.firenchantkt.util.ItemUtils.serializeToBytes
-import top.catnies.firenchantkt.util.MessageUtils
 import top.catnies.firenchantkt.util.MessageUtils.renderToComponent
+import top.catnies.firenchantkt.util.MessageUtils.sendTranslatableComponent
+import top.catnies.firenchantkt.util.PlayerUtils.giveOrDrop
 import top.catnies.firenchantkt.util.PlayerUtils.giveOrDropList
 import top.catnies.firenchantkt.util.TaskUtils
 import xyz.xenondevs.inventoryaccess.component.AdventureComponentWrapper
-import xyz.xenondevs.invui.gui.Gui
 import xyz.xenondevs.invui.gui.PagedGui
 import xyz.xenondevs.invui.gui.structure.Markers
 import xyz.xenondevs.invui.gui.structure.Structure
@@ -70,8 +71,8 @@ class FirFixTableMenu(
     lateinit var window: Window
     lateinit var inputInventory: VirtualInventory
     lateinit var confirmBottom: SimpleItem
-    lateinit var previousPageBottom: PageItem
-    lateinit var nextPageBottom: PageItem
+    lateinit var previousPageBottom: MenuPageItem
+    lateinit var nextPageBottom: MenuPageItem
 
     var closeHandlers: MutableList<Runnable> = mutableListOf() // 关闭菜单时触发
     var showBottom: Boolean = false
@@ -110,7 +111,7 @@ class FirFixTableMenu(
             val isInputBrokenGear = brokenGear.isBrokenGear(event.newItem)
             when {
                 (event.isAdd || event.isSwap) && isInputBrokenGear -> {
-                    TaskUtils.runAsyncTasksLater({ window.changeTitle(titleAccept) }, delay = 1L)
+                    TaskUtils.runAsyncTasksLater({ window.changeTitle(titleAccept) }, delay = 1L) // 延迟刷新标题, 否则可能会把物品刷新给覆盖掉.
                     showBottom = true
                     confirmBottom.notifyWindows()
                 }
@@ -131,54 +132,64 @@ class FirFixTableMenu(
     private fun buildConfirmItem() {
         confirmBottom = SimpleItem({ s: String? ->
             if (!showBottom) return@SimpleItem ItemStack(Material.AIR)
-            else return@SimpleItem fixSlotItem!!
+            else return@SimpleItem fixSlotItem!!.first!!
         }) { click ->
-            /* 执行修复功能 */
+            if (!showBottom) return@SimpleItem // 无显示时不做任何操作
+
+            // 执行动作
+            val args = mutableMapOf<String, Any?>()
+            args["checkSource"] = RunSource.MENUCLICK
+            args["player"] = player
+            args["clickType"] = click.clickType.name
+            args["event"] = click.event
+            fixSlotItem?.second?.forEach { it.executeIfAllowed(args) }
+
+            // 执行修复功能
             val inputItem = inputInventory.items.first() ?: return@SimpleItem
             if (!brokenGear.isBrokenGear(inputItem)) return@SimpleItem
 
-            val repairTime = 600 * 1000L // TODO 计算物品修复时间
+            // TODO 计算物品修复时间
+            val repairTime = 600 * 1000L
             val repairTable = ItemRepairTable(player.uniqueId, inputItem.serializeToBytes(), repairTime)
-            itemRepairData.insert(repairTable)
+
             // 将物品删除
             inputInventory.removeIf(UpdateReason.SUPPRESSED) { !it.nullOrAir() }
             // 插入队列, 刷新队列
             addDataToRepairList(repairTable)
+            itemRepairData.insert(repairTable)
             gui.setContent(repairList)
             // 刷新自己
+            showBottom = false
             confirmBottom.notifyWindows()
         }
     }
 
     // 上一页 和 下一页
     private fun buildPageItem() {
-        previousPageBottom = object :PageItem(false) {
-            override fun getItemProvider(gui: PagedGui<*>): ItemProvider {
-                if (gui.currentPage == 0) return ItemBuilder.EMPTY
+        previousPageBottom = MenuPageItem(false, previousPageItem!!.second) { s ->
+            if (gui.currentPage == 0) return@MenuPageItem ItemStack.empty()
 
-                val itemStack = previousPageItem!!.clone()
-                itemStack.replacePlaceholder(mutableMapOf(
-                    "currentPage" to "${gui.currentPage}",
-                    "pageAmount" to "${gui.pageAmount}",
-                    "previousPage" to "${max(0, gui.currentPage - 1)}",
-                    "nextPage" to "${min(gui.pageAmount, gui.currentPage + 1)}"
-                ))
-                return ItemBuilder(itemStack)
-            }
+            val itemStack = previousPageItem.first!!.clone()
+            itemStack.replacePlaceholder(mutableMapOf(
+                "currentPage" to "${gui.currentPage}",
+                "pageAmount" to "${gui.pageAmount}",
+                "previousPage" to "${max(0, gui.currentPage - 1)}",
+                "nextPage" to "${min(gui.pageAmount, gui.currentPage + 1)}"
+            ))
+            return@MenuPageItem itemStack
         }
-        nextPageBottom = object :PageItem(true) {
-            override fun getItemProvider(gui: PagedGui<*>): ItemProvider {
-                if (gui.currentPage == gui.pageAmount - 1) return ItemBuilder.EMPTY
 
-                val itemStack = nextPageItem!!.clone()
-                itemStack.replacePlaceholder(mutableMapOf(
-                    "currentPage" to "${gui.currentPage}",
-                    "pageAmount" to "${gui.pageAmount}",
-                    "previousPage" to "${max(0, gui.currentPage - 1)}",
-                    "nextPage" to "${min(gui.pageAmount, gui.currentPage + 1)}"
-                ))
-                return ItemBuilder(itemStack)
-            }
+        nextPageBottom = MenuPageItem(true, nextPageItem!!.second) { s ->
+            if (gui.currentPage == gui.pageAmount - 1) return@MenuPageItem ItemStack.empty()
+
+            val itemStack = nextPageItem.first!!.clone()
+            itemStack.replacePlaceholder(mutableMapOf(
+                "currentPage" to "${gui.currentPage}",
+                "pageAmount" to "${gui.pageAmount}",
+                "previousPage" to "${max(0, gui.currentPage - 1)}",
+                "nextPage" to "${min(gui.pageAmount, gui.currentPage + 1)}"
+            ))
+            return@MenuPageItem itemStack
         }
     }
 
@@ -191,8 +202,7 @@ class FirFixTableMenu(
             .addIngredient(fixSlot, confirmBottom)
             .addIngredient(previousPageSlot, previousPageBottom)
             .addIngredient(nextPageSlot, nextPageBottom)
-            // 翻页内容
-            .setContent(repairList)
+            .setContent(repairList) // 翻页内容
             // 自定义物品
             .also {
                 customItems.filter { customItem -> getMarkCount(customItem.key) > 0 }
@@ -224,7 +234,7 @@ class FirFixTableMenu(
         activeData.forEach { addDataToRepairList(it) }
     }
 
-    // 往修复队列里添加新的数据
+    // 往修复队列里添加新的数据, 并上传更新数据库
     private fun addDataToRepairList(itemRepairTable: ItemRepairTable) {
         if (itemRepairTable.isReceived) return
 
@@ -233,14 +243,21 @@ class FirFixTableMenu(
         if (itemRepairTable.isCompleted) builder.addLoreLines(completedAdditionLores.map { line -> AdventureComponentWrapper(line.renderToComponent())})
         else builder.addLoreLines(activeAdditionLores.map { line -> AdventureComponentWrapper(line.renderToComponent())})
         val autoUpdateItem = MenuRepairItem(itemRepairTable, outputUpdateTime, originItem, builder, { click ->
-            // TODO 检查物品状态是完成or未完成
-            if (itemRepairTable.isReceived) return@MenuRepairItem true
-            if (itemRepairTable.isCompleted) {
-                click.player.sendMessage("wocao 77777788888, 完成了!")
-                // TODO 给予物品
-            }
-            else {
-                click.player.sendMessage("wocao 77777788888, 还在修!")
+            when {
+                // 当装备已经被领取
+                itemRepairTable.isReceived -> return@MenuRepairItem true
+                // 当装备修复完成
+                itemRepairTable.isCompleted -> {
+                    removeDataFromRepairList(itemRepairTable)
+                    itemRepairData.insert(itemRepairTable.apply { isReceived = true })
+                    gui.setContent(repairList)
+                    player.giveOrDrop(itemRepairTable.repairedItem)
+                    click.player.sendTranslatableComponent(FIXTABLE_REPAIR_ITEM_RECEIVE_SUCCESS)
+                }
+                // 当装备还在修复中
+                else -> {
+                    click.player.sendTranslatableComponent(FIXTABLE_REPAIR_ITEM_RECEIVE_FAIL)
+                }
             }
             true
         })

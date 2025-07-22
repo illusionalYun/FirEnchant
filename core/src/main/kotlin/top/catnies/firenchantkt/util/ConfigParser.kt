@@ -49,10 +49,10 @@ object ConfigParser {
         section.getString("item-model")?.let { builder.setItemModel(it) }
         section.getDouble("custom-model-data").let { builder.setCustomModelData(it.toFloat()) }
         section.getInt("amount", 1).let { builder.setAmount(it) }
-        section.getConfigurationSection("dyed-color")?.let {
-            builder.setColor(it.getInt("alpine", 1), it.getInt("red"), it.getInt("green"), it.getInt("blue")) }
-        section.getConfigurationSection("firework-color")?.let {
-            builder.setFireworkStarColor(it.getInt("alpine", 1), it.getInt("red"), it.getInt("green"), it.getInt("blue")) }
+//        section.getConfigurationSection("dyed-color")?.let {
+//            builder.setColor(it.getInt("alpine", 1), it.getInt("red"), it.getInt("green"), it.getInt("blue")) }
+//        section.getConfigurationSection("firework-color")?.let {
+//            builder.setFireworkStarColor(it.getInt("alpine", 1), it.getInt("red"), it.getInt("green"), it.getInt("blue")) }
         section.getString("durability")?.let { builder.setDurability(section.getInt("durability")) }
         return builder.build()
     }
@@ -71,7 +71,6 @@ object ConfigParser {
             .filter { it != "conditions" }
             .associateWith { config.get(it)!! }
             .toMutableMap()
-
 
         // 解析条件
         val conditions = config.getConfigurationSectionList("conditions")
