@@ -1,5 +1,7 @@
 package top.catnies.firenchantkt.gui
 
+import io.papermc.paper.datacomponent.DataComponentTypes
+import io.papermc.paper.datacomponent.item.ItemLore
 import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
@@ -31,6 +33,7 @@ import xyz.xenondevs.invui.gui.structure.Structure
 import xyz.xenondevs.invui.inventory.VirtualInventory
 import xyz.xenondevs.invui.inventory.event.UpdateReason
 import xyz.xenondevs.invui.item.Item
+import xyz.xenondevs.invui.item.ItemProvider
 import xyz.xenondevs.invui.item.builder.ItemBuilder
 import xyz.xenondevs.invui.item.impl.SimpleItem
 import xyz.xenondevs.invui.window.Window
@@ -242,11 +245,30 @@ class FirRepairTableMenu(
     private fun addDataToRepairList(itemRepairTable: ItemRepairTable) {
         if (itemRepairTable.isReceived) return
 
+        // 创建 ItemProvider
         val originItem = itemRepairTable.itemData.deserializeFromBytes()
-        val builder = ItemBuilder(originItem)
-        if (itemRepairTable.isCompleted) builder.addLoreLines(completedAdditionLores.map { line -> AdventureComponentWrapper(line.renderToComponent())})
-        else builder.addLoreLines(activeAdditionLores.map { line -> AdventureComponentWrapper(line.renderToComponent())})
-        val autoUpdateItem = MenuRepairItem(itemRepairTable, outputUpdateTime, originItem, builder, { click ->
+        val itemProvider = ItemProvider { _ ->
+            val itemStack = originItem.clone()
+            val resultLore = itemStack.getData(DataComponentTypes.LORE)?.lines()?.toMutableList()
+            if (itemRepairTable.isCompleted) {
+                val components = completedAdditionLores.map { line -> line.renderToComponent(player) }
+                val lore = ItemLore.lore().let { builder ->
+                    resultLore?.let { builder.addLines(it) }
+                    builder.addLines(components).build()
+                }
+                itemStack.apply { setData(DataComponentTypes.LORE, lore) }
+            } else {
+                val components = activeAdditionLores.map { line -> line.renderToComponent(player, mapOf("cost_time" to "${itemRepairTable.getRemainingTime()/1000}")) }
+                val lore = ItemLore.lore().let { builder ->
+                    resultLore?.let { builder.addLines(it) }
+                    builder.addLines(components).build()
+                }
+                itemStack.apply { setData(DataComponentTypes.LORE, lore) }
+            }
+        }
+
+        // 构建物品
+        val autoUpdateItem = MenuRepairItem(itemRepairTable, outputUpdateTime, originItem, itemProvider, { click ->
             when {
                 // 当装备已经被领取
                 itemRepairTable.isReceived -> return@MenuRepairItem true

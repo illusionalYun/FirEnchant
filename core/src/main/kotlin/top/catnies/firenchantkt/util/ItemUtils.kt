@@ -3,10 +3,9 @@ package top.catnies.firenchantkt.util
 import com.saicone.rtag.item.ItemTagStream
 import io.papermc.paper.datacomponent.DataComponentTypes
 import io.papermc.paper.datacomponent.item.ItemLore
-import net.kyori.adventure.text.Component
-import net.kyori.adventure.text.TextComponent
 import org.bukkit.enchantments.Enchantment
 import org.bukkit.inventory.ItemStack
+import top.catnies.firenchantkt.util.MessageUtils.replacePlaceholders
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.contract
 
@@ -59,7 +58,7 @@ object ItemUtils {
     fun ItemStack.replacePlaceholder(args: Map<String, String>) {
         // 处理物品名称
         getData(DataComponentTypes.ITEM_NAME)?.let { nameComponent ->
-            val replacedName = replaceComponentPlaceholders(nameComponent, args)
+            val replacedName = nameComponent.replacePlaceholders(args)
             setData(DataComponentTypes.ITEM_NAME, replacedName)
         }
 
@@ -68,41 +67,12 @@ object ItemUtils {
             val loreBuilder = ItemLore.lore()
 
             itemLore.lines().forEach { line ->
-                val replacedLine = replaceComponentPlaceholders(line, args)
+                val replacedLine = line.replacePlaceholders(args)
                 loreBuilder.addLine(replacedLine)
             }
 
             setData(DataComponentTypes.LORE, loreBuilder.build())
         }
-    }
-
-    // 递归替换 Component 中的占位符
-    private fun replaceComponentPlaceholders(component: Component, args: Map<String, String>): Component {
-        return when (component) {
-            is TextComponent -> {
-                // 获取文本内容并替换占位符
-                val content = component.content().replacePlaceholders(args)
-                // 创建新的 TextComponent
-                Component.text(content)
-                    .style(component.style()) // 保留原有样式
-                    .children(component.children().map { replaceComponentPlaceholders(it, args) }) // 递归处理子组件
-            }
-            else -> {
-                // 对于其他类型的组件，只处理子组件
-                component.children(component.children().map { replaceComponentPlaceholders(it, args) })
-            }
-        }
-    }
-
-    // 替换String中的占位符
-    private fun String.replacePlaceholders(args: Map<String, String>): String {
-        // 依次对args的每个entry进行处理.
-        return args.entries.fold(this) {acc, (key, value) -> acc.replace("\${$key}", value) }
-    }
-
-    // 替换String列表中的占位符
-    private fun List<String>.replacePlaceholders(list: List<String>, args: Map<String, String>): List<String> {
-        return list.map { it.replacePlaceholders(args) }
     }
 
 }
