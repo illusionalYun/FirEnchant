@@ -68,7 +68,6 @@ invui-access-r22 = { module = "xyz.xenondevs.invui:inventory-access-r22",  versi
 invui-access-r23 = { module = "xyz.xenondevs.invui:inventory-access-r23",  version.ref = "invui" }
 invui-access-r24 = { module = "xyz.xenondevs.invui:inventory-access-r24",  version.ref = "invui" }
 
-
 # Compatibility
 nexo = { module = "com.nexomc:nexo", version.ref = "nexo" }
 oraxen = { module = "io.th0rgal:oraxen", version.ref = "oraxen" }

@@ -18,6 +18,7 @@ class IntegrationManager private constructor() {
     }
 
     val hasAuraSkills: Boolean = Bukkit.getPluginManager().getPlugin("AuraSkills") != null
+    val hasCoinEngine: Boolean = Bukkit.getPluginManager().getPlugin("CoinEngine") != null
     val hasEnchantmentSlots: Boolean = Bukkit.getPluginManager().getPlugin("EnchantmentSlots") != null
     val hasPlaceholderAPI: Boolean = Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null
 
@@ -25,6 +26,10 @@ class IntegrationManager private constructor() {
         // AuraSkills
         if (hasAuraSkills) {
             sendPluginHookedMessage("AuraSkills")
+        }
+        // CoinEngine
+        if (hasCoinEngine) {
+            sendPluginHookedMessage("CoinEngine")
         }
         // EnchantmentSlots
         if (hasEnchantmentSlots) {
