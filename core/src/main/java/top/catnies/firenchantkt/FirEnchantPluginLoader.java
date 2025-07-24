@@ -38,7 +38,6 @@ public class FirEnchantPluginLoader implements PluginLoader {
     @Override
     public void classloader(PluginClasspathBuilder classpathBuilder) {
         loadVersionProperties(classpathBuilder);
-        readVersionProperties();
 
         // Repository
         MavenLibraryResolver resolver = new MavenLibraryResolver();
@@ -85,29 +84,20 @@ public class FirEnchantPluginLoader implements PluginLoader {
                      BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream))
                 {
                     versionProperties.load(bufferedInputStream); // 读取文件内容
-//                    System.out.println("Successfully loaded " + versionProperties.size() + "dependency versions from jar");
-//                    versionProperties.forEach((key, value) -> System.out.println("Loaded dependency: " + key + " version is " + value));
+                    // Main
+                    PROJECT_VERSION = versionProperties.getProperty("project.version");
+                    CENTRAL_REPOSITORY = versionProperties.getProperty("repository.central");
+                    // Develop
+                    KOTLIN = versionProperties.getProperty("kotlin.version");
+                    KOTLINX_COROUTINES = versionProperties.getProperty("kotlinx-coroutines.version");
+                    // Database
+                    ORMLITE = versionProperties.getProperty("ormlite.version");
+                    HIKARICP = versionProperties.getProperty("hikaricp.version");
+                    // Library
+                    RTAG = versionProperties.getProperty("rtag.version");
+                    INVUI = versionProperties.getProperty("invui.version");
                 }
             }
         }
     }
-
-    // 读取版本信息
-    private void readVersionProperties() {
-        PROJECT_VERSION = versionProperties.getProperty("project.version");
-        CENTRAL_REPOSITORY = versionProperties.getProperty("repository.central");
-
-        // Develop
-        KOTLIN = versionProperties.getProperty("kotlin.version");
-        KOTLINX_COROUTINES = versionProperties.getProperty("kotlinx-coroutines.version");
-
-        // Database
-        ORMLITE = versionProperties.getProperty("ormlite.version");
-        HIKARICP = versionProperties.getProperty("hikaricp.version");
-
-        // Library
-        RTAG = versionProperties.getProperty("rtag.version");
-        INVUI = versionProperties.getProperty("invui.version");
-    }
-
 }
