@@ -5,6 +5,7 @@ import org.bukkit.inventory.ItemStack
 import top.catnies.firenchantkt.engine.ConfigActionTemplate
 import top.catnies.firenchantkt.item.fixtable.BrokenMatchRule
 import top.catnies.firenchantkt.language.MessageConstants.RESOURCE_MENU_STRUCTURE_ERROR
+import top.catnies.firenchantkt.language.MessageConstants.RESOURCE_VALUE_INVALID_ERROR
 import top.catnies.firenchantkt.util.ConfigParser
 import top.catnies.firenchantkt.util.ItemUtils.nullOrAir
 import top.catnies.firenchantkt.util.MessageUtils.sendTranslatableComponent
@@ -29,44 +30,50 @@ class RepairTableConfig private constructor():
     var ENABLE: Boolean by ConfigProperty(false)
 
     /*菜单设置*/
-    var MENU_TITLE_DENY: String by ConfigProperty("Repair DENY Menu")
-    var MENU_TITLE_ACCEPT: String by ConfigProperty("Repair ACCEPT Menu")
-    var MENU_STRUCTURE_ARRAY: Array<String> by ConfigProperty(fallbackMenuStructure)
+    var MENU_TITLE_DENY: String by ConfigProperty("Repair DENY Menu")                   // 还没有放入任何可修复物品时的菜单标题
+    var MENU_TITLE_ACCEPT: String by ConfigProperty("Repair ACCEPT Menu")               // 放入了合法的可修复物品时的菜单标题
+    var MENU_STRUCTURE_ARRAY: Array<String> by ConfigProperty(fallbackMenuStructure)    // 菜单结构
     var MENU_INPUT_SLOT: Char by ConfigProperty('I')
 
-    var MENU_OUTPUT_SLOT: Char by ConfigProperty('O')
-    var MENU_OUTPUT_ARRAY_SIZE: Int by ConfigProperty(5)
-    var MENU_OUTPUT_UPDATE_TIME: Int by ConfigProperty(20)
-    var MENU_OUTPUT_ACTIVE_ADDITION_LORE: List<String> by ConfigProperty(mutableListOf())
-    var MENU_OUTPUT_COMPLETED_ADDITION_LORE: List<String> by ConfigProperty(mutableListOf())
+    var MENU_OUTPUT_SLOT: Char by ConfigProperty('O')                                       // 输出槽位
+    var MENU_OUTPUT_ARRAY_SIZE: Int by ConfigProperty(5)                                    // 输出列表尺寸
+    var MENU_OUTPUT_ARRAY_SIZE_RULE: Map<String, Int> by ConfigProperty(emptyMap())         // 输出列表尺寸列表
+    var MENU_OUTPUT_UPDATE_TIME: Int by ConfigProperty(20)                                  // 输出列表刷新间隔
+    var MENU_OUTPUT_ACTIVE_ADDITION_LORE: List<String> by ConfigProperty(mutableListOf())   // 正在修复的物品的附加描述
+    var MENU_OUTPUT_COMPLETED_ADDITION_LORE: List<String> by ConfigProperty(mutableListOf())// 已完成修复的物品的附加描述
 
-    var MENU_REPAIR_SLOT: Char by ConfigProperty('C')
-    var MENU_REPAIR_SLOT_ITEM: Pair<ItemStack?, List<ConfigActionTemplate>>? by ConfigProperty(null)
+    var MENU_REPAIR_SLOT: Char by ConfigProperty('C')                                                       // 按钮槽位
+    var MENU_REPAIR_SLOT_ITEM: Pair<ItemStack?, List<ConfigActionTemplate>>? by ConfigProperty(null)        // 按钮槽位物品
 
-    var MENU_PREPAGE_SLOT: Char by ConfigProperty('P')
-    var MENU_PREPAGE_SLOT_ITEM: Pair<ItemStack?, List<ConfigActionTemplate>>? by ConfigProperty(null)
+    var MENU_PREPAGE_SLOT: Char by ConfigProperty('P')                                                      // 上一页槽位
+    var MENU_PREPAGE_SLOT_ITEM: Pair<ItemStack?, List<ConfigActionTemplate>>? by ConfigProperty(null)       // 上一页槽位物品
 
-    var MENU_NEXTPAGE_SLOT: Char by ConfigProperty('N')
-    var MENU_NEXTPAGE_SLOT_ITEM: Pair<ItemStack?, List<ConfigActionTemplate>>? by ConfigProperty(null)
+    var MENU_NEXTPAGE_SLOT: Char by ConfigProperty('N')                                                     // 下一页槽位
+    var MENU_NEXTPAGE_SLOT_ITEM: Pair<ItemStack?, List<ConfigActionTemplate>>? by ConfigProperty(null)      // 下一页槽位物品
 
-    var MENU_CUSTOM_ITEMS: Map<Char, Pair<ItemStack?, List<ConfigActionTemplate>>> by ConfigProperty(emptyMap())
+    var MENU_CUSTOM_ITEMS: Map<Char, Pair<ItemStack?, List<ConfigActionTemplate>>> by ConfigProperty(emptyMap())    // 菜单中的自定义物品
+
+    /*修复规则*/
+    var REPAIR_TIMERULE_RULE: String by ConfigProperty("static")    // 时间计算规则
+    var REPAIR_TIMERULE_STATIC_TIME: Int by ConfigProperty(600)     // 固定花费规则 -> 固定时间
+    var REPAIR_TIMERULE_LEVEL_TIME: Int by ConfigProperty(600)      // 等级计算规则 -> 每级时间
+    var REPAIR_TIMERULE_LEVEL_FALLBACK: Int by ConfigProperty(450)  // 等级计算规则 -> 无魔咒时间
+    var REPAIR_TIMERULE_COUNT_TIME: Int by ConfigProperty(600)      // 数量计算规则 -> 每个时间
+    var REPAIR_TIMERULE_COUNT_FALLBACK: Int by ConfigProperty(450)  // 数量计算规则 -> 无魔咒时间
+
+    var REPAIR_QUICK_TRIGGER_ACTION: List<ConfigActionTemplate> by ConfigProperty(emptyList()) // 触发快速修复成功后执行的动作列表
+    var REPAIR_MAGNIFICATION_RULE: Map<String, Double> by ConfigProperty(emptyMap()) // 折扣列表
 
     /*破损物品*/
-    var BROKEN_FALLBACK_WRAPPER_ITEM: ItemStack? by ConfigProperty(null)
-    var BROKEN_MATCHES: MutableList<BrokenMatchRule> by ConfigProperty(mutableListOf())
+    var BROKEN_FALLBACK_WRAPPER_ITEM: ItemStack? by ConfigProperty(null)                // 破损物品包装
+    var BROKEN_MATCHES: MutableList<BrokenMatchRule> by ConfigProperty(mutableListOf()) // 破损物品包装
 
 
     // 加载数据
     override fun loadConfig() {
         ENABLE = config().getBoolean("enable", false)
         if (ENABLE) {
-
-        }
-    }
-
-    // 等待注册表完成后延迟加载的部分
-    override fun loadLatePartConfig() {
-        if (ENABLE) {
+            /*菜单设置*/
             MENU_TITLE_DENY = config().getString("menu-setting.title-deny", "Repair DENY Menu")!!
             MENU_TITLE_ACCEPT = config().getString("menu-setting.title-accept", "Repair ACCEPT Menu")!!
             try { config().getStringList("menu-setting.structure").toTypedArray()
@@ -77,10 +84,43 @@ class RepairTableConfig private constructor():
 
             MENU_OUTPUT_SLOT = config().getString("menu-setting.output-array.slot", "O")?.first() ?: 'O'
             MENU_OUTPUT_ARRAY_SIZE = config().getInt("menu-setting.output-array.array-max-size", 5)
+            MENU_OUTPUT_ARRAY_SIZE_RULE = config().getMapList("menu-setting.output-array.array-size-rule").map {
+                it["permission"] as String to (it["size"] as? Int ?: 1.0)
+            } as Map<String, Int>
             MENU_OUTPUT_UPDATE_TIME = config().getInt("menu-setting.output-array.update-time", 20)
             MENU_OUTPUT_ACTIVE_ADDITION_LORE = config().getStringList("menu-setting.output-array.addition-active-lore")
             MENU_OUTPUT_COMPLETED_ADDITION_LORE = config().getStringList("menu-setting.output-array.addition-completed-lore")
 
+            /*修复规则*/
+            REPAIR_TIMERULE_RULE = config().getString("repair-rule.time-rule.rule", "static")!!.lowercase()
+            when(REPAIR_TIMERULE_RULE) {
+                "static" -> {
+                    REPAIR_TIMERULE_STATIC_TIME = config().getInt("repair-rule.time-rule.rules.static.time", 600)
+                }
+                "level" -> {
+                    REPAIR_TIMERULE_LEVEL_TIME = config().getInt("repair-rule.time-rule.rules.level.time", 600)
+                    REPAIR_TIMERULE_LEVEL_FALLBACK = config().getInt("repair-rule.time-rule.rules.level.fallback", 450)
+                }
+                "count" -> {
+                    REPAIR_TIMERULE_COUNT_TIME = config().getInt("repair-rule.time-rule.rules.count.time", 600)
+                    REPAIR_TIMERULE_COUNT_FALLBACK = config().getInt("repair-rule.time-rule.rules.count.fallback", 450)
+                }
+                else -> {
+                    ENABLE = false
+                    Bukkit.getConsoleSender().sendTranslatableComponent(RESOURCE_VALUE_INVALID_ERROR, fileName, "repair-rule.time-rule.rule")
+                }
+            }
+
+            REPAIR_MAGNIFICATION_RULE = config().getMapList("repair-rule.magnification-rule").map {
+                it["permission"] as String to (it["magnification"] as? Double ?: 1.0)
+            } as Map<String, Double>
+        }
+    }
+
+    // 等待注册表完成后延迟加载的部分
+    override fun loadLatePartConfig() {
+        if (ENABLE) {
+            /*菜单设置*/
             MENU_REPAIR_SLOT = config().getString("menu-setting.repair-bottom.slot", "C")?.first() ?: 'C'
             MENU_REPAIR_SLOT_ITEM = config().getConfigurationSection("menu-setting.repair-bottom")?.let { section ->
                 // 使用节点构建物品
@@ -138,6 +178,13 @@ class RepairTableConfig private constructor():
                 }
                 MENU_CUSTOM_ITEMS = customItems
             }
+
+            /*修复规则*/
+            REPAIR_QUICK_TRIGGER_ACTION = config().getConfigurationSection("repair-rule.quick-repair")?.let { section ->
+                section.getConfigurationSectionList("trigger-action").mapNotNull { actionNode ->
+                    ConfigParser.parseActionTemplate(actionNode, fileName, "repair-rule.quick-repair.trigger-action")
+                }
+            } ?: emptyList()
 
             /*破损物品*/
             val itemProviderId = config().getString("broken-item-model.fallback-item.hooked-plugin", null)

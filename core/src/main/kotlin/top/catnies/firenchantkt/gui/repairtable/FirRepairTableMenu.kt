@@ -1,4 +1,4 @@
-package top.catnies.firenchantkt.gui
+package top.catnies.firenchantkt.gui.repairtable
 
 import io.papermc.paper.datacomponent.DataComponentTypes
 import io.papermc.paper.datacomponent.item.ItemLore
@@ -11,12 +11,12 @@ import top.catnies.firenchantkt.database.FirConnectionManager
 import top.catnies.firenchantkt.database.dao.ItemRepairData
 import top.catnies.firenchantkt.database.entity.ItemRepairTable
 import top.catnies.firenchantkt.engine.RunSource
+import top.catnies.firenchantkt.gui.RepairTableMenu
 import top.catnies.firenchantkt.gui.item.MenuCustomItem
 import top.catnies.firenchantkt.gui.item.MenuPageItem
 import top.catnies.firenchantkt.gui.item.MenuRepairItem
 import top.catnies.firenchantkt.item.fixtable.FirBrokenGear
-import top.catnies.firenchantkt.language.MessageConstants.REPAIR_TABLE_REPAIR_ITEM_RECEIVE_FAIL
-import top.catnies.firenchantkt.language.MessageConstants.REPAIR_TABLE_REPAIR_ITEM_RECEIVE_SUCCESS
+import top.catnies.firenchantkt.language.MessageConstants
 import top.catnies.firenchantkt.util.ItemUtils.deserializeFromBytes
 import top.catnies.firenchantkt.util.ItemUtils.nullOrAir
 import top.catnies.firenchantkt.util.ItemUtils.replacePlaceholder
@@ -26,7 +26,6 @@ import top.catnies.firenchantkt.util.MessageUtils.sendTranslatableComponent
 import top.catnies.firenchantkt.util.PlayerUtils.giveOrDrop
 import top.catnies.firenchantkt.util.PlayerUtils.giveOrDropList
 import top.catnies.firenchantkt.util.TaskUtils
-import xyz.xenondevs.inventoryaccess.component.AdventureComponentWrapper
 import xyz.xenondevs.invui.gui.PagedGui
 import xyz.xenondevs.invui.gui.structure.Markers
 import xyz.xenondevs.invui.gui.structure.Structure
@@ -34,7 +33,6 @@ import xyz.xenondevs.invui.inventory.VirtualInventory
 import xyz.xenondevs.invui.inventory.event.UpdateReason
 import xyz.xenondevs.invui.item.Item
 import xyz.xenondevs.invui.item.ItemProvider
-import xyz.xenondevs.invui.item.builder.ItemBuilder
 import xyz.xenondevs.invui.item.impl.SimpleItem
 import xyz.xenondevs.invui.window.Window
 import java.util.function.Consumer
@@ -46,9 +44,9 @@ class FirRepairTableMenu(
 ): RepairTableMenu {
 
     companion object {
-        val plugin = FirEnchantPlugin.instance
-        val config = RepairTableConfig.instance
-        val brokenGear = FirBrokenGear.instance
+        val plugin = FirEnchantPlugin.Companion.instance
+        val config = RepairTableConfig.Companion.instance
+        val brokenGear = FirBrokenGear.Companion.instance
     }
 
     /*配置文件缓存*/
@@ -114,15 +112,20 @@ class FirRepairTableMenu(
             val isInputBrokenGear = brokenGear.isBrokenGear(event.newItem)
             when {
                 (event.isAdd || event.isSwap) && isInputBrokenGear -> {
-                    TaskUtils.runAsyncTasksLater({ window.changeTitle(titleAccept) }, delay = 1L) // 延迟刷新标题, 否则可能会把物品刷新给覆盖掉.
+                    TaskUtils.runAsyncTasksLater(
+                        { window.changeTitle(titleAccept) },
+                        delay = 1L
+                    ) // 延迟刷新标题, 否则可能会把物品刷新给覆盖掉.
                     showBottom = true
                     confirmBottom.notifyWindows()
                 }
+
                 event.isRemove -> {
                     TaskUtils.runAsyncTasksLater({ window.changeTitle(titleDeny) }, delay = 1L)
                     showBottom = false
                     confirmBottom.notifyWindows()
                 }
+
                 else -> {
                     event.isCancelled = true
                     return@Consumer
@@ -151,9 +154,9 @@ class FirRepairTableMenu(
             val inputItem = inputInventory.items.first() ?: return@SimpleItem
             if (!brokenGear.isBrokenGear(inputItem)) return@SimpleItem
 
-            // TODO 计算物品修复时间
-            val repairTime = 600 * 1000L
-            val repairTable = ItemRepairTable(player.uniqueId, inputItem.serializeToBytes(), repairTime)
+            // 计算物品修复时间
+            val repairTime = FirRepairCostHelper.getRepairTimeCost(player, inputItem)
+            val repairTable = ItemRepairTable(player.uniqueId, inputItem.serializeToBytes(), repairTime.toLong() * 1000L)
 
             // 将物品删除
             inputInventory.removeIf(UpdateReason.SUPPRESSED) { !it.nullOrAir() }
@@ -258,7 +261,12 @@ class FirRepairTableMenu(
                 }
                 itemStack.apply { setData(DataComponentTypes.LORE, lore) }
             } else {
-                val components = activeAdditionLores.map { line -> line.renderToComponent(player, mapOf("cost_time" to "${itemRepairTable.getRemainingTime()/1000}")) }
+                val components = activeAdditionLores.map { line ->
+                    line.renderToComponent(
+                        player,
+                        mapOf("cost_time" to "${itemRepairTable.getRemainingTime() / 1000}")
+                    )
+                }
                 val lore = ItemLore.lore().let { builder ->
                     resultLore?.let { builder.addLines(it) }
                     builder.addLines(components).build()
@@ -278,11 +286,11 @@ class FirRepairTableMenu(
                     itemRepairData.insert(itemRepairTable.apply { isReceived = true })
                     gui.setContent(repairList)
                     player.giveOrDrop(itemRepairTable.repairedItem)
-                    click.player.sendTranslatableComponent(REPAIR_TABLE_REPAIR_ITEM_RECEIVE_SUCCESS)
+                    click.player.sendTranslatableComponent(MessageConstants.REPAIR_TABLE_REPAIR_ITEM_RECEIVE_SUCCESS)
                 }
                 // 当装备还在修复中
                 else -> {
-                    click.player.sendTranslatableComponent(REPAIR_TABLE_REPAIR_ITEM_RECEIVE_FAIL)
+                    click.player.sendTranslatableComponent(MessageConstants.REPAIR_TABLE_REPAIR_ITEM_RECEIVE_FAIL)
                 }
             }
             true

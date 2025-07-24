@@ -53,6 +53,16 @@ object ItemUtils {
         this.setData(DataComponentTypes.REPAIR_COST, cost + count)
     }
 
+    // 获取物品上所有的魔咒等级和
+    fun ItemStack.sumAllEnchantmentLevel(): Int {
+        return this.enchantments.values.sumOf { it }
+    }
+
+    // 获取物品上所有魔咒数量
+    fun ItemStack.sumAllEnchantmentCount(): Int {
+        return this.enchantments.size
+    }
+
      // 将物品的 Name 和 Lore 中的占位符 ${placeholder} 替换成实际的值
      // @param args 占位符映射表，例如 mapOf("currentPage" to "1") 会将 ${currentPage} 替换为 1
     fun ItemStack.replacePlaceholder(args: Map<String, String>) {

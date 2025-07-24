@@ -10,7 +10,7 @@ import io.papermc.paper.command.brigadier.argument.resolvers.selector.PlayerSele
 import org.bukkit.entity.Player
 import top.catnies.firenchantkt.command.AbstractCommand
 import top.catnies.firenchantkt.config.RepairTableConfig
-import top.catnies.firenchantkt.gui.FirRepairTableMenu
+import top.catnies.firenchantkt.gui.repairtable.FirRepairTableMenu
 import top.catnies.firenchantkt.language.MessageConstants.COMMAND_CONSOLE_CANT_EXECUTE
 import top.catnies.firenchantkt.language.MessageConstants.PLUGIN_FUNCTION_NOT_ENABLED
 import top.catnies.firenchantkt.util.MessageUtils.sendTranslatableComponent

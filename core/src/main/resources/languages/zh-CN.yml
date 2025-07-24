@@ -22,6 +22,7 @@ resource.enchantment.file.item.not_found: "<#96f896>[FirEnchant] <red>魔咒 <ar
 resource.hook.item_provider.not_found: "<#96f896>[FirEnchant] <red>在 <arg:0> 配置文件中 <arg:1> 指定的物品提供插件 <arg:2> 不存在或不受支持，请修正后再试。</red>"
 resource.hook.item.not_found: "<#96f896>[FirEnchant] <red>在 <arg:0> 配置文件中 <arg:1> 指定的物品ID <arg:2> 不存在，请修正后再试。</red>"
 resource.menu.structure.error: "<#96f896>[FirEnchant] <red>在 <arg:0> 配置文件中设置的菜单结构错误，请修正后再试。</red>"
+resource.value.invalid.error: "<#96f896>[FirEnchant] <red>在 <arg:0> 配置文件中 <arg:1> 节点设置的值是非法的，请修正后再试。</red>"
 
 plugin.compatibility.hook.success: "<#96f896>[FirEnchant] <#cef8f5>检查到服务器存在插件 <arg:0> ，已进行关联兼容。"
 plugin.function.not_enabled: "<#96f896>[FirEnchant] <#cef8f5>服务器暂未开启此功能，或此功能配置存在错误配置被强制关闭，如需开启请修改检查配置文件 '<arg:0>' 修正后再尝试。"
