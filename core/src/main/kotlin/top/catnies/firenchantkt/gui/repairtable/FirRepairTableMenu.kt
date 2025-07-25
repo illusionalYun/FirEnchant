@@ -8,6 +8,7 @@ import org.bukkit.entity.Player
 import org.bukkit.event.inventory.ClickType
 import org.bukkit.inventory.ItemStack
 import top.catnies.firenchantkt.FirEnchantPlugin
+import top.catnies.firenchantkt.api.event.fixtable.BrokenItemConfirmRepairEvent
 import top.catnies.firenchantkt.api.event.fixtable.BrokenItemInputEvent
 import top.catnies.firenchantkt.api.event.fixtable.RepairingItemCancelEvent
 import top.catnies.firenchantkt.api.event.fixtable.RepairingItemReceiveEvent
@@ -87,6 +88,8 @@ class FirRepairTableMenu(
     val itemRepairData: ItemRepairData = FirConnectionManager.getInstance().itemRepairData
     val repairList: MutableList<Item> = mutableListOf() // 展示在菜单的修复的列表
 
+    var repairTime: Long? = null
+
     // 打开菜单
     override fun openMenu(data: Map<String, Any>, async: Boolean) {
         if (async) {
@@ -118,7 +121,7 @@ class FirRepairTableMenu(
             when {
                 (event.isAdd || event.isSwap) && isInputBrokenGear -> {
                     // 计算修复时长
-                    val repairTimeCost = FirRepairCostHelper.getRepairTimeCost(player, event.newItem!!)
+                    val repairTimeCost = FirRepairCostHelper.getRepairTimeCost(player, event.newItem!!) * 1000L
                     // 广播事件
                     val inputEvent = BrokenItemInputEvent(player, event.newItem, repairTimeCost)
                     Bukkit.getPluginManager().callEvent(inputEvent)
@@ -126,22 +129,22 @@ class FirRepairTableMenu(
                         event.isCancelled = true
                         return@Consumer
                     }
-                    // TODO 如何将修复时间传递到点击按钮上?
                     // 执行
+
                     TaskUtils.runAsyncTasksLater(
                         { window.changeTitle(titleAccept) },
                         delay = 1L
                     ) // 延迟刷新标题, 否则可能会把物品刷新给覆盖掉.
                     showBottom = true
+                    repairTime = inputEvent.repairTime // 将修复时间传递到点击按钮上
                     confirmBottom.notifyWindows()
                 }
-
                 event.isRemove -> {
                     TaskUtils.runAsyncTasksLater({ window.changeTitle(titleDeny) }, delay = 1L)
                     showBottom = false
+                    repairTime = null
                     confirmBottom.notifyWindows()
                 }
-
                 else -> {
                     event.isCancelled = true
                     return@Consumer
@@ -157,7 +160,6 @@ class FirRepairTableMenu(
             else return@SimpleItem repairSlotItem!!.first!!
         }) { click ->
             if (!showBottom) return@SimpleItem // 无显示时不做任何操作
-
             // 执行动作
             val args = mutableMapOf<String, Any?>()
             args["checkSource"] = RunSource.MENUCLICK
@@ -165,23 +167,27 @@ class FirRepairTableMenu(
             args["clickType"] = click.clickType.name
             args["event"] = click.event
             repairSlotItem?.second?.forEach { it.executeIfAllowed(args) }
-
             // 执行修复功能
             val inputItem = inputInventory.items.first() ?: return@SimpleItem
             if (!brokenGear.isBrokenGear(inputItem)) return@SimpleItem
+            val repairTable = ItemRepairTable(player.uniqueId, inputItem.serializeToBytes(), repairTime!!)
 
-            // 计算物品修复时间
-            val repairTime = FirRepairCostHelper.getRepairTimeCost(player, inputItem)
-            val repairTable = ItemRepairTable(player.uniqueId, inputItem.serializeToBytes(), repairTime * 1000L)
+            // 广播事件
+            val repairEvent = BrokenItemConfirmRepairEvent(player, repairTable)
+            Bukkit.getPluginManager().callEvent(repairEvent)
+            if (repairEvent.isCancelled) return@SimpleItem
 
             // 将物品删除
             inputInventory.removeIf(UpdateReason.SUPPRESSED) { !it.nullOrAir() }
+
             // 插入队列, 刷新队列
             addDataToRepairList(repairTable)
             itemRepairData.insert(repairTable)
             gui.setContent(repairList)
+
             // 刷新自己
             showBottom = false
+            repairTime = null
             confirmBottom.notifyWindows()
         }
     }
