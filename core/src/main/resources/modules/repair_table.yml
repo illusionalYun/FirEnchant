@@ -32,8 +32,7 @@ menu-setting:
     addition-active-lore:
       - " "
       - "&7该装备还需要花费 §e{cost_time}秒 &7才能修复完成"
-      - "&7左键: 取消修复"
-      - "&7右键: 花费 xx金币 和 xx等级 快速修复."
+      - "&7shift + 左键: 取消修复"
     addition-completed-lore:
       - " "
       - "&7该装备已经修复完成了哦!"

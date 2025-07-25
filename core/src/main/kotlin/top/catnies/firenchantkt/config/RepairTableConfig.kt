@@ -3,7 +3,7 @@ package top.catnies.firenchantkt.config
 import org.bukkit.Bukkit
 import org.bukkit.inventory.ItemStack
 import top.catnies.firenchantkt.engine.ConfigActionTemplate
-import top.catnies.firenchantkt.item.fixtable.BrokenMatchRule
+import top.catnies.firenchantkt.item.repairtable.BrokenMatchRule
 import top.catnies.firenchantkt.language.MessageConstants.RESOURCE_MENU_STRUCTURE_ERROR
 import top.catnies.firenchantkt.language.MessageConstants.RESOURCE_VALUE_INVALID_ERROR
 import top.catnies.firenchantkt.util.ConfigParser
@@ -57,9 +57,9 @@ class RepairTableConfig private constructor():
     var REPAIR_TIMERULE_RULE: String by ConfigProperty("static")    // 时间计算规则
     var REPAIR_TIMERULE_STATIC_TIME: Int by ConfigProperty(600)     // 固定花费规则 -> 固定时间
     var REPAIR_TIMERULE_LEVEL_TIME: Int by ConfigProperty(600)      // 等级计算规则 -> 每级时间
-    var REPAIR_TIMERULE_LEVEL_FALLBACK: Int by ConfigProperty(450)  // 等级计算规则 -> 无魔咒时间
+    var REPAIR_TIMERULE_LEVEL_FALLBACK: Long by ConfigProperty(450)  // 等级计算规则 -> 无魔咒时间
     var REPAIR_TIMERULE_COUNT_TIME: Int by ConfigProperty(600)      // 数量计算规则 -> 每个时间
-    var REPAIR_TIMERULE_COUNT_FALLBACK: Int by ConfigProperty(450)  // 数量计算规则 -> 无魔咒时间
+    var REPAIR_TIMERULE_COUNT_FALLBACK: Long by ConfigProperty(450)  // 数量计算规则 -> 无魔咒时间
 
     var REPAIR_QUICK_TRIGGER_ACTION: List<ConfigActionTemplate> by ConfigProperty(emptyList()) // 触发快速修复成功后执行的动作列表
     var REPAIR_MAGNIFICATION_RULE: Map<String, Double> by ConfigProperty(emptyMap()) // 折扣列表
@@ -99,11 +99,11 @@ class RepairTableConfig private constructor():
                 }
                 "level" -> {
                     REPAIR_TIMERULE_LEVEL_TIME = config().getInt("repair-rule.time-rule.rules.level.time", 600)
-                    REPAIR_TIMERULE_LEVEL_FALLBACK = config().getInt("repair-rule.time-rule.rules.level.fallback", 450)
+                    REPAIR_TIMERULE_LEVEL_FALLBACK = config().getLong("repair-rule.time-rule.rules.level.fallback", 450L)
                 }
                 "count" -> {
                     REPAIR_TIMERULE_COUNT_TIME = config().getInt("repair-rule.time-rule.rules.count.time", 600)
-                    REPAIR_TIMERULE_COUNT_FALLBACK = config().getInt("repair-rule.time-rule.rules.count.fallback", 450)
+                    REPAIR_TIMERULE_COUNT_FALLBACK = config().getLong("repair-rule.time-rule.rules.count.fallback", 450L)
                 }
                 else -> {
                     ENABLE = false

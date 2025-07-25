@@ -12,7 +12,7 @@ object FirRepairCostHelper{
     /**
      * 获取一件装备修复所需的时间;
      */
-    fun getRepairTimeCost(player: Player, item: ItemStack): Int {
+    fun getRepairTimeCost(player: Player, item: ItemStack): Long {
         val magnification = getPlayerMagnification(player)
         val repairTime = when (RepairTableConfig.instance.REPAIR_TIMERULE_RULE) {
             "static" -> RepairTableConfig.instance.REPAIR_TIMERULE_STATIC_TIME
@@ -28,7 +28,7 @@ object FirRepairCostHelper{
             }
             else -> throw AssertionError("不可能进入的分支.")
         }
-        return ceil(repairTime * magnification).toInt()
+        return ceil(repairTime * magnification).toLong()
     }
 
 

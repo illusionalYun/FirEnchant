@@ -16,7 +16,7 @@ import java.util.UUID;
 
 import static top.catnies.firenchantkt.language.MessageConstants.DATABASE_TABLE_CREATE_ERROR;
 
-public class MySQLItemRepairData extends AbstractDao<ItemRepairData, Integer> implements ItemRepairData {
+public class MySQLItemRepairData extends AbstractDao<ItemRepairTable, Integer> implements ItemRepairData {
 
     private static MySQLItemRepairData instance;
     private static final int CURRENT_VERSION = 1;
@@ -45,12 +45,21 @@ public class MySQLItemRepairData extends AbstractDao<ItemRepairData, Integer> im
 
     @Override
     public void insert(ItemRepairTable repairData) {
+        update(repairData);
+    }
 
+    @Override
+    public void remove(ItemRepairTable repairData) {
+        delete(repairData, true);
     }
 
     @Override
     public void markAsReceived(int id) {
-
+        ItemRepairTable item = getById(id);
+        if (item != null) {
+            item.setReceived(true);
+            update(item, true);
+        }
     }
 
     @Override

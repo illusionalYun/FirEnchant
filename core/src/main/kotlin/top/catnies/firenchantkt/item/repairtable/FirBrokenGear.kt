@@ -1,10 +1,11 @@
-package top.catnies.firenchantkt.item.fixtable
+package top.catnies.firenchantkt.item.repairtable
 
 import com.saicone.rtag.RtagItem
 import io.papermc.paper.datacomponent.DataComponentTypes
 import org.bukkit.inventory.ItemStack
 import top.catnies.firenchantkt.api.ServiceContainer
 import top.catnies.firenchantkt.config.RepairTableConfig
+import top.catnies.firenchantkt.item.BrokenGear
 import top.catnies.firenchantkt.util.ItemUtils.deserializeFromBytes
 import top.catnies.firenchantkt.util.ItemUtils.nullOrAir
 import top.catnies.firenchantkt.util.ItemUtils.serializeToBytes

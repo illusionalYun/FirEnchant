@@ -1,4 +1,4 @@
-package top.catnies.firenchantkt.item.fixtable
+package top.catnies.firenchantkt.item.repairtable
 
 import org.bukkit.inventory.ItemStack
 import top.catnies.firenchantkt.integration.FirItemProviderRegistry

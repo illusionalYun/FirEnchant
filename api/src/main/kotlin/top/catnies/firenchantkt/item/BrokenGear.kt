@@ -1,4 +1,4 @@
-package top.catnies.firenchantkt.item.fixtable
+package top.catnies.firenchantkt.item
 
 import org.bukkit.inventory.ItemStack
 

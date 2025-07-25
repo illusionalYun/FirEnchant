@@ -49,6 +49,11 @@ public class SQLiteItemRepairData extends AbstractDao<ItemRepairTable, Integer> 
     }
 
     @Override
+    public void remove(ItemRepairTable repairData) {
+        delete(repairData, true);
+    }
+
+    @Override
     public void markAsReceived(int id) {
         ItemRepairTable item = getById(id);
         if (item != null) {

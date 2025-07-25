@@ -2,10 +2,15 @@ package top.catnies.firenchantkt.gui.repairtable
 
 import io.papermc.paper.datacomponent.DataComponentTypes
 import io.papermc.paper.datacomponent.item.ItemLore
+import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.entity.Player
+import org.bukkit.event.inventory.ClickType
 import org.bukkit.inventory.ItemStack
 import top.catnies.firenchantkt.FirEnchantPlugin
+import top.catnies.firenchantkt.api.event.fixtable.BrokenItemInputEvent
+import top.catnies.firenchantkt.api.event.fixtable.RepairingItemCancelEvent
+import top.catnies.firenchantkt.api.event.fixtable.RepairingItemReceiveEvent
 import top.catnies.firenchantkt.config.RepairTableConfig
 import top.catnies.firenchantkt.database.FirConnectionManager
 import top.catnies.firenchantkt.database.dao.ItemRepairData
@@ -15,7 +20,7 @@ import top.catnies.firenchantkt.gui.RepairTableMenu
 import top.catnies.firenchantkt.gui.item.MenuCustomItem
 import top.catnies.firenchantkt.gui.item.MenuPageItem
 import top.catnies.firenchantkt.gui.item.MenuRepairItem
-import top.catnies.firenchantkt.item.fixtable.FirBrokenGear
+import top.catnies.firenchantkt.item.repairtable.FirBrokenGear
 import top.catnies.firenchantkt.language.MessageConstants
 import top.catnies.firenchantkt.util.ItemUtils.deserializeFromBytes
 import top.catnies.firenchantkt.util.ItemUtils.nullOrAir
@@ -112,6 +117,17 @@ class FirRepairTableMenu(
             val isInputBrokenGear = brokenGear.isBrokenGear(event.newItem)
             when {
                 (event.isAdd || event.isSwap) && isInputBrokenGear -> {
+                    // 计算修复时长
+                    val repairTimeCost = FirRepairCostHelper.getRepairTimeCost(player, event.newItem!!)
+                    // 广播事件
+                    val inputEvent = BrokenItemInputEvent(player, event.newItem, repairTimeCost)
+                    Bukkit.getPluginManager().callEvent(inputEvent)
+                    if (inputEvent.isCancelled) {
+                        event.isCancelled = true
+                        return@Consumer
+                    }
+                    // TODO 如何将修复时间传递到点击按钮上?
+                    // 执行
                     TaskUtils.runAsyncTasksLater(
                         { window.changeTitle(titleAccept) },
                         delay = 1L
@@ -156,7 +172,7 @@ class FirRepairTableMenu(
 
             // 计算物品修复时间
             val repairTime = FirRepairCostHelper.getRepairTimeCost(player, inputItem)
-            val repairTable = ItemRepairTable(player.uniqueId, inputItem.serializeToBytes(), repairTime.toLong() * 1000L)
+            val repairTable = ItemRepairTable(player.uniqueId, inputItem.serializeToBytes(), repairTime * 1000L)
 
             // 将物品删除
             inputInventory.removeIf(UpdateReason.SUPPRESSED) { !it.nullOrAir() }
@@ -282,15 +298,28 @@ class FirRepairTableMenu(
                 itemRepairTable.isReceived -> return@MenuRepairItem true
                 // 当装备修复完成
                 itemRepairTable.isCompleted -> {
+                    // 广播事件
+                    val event = RepairingItemReceiveEvent(player, itemRepairTable)
+                    Bukkit.getPluginManager().callEvent(event)
+                    if (event.isCancelled) return@MenuRepairItem true
+                    // 执行
                     removeDataFromRepairList(itemRepairTable)
                     itemRepairData.insert(itemRepairTable.apply { isReceived = true })
                     gui.setContent(repairList)
                     player.giveOrDrop(itemRepairTable.repairedItem)
                     click.player.sendTranslatableComponent(MessageConstants.REPAIR_TABLE_REPAIR_ITEM_RECEIVE_SUCCESS)
                 }
-                // 当装备还在修复中
-                else -> {
-                    click.player.sendTranslatableComponent(MessageConstants.REPAIR_TABLE_REPAIR_ITEM_RECEIVE_FAIL)
+                // 当装备还在修复中, 取消修复
+                (!itemRepairTable.isCompleted && click.clickType == ClickType.SHIFT_LEFT) -> {
+                    // 广播事件
+                    val event = RepairingItemCancelEvent(player, itemRepairTable)
+                    Bukkit.getPluginManager().callEvent(event)
+                    if (event.isCancelled) return@MenuRepairItem true
+                    // 执行
+                    removeDataFromRepairList(itemRepairTable)
+                    itemRepairData.remove(itemRepairTable)
+                    gui.setContent(repairList)
+                    click.player.sendTranslatableComponent(MessageConstants.REPAIR_TABLE_REPAIR_ITEM_CANCEL_SUCCESS)
                 }
             }
             true

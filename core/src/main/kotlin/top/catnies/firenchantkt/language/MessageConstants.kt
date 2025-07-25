@@ -41,5 +41,5 @@ object MessageConstants {
     const val ANVIL_ENCHANTED_BOOK_USE_PROTECT_FAIL = "anvil.enchanted.book.use.protect.fail"
 
     const val REPAIR_TABLE_REPAIR_ITEM_RECEIVE_SUCCESS = "repair_table.repair_item.receive.success"
-    const val REPAIR_TABLE_REPAIR_ITEM_RECEIVE_FAIL = "repair_table.repair_item.receive.fail"
+    const val REPAIR_TABLE_REPAIR_ITEM_CANCEL_SUCCESS = "repair_table.repair_item.cancel.success"
 }

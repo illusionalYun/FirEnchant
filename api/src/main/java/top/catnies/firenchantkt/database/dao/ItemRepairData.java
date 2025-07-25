@@ -16,6 +16,11 @@ public interface ItemRepairData {
     void insert(ItemRepairTable repairData);
 
     /**
+     * 删除某个记录
+     */
+    void remove(ItemRepairTable repairData);
+
+    /**
      * 标记记录为已领取
      */
     void markAsReceived(int id);

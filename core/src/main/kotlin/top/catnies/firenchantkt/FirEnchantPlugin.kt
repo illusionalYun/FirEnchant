@@ -18,7 +18,7 @@ import top.catnies.firenchantkt.integration.IntegrationManager
 import top.catnies.firenchantkt.integration.NMSHandlerHolder
 import top.catnies.firenchantkt.item.FirAnvilItemRegistry
 import top.catnies.firenchantkt.item.FirEnchantingTableRegistry
-import top.catnies.firenchantkt.item.fixtable.FirBrokenGear
+import top.catnies.firenchantkt.item.repairtable.FirBrokenGear
 import top.catnies.firenchantkt.language.MessageConstants.PLUGIN_COMPATIBILITY_HOOK_SUCCESS
 import top.catnies.firenchantkt.language.TranslationManager
 import top.catnies.firenchantkt.lazyinit.CraftEngineLoadListener
