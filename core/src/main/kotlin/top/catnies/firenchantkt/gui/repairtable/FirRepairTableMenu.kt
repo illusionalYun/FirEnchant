@@ -88,7 +88,7 @@ class FirRepairTableMenu(
     val itemRepairData: ItemRepairData = FirConnectionManager.getInstance().itemRepairData
     val repairList: MutableList<Item> = mutableListOf() // 展示在菜单的修复的列表
 
-    var repairTime: Long? = null
+    var repairTime: Long? = null // 当前放入的破损物品的修复时间
 
     // 打开菜单
     override fun openMenu(data: Map<String, Any>, async: Boolean) {
@@ -130,7 +130,6 @@ class FirRepairTableMenu(
                         return@Consumer
                     }
                     // 执行
-
                     TaskUtils.runAsyncTasksLater(
                         { window.changeTitle(titleAccept) },
                         delay = 1L
@@ -266,7 +265,7 @@ class FirRepairTableMenu(
         activeData.forEach { addDataToRepairList(it) }
     }
 
-    // 往修复队列里添加新的数据, 并上传更新数据库
+    // 往修复队列里添加新的数据
     private fun addDataToRepairList(itemRepairTable: ItemRepairTable) {
         if (itemRepairTable.isReceived) return
 
@@ -330,6 +329,7 @@ class FirRepairTableMenu(
             }
             true
         })
+
         repairList.add(autoUpdateItem)
     }
 
