@@ -10,7 +10,7 @@ import org.bukkit.inventory.ItemStack
  * 当一件破损的物品, 尝试放入修复桌时;
  */
 class BrokenItemInputEvent(
-    val player: Player,
+    player: Player,
     val inputItem: ItemStack?,
     val repairTime: Long    // 单位: 毫秒
 ): PlayerEvent(player), Cancellable {

@@ -10,7 +10,7 @@ import top.catnies.firenchantkt.database.entity.ItemRepairTable
  * 当一件修复的装备修复完成后, 玩家点击领取时;
  */
 class RepairingItemReceiveEvent(
-    val player: Player,
+    player: Player,
     val itemRepairTable: ItemRepairTable
 ): PlayerEvent(player), Cancellable {
 

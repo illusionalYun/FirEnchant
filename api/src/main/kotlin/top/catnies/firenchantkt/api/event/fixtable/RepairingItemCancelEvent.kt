@@ -10,7 +10,7 @@ import top.catnies.firenchantkt.database.entity.ItemRepairTable
  * 当玩家点击正在修复的装备, 尝试取消修复时.
  */
 class RepairingItemCancelEvent(
-    val player: Player,
+    player: Player,
     val itemRepairTable: ItemRepairTable
 ): PlayerEvent(player), Cancellable {
 

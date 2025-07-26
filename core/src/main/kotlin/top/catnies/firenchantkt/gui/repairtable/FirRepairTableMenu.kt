@@ -156,7 +156,7 @@ class FirRepairTableMenu(
     private fun buildConfirmItem() {
         confirmBottom = SimpleItem({ s: String? ->
             if (!showBottom) return@SimpleItem ItemStack(Material.AIR)
-            else return@SimpleItem repairSlotItem!!.first!!
+            else return@SimpleItem repairSlotItem!!.first!!.clone().apply { replacePlaceholder(mutableMapOf("cost_time" to "${repairTime!! / 1000}")) }
         }) { click ->
             if (!showBottom) return@SimpleItem // 无显示时不做任何操作
             // 执行动作

@@ -10,7 +10,7 @@ import top.catnies.firenchantkt.database.entity.ItemRepairTable
  * 当玩家点击确认按钮, 确认修复装备时.
  */
 class BrokenItemConfirmRepairEvent(
-    val player: Player,
+    player: Player,
     val itemRepairTable: ItemRepairTable
 ): PlayerEvent(player), Cancellable {
 

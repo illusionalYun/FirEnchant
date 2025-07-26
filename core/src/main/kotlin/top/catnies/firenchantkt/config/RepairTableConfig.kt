@@ -55,10 +55,10 @@ class RepairTableConfig private constructor():
 
     /*修复规则*/
     var REPAIR_TIMERULE_RULE: String by ConfigProperty("static")    // 时间计算规则
-    var REPAIR_TIMERULE_STATIC_TIME: Int by ConfigProperty(600)     // 固定花费规则 -> 固定时间
-    var REPAIR_TIMERULE_LEVEL_TIME: Int by ConfigProperty(600)      // 等级计算规则 -> 每级时间
+    var REPAIR_TIMERULE_STATIC_TIME: Long by ConfigProperty(600)     // 固定花费规则 -> 固定时间
+    var REPAIR_TIMERULE_LEVEL_TIME: Long by ConfigProperty(600)      // 等级计算规则 -> 每级时间
     var REPAIR_TIMERULE_LEVEL_FALLBACK: Long by ConfigProperty(450)  // 等级计算规则 -> 无魔咒时间
-    var REPAIR_TIMERULE_COUNT_TIME: Int by ConfigProperty(600)      // 数量计算规则 -> 每个时间
+    var REPAIR_TIMERULE_COUNT_TIME: Long by ConfigProperty(600)      // 数量计算规则 -> 每个时间
     var REPAIR_TIMERULE_COUNT_FALLBACK: Long by ConfigProperty(450)  // 数量计算规则 -> 无魔咒时间
 
     var REPAIR_QUICK_TRIGGER_ACTION: List<ConfigActionTemplate> by ConfigProperty(emptyList()) // 触发快速修复成功后执行的动作列表
@@ -81,12 +81,12 @@ class RepairTableConfig private constructor():
             } catch (exception: IllegalArgumentException) {
                 Bukkit.getConsoleSender().sendTranslatableComponent(RESOURCE_MENU_STRUCTURE_ERROR, fileName) }
             MENU_INPUT_SLOT = config().getString("menu-setting.input-slot", "I")?.first() ?: 'I'
-
             MENU_OUTPUT_SLOT = config().getString("menu-setting.output-array.slot", "O")?.first() ?: 'O'
             MENU_OUTPUT_ARRAY_SIZE = config().getInt("menu-setting.output-array.array-max-size", 5)
-            MENU_OUTPUT_ARRAY_SIZE_RULE = config().getMapList("menu-setting.output-array.array-size-rule").map {
-                it["permission"] as String to (it["size"] as? Int ?: 1.0)
-            } as Map<String, Int>
+            MENU_OUTPUT_ARRAY_SIZE_RULE = config().getMapList("menu-setting.output-array.array-size-rule").associate {
+                (it["permission"] as String) to (it["size"] as Int)
+            }
+
             MENU_OUTPUT_UPDATE_TIME = config().getInt("menu-setting.output-array.update-time", 20)
             MENU_OUTPUT_ACTIVE_ADDITION_LORE = config().getStringList("menu-setting.output-array.addition-active-lore")
             MENU_OUTPUT_COMPLETED_ADDITION_LORE = config().getStringList("menu-setting.output-array.addition-completed-lore")
@@ -95,14 +95,14 @@ class RepairTableConfig private constructor():
             REPAIR_TIMERULE_RULE = config().getString("repair-rule.time-rule.rule", "static")!!.lowercase()
             when(REPAIR_TIMERULE_RULE) {
                 "static" -> {
-                    REPAIR_TIMERULE_STATIC_TIME = config().getInt("repair-rule.time-rule.rules.static.time", 600)
+                    REPAIR_TIMERULE_STATIC_TIME = config().getLong("repair-rule.time-rule.rules.static.time", 600L)
                 }
                 "level" -> {
-                    REPAIR_TIMERULE_LEVEL_TIME = config().getInt("repair-rule.time-rule.rules.level.time", 600)
+                    REPAIR_TIMERULE_LEVEL_TIME = config().getLong("repair-rule.time-rule.rules.level.time", 600L)
                     REPAIR_TIMERULE_LEVEL_FALLBACK = config().getLong("repair-rule.time-rule.rules.level.fallback", 450L)
                 }
                 "count" -> {
-                    REPAIR_TIMERULE_COUNT_TIME = config().getInt("repair-rule.time-rule.rules.count.time", 600)
+                    REPAIR_TIMERULE_COUNT_TIME = config().getLong("repair-rule.time-rule.rules.count.time", 600L)
                     REPAIR_TIMERULE_COUNT_FALLBACK = config().getLong("repair-rule.time-rule.rules.count.fallback", 450L)
                 }
                 else -> {
@@ -111,9 +111,9 @@ class RepairTableConfig private constructor():
                 }
             }
 
-            REPAIR_MAGNIFICATION_RULE = config().getMapList("repair-rule.magnification-rule").map {
-                it["permission"] as String to (it["magnification"] as? Double ?: 1.0)
-            } as Map<String, Double>
+            REPAIR_MAGNIFICATION_RULE = config().getMapList("repair-rule.magnification-rule").associate {
+                (it["permission"] as String) to (it["magnification"] as? Double ?: 1.0)
+            }
         }
     }
 

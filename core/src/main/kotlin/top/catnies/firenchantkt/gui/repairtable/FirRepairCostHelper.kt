@@ -14,21 +14,27 @@ object FirRepairCostHelper{
      */
     fun getRepairTimeCost(player: Player, item: ItemStack): Long {
         val magnification = getPlayerMagnification(player)
-        val repairTime = when (RepairTableConfig.instance.REPAIR_TIMERULE_RULE) {
-            "static" -> RepairTableConfig.instance.REPAIR_TIMERULE_STATIC_TIME
+        val config = RepairTableConfig.instance
+
+        val baseCost = when (config.REPAIR_TIMERULE_RULE) {
+            "static" -> config.REPAIR_TIMERULE_STATIC_TIME
+
             "level" -> {
                 val level = item.sumAllEnchantmentLevel()
-                if (level <= 0) return RepairTableConfig.instance.REPAIR_TIMERULE_LEVEL_FALLBACK
-                level * RepairTableConfig.instance.REPAIR_TIMERULE_LEVEL_TIME
+                if (level > 0) level * config.REPAIR_TIMERULE_LEVEL_TIME
+                else config.REPAIR_TIMERULE_LEVEL_FALLBACK
             }
+
             "count" -> {
                 val count = item.sumAllEnchantmentCount()
-                if (count <= 0) return RepairTableConfig.instance.REPAIR_TIMERULE_COUNT_FALLBACK
-                count * RepairTableConfig.instance.REPAIR_TIMERULE_COUNT_TIME
+                if (count > 0) count * config.REPAIR_TIMERULE_COUNT_TIME
+                else config.REPAIR_TIMERULE_COUNT_FALLBACK
             }
-            else -> throw AssertionError("不可能进入的分支.")
+
+            else -> error("不支持的修复时间规则: ${config.REPAIR_TIMERULE_RULE}")
         }
-        return ceil(repairTime * magnification).toLong()
+
+        return ceil(baseCost * magnification).toLong()
     }
 
 
