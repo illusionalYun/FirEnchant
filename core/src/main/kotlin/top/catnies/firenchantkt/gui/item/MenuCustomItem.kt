@@ -20,7 +20,7 @@ class MenuCustomItem(
 
     override fun handleClick(clickType: ClickType, player: Player, event: InventoryClickEvent) {
         val args = mutableMapOf<String, Any?>()
-        args["checkSource"] = RunSource.MENUCLICK
+        args["checkSource"] = RunSource.MENU_CLICK
         args["player"] = player
         args["clickType"] = clickType.name
         args["event"] = event

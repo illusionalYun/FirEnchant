@@ -1,5 +1,5 @@
 package top.catnies.firenchantkt.engine
 
 enum class RunSource {
-    MENUCLICK
+    MENU_CLICK
 }

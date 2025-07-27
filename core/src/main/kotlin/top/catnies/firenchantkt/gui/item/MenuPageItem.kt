@@ -29,7 +29,7 @@ class MenuPageItem(
             if (forward) gui.goForward() else gui.goBack()
 
             val args = mutableMapOf<String, Any?>()
-            args["checkSource"] = RunSource.MENUCLICK
+            args["checkSource"] = RunSource.MENU_CLICK
             args["player"] = player
             args["clickType"] = clickType.name
             args["event"] = event

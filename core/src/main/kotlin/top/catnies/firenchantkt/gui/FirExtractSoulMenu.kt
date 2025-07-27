@@ -130,7 +130,7 @@ class FirExtractSoulMenu(
                 player.giveOrDropList(event.resultItems)
                 // 执行动作
                 val runtimeArgs = mapOf(
-                    "checkSource" to RunSource.MENUCLICK,
+                    "checkSource" to RunSource.MENU_CLICK,
                     "player" to player,
                     "clickType" to click?.clickType?.name,
                     "event" to click?.event,

@@ -12,6 +12,7 @@ import top.catnies.firenchantkt.util.MessageUtils.sendTranslatableComponent
 import top.catnies.firenchantkt.util.YamlUtils
 import top.catnies.firenchantkt.util.YamlUtils.getConfigurationSectionList
 import xyz.xenondevs.invui.gui.structure.Structure
+import kotlin.collections.LinkedHashMap
 
 class RepairTableConfig private constructor():
     AbstractConfigFile("modules/repair_table.yml")
@@ -37,7 +38,7 @@ class RepairTableConfig private constructor():
 
     var MENU_OUTPUT_SLOT: Char by ConfigProperty('O')                                       // 输出槽位
     var MENU_OUTPUT_ARRAY_SIZE: Int by ConfigProperty(5)                                    // 输出列表尺寸
-    var MENU_OUTPUT_ARRAY_SIZE_RULE: Map<String, Int> by ConfigProperty(emptyMap())         // 输出列表尺寸列表
+    var MENU_OUTPUT_ARRAY_SIZE_RULE: LinkedHashMap<String, Int> by ConfigProperty(LinkedHashMap())         // 输出列表尺寸列表
     var MENU_OUTPUT_UPDATE_TIME: Int by ConfigProperty(20)                                  // 输出列表刷新间隔
     var MENU_OUTPUT_ACTIVE_ADDITION_LORE: List<String> by ConfigProperty(mutableListOf())   // 正在修复的物品的附加描述
     var MENU_OUTPUT_COMPLETED_ADDITION_LORE: List<String> by ConfigProperty(mutableListOf())// 已完成修复的物品的附加描述
@@ -54,7 +55,7 @@ class RepairTableConfig private constructor():
     var MENU_CUSTOM_ITEMS: Map<Char, Pair<ItemStack?, List<ConfigActionTemplate>>> by ConfigProperty(emptyMap())    // 菜单中的自定义物品
 
     /*修复规则*/
-    var REPAIR_TIMERULE_RULE: String by ConfigProperty("static")    // 时间计算规则
+    var REPAIR_TIMERULE_RULE: String by ConfigProperty("static")     // 时间计算规则
     var REPAIR_TIMERULE_STATIC_TIME: Long by ConfigProperty(600)     // 固定花费规则 -> 固定时间
     var REPAIR_TIMERULE_LEVEL_TIME: Long by ConfigProperty(600)      // 等级计算规则 -> 每级时间
     var REPAIR_TIMERULE_LEVEL_FALLBACK: Long by ConfigProperty(450)  // 等级计算规则 -> 无魔咒时间
@@ -62,7 +63,7 @@ class RepairTableConfig private constructor():
     var REPAIR_TIMERULE_COUNT_FALLBACK: Long by ConfigProperty(450)  // 数量计算规则 -> 无魔咒时间
 
     var REPAIR_QUICK_TRIGGER_ACTION: List<ConfigActionTemplate> by ConfigProperty(emptyList()) // 触发快速修复成功后执行的动作列表
-    var REPAIR_MAGNIFICATION_RULE: Map<String, Double> by ConfigProperty(emptyMap()) // 折扣列表
+    var REPAIR_MAGNIFICATION_RULE: LinkedHashMap<String, Double> by ConfigProperty(LinkedHashMap()) // 折扣列表
 
     /*破损物品*/
     var BROKEN_FALLBACK_WRAPPER_ITEM: ItemStack? by ConfigProperty(null)                // 破损物品包装
@@ -73,24 +74,6 @@ class RepairTableConfig private constructor():
     override fun loadConfig() {
         ENABLE = config().getBoolean("enable", false)
         if (ENABLE) {
-            /*菜单设置*/
-            MENU_TITLE_DENY = config().getString("menu-setting.title-deny", "Repair DENY Menu")!!
-            MENU_TITLE_ACCEPT = config().getString("menu-setting.title-accept", "Repair ACCEPT Menu")!!
-            try { config().getStringList("menu-setting.structure").toTypedArray()
-                .also { Structure(*it); MENU_STRUCTURE_ARRAY = it } // 测试合法性然后再赋值
-            } catch (exception: IllegalArgumentException) {
-                Bukkit.getConsoleSender().sendTranslatableComponent(RESOURCE_MENU_STRUCTURE_ERROR, fileName) }
-            MENU_INPUT_SLOT = config().getString("menu-setting.input-slot", "I")?.first() ?: 'I'
-            MENU_OUTPUT_SLOT = config().getString("menu-setting.output-array.slot", "O")?.first() ?: 'O'
-            MENU_OUTPUT_ARRAY_SIZE = config().getInt("menu-setting.output-array.array-max-size", 5)
-            MENU_OUTPUT_ARRAY_SIZE_RULE = config().getMapList("menu-setting.output-array.array-size-rule").associate {
-                (it["permission"] as String) to (it["size"] as Int)
-            }
-
-            MENU_OUTPUT_UPDATE_TIME = config().getInt("menu-setting.output-array.update-time", 20)
-            MENU_OUTPUT_ACTIVE_ADDITION_LORE = config().getStringList("menu-setting.output-array.addition-active-lore")
-            MENU_OUTPUT_COMPLETED_ADDITION_LORE = config().getStringList("menu-setting.output-array.addition-completed-lore")
-
             /*修复规则*/
             REPAIR_TIMERULE_RULE = config().getString("repair-rule.time-rule.rule", "static")!!.lowercase()
             when(REPAIR_TIMERULE_RULE) {
@@ -111,9 +94,8 @@ class RepairTableConfig private constructor():
                 }
             }
 
-            REPAIR_MAGNIFICATION_RULE = config().getMapList("repair-rule.magnification-rule").associate {
-                (it["permission"] as String) to (it["magnification"] as? Double ?: 1.0)
-            }
+            REPAIR_MAGNIFICATION_RULE = config().getMapList("repair-rule.magnification-rule")
+                .associateTo(LinkedHashMap()) { (it["permission"] as String) to (it["magnification"] as? Double ?: 1.0) }
         }
     }
 
@@ -121,6 +103,21 @@ class RepairTableConfig private constructor():
     override fun loadLatePartConfig() {
         if (ENABLE) {
             /*菜单设置*/
+            MENU_TITLE_DENY = config().getString("menu-setting.title-deny", "Repair DENY Menu")!!
+            MENU_TITLE_ACCEPT = config().getString("menu-setting.title-accept", "Repair ACCEPT Menu")!!
+            try { config().getStringList("menu-setting.structure").toTypedArray()
+                .also { Structure(*it); MENU_STRUCTURE_ARRAY = it } // 测试合法性然后再赋值
+            } catch (exception: IllegalArgumentException) {
+                Bukkit.getConsoleSender().sendTranslatableComponent(RESOURCE_MENU_STRUCTURE_ERROR, fileName) }
+            MENU_INPUT_SLOT = config().getString("menu-setting.input-slot", "I")?.first() ?: 'I'
+            MENU_OUTPUT_SLOT = config().getString("menu-setting.output-array.slot", "O")?.first() ?: 'O'
+            MENU_OUTPUT_ARRAY_SIZE = config().getInt("menu-setting.output-array.array-max-size", 5)
+            MENU_OUTPUT_ARRAY_SIZE_RULE = config().getMapList("menu-setting.output-array.array-size-rule")
+                .associateTo(LinkedHashMap()) { (it["permission"] as String) to (it["size"] as Int) }
+            MENU_OUTPUT_UPDATE_TIME = config().getInt("menu-setting.output-array.update-time", 20)
+            MENU_OUTPUT_ACTIVE_ADDITION_LORE = config().getStringList("menu-setting.output-array.addition-active-lore")
+            MENU_OUTPUT_COMPLETED_ADDITION_LORE = config().getStringList("menu-setting.output-array.addition-completed-lore")
+
             MENU_REPAIR_SLOT = config().getString("menu-setting.repair-bottom.slot", "C")?.first() ?: 'C'
             MENU_REPAIR_SLOT_ITEM = config().getConfigurationSection("menu-setting.repair-bottom")?.let { section ->
                 // 使用节点构建物品

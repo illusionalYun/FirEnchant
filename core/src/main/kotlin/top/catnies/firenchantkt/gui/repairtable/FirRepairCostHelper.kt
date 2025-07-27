@@ -50,4 +50,15 @@ object FirRepairCostHelper{
         return 1.0
     }
 
+
+    /**
+     * 计算玩家的修复队列最大长度
+     */
+    fun getRepairArraySize(player: Player): Int {
+        val config = RepairTableConfig.instance
+        config.MENU_OUTPUT_ARRAY_SIZE_RULE.entries.find { player.hasPermission(it.key) }?.let { return it.value }
+        return config.MENU_OUTPUT_ARRAY_SIZE
+    }
+
+
 }

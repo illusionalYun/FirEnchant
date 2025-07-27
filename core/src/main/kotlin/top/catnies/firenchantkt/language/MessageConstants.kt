@@ -42,4 +42,5 @@ object MessageConstants {
 
     const val REPAIR_TABLE_REPAIR_ITEM_RECEIVE_SUCCESS = "repair_table.repair_item.receive.success"
     const val REPAIR_TABLE_REPAIR_ITEM_CANCEL_SUCCESS = "repair_table.repair_item.cancel.success"
+    const val REPAIR_TABLE_REPAIR_ITEM_QUEUE_FULL = "repair_table.repair_item.queue.full"
 }

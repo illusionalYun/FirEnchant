@@ -86,6 +86,7 @@ class FirRepairTableMenu(
 
     /*数据对象*/
     val itemRepairData: ItemRepairData = FirConnectionManager.getInstance().itemRepairData
+    var maxRepairItemQueueSize: Int = FirRepairCostHelper.getRepairArraySize(player) // 最大修复队列长度
     val repairList: MutableList<Item> = mutableListOf() // 展示在菜单的修复的列表
 
     var repairTime: Long? = null // 当前放入的破损物品的修复时间
@@ -159,9 +160,15 @@ class FirRepairTableMenu(
             else return@SimpleItem repairSlotItem!!.first!!.clone().apply { replacePlaceholder(mutableMapOf("cost_time" to "${repairTime!! / 1000}")) }
         }) { click ->
             if (!showBottom) return@SimpleItem // 无显示时不做任何操作
+            // 如果超出了队列上限
+            if (repairList.size >= maxRepairItemQueueSize) {
+                player.sendTranslatableComponent(MessageConstants.REPAIR_TABLE_REPAIR_ITEM_QUEUE_FULL)
+                return@SimpleItem
+            }
+
             // 执行动作
             val args = mutableMapOf<String, Any?>()
-            args["checkSource"] = RunSource.MENUCLICK
+            args["checkSource"] = RunSource.MENU_CLICK
             args["player"] = player
             args["clickType"] = click.clickType.name
             args["event"] = click.event
@@ -209,7 +216,8 @@ class FirRepairTableMenu(
         }
 
         nextPageBottom = MenuPageItem(true, nextPageItem!!.second) { s ->
-            if (gui.currentPage == gui.pageAmount - 1) return@MenuPageItem ItemStack.empty()
+            if (gui.pageAmount == 0) return@MenuPageItem ItemStack.empty() // 总页数为0代表目前没有正在修复的装备
+            if (gui.currentPage == gui.pageAmount - 1) return@MenuPageItem ItemStack.empty() // 如果当前页数 = (总页数 - 1)就代表是最后一页
 
             val itemStack = nextPageItem.first!!.clone()
             itemStack.replacePlaceholder(
@@ -324,6 +332,7 @@ class FirRepairTableMenu(
                     removeDataFromRepairList(itemRepairTable)
                     itemRepairData.remove(itemRepairTable)
                     gui.setContent(repairList)
+                    player.giveOrDrop(itemRepairTable.brokenItem)
                     click.player.sendTranslatableComponent(MessageConstants.REPAIR_TABLE_REPAIR_ITEM_CANCEL_SUCCESS)
                 }
             }
