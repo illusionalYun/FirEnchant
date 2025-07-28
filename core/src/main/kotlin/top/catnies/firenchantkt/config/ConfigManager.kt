@@ -11,7 +11,8 @@ class ConfigManager private constructor() {
         SettingsConfig.instance,
         AnvilConfig.instance,
         ExtractSoulConfig.instance,
-        RepairTableConfig.instance
+        RepairTableConfig.instance,
+        EnchantingTableConfig.instance,
     )
 
     // 重载所有配置
