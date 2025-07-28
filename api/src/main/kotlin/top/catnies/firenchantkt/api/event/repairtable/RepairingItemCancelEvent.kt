@@ -1,4 +1,4 @@
-package top.catnies.firenchantkt.api.event.fixtable
+package top.catnies.firenchantkt.api.event.repairtable
 
 import org.bukkit.entity.Player
 import org.bukkit.event.Cancellable

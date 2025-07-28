@@ -8,11 +8,12 @@ import org.bukkit.entity.Player
 import org.bukkit.event.inventory.ClickType
 import org.bukkit.inventory.ItemStack
 import top.catnies.firenchantkt.FirEnchantPlugin
-import top.catnies.firenchantkt.api.event.fixtable.BrokenItemConfirmRepairEvent
-import top.catnies.firenchantkt.api.event.fixtable.BrokenItemInputEvent
-import top.catnies.firenchantkt.api.event.fixtable.RepairingItemCancelEvent
-import top.catnies.firenchantkt.api.event.fixtable.RepairingItemReceiveEvent
+import top.catnies.firenchantkt.api.event.repairtable.BrokenItemConfirmRepairEvent
+import top.catnies.firenchantkt.api.event.repairtable.BrokenItemInputEvent
+import top.catnies.firenchantkt.api.event.repairtable.RepairingItemCancelEvent
+import top.catnies.firenchantkt.api.event.repairtable.RepairingItemReceiveEvent
 import top.catnies.firenchantkt.config.RepairTableConfig
+import top.catnies.firenchantkt.context.RepairTableContext
 import top.catnies.firenchantkt.database.FirConnectionManager
 import top.catnies.firenchantkt.database.dao.ItemRepairData
 import top.catnies.firenchantkt.database.entity.ItemRepairTable
@@ -21,7 +22,8 @@ import top.catnies.firenchantkt.gui.RepairTableMenu
 import top.catnies.firenchantkt.gui.item.MenuCustomItem
 import top.catnies.firenchantkt.gui.item.MenuPageItem
 import top.catnies.firenchantkt.gui.item.MenuRepairItem
-import top.catnies.firenchantkt.item.repairtable.FirBrokenGear
+import top.catnies.firenchantkt.item.FirBrokenGear
+import top.catnies.firenchantkt.item.FirRepairTableItemRegistry
 import top.catnies.firenchantkt.language.MessageConstants
 import top.catnies.firenchantkt.util.ItemUtils.deserializeFromBytes
 import top.catnies.firenchantkt.util.ItemUtils.nullOrAir
@@ -322,6 +324,11 @@ class FirRepairTableMenu(
                     player.giveOrDrop(itemRepairTable.repairedItem)
                     click.player.sendTranslatableComponent(MessageConstants.REPAIR_TABLE_REPAIR_ITEM_RECEIVE_SUCCESS)
                 }
+                // 当装备还在修复中, 使用道具
+                (!itemRepairTable.isCompleted && !click.event.cursor.nullOrAir()) -> {
+                    val applicableItem = FirRepairTableItemRegistry.instance.findApplicableItem(click.event.cursor) ?: return@MenuRepairItem true
+                    applicableItem.onUse(click.event, RepairTableContext(player, click.event.cursor, itemRepairTable))
+                }
                 // 当装备还在修复中, 取消修复
                 (!itemRepairTable.isCompleted && click.clickType == ClickType.SHIFT_LEFT) -> {
                     // 广播事件
@@ -335,6 +342,7 @@ class FirRepairTableMenu(
                     player.giveOrDrop(itemRepairTable.brokenItem)
                     click.player.sendTranslatableComponent(MessageConstants.REPAIR_TABLE_REPAIR_ITEM_CANCEL_SUCCESS)
                 }
+
             }
             true
         })

@@ -18,7 +18,8 @@ import top.catnies.firenchantkt.integration.IntegrationManager
 import top.catnies.firenchantkt.integration.NMSHandlerHolder
 import top.catnies.firenchantkt.item.FirAnvilItemRegistry
 import top.catnies.firenchantkt.item.FirEnchantingTableRegistry
-import top.catnies.firenchantkt.item.repairtable.FirBrokenGear
+import top.catnies.firenchantkt.item.FirBrokenGear
+import top.catnies.firenchantkt.item.FirRepairTableItemRegistry
 import top.catnies.firenchantkt.language.MessageConstants.PLUGIN_COMPATIBILITY_HOOK_SUCCESS
 import top.catnies.firenchantkt.language.TranslationManager
 import top.catnies.firenchantkt.lazyinit.CraftEngineLoadListener
@@ -130,6 +131,7 @@ class FirEnchantPlugin: JavaPlugin(), FirEnchant, CoroutineScope {
         FirItemProviderRegistry.instance // 物品集成注册表
         FirEnchantmentManager.instance // 系统魔咒管理器
         FirAnvilItemRegistry.instance // 铁砧物品注册表
+        FirRepairTableItemRegistry.instance // 修复桌物品注册表
         FirEnchantingTableRegistry.instance // 附魔台物品注册表
 
         FirBrokenGear.instance // 破损物品功能注册

@@ -1,4 +1,4 @@
-package top.catnies.firenchantkt.item.repairtable
+package top.catnies.firenchantkt.item
 
 import org.bukkit.inventory.ItemStack
 import top.catnies.firenchantkt.integration.FirItemProviderRegistry
@@ -14,7 +14,7 @@ class BrokenMatchRule(
         matchIdSorter.forEach {
             val split = it.split("|")
             val itemProviderID = if (split.size >= 2) split[0] else "Vanilla"
-            val itemProvider = FirItemProviderRegistry.instance.getItemProvider(itemProviderID) ?: return@forEach
+            val itemProvider = FirItemProviderRegistry.Companion.instance.getItemProvider(itemProviderID) ?: return@forEach
             val itemID = if (split.size >= 2) split[1] else it
             if (itemProvider.getIdByItem(item).equals(itemID, true) ) return true
         }
