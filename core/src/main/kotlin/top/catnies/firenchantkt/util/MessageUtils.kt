@@ -56,11 +56,28 @@ object MessageUtils {
      * @return 文本组件.
      */
     fun String.renderToComponent(ptr: Pointered? = null, args: Map<String, String> = mutableMapOf()): Component{
-        val parsedRuntimePlaceholders = this.replacePlaceholders(args)
-        val player = ptr as? Player
-        val parsedPlaceholderAPI = PlaceholderAPI.setPlaceholders(player, parsedRuntimePlaceholders)
-        val miniMessageText = MessageTranslator.legacyToMiniMessage(MessageTranslator.legacyColorToMiniMessage(parsedPlaceholderAPI));
-        return miniMessage.deserialize(miniMessageText)
+        val parsedRuntimePlaceholders = if (args.isEmpty()) this else this.replacePlaceholders(args)
+        val parsedPlaceholderAPI = parsedRuntimePlaceholders.parsePlaceholderAPI(ptr as? Player)
+        val miniMessageText = parsedPlaceholderAPI.convertLegacyColorToMiniMessage()
+        return if (ptr != null) miniMessage.deserialize(miniMessageText, ptr) else miniMessage.deserialize(miniMessageText)
+    }
+
+    // 解析 PlaceholderAPI
+    fun String.parsePlaceholderAPI(player: Player? = null): String {
+        return PlaceholderAPI.setPlaceholders(player, this)
+    }
+
+    fun List<String>.parsePlaceholderAPI(player: Player? = null): List<String> {
+        return this.map { it.parsePlaceholderAPI(player) }
+    }
+
+    // 将传统颜色序列化成Minimessage格式的颜色
+    fun String.convertLegacyColorToMiniMessage(): String {
+        return MessageTranslator.legacyToMiniMessage(MessageTranslator.legacyColorToMiniMessage(this))
+    }
+
+    fun List<String>.convertLegacyColorToMiniMessage(): List<String> {
+        return this.map { it.convertLegacyColorToMiniMessage() }
     }
 
     // 递归替换 Component 中的占位符
@@ -87,7 +104,6 @@ object MessageUtils {
         return args.entries.fold(this) {acc, (key, value) -> acc.replace("\${$key}", value) }
     }
 
-    // 替换String列表中的占位符
     fun List<String>.replacePlaceholders(list: List<String>, args: Map<String, String>): List<String> {
         return list.map { it.replacePlaceholders(args) }
     }

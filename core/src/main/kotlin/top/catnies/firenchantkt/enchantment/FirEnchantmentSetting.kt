@@ -2,8 +2,13 @@ package top.catnies.firenchantkt.enchantment
 
 import com.saicone.rtag.RtagItem
 import io.papermc.paper.datacomponent.DataComponentTypes
+import io.papermc.paper.datacomponent.item.ItemLore
+import net.kyori.adventure.text.minimessage.MiniMessage
 import org.bukkit.inventory.ItemStack
+import top.catnies.firenchantkt.language.tags.FirEnchantTag
 import top.catnies.firenchantkt.util.ItemUtils.nullOrAir
+import top.catnies.firenchantkt.util.MessageUtils.convertLegacyColorToMiniMessage
+import top.catnies.firenchantkt.util.MessageUtils.parsePlaceholderAPI
 
 class FirEnchantmentSetting(
     override var data: EnchantmentData,
@@ -12,6 +17,7 @@ class FirEnchantmentSetting(
     override var consumedSouls: Int = 0
 ): EnchantmentSetting {
 
+    // 转换成 ItemStack
     override fun toItemStack(): ItemStack {
         // 查找缓存获取物品
         if (data.cacheItem?.nullOrAir() == true) {
@@ -39,11 +45,12 @@ class FirEnchantmentSetting(
         }
     }
 
-    // 替换Name和Lore的Placeholder
+    // 替换 Name 和 Lore 的 Placeholder
     private fun replacePlaceholder(item: ItemStack): ItemStack {
-        val rawName = data.itemName
-        val rawLore = data.itemLore
-        // TODO 通过自定义 TagResolver 解析.
+        val itemName = data.itemName.parsePlaceholderAPI().convertLegacyColorToMiniMessage().let { MiniMessage.miniMessage().deserialize(it, FirEnchantTag(this)) }
+        val itemLore = data.itemLore?.parsePlaceholderAPI()?.convertLegacyColorToMiniMessage()?.map { MiniMessage.miniMessage().deserialize(it, FirEnchantTag(this)) }
+        item.setData(DataComponentTypes.ITEM_NAME, itemName)
+        itemLore?.let { item.setData(DataComponentTypes.LORE, ItemLore.lore(it)) }
         return item
     }
 

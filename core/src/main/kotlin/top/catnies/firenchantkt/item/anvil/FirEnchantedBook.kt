@@ -17,6 +17,7 @@ import top.catnies.firenchantkt.config.AnvilConfig
 import top.catnies.firenchantkt.config.RepairTableConfig
 import top.catnies.firenchantkt.context.AnvilContext
 import top.catnies.firenchantkt.database.FirConnectionManager
+import top.catnies.firenchantkt.database.dao.EnchantLogData
 import top.catnies.firenchantkt.database.entity.EnchantLogDataTable
 import top.catnies.firenchantkt.enchantment.EnchantmentSetting
 import top.catnies.firenchantkt.enchantment.FirEnchantmentSettingFactory
@@ -40,7 +41,7 @@ class FirEnchantedBook : EnchantedBook {
         val config = AnvilConfig.instance
     }
 
-    val database = FirConnectionManager.getInstance().enchantLogData
+    val enchantLogData: EnchantLogData = FirConnectionManager.getInstance().enchantLogData
     var failBackEnable: Boolean = false
     var failBackItem: ItemStack? = null
 
@@ -172,7 +173,7 @@ class FirEnchantedBook : EnchantedBook {
                     timestamp = System.currentTimeMillis()
                 }
                 TaskUtils.runAsyncTask {
-                    database.insert(logData)
+                    enchantLogData.insert(logData)
                     // TODO 压入缓存
                 }
 
@@ -240,6 +241,7 @@ class FirEnchantedBook : EnchantedBook {
 
     // 根据失败率判断是否成功
     private fun isSuccess(player: Player, enchantment: String, level: Int, baseFailure: Int): Boolean {
+        // TODO 玩家缓存
 //        return true
 //        val manager = FirEnchantAPI.playerEnchantLogDataManager()
 //
