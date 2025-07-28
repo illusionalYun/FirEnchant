@@ -72,17 +72,17 @@ object GiveEnchantedBookCommand : AbstractCommand() {
             player.sendTranslatableComponent(
                 COMMAND_GIVE_BOOK_ENCHANTMENT_SUCCESS_RECEIVE,
                 context.source.sender.name,
-                enchantmentKey,
+                enchantment.description(),
                 level.toString(),
                 failure.toString(),
                 consumedSouls.toString()
             )
         }
-        val receivers = players.map { it.name }.toString()
+        val receivers = players.joinToString(", ") { it.name }
         context.source.sender.sendTranslatableComponent(
             COMMAND_GIVE_BOOK_ENCHANTMENT_SUCCESS_EXECUTE,
             receivers,
-            enchantmentKey,
+            enchantment.description(),
             level.toString(),
             failure.toString(),
             consumedSouls.toString()

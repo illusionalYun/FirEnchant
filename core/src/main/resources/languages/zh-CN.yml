@@ -13,8 +13,8 @@ command.broken_gear.break_main_hand.fail: "<#96f896>[FirEnchant] <#cef8f5>在尝
 command.broken_gear.fix_main_hand.success: "<#96f896>[FirEnchant] <#cef8f5>成功修复了玩家 <yellow><arg:0> <#cef8f5>主手的装备。"
 command.broken_gear.fix_main_hand.fail: "<#96f896>[FirEnchant] <#cef8f5>在尝试修复玩家 <yellow><arg:0> <#cef8f5>主手的装备失败了，可能是因为手上本身就是未破损的装备。"
 command.give_book.enchantment.not_found: "<#96f896>[FirEnchant] <#cef8f5>魔咒 <arg:0> 不存在，请检查您的命令合法性。</#cef8f5>"
-command.give_book.enchantment.success.receive: "<#96f896>[FirEnchant] <#cef8f5>成功收到了来自 <arg:0> 给予的 <arg:1> 附魔书(等级 <arg:2>, 失败率 <arg:3>, 灵魂使用次数 <arg:4>)。</#cef8f5>"
-command.give_book.enchantment.success.execute: "<#96f896>[FirEnchant] <#cef8f5>成功给予 <arg:0> 玩家 <arg:1> 附魔书(等级 <arg:2>, 失败率 <arg:3>, 灵魂使用次数 <arg:4>)。</#cef8f5>"
+command.give_book.enchantment.success.receive: "<#96f896>[FirEnchant] <#cef8f5>成功收到了来自 <yellow><arg:0> <#cef8f5>的一本 <yellow><arg:1> <#cef8f5>附魔书(等级 <yellow><arg:2><#cef8f5>, 失败率 <yellow><arg:3><#cef8f5>, 灵魂使用次数 <yellow><arg:4><#cef8f5>)。"
+command.give_book.enchantment.success.execute: "<#96f896>[FirEnchant] <#cef8f5>成功给予玩家 <yellow><arg:0> <#cef8f5>一本 <yellow><arg:1> <#cef8f5>附魔书(等级 <yellow><arg:2><#cef8f5>, 失败率 <yellow><arg:3><#cef8f5>, 灵魂使用次数 <yellow><arg:4><#cef8f5>)。"
 
 resource.enchantment.file.error: "<#96f896>[FirEnchant] <red>魔咒 <arg:0> 的配置文件格式错误，魔咒数据无法正常加载，请修正后再试。</red>"
 resource.enchantment.file.provider.not_found: "<#96f896>[FirEnchant] <red>魔咒 <arg:0> 的配置文件中指定的物品提供插件 <arg:1> 不存在或不受支持，魔咒数据无法正常加载，请修正后再试。</red>"
