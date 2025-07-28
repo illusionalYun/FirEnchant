@@ -83,8 +83,6 @@ class FirEnchantedBook : EnchantedBook {
             isEnchantedBookMerge(firstSetting, setting) -> {
                 // 计算结果
                 val resultSetting = FirEnchantmentSettingFactory.fromAnother(firstSetting!!).apply {
-                    // TODO, 当概率行为为 RANDOM 时, 不应该在结果里显示实际的概率, 否则玩家可以通过来回放置附魔书刷出想要的失败率. ?
-                    // TODO, 直接存入临时数据到物品还得加密, 要不还是不支持RANDOM吧.
                     failure = getMergeEnchantmentFailureRate(firstSetting, setting)
                     level++
                 }
@@ -123,7 +121,7 @@ class FirEnchantedBook : EnchantedBook {
                 if (useEvent.isCancelled) return
 
                 // 显示结果
-                event.result = useEvent.resultItem
+                event.result = useEvent.resultItem.apply { this.addRepairCost() }
                 event.view.repairCost = useEvent.costExp
             }
         }
@@ -226,10 +224,6 @@ class FirEnchantedBook : EnchantedBook {
         return when (config.EB_MERGE_FAILURE_INHERITANCE) {
             "HIGHER" -> max(firstSetting.failure, secondSetting.failure)
             "LOWER" -> min(firstSetting.failure, secondSetting.failure)
-            "RANDOM" -> listOf(firstSetting.failure, secondSetting.failure).let {
-                (it.minOrNull() ?: 50)..(it.maxOrNull() ?: 100)
-            }.random()
-
             else -> firstSetting.failure
         }
     }
