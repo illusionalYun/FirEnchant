@@ -33,7 +33,7 @@ object ConfigParser {
         return parseItemFromConfigWithBaseItem(item, section, fileName, node)
     }
 
-    // 动态解析配置文件节点, 装饰物品
+    // 从配置文件节点解析, 装饰物品属性
     fun parseItemFromConfigWithBaseItem(baseItem: ItemStack, section: ConfigurationSection, fileName: String = "none", node: String = "none"): ItemStack {
         val originalName = baseItem.getData(DataComponentTypes.ITEM_NAME)
         section.getString("item-name")?.let { baseItem.setData(
