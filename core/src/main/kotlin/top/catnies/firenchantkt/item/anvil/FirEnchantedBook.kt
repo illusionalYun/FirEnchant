@@ -184,23 +184,30 @@ class FirEnchantedBook : EnchantedBook {
                 anvilView.setItem(1, ItemStack.empty())
                 anvilView.setItem(2, ItemStack.empty())
 
-                // 检查保护符文功能是否开启, 物品有没有保护符文
-                if (FirEnchantAPI.hasProtectionRune(context.firstItem)) {
-                    FirEnchantAPI.removeProtectionRune(context.firstItem)
-                    failBackItem?.let { anvilView.setCursor(it) }
-                    context.viewer.playSound(context.viewer.location, "block.anvil.destroy", 1f, 1f)
-                    context.viewer.sendTranslatableComponent(ANVIL_ENCHANTED_BOOK_USE_PROTECT_FAIL)
+                // 检查是否开启了破坏装备
+                if (config.EB_BREAK_FAILED_ITEM) {
+                    when {
+                        // 有保护符文
+                        FirEnchantAPI.hasProtectionRune(context.firstItem) -> {
+                            FirEnchantAPI.removeProtectionRune(context.firstItem)
+                            failBackItem?.let { anvilView.setCursor(it) }
+                            context.viewer.playSound(context.viewer.location, "block.anvil.destroy", 1f, 1f)
+                            context.viewer.sendTranslatableComponent(ANVIL_ENCHANTED_BOOK_USE_PROTECT_FAIL)
+                        }
+                        // 没有保护符文
+                        else -> {
+                            anvilView.setItem(0, FirEnchantAPI.toBrokenGear(context.firstItem))
+                            failBackItem?.let { anvilView.setCursor(it) }
+                            context.viewer.playSound(context.viewer.location, "block.anvil.destroy", 1f, 1f)
+                            context.viewer.sendTranslatableComponent(ANVIL_ENCHANTED_BOOK_USE_FAIL_BREAK)
+                        }
+                    }
                 }
-
-                // 没有保护符文
+                // 没开启破坏装备
                 else {
-                    if (RepairTableConfig.instance.ENABLE) {
-                        anvilView.setItem(0, FirEnchantAPI.toBrokenGear(context.firstItem))
-                        context.viewer.sendTranslatableComponent(ANVIL_ENCHANTED_BOOK_USE_FAIL_BREAK)
-                    } else context.viewer.sendTranslatableComponent(ANVIL_ENCHANTED_BOOK_USE_FAIL)
-
                     failBackItem?.let { anvilView.setCursor(it) }
                     context.viewer.playSound(context.viewer.location, "block.anvil.destroy", 1f, 1f)
+                    context.viewer.sendTranslatableComponent(ANVIL_ENCHANTED_BOOK_USE_FAIL)
                 }
             }
         }

@@ -35,6 +35,9 @@ enchanted-book:
       history-compensation:
         enable: false
 
+    # 使用附魔书失败时, 是否会使装备进入破损状态?
+    break-failed-item: true
+
     # 行为设置, 当玩家使用附魔书后, 有可能会失败.
     # 如果失败了, 你可以选择给予玩家一个物品作为补偿.
     fail-back-item:

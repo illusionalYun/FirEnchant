@@ -21,6 +21,7 @@ class AnvilConfig private constructor():
     var EB_FAILURE_CORRECTION_MINMAX_MIN: Int by ConfigProperty(15)               // 低于此失败率的附魔书将必定成功
     var EB_FAILURE_CORRECTION_MINMAX_MAX: Int by ConfigProperty(90)               // 高于此失败率的附魔书将必定失败
     var EB_FAILURE_CORRECTION_HISTORY_ENABLE: Boolean by ConfigProperty(false)    // 附魔书的成功/失败历史记录功能
+    var EB_BREAK_FAILED_ITEM: Boolean by ConfigProperty(true)                     // 使用附魔书失败时, 是否会使装备进入破损状态?
     var EB_FAIL_BACK_ENABLE: Boolean by ConfigProperty(false)           // 使用附魔书失败时是否给予补偿物品
     var EB_FAIL_BACK_ITEM_PROVIDER: String? by ConfigProperty(null)     // 使用附魔书失败时给予补偿物品的提供者
     var EB_FAIL_BACK_ITEM_ID: String? by ConfigProperty(null)           // 使用附魔书失败时给予补偿物品的ID
@@ -66,6 +67,7 @@ class AnvilConfig private constructor():
         EB_FAILURE_CORRECTION_MINMAX_MIN = config().getInt("enchanted-book.failure-correction.min-max-limit.min-success", 15)
         EB_FAILURE_CORRECTION_MINMAX_MAX = config().getInt("enchanted-book.failure-correction.min-max-limit.max-failure", 90)
         EB_FAILURE_CORRECTION_HISTORY_ENABLE = config().getBoolean("enchanted-book.failure-correction.history-compensation.enable", false)
+        EB_BREAK_FAILED_ITEM = config().getBoolean("enchanted-book.use-enchanted-book.break-failed-item", true)
         EB_FAIL_BACK_ENABLE = config().getBoolean("enchanted-book.use-enchanted-book.fail-back-item.enable", false)
         if (EB_FAIL_BACK_ENABLE) {
             EB_FAIL_BACK_ITEM_PROVIDER = config().getString("enchanted-book.use-enchanted-book.fail-back-item.hooked-plugin", null)
