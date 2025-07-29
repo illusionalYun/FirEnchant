@@ -1,9 +1,6 @@
 # 这个文件主要负责配置将插件附魔书转换成魔咒之魂的功能。
 # 如果您发现了任何Bug/需要寻求帮助，您可以在我们的售后群联系 “那谁QQ1286071831” 进行反馈处理;
 
-# 启动功能, 如果关闭则无法打开菜单.
-enable: true
-
 # 菜单设置
 menu-setting:
   # 菜单标题
@@ -69,7 +66,7 @@ extract-item:
   # 提取的结果物品
   result-hooked-plugin: "CraftEngine"
   result-hooked-id: "enchantment:ashes_o_enchantment"
-  # 提取数量至少 > 1 时, 触发的动作
+  # 提取数量至少 >= 1 时, 触发的动作
   click-actions:
     - type: play_sound
       sound: "ui.button.click"

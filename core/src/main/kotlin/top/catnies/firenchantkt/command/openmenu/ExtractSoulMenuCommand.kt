@@ -38,12 +38,6 @@ object ExtractSoulMenuCommand : AbstractCommand() {
     }
 
     override fun execute(context: CommandContext<CommandSourceStack>): Int {
-        // 功能未开启或配置文件存在异常
-        if (!ExtractSoulConfig.instance.ENABLE) {
-            context.source.sender.sendTranslatableComponent(PLUGIN_FUNCTION_NOT_ENABLED, "extract-soul")
-            return Command.SINGLE_SUCCESS
-        }
-
         val targetResolver = if (context.nodes.last().node.name == "player")
             context.getArgument("player", PlayerSelectorArgumentResolver::class.java) else null
         val player = targetResolver?.resolve(context.source)?.get(0) ?: (context.source.sender as? Player)
