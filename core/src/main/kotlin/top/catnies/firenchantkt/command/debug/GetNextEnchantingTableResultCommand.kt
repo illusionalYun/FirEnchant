@@ -8,9 +8,6 @@ import io.papermc.paper.command.brigadier.CommandSourceStack
 import io.papermc.paper.command.brigadier.Commands
 import io.papermc.paper.command.brigadier.argument.ArgumentTypes
 import io.papermc.paper.command.brigadier.argument.resolvers.selector.PlayerSelectorArgumentResolver
-import io.papermc.paper.registry.RegistryAccess
-import io.papermc.paper.registry.RegistryKey
-import org.bukkit.enchantments.Enchantment
 import org.bukkit.inventory.ItemStack
 import top.catnies.firenchantkt.command.AbstractCommand
 import top.catnies.firenchantkt.integration.NMSHandlerHolder
@@ -22,7 +19,7 @@ object GetNextEnchantingTableResultCommand : AbstractCommand() {
             .then(
                 Commands.argument("player", ArgumentTypes.player())
                     .then(
-                        Commands.argument("bookShelfCount", IntegerArgumentType.integer(1, 15))
+                        Commands.argument("bookShelfCount", IntegerArgumentType.integer(0, 15))
                             .then(
                                 Commands.argument("item", ArgumentTypes.itemStack())
                                     .executes { execute(it) })))
