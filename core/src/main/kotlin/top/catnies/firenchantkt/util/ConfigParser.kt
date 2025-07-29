@@ -1,20 +1,18 @@
 package top.catnies.firenchantkt.util
 
+import io.papermc.paper.datacomponent.DataComponentTypes
+import io.papermc.paper.datacomponent.item.CustomModelData
+import io.papermc.paper.datacomponent.item.ItemLore
+import net.kyori.adventure.key.Key
+import net.kyori.adventure.text.Component
 import org.bukkit.Bukkit
 import org.bukkit.configuration.ConfigurationSection
 import org.bukkit.inventory.ItemStack
 import top.catnies.firenchantkt.api.FirEnchantAPI
-import top.catnies.firenchantkt.engine.Action
-import top.catnies.firenchantkt.engine.ArgumentKey
-import top.catnies.firenchantkt.engine.Condition
-import top.catnies.firenchantkt.engine.ConfigActionTemplate
-import top.catnies.firenchantkt.engine.ConfigConditionTemplate
-import top.catnies.firenchantkt.integration.FirItemProviderRegistry
+import top.catnies.firenchantkt.engine.*
 import top.catnies.firenchantkt.language.MessageConstants
 import top.catnies.firenchantkt.language.MessageConstants.CONFIG_ACTION_INVALID_ARGS
 import top.catnies.firenchantkt.language.MessageConstants.CONFIG_CONDITION_INVALID_ARGS
-import top.catnies.firenchantkt.language.MessageConstants.RESOURCE_HOOK_ITEM_NOT_FOUND
-import top.catnies.firenchantkt.language.MessageConstants.RESOURCE_HOOK_ITEM_PROVIDER_NOT_FOUND
 import top.catnies.firenchantkt.util.MessageUtils.renderToComponent
 import top.catnies.firenchantkt.util.MessageUtils.sendTranslatableComponent
 import top.catnies.firenchantkt.util.YamlUtils.getConfigurationSectionList
@@ -29,32 +27,37 @@ object ConfigParser {
         // 必需的参数:
         val hookedPlugin = section.getString("hooked-plugin") ?: "null"
         val hookedId = section.getString("hooked-id") ?: "null"
-
-        val itemProvider = FirItemProviderRegistry.instance.getItemProvider(hookedPlugin)
-        if (itemProvider == null) {
-            Bukkit.getConsoleSender().sendTranslatableComponent(RESOURCE_HOOK_ITEM_PROVIDER_NOT_FOUND, fileName, node, hookedPlugin)
-            return null
-        }
-
-        val item = itemProvider.getItemById(hookedId)
-        if (item == null) {
-            Bukkit.getConsoleSender().sendTranslatableComponent(RESOURCE_HOOK_ITEM_NOT_FOUND, fileName, node, hookedId)
-            return null
-        }
+        val item = YamlUtils.tryBuildItem(hookedPlugin, hookedId, fileName, node) ?: return null
 
         // 添加额外属性
-        val builder = ItemBuilder.builder().setItem(item)
-        section.getString("item-name")?.let { builder.setDisplayName(it.renderToComponent()) }
-        section.getStringList("lore").map { it.renderToComponent() }.let { builder.setLore(it) }
-        section.getString("item-model")?.let { builder.setItemModel(it) }
-        section.getDouble("custom-model-data").let { builder.setCustomModelData(it.toFloat()) }
-        section.getInt("amount", 1).let { builder.setAmount(it) }
-//        section.getConfigurationSection("dyed-color")?.let {
-//            builder.setColor(it.getInt("alpine", 1), it.getInt("red"), it.getInt("green"), it.getInt("blue")) }
-//        section.getConfigurationSection("firework-color")?.let {
-//            builder.setFireworkStarColor(it.getInt("alpine", 1), it.getInt("red"), it.getInt("green"), it.getInt("blue")) }
-        section.getString("durability")?.let { builder.setDurability(section.getInt("durability")) }
-        return builder.build()
+        return parseItemFromConfigWithBaseItem(item, section, fileName, node)
+    }
+
+    // 动态解析配置文件节点, 装饰物品
+    fun parseItemFromConfigWithBaseItem(baseItem: ItemStack, section: ConfigurationSection, fileName: String = "none", node: String = "none"): ItemStack {
+        val originalName = baseItem.getData(DataComponentTypes.ITEM_NAME)
+        section.getString("item-name")?.let { baseItem.setData(
+            DataComponentTypes.ITEM_NAME,
+            it.renderToComponent().replaceText { builder -> builder.matchLiteral("{original_name}").replacement(originalName) }
+            )
+        }
+
+        val originalLore = baseItem.getData(DataComponentTypes.LORE)?.lines()
+        val lore = section.getStringList("lore")
+        if (lore.isNotEmpty()) {
+            val resultLore = lore.fold(mutableListOf<Component>()) { acc, line ->
+                if (line.contains("{original_lore}") && originalLore != null) acc.addAll(originalLore)
+                else acc.add(line.renderToComponent())
+                acc
+            }
+            baseItem.setData(DataComponentTypes.LORE, ItemLore.lore(resultLore))
+        }
+
+        section.getString("item-model")?.let { baseItem.setData(DataComponentTypes.ITEM_MODEL, Key.key(it)) }
+        section.getDouble("custom-model-data").let { baseItem.setData(DataComponentTypes.CUSTOM_MODEL_DATA, CustomModelData.customModelData().addFloat(it.toFloat()).build()) }
+        section.getInt("amount", 1).let { baseItem.apply { amount = it } }
+        section.getString("damage")?.let { baseItem.setData(DataComponentTypes.DAMAGE, section.getInt("damage", 0)) }
+        return baseItem
     }
 
 
