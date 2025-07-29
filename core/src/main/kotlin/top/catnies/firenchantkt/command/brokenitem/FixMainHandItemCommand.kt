@@ -10,11 +10,9 @@ import io.papermc.paper.command.brigadier.argument.resolvers.selector.PlayerSele
 import org.bukkit.entity.Player
 import top.catnies.firenchantkt.api.FirEnchantAPI
 import top.catnies.firenchantkt.command.AbstractCommand
-import top.catnies.firenchantkt.config.RepairTableConfig
 import top.catnies.firenchantkt.language.MessageConstants.COMMAND_BROKEN_GEAR_FIX_MAIN_HAND_FAIL
 import top.catnies.firenchantkt.language.MessageConstants.COMMAND_BROKEN_GEAR_FIX_MAIN_HAND_SUCCESS
 import top.catnies.firenchantkt.language.MessageConstants.COMMAND_CONSOLE_CANT_EXECUTE
-import top.catnies.firenchantkt.language.MessageConstants.PLUGIN_FUNCTION_NOT_ENABLED
 import top.catnies.firenchantkt.util.MessageUtils.sendTranslatableComponent
 import top.catnies.firenchantkt.util.PlayerUtils.giveOrDrop
 
@@ -32,12 +30,6 @@ object FixMainHandItemCommand: AbstractCommand() {
     }
 
     override fun execute(context: CommandContext<CommandSourceStack>): Int {
-        // 功能未开启或配置文件存在异常
-        if (!RepairTableConfig.instance.ENABLE) {
-            context.source.sender.sendTranslatableComponent(PLUGIN_FUNCTION_NOT_ENABLED, "fix_table")
-            return Command.SINGLE_SUCCESS
-        }
-
         val player = if (context.nodes.last().node.name == "player")
             context.getArgument("player", PlayerSelectorArgumentResolver::class.java).resolve(context.source)[0]
         else context.source.sender as? Player

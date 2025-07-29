@@ -9,10 +9,8 @@ import io.papermc.paper.command.brigadier.argument.ArgumentTypes
 import io.papermc.paper.command.brigadier.argument.resolvers.selector.PlayerSelectorArgumentResolver
 import org.bukkit.entity.Player
 import top.catnies.firenchantkt.command.AbstractCommand
-import top.catnies.firenchantkt.config.RepairTableConfig
 import top.catnies.firenchantkt.gui.repairtable.FirRepairTableMenu
 import top.catnies.firenchantkt.language.MessageConstants.COMMAND_CONSOLE_CANT_EXECUTE
-import top.catnies.firenchantkt.language.MessageConstants.PLUGIN_FUNCTION_NOT_ENABLED
 import top.catnies.firenchantkt.util.MessageUtils.sendTranslatableComponent
 
 object FirRepairTableMenuCommand: AbstractCommand() {
@@ -38,12 +36,6 @@ object FirRepairTableMenuCommand: AbstractCommand() {
     }
 
     override fun execute(context: CommandContext<CommandSourceStack>): Int {
-        // 功能未开启或配置文件存在异常
-        if (!RepairTableConfig.instance.ENABLE) {
-            context.source.sender.sendTranslatableComponent(PLUGIN_FUNCTION_NOT_ENABLED, "extract-soul")
-            return Command.SINGLE_SUCCESS
-        }
-
         val targetResolver = if (context.nodes.last().node.name == "player")
             context.getArgument("player", PlayerSelectorArgumentResolver::class.java) else null
         val player = targetResolver?.resolve(context.source)?.get(0) ?: (context.source.sender as? Player)

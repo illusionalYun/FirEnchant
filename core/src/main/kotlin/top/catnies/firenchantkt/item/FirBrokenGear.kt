@@ -23,7 +23,7 @@ class FirBrokenGear: BrokenGear {
     val matches = config.BROKEN_MATCHES
 
     override fun isBrokenGear(item: ItemStack?): Boolean {
-        if (item.nullOrAir() || !config.ENABLE) return false
+        if (item.nullOrAir()) return false
         return RtagItem.of(item).hasTag("FirEnchant", "FixType")
     }
 
