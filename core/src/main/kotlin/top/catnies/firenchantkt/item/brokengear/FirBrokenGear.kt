@@ -1,4 +1,4 @@
-package top.catnies.firenchantkt.item
+package top.catnies.firenchantkt.item.brokengear
 
 import com.saicone.rtag.RtagItem
 import io.papermc.paper.datacomponent.DataComponentTypes

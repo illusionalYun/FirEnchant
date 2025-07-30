@@ -21,6 +21,7 @@ class EnchantingTableListener : Listener {
             && !event.player.isSneaking                         // 潜行不算
             && event.clickedBlock?.type == Material.ENCHANTING_TABLE)   // 点击的是附魔台方块
         {
+            event.isCancelled = true
             FirEnchantingTableMenu(event.player).openMenu(emptyMap(), true)
         }
     }

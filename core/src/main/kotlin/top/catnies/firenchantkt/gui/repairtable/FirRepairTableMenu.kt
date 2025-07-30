@@ -22,7 +22,7 @@ import top.catnies.firenchantkt.gui.RepairTableMenu
 import top.catnies.firenchantkt.gui.item.MenuCustomItem
 import top.catnies.firenchantkt.gui.item.MenuPageItem
 import top.catnies.firenchantkt.gui.item.MenuRepairItem
-import top.catnies.firenchantkt.item.FirBrokenGear
+import top.catnies.firenchantkt.item.brokengear.FirBrokenGear
 import top.catnies.firenchantkt.item.FirRepairTableItemRegistry
 import top.catnies.firenchantkt.language.MessageConstants
 import top.catnies.firenchantkt.util.ItemUtils.deserializeFromBytes

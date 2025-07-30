@@ -1,4 +1,4 @@
-package top.catnies.firenchantkt.item
+package top.catnies.firenchantkt.item.brokengear
 
 import org.bukkit.inventory.ItemStack
 

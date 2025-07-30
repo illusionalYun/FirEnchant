@@ -16,7 +16,7 @@ import top.catnies.firenchantkt.item.AnvilItemRegistry
 import top.catnies.firenchantkt.item.EnchantingTableItemRegistry
 import top.catnies.firenchantkt.item.anvil.PowerRune
 import top.catnies.firenchantkt.item.anvil.ProtectionRune
-import top.catnies.firenchantkt.item.BrokenGear
+import top.catnies.firenchantkt.item.brokengear.BrokenGear
 
 
 object FirEnchantAPI {

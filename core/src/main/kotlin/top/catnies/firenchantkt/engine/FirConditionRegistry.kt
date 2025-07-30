@@ -35,11 +35,9 @@ class FirConditionRegistry private constructor() : ConditionRegistry {
         registerCondition("==", EqualCondition::class.java)
         registerCondition(">=", GreaterThanOrEqualCondition::class.java)
         registerCondition(">", GreaterThanCondition::class.java)
-
         registerCondition("contains", ContainsCondition::class.java)
         registerCondition("equals_ignore_case", EqualsIgnoreCaseCondition::class.java)
         registerCondition("equals", EqualsCondition::class.java)
-
         registerCondition("&&", AndCondition::class.java)
         registerCondition("||", OrCondition::class.java)
 

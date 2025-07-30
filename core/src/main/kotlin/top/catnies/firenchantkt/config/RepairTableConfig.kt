@@ -4,7 +4,7 @@ import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.inventory.ItemStack
 import top.catnies.firenchantkt.engine.ConfigActionTemplate
-import top.catnies.firenchantkt.item.BrokenMatchRule
+import top.catnies.firenchantkt.item.brokengear.BrokenMatchRule
 import top.catnies.firenchantkt.language.MessageConstants.RESOURCE_MENU_STRUCTURE_ERROR
 import top.catnies.firenchantkt.language.MessageConstants.RESOURCE_VALUE_INVALID_ERROR
 import top.catnies.firenchantkt.util.ConfigParser
