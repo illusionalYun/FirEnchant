@@ -8,7 +8,7 @@ import top.catnies.firenchantkt.api.ServiceContainer;
 import top.catnies.firenchantkt.database.FirConnectionManager;
 import top.catnies.firenchantkt.database.dao.AbstractDao;
 import top.catnies.firenchantkt.database.dao.EnchantLogData;
-import top.catnies.firenchantkt.database.entity.EnchantLogDataTable;
+import top.catnies.firenchantkt.database.entity.AnvilEnchantLogTable;
 import top.catnies.firenchantkt.util.MessageUtils;
 
 import java.sql.SQLException;
@@ -17,7 +17,7 @@ import java.util.UUID;
 
 import static top.catnies.firenchantkt.language.MessageConstants.DATABASE_TABLE_CREATE_ERROR;
 
-public class SQLiteEnchantLogData extends AbstractDao<EnchantLogDataTable, Integer> implements EnchantLogData{
+public class SQLiteEnchantLogData extends AbstractDao<AnvilEnchantLogTable, Integer> implements EnchantLogData{
 
     private static SQLiteEnchantLogData instance;
     private static final int CURRENT_VERSION = 1;
@@ -37,24 +37,24 @@ public class SQLiteEnchantLogData extends AbstractDao<EnchantLogDataTable, Integ
 
     private void createTable() {
         try {
-            TableUtils.createTableIfNotExists(FirConnectionManager.getInstance().getConnectionSource(), EnchantLogDataTable.class);
+            TableUtils.createTableIfNotExists(FirConnectionManager.getInstance().getConnectionSource(), AnvilEnchantLogTable.class);
         } catch (SQLException e) {
             // ORMLite 中如果表存在还是会重复创建 index 索引,所以需要忽略这个报错
             // if (e.getCause() != null && e.getCause().toString().contains("Duplicate key name")) return;
-            MessageUtils.INSTANCE.sendTranslatableComponent(Bukkit.getConsoleSender(), DATABASE_TABLE_CREATE_ERROR, EnchantLogDataTable.class.getSimpleName());
+            MessageUtils.INSTANCE.sendTranslatableComponent(Bukkit.getConsoleSender(), DATABASE_TABLE_CREATE_ERROR, AnvilEnchantLogTable.class.getSimpleName());
             e.printStackTrace();
             Bukkit.getPluginManager().disablePlugin(FirEnchantPlugin.getInstance());
         }
     }
 
     @Override
-    public void insert(EnchantLogDataTable enchantLogDataTable) {
-        update(enchantLogDataTable, true);
+    public void insert(AnvilEnchantLogTable anvilEnchantLogTable) {
+        update(anvilEnchantLogTable, true);
     }
 
     @Override
     public void delete(int id) {
-        EnchantLogDataTable item = getById(id);
+        AnvilEnchantLogTable item = getById(id);
         if (item != null) {
             delete(item, true);
         }
@@ -64,11 +64,11 @@ public class SQLiteEnchantLogData extends AbstractDao<EnchantLogDataTable, Integ
     public void cleanupOldRecords(int daysToKeep) {
         try {
             long cutoffTime = System.currentTimeMillis() - (daysToKeep * 24L * 60L * 60L * 1000L);
-            List<EnchantLogDataTable> oldRecords = queryForList(getQueryBuilder()
+            List<AnvilEnchantLogTable> oldRecords = queryForList(getQueryBuilder()
                     .where()
                     .lt("timestamp", cutoffTime)
                     .queryBuilder());
-            for (EnchantLogDataTable record : oldRecords) {
+            for (AnvilEnchantLogTable record : oldRecords) {
                 delete(record, true);
             }
         } catch (SQLException e) {
@@ -77,12 +77,12 @@ public class SQLiteEnchantLogData extends AbstractDao<EnchantLogDataTable, Integ
     }
 
     @Override
-    public List<EnchantLogDataTable> getAllList() {
+    public List<AnvilEnchantLogTable> getAllList() {
         return getList();
     }
 
     @Override
-    public List<EnchantLogDataTable> getCountList(int max) {
+    public List<AnvilEnchantLogTable> getCountList(int max) {
         if (max <= 0) {
             return getAllList();
         }
@@ -92,7 +92,7 @@ public class SQLiteEnchantLogData extends AbstractDao<EnchantLogDataTable, Integ
     }
 
     @Override
-    public List<EnchantLogDataTable> getByPlayer(UUID uuid) {
+    public List<AnvilEnchantLogTable> getByPlayer(UUID uuid) {
         try {
             return queryForList(getQueryBuilder()
                     .where()
@@ -105,7 +105,7 @@ public class SQLiteEnchantLogData extends AbstractDao<EnchantLogDataTable, Integ
     }
 
     @Override
-    public List<EnchantLogDataTable> getByPlayerRecent(UUID uuid, int max) {
+    public List<AnvilEnchantLogTable> getByPlayerRecent(UUID uuid, int max) {
         try {
             if (max <= 0) {
                 return getByPlayer(uuid);
@@ -123,7 +123,7 @@ public class SQLiteEnchantLogData extends AbstractDao<EnchantLogDataTable, Integ
     }
 
     @Override
-    public List<EnchantLogDataTable> getByPlayerAndEnchantment(UUID uuid, String enchantment) {
+    public List<AnvilEnchantLogTable> getByPlayerAndEnchantment(UUID uuid, String enchantment) {
         try {
             return queryForList(getQueryBuilder()
                     .where()
@@ -138,7 +138,7 @@ public class SQLiteEnchantLogData extends AbstractDao<EnchantLogDataTable, Integ
     }
 
     @Override
-    public List<EnchantLogDataTable> getByPlayerAndEnchantmentRecent(UUID uuid, String enchantment, int max) {
+    public List<AnvilEnchantLogTable> getByPlayerAndEnchantmentRecent(UUID uuid, String enchantment, int max) {
         try {
             if (max <= 0) {
                 return getByPlayerAndEnchantment(uuid, enchantment);

@@ -30,8 +30,8 @@ public class EnchantingHistoryTable {
     @DatabaseField(canBeNull = false, dataType = DataType.LONG_STRING)
     private String inputItemData; // 物品数据
     
-    @DatabaseField(canBeNull = false, dataType = DataType.LONG)
-    private long seed; // 附魔种子
+    @DatabaseField(canBeNull = false, dataType = DataType.INTEGER)
+    private int seed; // 附魔种子
 
     @DatabaseField(canBeNull = false, dataType = DataType.INTEGER)
     private int bookShelfCount; // 书架数量

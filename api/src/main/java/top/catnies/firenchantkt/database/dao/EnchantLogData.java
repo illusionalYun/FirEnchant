@@ -1,6 +1,6 @@
 package top.catnies.firenchantkt.database.dao;
 
-import top.catnies.firenchantkt.database.entity.EnchantLogDataTable;
+import top.catnies.firenchantkt.database.entity.AnvilEnchantLogTable;
 
 import java.util.List;
 import java.util.UUID;
@@ -10,9 +10,9 @@ public interface EnchantLogData {
     /**
      * 更新指定玩家附魔日志数据实例在数据库中的数据
      *
-     * @param enchantLogDataTable 玩家附魔日志数据实例
+     * @param anvilEnchantLogTable 玩家附魔日志数据实例
      */
-    void insert(EnchantLogDataTable enchantLogDataTable);
+    void insert(AnvilEnchantLogTable anvilEnchantLogTable);
 
     /**
      * 删除指定ID的记录
@@ -30,7 +30,7 @@ public interface EnchantLogData {
      *
      * @return 玩家附魔日志数据实例列表
      */
-    List<EnchantLogDataTable> getAllList();
+    List<AnvilEnchantLogTable> getAllList();
 
     /**
      * 获取所有附魔日志数据实例列表(最近的)
@@ -38,7 +38,7 @@ public interface EnchantLogData {
      * @param max 最大数量限制，-1表示无限制
      * @return 玩家附魔日志数据实例列表
      */
-    List<EnchantLogDataTable> getCountList(int max);
+    List<AnvilEnchantLogTable> getCountList(int max);
 
     /**
      * 获取指定玩家UUID的玩家附魔日志数据实例列表
@@ -46,7 +46,7 @@ public interface EnchantLogData {
      * @param uuid 玩家UUID
      * @return 玩家附魔日志数据实例列表
      */
-    List<EnchantLogDataTable> getByPlayer(UUID uuid);
+    List<AnvilEnchantLogTable> getByPlayer(UUID uuid);
 
     /**
      * 获取指定玩家UUID的玩家附魔日志数据实例列表(最近的)
@@ -55,7 +55,7 @@ public interface EnchantLogData {
      * @param max 最大数量限制
      * @return 玩家附魔日志数据实例列表
      */
-    List<EnchantLogDataTable> getByPlayerRecent(UUID uuid, int max);
+    List<AnvilEnchantLogTable> getByPlayerRecent(UUID uuid, int max);
 
     /**
      * 获取指定玩家UUID下指定附魔ID的玩家附魔日志数据实例列表
@@ -64,7 +64,7 @@ public interface EnchantLogData {
      * @param enchantment 附魔ID
      * @return 玩家附魔日志数据实例列表
      */
-    List<EnchantLogDataTable> getByPlayerAndEnchantment(UUID uuid, String enchantment);
+    List<AnvilEnchantLogTable> getByPlayerAndEnchantment(UUID uuid, String enchantment);
 
     /**
      * 获取指定玩家UUID下指定附魔ID的玩家附魔日志数据实例列表(最近的)
@@ -74,6 +74,6 @@ public interface EnchantLogData {
      * @param max 最大数量限制，-1表示无限制
      * @return 玩家附魔日志数据实例列表
      */
-    List<EnchantLogDataTable> getByPlayerAndEnchantmentRecent(UUID uuid, String enchantment, int max);
+    List<AnvilEnchantLogTable> getByPlayerAndEnchantmentRecent(UUID uuid, String enchantment, int max);
 
 }

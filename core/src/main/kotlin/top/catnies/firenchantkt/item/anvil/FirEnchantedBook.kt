@@ -14,11 +14,10 @@ import top.catnies.firenchantkt.api.event.anvil.EnchantedBookPreMergeEvent
 import top.catnies.firenchantkt.api.event.anvil.EnchantedBookPreUseEvent
 import top.catnies.firenchantkt.api.event.anvil.EnchantedBookUseEvent
 import top.catnies.firenchantkt.config.AnvilConfig
-import top.catnies.firenchantkt.config.RepairTableConfig
 import top.catnies.firenchantkt.context.AnvilContext
 import top.catnies.firenchantkt.database.FirConnectionManager
 import top.catnies.firenchantkt.database.dao.EnchantLogData
-import top.catnies.firenchantkt.database.entity.EnchantLogDataTable
+import top.catnies.firenchantkt.database.entity.AnvilEnchantLogTable
 import top.catnies.firenchantkt.enchantment.EnchantmentSetting
 import top.catnies.firenchantkt.enchantment.FirEnchantmentSettingFactory
 import top.catnies.firenchantkt.language.MessageConstants.ANVIL_ENCHANTED_BOOK_USE_FAIL
@@ -161,7 +160,7 @@ class FirEnchantedBook : EnchantedBook {
                 }
 
                 // 记录数据
-                val logData = EnchantLogDataTable().apply {
+                val logData = AnvilEnchantLogTable().apply {
                     player = context.viewer.uniqueId
                     usedEnchantment = originEnchantment.key.asString()
                     usedEnchantmentLevel = setting.level

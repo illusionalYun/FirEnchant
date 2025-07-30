@@ -18,7 +18,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @DatabaseTable(tableName = "firenchant_enchartlog")
-public class EnchantLogDataTable {
+public class AnvilEnchantLogTable {
 
     @DatabaseField(generatedId = true)
     private int id;
