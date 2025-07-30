@@ -20,11 +20,6 @@ interface EnchantingTableApplicable {
         return false
     }
 
-    // 当物品准备放入附魔台时
-    fun onPreInput(itemStack: ItemStack, context: EnchantingTableContext) {
-        return
-    }
-
     // 当物品放入附魔台后
     fun onPostInput(itemStack: ItemStack, context: EnchantingTableContext) {
         return

@@ -4,6 +4,8 @@ import org.bukkit.Bukkit
 import org.bukkit.inventory.ItemStack
 import top.catnies.firenchantkt.api.ServiceContainer
 import top.catnies.firenchantkt.api.event.enchantingtable.EnchantingApplicableItemRegisterEvent
+import top.catnies.firenchantkt.item.enchantingtable.FirOriginalBook
+import top.catnies.firenchantkt.item.enchantingtable.FirRenewalBook
 
 class FirEnchantingTableRegistry: EnchantingTableItemRegistry {
 
@@ -17,6 +19,8 @@ class FirEnchantingTableRegistry: EnchantingTableItemRegistry {
     }
 
     fun load() {
+        registerItem(FirOriginalBook())
+        registerItem(FirRenewalBook())
         ServiceContainer.register(EnchantingTableItemRegistry::class.java, this)
         Bukkit.getPluginManager().callEvent(EnchantingApplicableItemRegisterEvent(this))
     }

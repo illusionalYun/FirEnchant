@@ -5,6 +5,7 @@ import org.bukkit.configuration.ConfigurationSection
 import org.bukkit.inventory.ItemStack
 import top.catnies.firenchantkt.engine.ConfigActionTemplate
 import top.catnies.firenchantkt.engine.ConfigConditionTemplate
+import top.catnies.firenchantkt.item.enchantingtable.OriginalBookData
 import top.catnies.firenchantkt.language.MessageConstants.RESOURCE_MENU_STRUCTURE_ERROR
 import top.catnies.firenchantkt.util.ConfigParser
 import top.catnies.firenchantkt.util.ItemUtils.nullOrAir
@@ -27,6 +28,7 @@ class EnchantingTableConfig private constructor():
         ".X.cccccC",
     )
 
+    /*菜单设置*/
     var REPLACE_VANILLA_ENCHANTMENT_TABLE: Boolean by ConfigProperty(true)      // 点击原版附魔台时打开新版附魔gui
 
     var MENU_TITLE_000: String by ConfigProperty("000")
@@ -60,9 +62,25 @@ class EnchantingTableConfig private constructor():
     var ENCHANT_COST_LINE_2_ACTIONS: List<ConfigActionTemplate> by ConfigProperty(listOf())
     var ENCHANT_COST_LINE_3_ACTIONS: List<ConfigActionTemplate> by ConfigProperty(listOf())
 
+    /*附魔书*/
+    var ORIGIONAL_BOOK_MATCHES: MutableList<OriginalBookData> by ConfigProperty(mutableListOf())
+
+    /*重生之书设置*/
+    var RENEWAL_BOOK_ENABLE: Boolean by ConfigProperty(false)               // 开启重生之书道具
+    var RENEWAL_BOOK_ITEM_PROVIDER: String? by ConfigProperty(null)         // 重生之书的道具提供者
+    var RENEWAL_BOOK_ITEM_ID: String? by ConfigProperty(null)               // 重生之书的道具ID
+    var RENEWAL_BOOK_ACTIONS: List<ConfigActionTemplate> by ConfigProperty(listOf())    // 使用后执行的动作
+
+    /*反转之书设置*/
+    var REVERSAL_BOOK_ENABLE: Boolean by ConfigProperty(false)              // 开启反转之书道具
+    var REVERSAL_BOOK_ITEM_PROVIDER: String? by ConfigProperty(null)        // 反转之书的道具提供者
+    var REVERSAL_BOOK_ITEM_ID: String? by ConfigProperty(null)              // 反转之书的道具ID
+    var REVERSAL_BOOK_ACTIONS: List<ConfigActionTemplate> by ConfigProperty(listOf())    // 使用后执行的动作
+
 
     // 加载数据
     override fun loadConfig() {
+        /*菜单设置*/
         REPLACE_VANILLA_ENCHANTMENT_TABLE = config().getBoolean("replace-vanilla-enchantment-table", true)
 
         MENU_TITLE_000 = config().getString("menu-setting.title-000", "000")!!
@@ -89,6 +107,16 @@ class EnchantingTableConfig private constructor():
         MENU_SHOW_ENCHANTMENT_LINE_1_OFFLINE = config().getConfigurationSection("menu-setting.show-enchantment-slot.line-1.offline")
         MENU_SHOW_ENCHANTMENT_LINE_2_OFFLINE = config().getConfigurationSection("menu-setting.show-enchantment-slot.line-2.offline")
         MENU_SHOW_ENCHANTMENT_LINE_3_OFFLINE = config().getConfigurationSection("menu-setting.show-enchantment-slot.line-3.offline")
+
+        /*重生之书设置*/
+        REVERSAL_BOOK_ENABLE = config().getBoolean("reversal-book.enable", false)
+        REVERSAL_BOOK_ITEM_PROVIDER = config().getString("reversal-book.hooked-plugin", null)
+        REVERSAL_BOOK_ITEM_ID = config().getString("reversal-book.hooked-id", null)
+
+        /*反转之书设置*/
+        RENEWAL_BOOK_ENABLE = config().getBoolean("renewal-book.enable", false)
+        RENEWAL_BOOK_ITEM_PROVIDER = config().getString("renewal-book.hooked-plugin", null)
+        RENEWAL_BOOK_ITEM_ID = config().getString("renewal-book.hooked-id", null)
     }
 
     // 等待注册表完成后延迟加载的部分
@@ -129,5 +157,13 @@ class EnchantingTableConfig private constructor():
             .mapNotNull { ConfigParser.parseActionTemplate(it, fileName, "enchant-cost.line-2.actions") }
         ENCHANT_COST_LINE_3_ACTIONS = config().getConfigurationSectionList("enchant-cost.line-3.actions")
             .mapNotNull { ConfigParser.parseActionTemplate(it, fileName, "enchant-cost.line-3.actions") }
+
+        // 重生之书
+        RENEWAL_BOOK_ACTIONS = config().getConfigurationSectionList("renewal-book.actions")
+            .mapNotNull { ConfigParser.parseActionTemplate(it, fileName, "renewal-book.actions") }
+
+        // 反转之书
+        REVERSAL_BOOK_ACTIONS = config().getConfigurationSectionList("reversal-book.actions")
+            .mapNotNull { ConfigParser.parseActionTemplate(it, fileName, "reversal-book.actions") }
     }
 }

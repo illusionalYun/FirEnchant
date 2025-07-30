@@ -1,9 +1,11 @@
 package top.catnies.firenchantkt.context
 
-import org.bukkit.inventory.ItemStack
+import org.bukkit.entity.Player
+import top.catnies.firenchantkt.gui.EnchantingTableMenu
 
 data class EnchantingTableContext(
-    val item: ItemStack,
+    val player: Player,
+    val menu: EnchantingTableMenu
 ): Context {
 
     private val data = mutableMapOf<String, Any>()
