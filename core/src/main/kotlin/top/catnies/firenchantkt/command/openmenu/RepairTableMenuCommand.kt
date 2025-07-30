@@ -13,7 +13,7 @@ import top.catnies.firenchantkt.gui.repairtable.FirRepairTableMenu
 import top.catnies.firenchantkt.language.MessageConstants.COMMAND_CONSOLE_CANT_EXECUTE
 import top.catnies.firenchantkt.util.MessageUtils.sendTranslatableComponent
 
-object FirRepairTableMenuCommand: AbstractCommand() {
+object RepairTableMenuCommand: AbstractCommand() {
 
     private const val PERMISSION = "firenchant.command.openmenu.repair-table"
     private const val PERMISSION_OTHER = "firenchant.command.openmenu.repair-table.other"
