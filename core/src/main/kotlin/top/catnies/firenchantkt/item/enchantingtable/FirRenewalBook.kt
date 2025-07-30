@@ -1,6 +1,5 @@
 package top.catnies.firenchantkt.item.enchantingtable
 
-import org.bukkit.Material
 import org.bukkit.inventory.ItemStack
 import top.catnies.firenchantkt.FirEnchantPlugin
 import top.catnies.firenchantkt.api.FirEnchantAPI
