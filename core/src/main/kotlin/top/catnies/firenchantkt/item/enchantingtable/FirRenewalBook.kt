@@ -1,8 +1,10 @@
 package top.catnies.firenchantkt.item.enchantingtable
 
+import org.bukkit.Bukkit
 import org.bukkit.inventory.ItemStack
 import top.catnies.firenchantkt.FirEnchantPlugin
 import top.catnies.firenchantkt.api.FirEnchantAPI
+import top.catnies.firenchantkt.api.event.enchantingtable.RenewalBookUseEvent
 import top.catnies.firenchantkt.config.EnchantingTableConfig
 import top.catnies.firenchantkt.context.EnchantingTableContext
 import top.catnies.firenchantkt.engine.ConfigActionTemplate
@@ -56,9 +58,18 @@ class FirRenewalBook: RenewalBook {
 
     override fun onPostInput(itemStack: ItemStack, context: EnchantingTableContext) {
         val player = context.player
-        context.menu.clearInputInventory()
-        player.enchantmentSeed = (1..Int.MAX_VALUE).random()
+        val newSeed = (1..Int.MAX_VALUE).random()
 
+        // 广播事件
+        val useEvent = RenewalBookUseEvent(player, newSeed)
+        Bukkit.getPluginManager().callEvent(useEvent)
+        if (useEvent.isCancelled) return
+
+        // 执行
+        context.menu.clearInputInventory()
+        player.enchantmentSeed = useEvent.newSeed
+
+        // 额外动作
         val args = mutableMapOf<String, Any?>()
         args["checkSource"] = RunSource.MENU_CLICK
         args["player"] = player

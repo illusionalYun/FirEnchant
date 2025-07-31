@@ -1,18 +1,20 @@
 package top.catnies.firenchantkt.item.enchantingtable
 
+import org.bukkit.Bukkit
 import org.bukkit.inventory.ItemStack
 import top.catnies.firenchantkt.FirEnchantPlugin
 import top.catnies.firenchantkt.api.FirEnchantAPI
+import top.catnies.firenchantkt.api.event.enchantingtable.ReversalBookUseEvent
 import top.catnies.firenchantkt.config.EnchantingTableConfig
 import top.catnies.firenchantkt.context.EnchantingTableContext
+import top.catnies.firenchantkt.database.FirCacheManager
 import top.catnies.firenchantkt.engine.ConfigActionTemplate
 import top.catnies.firenchantkt.engine.RunSource
 import top.catnies.firenchantkt.integration.ItemProvider
-import top.catnies.firenchantkt.item.EnchantingTableApplicable
 import top.catnies.firenchantkt.util.ItemUtils.nullOrAir
 import top.catnies.firenchantkt.util.YamlUtils
 
-class FirReversalBook: EnchantingTableApplicable {
+class FirReversalBook: ReversalBook {
 
     companion object {
         val plugin = FirEnchantPlugin.instance
@@ -57,10 +59,17 @@ class FirReversalBook: EnchantingTableApplicable {
     override fun onPostInput(itemStack: ItemStack, context: EnchantingTableContext) {
         val player = context.player
 
-        // TODO 缓存系统
         // 检查是否有上次附魔的种子
+        val lastEnchantingSeed = FirCacheManager.getInstance().getLastEnchantingTableSeed(player.uniqueId)
+        if (lastEnchantingSeed == -1) return
+
+        // 触发事件
+        val useEvent = ReversalBookUseEvent(player, lastEnchantingSeed)
+        Bukkit.getPluginManager().callEvent(useEvent)
+        if (useEvent.isCancelled) return
 
         // 回滚上次附魔的种子
+        player.enchantmentSeed = useEvent.backSeed
         context.menu.clearInputInventory()
 
         val args = mutableMapOf<String, Any?>()
