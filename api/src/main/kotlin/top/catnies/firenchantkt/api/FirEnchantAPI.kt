@@ -14,6 +14,7 @@ import top.catnies.firenchantkt.engine.ActionRegistry
 import top.catnies.firenchantkt.integration.ItemProviderRegistry
 import top.catnies.firenchantkt.item.AnvilItemRegistry
 import top.catnies.firenchantkt.item.EnchantingTableItemRegistry
+import top.catnies.firenchantkt.item.RepairTableItemRegistry
 import top.catnies.firenchantkt.item.anvil.PowerRune
 import top.catnies.firenchantkt.item.anvil.ProtectionRune
 import top.catnies.firenchantkt.item.brokengear.BrokenGear
@@ -25,6 +26,8 @@ object FirEnchantAPI {
     val itemProviderRegistry: () -> ItemProviderRegistry = { ServiceContainer.get(ItemProviderRegistry::class.java) }
     // 铁砧物品注册表
     val anvilItemRegistry: () -> AnvilItemRegistry = { ServiceContainer.get(AnvilItemRegistry::class.java) }
+    // 修复桌物品注册表
+    val repairTableItemRegistry: () -> RepairTableItemRegistry = { ServiceContainer.get(RepairTableItemRegistry::class.java) }
     // 附魔台物品注册表
     val enchantingTableItemRegistry: () -> EnchantingTableItemRegistry = { ServiceContainer.get(EnchantingTableItemRegistry::class.java) }
     // 条件注册表

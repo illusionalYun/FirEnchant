@@ -7,6 +7,7 @@ import org.bukkit.event.block.Action
 import org.bukkit.event.player.PlayerInteractEvent
 import top.catnies.firenchantkt.config.EnchantingTableConfig
 import top.catnies.firenchantkt.gui.FirEnchantingTableMenu
+import top.catnies.firenchantkt.integration.NMSHandlerHolder
 
 class EnchantingTableListener : Listener {
 
@@ -22,7 +23,9 @@ class EnchantingTableListener : Listener {
             && event.clickedBlock?.type == Material.ENCHANTING_TABLE)   // 点击的是附魔台方块
         {
             event.isCancelled = true
-            FirEnchantingTableMenu(event.player).openMenu(emptyMap(), true)
+            val nmsHandler = NMSHandlerHolder.getNMSHandler()
+            val bookShelves = nmsHandler.getEnchantmentTableBookShelf(event.clickedBlock!!.location)
+            FirEnchantingTableMenu(event.player, bookShelves).openMenu(emptyMap(), true)
         }
     }
 

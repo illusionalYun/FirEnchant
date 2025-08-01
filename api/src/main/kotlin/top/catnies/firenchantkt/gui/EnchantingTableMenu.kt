@@ -11,9 +11,10 @@ interface EnchantingTableMenu {
     fun clearInputInventory()
 
     // 设置附魔台结果, 失败率来源于玩家的 seed + 0,1,2 生成随机数
-    fun setEnchantmentResult(list: List<Map<Enchantment, Integer>>)
+    fun setEnchantmentResult(list: List<Map<Enchantment, Int>>)
 
     // 检查玩家现在能点亮多少个栏位
     fun checkCanLight(): Int
 
+    fun refreshLine()
 }

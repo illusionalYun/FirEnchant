@@ -5,6 +5,7 @@ import top.catnies.firenchantkt.gui.EnchantingTableMenu
 
 data class EnchantingTableContext(
     val player: Player,
+    var bookShelves: Int,
     val menu: EnchantingTableMenu
 ): Context {
 

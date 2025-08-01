@@ -1,6 +1,7 @@
 package top.catnies.firenchantkt.command.openmenu
 
 import com.mojang.brigadier.Command
+import com.mojang.brigadier.arguments.IntegerArgumentType
 import com.mojang.brigadier.builder.LiteralArgumentBuilder
 import com.mojang.brigadier.context.CommandContext
 import io.papermc.paper.command.brigadier.CommandSourceStack
@@ -20,11 +21,12 @@ object EnchantingTableMenuCommand: AbstractCommand() {
 
     override fun create(): LiteralArgumentBuilder<CommandSourceStack> {
         return Commands.literal("enchanting-table")
-            .requires { requires(it) }
-            .executes { execute(it) }
-            .then(Commands.argument("player", ArgumentTypes.player())
-                .requires { requiresOther(it) }
-                .executes { execute(it) })
+            .then(Commands.argument("bookShelfCount", IntegerArgumentType.integer(0, 15))
+                .requires { requires(it) }
+                .executes { execute(it) }
+                .then(Commands.argument("player", ArgumentTypes.player())
+                    .requires { requiresOther(it) }
+                    .executes { execute(it) }))
     }
 
     override fun requires(requirement: CommandSourceStack): Boolean {
@@ -44,7 +46,8 @@ object EnchantingTableMenuCommand: AbstractCommand() {
             return Command.SINGLE_SUCCESS
         }
 
-        FirEnchantingTableMenu(player).openMenu(mutableMapOf(), true)
+        val bookShelves = context.getArgument("bookShelfCount", Integer::class.java).toInt()
+        FirEnchantingTableMenu(player, bookShelves).openMenu(mutableMapOf(), true)
         return Command.SINGLE_SUCCESS
     }
 }
