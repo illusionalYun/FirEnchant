@@ -153,7 +153,7 @@ menu-setting:
         custom-model-data: 31001
         item-model: "minecraft:item/paper"
     line-3-book: # 当第三行栏位亮起时, 行占位物品的信息
-      slot: 'c'
+      slot: 'C'
       online:
         lore:
           - "{original_lore}"

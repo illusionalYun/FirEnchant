@@ -38,6 +38,7 @@ class EnchantingTableConfig private constructor():
     var MENU_TITLE_222: String by ConfigProperty("222")
     var MENU_STRUCTURE_ARRAY: Array<String> by ConfigProperty(fallbackMenuStructure)    // 菜单结构
     var MENU_INPUT_SLOT: Char by ConfigProperty('I')                                    // 放入物品的槽位
+    var MENU_CUSTOM_ITEMS: Map<Char, Pair<ItemStack?, List<ConfigActionTemplate>>> by ConfigProperty(emptyMap())    // 菜单中的自定义物品
 
     var MENU_SHOW_ENCHANTMENT_LINE_1_SLOT: Char by ConfigProperty('a')
     var MENU_SHOW_ENCHANTMENT_LINE_2_SLOT: Char by ConfigProperty('b')
@@ -52,8 +53,6 @@ class EnchantingTableConfig private constructor():
     var MENU_SHOW_ENCHANTMENT_LINE_1_OFFLINE: ConfigurationSection? by ConfigProperty(null)
     var MENU_SHOW_ENCHANTMENT_LINE_2_OFFLINE: ConfigurationSection? by ConfigProperty(null)
     var MENU_SHOW_ENCHANTMENT_LINE_3_OFFLINE: ConfigurationSection? by ConfigProperty(null)
-
-    var MENU_CUSTOM_ITEMS: Map<Char, Pair<ItemStack?, List<ConfigActionTemplate>>> by ConfigProperty(emptyMap())    // 菜单中的自定义物品
 
     var ENCHANT_COST_LINE_1_CONDITIONS: List<ConfigConditionTemplate> by ConfigProperty(listOf())
     var ENCHANT_COST_LINE_2_CONDITIONS: List<ConfigConditionTemplate> by ConfigProperty(listOf())

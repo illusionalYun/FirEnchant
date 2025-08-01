@@ -65,9 +65,11 @@ class RecipeListener: Listener {
             val anvilApplicable = FirAnvilItemRegistry.instance.findApplicableItem(secondItem) ?: return
 
             // 等级需要超过铁砧的消耗等级, 否则不处理.
-            if (player.level < anvilView.repairCost || (anvilView.repairCost >= 40 && player.gameMode != GameMode.CREATIVE)) {
-                event.isCancelled = true
-                return
+            if (player.gameMode != GameMode.CREATIVE) {
+                if (player.level < anvilView.repairCost || anvilView.repairCost >= 40) {
+                    event.isCancelled = true
+                    return
+                }
             }
 
             // 构建上下文

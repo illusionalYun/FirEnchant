@@ -20,12 +20,12 @@ class CacheListener: Listener {
             // 铁砧附魔历史记录
             val anvilLogCache = FirConnectionManager.getInstance().enchantLogData.getByPlayerRecent(event.player.uniqueId, 20)
             anvilLogCache.forEach {
-                FirCacheManager.getInstance().addEnchantLog(player.uniqueId, it)
+                FirCacheManager.getInstance().addEnchantLog(it)
             }
             // 附魔台历史记录
             val tableLogCache = FirConnectionManager.getInstance().enchantingHistoryData.getByPlayerRecent(event.player.uniqueId, 20)
             tableLogCache.forEach {
-                FirCacheManager.getInstance().addEnchantingHistory(event.player.uniqueId, it)
+                FirCacheManager.getInstance().addEnchantingHistory(it)
             }
         }
     }

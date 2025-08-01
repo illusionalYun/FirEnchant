@@ -20,18 +20,18 @@ public interface CacheManager {
      * @param playerUUID 玩家UUID
      * @return 铁砧日志
      */
-    List<EnchantingHistoryTable> getRecentAnvilEnchantLogs(UUID playerUUID);
+    List<AnvilEnchantLogTable> getRecentAnvilEnchantLogs(UUID playerUUID);
 
     /**
      * 推入新的附魔台记录
      */
-    void addEnchantLog(UUID playerUUID, AnvilEnchantLogTable log);
+    void addEnchantLog(AnvilEnchantLogTable log);
 
 
     /**
      * 推入附魔历史记录
      */
-    void addEnchantingHistory(UUID playerUUID, EnchantingHistoryTable history);
+    void addEnchantingHistory(EnchantingHistoryTable history);
 
 
     /**

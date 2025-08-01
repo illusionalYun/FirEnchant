@@ -15,6 +15,7 @@ import top.catnies.firenchantkt.api.event.anvil.EnchantedBookPreUseEvent
 import top.catnies.firenchantkt.api.event.anvil.EnchantedBookUseEvent
 import top.catnies.firenchantkt.config.AnvilConfig
 import top.catnies.firenchantkt.context.AnvilContext
+import top.catnies.firenchantkt.database.FirCacheManager
 import top.catnies.firenchantkt.database.FirConnectionManager
 import top.catnies.firenchantkt.database.dao.EnchantLogData
 import top.catnies.firenchantkt.database.entity.AnvilEnchantLogTable
@@ -41,6 +42,7 @@ class FirEnchantedBook : EnchantedBook {
     }
 
     val enchantLogData: EnchantLogData = FirConnectionManager.getInstance().enchantLogData
+    val cacheManager: FirCacheManager = FirCacheManager.getInstance()
     var failBackEnable: Boolean = false
     var failBackItem: ItemStack? = null
 
@@ -151,7 +153,12 @@ class FirEnchantedBook : EnchantedBook {
                 // 触发事件
                 val useEvent = EnchantedBookUseEvent(
                     context.viewer, event, anvilView, context.firstItem, setting, resultItem,
-                    isSuccess(context.viewer, originEnchantment.key.asString(), anvilView.repairCost, setting.failure)
+                    isSuccess(context.viewer,
+                        originEnchantment.key.asString(),
+                        setting.level,
+                        anvilView.repairCost,
+                        setting.failure
+                    )
                 )
                 Bukkit.getPluginManager().callEvent(useEvent)
                 if (useEvent.isCancelled) {
@@ -160,8 +167,9 @@ class FirEnchantedBook : EnchantedBook {
                 }
 
                 // 记录数据
+                val playerUUID = context.viewer.uniqueId
                 val logData = AnvilEnchantLogTable().apply {
-                    player = context.viewer.uniqueId
+                    player = playerUUID
                     usedEnchantment = originEnchantment.key.asString()
                     usedEnchantmentLevel = setting.level
                     takeLevel = anvilView.repairCost
@@ -171,7 +179,7 @@ class FirEnchantedBook : EnchantedBook {
                 }
                 TaskUtils.runAsyncTask {
                     enchantLogData.insert(logData)
-                    // TODO 压入缓存
+                    cacheManager.addEnchantLog(logData)
                 }
 
                 // 成功直接返回
@@ -240,40 +248,54 @@ class FirEnchantedBook : EnchantedBook {
     }
 
     // 根据失败率判断是否成功
-    private fun isSuccess(player: Player, enchantment: String, level: Int, baseFailure: Int): Boolean {
-        // TODO 玩家缓存
-//        return true
-//        val manager = FirEnchantAPI.playerEnchantLogDataManager()
-//
-//        // 1. 获取玩家历史记录（最近20次）
-//        val logList = manager.getList(player.uniqueId, 20)
-//
-//        // 2. 计算连续失败次数（心理补偿核心）
-//        val consecutiveFails = logList!!.takeLastWhile { !it!!.isSuccess }.size
-//
-//        // 3. 动态调整实际成功率（补偿公式）
-//        val actualFailure = when {
-//            consecutiveFails >= 5 -> baseFailure + 40  // 保底：连续5次失败后大幅提升概率
-//            consecutiveFails >= 3 -> baseFailure + 20  // 补偿：连续3次失败后中等提升
-//            else -> baseFailure
-//        }.coerceAtMost(95)  // 上限95%避免必成
-
-        // 4. 概率判定
+    private fun isSuccess(player: Player, enchantment: String, enchantmentLevel: Int, anvilCostLevel: Int, baseFailure: Int): Boolean {
+        // 纯随机结果
         val random = (0..100).random()
-        val success = random > baseFailure
+        var adjustedFailure = baseFailure
+        val success = (random > baseFailure)
 
-//        // 5. 记录日志
-//        val log = EnchantLogDataTable().apply {
-//            this.player = player.uniqueId
-//            this.enchantment = enchantment
-//            this.takeLevel = level
-//            this.random = random
-//            this.isSuccess = success
-//            this.baseFailure = baseFailure
-//            this.actualFailure = actualFailure
-//        }
-//        manager.update(log, true)
+        // 如果启用 上下限必成/必败
+        if (config.EB_FAILURE_CORRECTION_MINMAX_ENABLED) {
+            if (baseFailure <= config.EB_FAILURE_CORRECTION_MINMAX_MIN) return true
+            if (baseFailure >= config.EB_FAILURE_CORRECTION_MINMAX_MAX) return false
+        }
 
-        return success
+        // 如果启用 根据历史记录修正概率
+        if (config.EB_FAILURE_CORRECTION_HISTORY_ENABLE) {
+            // 获取玩家历史记录（最近20次）
+            val dataLogs = FirCacheManager.getInstance().getRecentAnvilEnchantLogs(player.uniqueId)
+
+            // 如果有强制必成, 则忽略这一部分的数据
+            if (config.EB_FAILURE_CORRECTION_MINMAX_ENABLED) {
+                dataLogs.filter {
+                    it.failure <= config.EB_FAILURE_CORRECTION_MINMAX_MIN || it.failure >= config.EB_FAILURE_CORRECTION_MINMAX_MAX
+                }
+            }
+
+            // 如果没记录, 直接纯随机返回
+            if (dataLogs.isEmpty()) return success
+
+            // TODO 可配置的更好的计算方法?
+            // 计算实际成功率和期望成功率的差异
+            val actualSuccessRate = dataLogs.count { it.isSuccess }.toDouble() / dataLogs.size * 100
+            val expectedSuccessRate = 100 - baseFailure.toDouble()
+
+            // 如果实际成功率低于期望，降低失败率进行补偿
+            val difference = expectedSuccessRate - actualSuccessRate
+            if (difference > 0) {
+                val compensation = (difference * 0.5).toInt() // 补偿一半的差异
+                adjustedFailure = maxOf(0, adjustedFailure - compensation)
+            }
+        }
+
+        return random > adjustedFailure
+    }
+
+    /**
+     * 更新数据到数据库并插入缓存
+     */
+    private fun saveToDatabaseAndCache(log: AnvilEnchantLogTable) {
+        enchantLogData.insert(log)
+        cacheManager.addEnchantLog(log)
     }
 }

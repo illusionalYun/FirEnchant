@@ -40,6 +40,18 @@ public class FirCacheManager implements CacheManager {
                     .expireAfterAccess(CACHE_EXPIRE_HOURS, TimeUnit.DAYS)
                     .build();
 
+    // 添加附魔历史记录
+    @Override
+    public void addEnchantingHistory(EnchantingHistoryTable history) {
+        UUID playerUUID = history.getPlayerId();
+        Queue<EnchantingHistoryTable> queue = enchantingHistoryCache.getIfPresent(playerUUID);
+        if (queue == null) {
+            queue = EvictingQueue.create(MAX_RECORDS_PER_PLAYER);
+            enchantingHistoryCache.put(playerUUID, queue);
+        }
+        queue.offer(history);
+    }
+
     // 获取最后一次附魔的种子
     @Override
     public int getLastEnchantingTableSeed(UUID playerUUID) {
@@ -54,17 +66,10 @@ public class FirCacheManager implements CacheManager {
         return last != null ? last.getSeed() : -1;
     }
 
-    // 获取最近20次的铁砧成功记录
+    // 添加铁砧附魔记录
     @Override
-    public List<EnchantingHistoryTable> getRecentAnvilEnchantLogs(UUID playerUUID) {
-        Queue<EnchantingHistoryTable> data = enchantingHistoryCache.getIfPresent(playerUUID);
-        if (data == null || data.isEmpty()) return List.of();
-        return data.stream().limit(MAX_RECORDS_PER_PLAYER).toList();
-    }
-
-    // 添加附魔台记录
-    @Override
-    public void addEnchantLog(UUID playerUUID, AnvilEnchantLogTable log) {
+    public void addEnchantLog(AnvilEnchantLogTable log) {
+        UUID playerUUID = log.getPlayer();
         Queue<AnvilEnchantLogTable> queue = enchantLogsCache.getIfPresent(playerUUID);
         if (queue == null) {
             queue = EvictingQueue.create(MAX_RECORDS_PER_PLAYER);
@@ -73,15 +78,12 @@ public class FirCacheManager implements CacheManager {
         queue.offer(log); // 自动淘汰最旧的记录
     }
 
-    // 添加附魔历史记录
+    // 获取最近20次的铁砧成功记录
     @Override
-    public void addEnchantingHistory(UUID playerUUID, EnchantingHistoryTable history) {
-        Queue<EnchantingHistoryTable> queue = enchantingHistoryCache.getIfPresent(playerUUID);
-        if (queue == null) {
-            queue = EvictingQueue.create(MAX_RECORDS_PER_PLAYER);
-            enchantingHistoryCache.put(playerUUID, queue);
-        }
-        queue.offer(history);
+    public List<AnvilEnchantLogTable> getRecentAnvilEnchantLogs(UUID playerUUID) {
+        Queue<AnvilEnchantLogTable> data = enchantLogsCache.getIfPresent(playerUUID);
+        if (data == null || data.isEmpty()) return List.of();
+        return data.stream().limit(MAX_RECORDS_PER_PLAYER).toList();
     }
 
     // 清理指定玩家的缓存
