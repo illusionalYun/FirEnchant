@@ -72,7 +72,9 @@ class FirOriginalBook: OriginalBook {
         Bukkit.getPluginManager().callEvent(inputEvent)
 
         // 应用执行
+        tableMenu.setRecordEnchantable(enchantable)
         tableMenu.setEnchantmentResult(enchantingTableResults)
+        tableMenu.refreshCanLight()
         tableMenu.refreshLine()
     }
 

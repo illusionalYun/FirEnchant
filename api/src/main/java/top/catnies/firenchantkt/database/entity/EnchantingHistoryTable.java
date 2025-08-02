@@ -27,8 +27,8 @@ public class EnchantingHistoryTable {
     @DatabaseField(canBeNull = false, index = true, dataType = DataType.UUID)
     private UUID playerId;
     
-    @DatabaseField(canBeNull = false, dataType = DataType.LONG_STRING)
-    private String inputItemData; // 物品数据
+    @DatabaseField(canBeNull = false, dataType = DataType.BYTE_ARRAY)
+    private byte[] inputItemData; // 物品数据
     
     @DatabaseField(canBeNull = false, dataType = DataType.INTEGER)
     private int seed; // 附魔种子
@@ -40,10 +40,13 @@ public class EnchantingHistoryTable {
     private int enchantable; // 物品附魔能力值
 
     @DatabaseField(canBeNull = false, dataType = DataType.STRING)
-    private String selectedEnchantment; // 选择的魔咒
+    private String enchantment; // 附魔书的魔咒
 
     @DatabaseField(canBeNull = false, dataType = DataType.INTEGER)
-    private int selectedEnchantmentLevel; // 选择的魔咒等级
+    private int enchantmentLevel; // 附魔书的魔咒等级
+
+    @DatabaseField(canBeNull = false, dataType = DataType.INTEGER)
+    private int enchantmentFailure; // 附魔书的失败率
 
     @DatabaseField(canBeNull = false, dataType = DataType.LONG)
     private long timestamp;
