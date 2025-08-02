@@ -61,7 +61,10 @@ class FirEnchantSoul: EnchantSoul {
         // 计算花费
         val canUseAmount = getCanUseAmount(setting, context.secondItem.amount).also { if (it <= 0) return }
         val costExp = config.ENCHANT_SOUL_EXP * canUseAmount
-        val resultSetting = FirEnchantmentSettingFactory.fromAnother(setting).apply { failure = failure - canUseAmount * config.ENCHANT_SOUL_REDUCE_FAILURE }
+        val resultSetting = FirEnchantmentSettingFactory.fromAnother(setting).apply {
+            failure = failure - canUseAmount * config.ENCHANT_SOUL_REDUCE_FAILURE
+            consumedSouls += canUseAmount
+        }
 
         // 触发事件
         val useEvent = EnchantSoulPreUseEvent(context.viewer, event, canUseAmount, costExp, resultSetting, context.firstItem)
