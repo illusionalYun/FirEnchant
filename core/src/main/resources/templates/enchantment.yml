@@ -8,5 +8,6 @@ item-name: "&e<firenchant:enchantment> <firenchant:level_roman>"
 item-lore:
   - "<white>等级: <blue><firenchant:level>"
   - "<white>失败率: <red><firenchant:failure>%"
+  - "<white>已使用灵魂: <red><firenchant:consumed_souls>"
   - "<gray>一本神秘的附魔书喵~"
   - "<gray>Ciallo～(∠・ω< )⌒★"

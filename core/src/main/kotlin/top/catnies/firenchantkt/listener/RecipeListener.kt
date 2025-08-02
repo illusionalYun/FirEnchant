@@ -22,11 +22,8 @@ class RecipeListener: Listener {
         val (firstItem, secondItem) = event.inventory.getItem(0) to event.inventory.getItem(1)
         if (firstItem.nullOrAir() || secondItem.nullOrAir()) return
 
-        // 找到物品对应的处理器
         val anvilApplicable = FirAnvilItemRegistry.instance.findApplicableItem(secondItem) ?: return
-        // 构建上下文
         val context = AnvilContext(firstItem, secondItem, event.result, event.view, player)
-        // 处理物品
         anvilApplicable.onPrepare(event, context)
     }
 
@@ -38,12 +35,9 @@ class RecipeListener: Listener {
         val (firstItem, secondItem) = event.inventory.getItem(0) to event.inventory.getItem(1)
         if (firstItem.nullOrAir() || secondItem.nullOrAir()) return
 
-        // 找到物品对应的处理器
         val anvilApplicable = FirAnvilItemRegistry.instance.findApplicableItem(secondItem) ?: return
-        // 构建上下文
         val anvilView = event.view as AnvilView
         val context = AnvilContext(firstItem, secondItem, event.result, anvilView, player)
-        // 处理物品
         anvilApplicable.onPrepareResult(event, context)
     }
 
@@ -73,13 +67,9 @@ class RecipeListener: Listener {
                 }
             }
 
-            // 构建上下文
             val context = AnvilContext(firstItem, secondItem, resultItem, anvilView, player)
-            // 处理物品
             anvilApplicable.onCost(event, context)
             return
         }
-
-        // 其他事件
     }
 }

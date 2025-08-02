@@ -15,6 +15,7 @@ import top.catnies.firenchantkt.integration.ItemProviderRegistry
 import top.catnies.firenchantkt.item.AnvilItemRegistry
 import top.catnies.firenchantkt.item.EnchantingTableItemRegistry
 import top.catnies.firenchantkt.item.RepairTableItemRegistry
+import top.catnies.firenchantkt.item.anvil.EnchantSoul
 import top.catnies.firenchantkt.item.anvil.PowerRune
 import top.catnies.firenchantkt.item.anvil.ProtectionRune
 import top.catnies.firenchantkt.item.brokengear.BrokenGear
@@ -75,21 +76,17 @@ object FirEnchantAPI {
 
 
     /**
-     * 物品上保护符文的检查, 添加和删除.
-     * @param item 物品
+     * 魔咒之魂相关的接口
      */
     @NotNull
-    fun hasProtectionRune(item: ItemStack): Boolean {
-        val protectionRune = ServiceContainer.get(AnvilItemRegistry::class.java).getItem(ProtectionRune::class.java) ?: throw IllegalStateException("ProtectionRune is not registered.")
-        return protectionRune.hasProtectionRune(item)
+    fun isEnchantmentSoul(item: ItemStack): Boolean {
+        val enchantmentSoul = ServiceContainer.get(AnvilItemRegistry::class.java).getItem(EnchantSoul::class.java) ?: throw IllegalStateException("EnchantSoul is not registered.")
+        return enchantmentSoul.matches(item)
     }
-    fun addProtectionRune(item: ItemStack): Boolean {
-        val protectionRune = ServiceContainer.get(AnvilItemRegistry::class.java).getItem(ProtectionRune::class.java) ?: throw IllegalStateException("ProtectionRune is not registered.")
-        return protectionRune.addProtectionRune(item)
-    }
-    fun removeProtectionRune(item: ItemStack): Boolean {
-        val protectionRune = ServiceContainer.get(AnvilItemRegistry::class.java).getItem(ProtectionRune::class.java) ?: throw IllegalStateException("ProtectionRune is not registered.")
-        return protectionRune.removeProtectionRune(item)
+    @NotNull
+    fun getPreEnchantmentSoulSubChance(): Int {
+        val enchantmentSoul = ServiceContainer.get(AnvilItemRegistry::class.java).getItem(EnchantSoul::class.java) ?: throw IllegalStateException("EnchantSoul is not registered.")
+        return enchantmentSoul.getPreSoulSubChance()
     }
 
 
@@ -101,13 +98,36 @@ object FirEnchantAPI {
         val powerRune = ServiceContainer.get(AnvilItemRegistry::class.java).getItem(PowerRune::class.java) ?: throw IllegalStateException("PowerRune is not registered.")
         return powerRune.getChance(powerRuneItem)
     }
+    @NotNull
     fun canUsePowerRune(item: ItemStack): Boolean {
         val powerRune = ServiceContainer.get(AnvilItemRegistry::class.java).getItem(PowerRune::class.java) ?: throw IllegalStateException("PowerRune is not registered.")
         return powerRune.canUpgrade(item)
     }
+    @NotNull
     fun applyPowerRune(item: ItemStack): Boolean {
         val powerRune = ServiceContainer.get(AnvilItemRegistry::class.java).getItem(PowerRune::class.java) ?: throw IllegalStateException("PowerRune is not registered.")
         return powerRune.upgrade(item)
+    }
+
+
+    /**
+     * 物品上保护符文的检查, 添加和删除.
+     * @param item 物品
+     */
+    @NotNull
+    fun hasProtectionRune(item: ItemStack): Boolean {
+        val protectionRune = ServiceContainer.get(AnvilItemRegistry::class.java).getItem(ProtectionRune::class.java) ?: throw IllegalStateException("ProtectionRune is not registered.")
+        return protectionRune.hasProtectionRune(item)
+    }
+    @NotNull
+    fun addProtectionRune(item: ItemStack): Boolean {
+        val protectionRune = ServiceContainer.get(AnvilItemRegistry::class.java).getItem(ProtectionRune::class.java) ?: throw IllegalStateException("ProtectionRune is not registered.")
+        return protectionRune.addProtectionRune(item)
+    }
+    @NotNull
+    fun removeProtectionRune(item: ItemStack): Boolean {
+        val protectionRune = ServiceContainer.get(AnvilItemRegistry::class.java).getItem(ProtectionRune::class.java) ?: throw IllegalStateException("ProtectionRune is not registered.")
+        return protectionRune.removeProtectionRune(item)
     }
 
 
@@ -119,13 +139,35 @@ object FirEnchantAPI {
         val brokenGear = ServiceContainer.get(BrokenGear::class.java)
         return brokenGear.isBrokenGear(item)
     }
+    @Nullable
     fun toBrokenGear(item: ItemStack): ItemStack? {
         val brokenGear = ServiceContainer.get(BrokenGear::class.java)
         return brokenGear.toBrokenGear(item)
     }
+    @Nullable
     fun repairBrokenGear(item: ItemStack): ItemStack? {
         val brokenGear = ServiceContainer.get(BrokenGear::class.java)
         if (!brokenGear.isBrokenGear(item)) return item
         return brokenGear.repairBrokenGear(item)
     }
+
+
+    /**
+     * 原始附魔书
+     */
+
+
+    /**
+     * 重生之书
+     */
+
+
+    /**
+     * 反转之书
+     */
+
+
+    /**
+     * 快速修复卡
+     */
 }

@@ -16,7 +16,6 @@ import top.catnies.firenchantkt.enchantment.EnchantmentSetting
 import top.catnies.firenchantkt.enchantment.FirEnchantmentSettingFactory
 import top.catnies.firenchantkt.integration.FirItemProviderRegistry
 import top.catnies.firenchantkt.integration.ItemProvider
-import top.catnies.firenchantkt.util.ItemUtils.addRepairCost
 import top.catnies.firenchantkt.util.TaskUtils
 import kotlin.math.max
 import kotlin.math.min
@@ -64,7 +63,7 @@ class FirEnchantSoul: EnchantSoul {
         val canUseAmount = getCanUseAmount(setting, context.secondItem.amount).also { if (it <= 0) return }
         val costExp = config.ENCHANT_SOUL_EXP * canUseAmount
         val resultSetting = FirEnchantmentSettingFactory.fromAnother(setting).apply {
-            failure = failure - canUseAmount * config.ENCHANT_SOUL_REDUCE_FAILURE
+            failure = failure - canUseAmount * getPreSoulSubChance()
             consumedSouls += canUseAmount
         }
 
@@ -122,6 +121,11 @@ class FirEnchantSoul: EnchantSoul {
                 tag.remove("FirEnchantTempData")
             }
         } ?: -1
+    }
+
+    // 每个魔咒之魂可以降低附魔书多少失败率
+    override fun getPreSoulSubChance(): Int {
+        return config.ENCHANT_SOUL_REDUCE_FAILURE
     }
 
     // 检查概率是否到达了最低的附魔书概率
