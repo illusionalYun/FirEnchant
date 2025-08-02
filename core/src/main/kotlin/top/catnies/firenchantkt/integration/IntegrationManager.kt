@@ -3,6 +3,8 @@ package top.catnies.firenchantkt.integration
 import org.bukkit.Bukkit
 import top.catnies.firenchantkt.FirEnchantPlugin
 import top.catnies.firenchantkt.compatibility.auraskill.EnchantEventListener
+import top.catnies.firenchantkt.compatibility.customcrops.CustomCropsLoader
+import top.catnies.firenchantkt.compatibility.customfishing.CustomFishingLoader
 import top.catnies.firenchantkt.language.MessageConstants.PLUGIN_COMPATIBILITY_HOOK_SUCCESS
 import top.catnies.firenchantkt.util.MessageUtils.sendTranslatableComponent
 
@@ -19,6 +21,8 @@ class IntegrationManager private constructor() {
     }
 
     val hasAuraSkills: Boolean = Bukkit.getPluginManager().getPlugin("AuraSkills") != null
+    val hasCustomFishing: Boolean = Bukkit.getPluginManager().getPlugin("CustomFishing") != null
+    val hasCustomCrops: Boolean = Bukkit.getPluginManager().getPlugin("CustomCrops") != null
     val hasEnchantmentSlots: Boolean = Bukkit.getPluginManager().getPlugin("EnchantmentSlots") != null
     val hasPlaceholderAPI: Boolean = Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null
 
@@ -27,6 +31,16 @@ class IntegrationManager private constructor() {
         if (hasAuraSkills) {
             Bukkit.getPluginManager().registerEvents(EnchantEventListener(), plugin)
             sendPluginHookedMessage("AuraSkills")
+        }
+        // CustomFishing
+        if (hasCustomFishing) {
+            CustomFishingLoader.getInstance()
+            sendPluginHookedMessage("CustomFishing")
+        }
+        // CustomCrops
+        if (hasCustomCrops) {
+            CustomCropsLoader.getInstance()
+            sendPluginHookedMessage("CustomCrops")
         }
         // EnchantmentSlots
         if (hasEnchantmentSlots) {
