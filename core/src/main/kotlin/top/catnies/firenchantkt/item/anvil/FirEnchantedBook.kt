@@ -99,8 +99,12 @@ class FirEnchantedBook : EnchantedBook {
                 if (mergeEvent.isCancelled) return
 
                 // 显示结果, 添加 RepairCost.
-                event.result = resultSetting.toItemStack().apply { this.addRepairCost() }
-                event.view.repairCost = mergeEvent.costExp
+                // TODO ECO附魔的监听器会冲突覆盖我的结果, 有没有不延迟, 更好的方案?
+                TaskUtils.runTaskLater(delay = 0, task =  {
+                    context.view.setItem(2, resultSetting.toItemStack().apply { this.addRepairCost() })
+                    context.view.repairCost = mergeEvent.costExp
+                })
+
             }
 
             // 如果第一件物品是普通物品, 触发使用逻辑.
@@ -123,8 +127,11 @@ class FirEnchantedBook : EnchantedBook {
                 if (useEvent.isCancelled) return
 
                 // 显示结果
-                event.result = useEvent.resultItem.apply { this.addRepairCost() }
-                event.view.repairCost = useEvent.costExp
+                // TODO ECO附魔的监听器会冲突覆盖我的结果, 有没有不延迟, 更好的方案?
+                TaskUtils.runTaskLater(delay = 0, task =  {
+                    context.view.setItem(2, useEvent.resultItem.apply { this.addRepairCost() })
+                    context.view.repairCost = useEvent.costExp
+                })
             }
         }
     }

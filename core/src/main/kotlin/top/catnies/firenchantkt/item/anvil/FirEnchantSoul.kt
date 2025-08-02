@@ -16,6 +16,8 @@ import top.catnies.firenchantkt.enchantment.EnchantmentSetting
 import top.catnies.firenchantkt.enchantment.FirEnchantmentSettingFactory
 import top.catnies.firenchantkt.integration.FirItemProviderRegistry
 import top.catnies.firenchantkt.integration.ItemProvider
+import top.catnies.firenchantkt.util.ItemUtils.addRepairCost
+import top.catnies.firenchantkt.util.TaskUtils
 import kotlin.math.max
 import kotlin.math.min
 
@@ -72,8 +74,10 @@ class FirEnchantSoul: EnchantSoul {
 
         // 显示结果
         val resultItem = useEvent.resultSetting.toItemStack().also { injectContextData(it, useEvent.useAmount) }
-        event.result = resultItem
-        event.view.repairCost = useEvent.costExp
+        TaskUtils.runTaskLater(delay = 0, task =  {
+            context.view.setItem(2, resultItem)
+            context.view.repairCost = useEvent.costExp
+        })
     }
 
     override fun onCost(

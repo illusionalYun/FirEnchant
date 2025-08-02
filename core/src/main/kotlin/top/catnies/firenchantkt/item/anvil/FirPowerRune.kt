@@ -13,6 +13,7 @@ import top.catnies.firenchantkt.api.event.anvil.PowerRunePreUseEvent
 import top.catnies.firenchantkt.api.event.anvil.PowerRuneUseEvent
 import top.catnies.firenchantkt.config.AnvilConfig
 import top.catnies.firenchantkt.context.AnvilContext
+import top.catnies.firenchantkt.util.TaskUtils
 import kotlin.random.Random
 
 
@@ -40,8 +41,10 @@ class FirPowerRune: PowerRune {
         if (preUseEvent.isCancelled) return
 
         // 显示结果
-        event.result = context.firstItem.also { injectContextData(it, preUseEvent.successChance) }
-        event.view.repairCost = preUseEvent.costExp
+        TaskUtils.runTaskLater(delay = 0, task =  {
+            context.view.setItem(2, context.firstItem.also { injectContextData(it, preUseEvent.successChance) })
+            context.view.repairCost = preUseEvent.costExp
+        })
     }
 
     override fun onCost(event: InventoryClickEvent, context: AnvilContext) {

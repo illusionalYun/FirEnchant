@@ -1,6 +1,5 @@
 package top.catnies.firenchantkt.config
 
-import top.catnies.firenchantkt.item.anvil.FirProtectionRune
 import top.catnies.firenchantkt.util.ItemUtils.nullOrAir
 import top.catnies.firenchantkt.util.YamlUtils
 

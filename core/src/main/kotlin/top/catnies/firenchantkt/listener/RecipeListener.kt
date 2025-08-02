@@ -4,6 +4,7 @@ import com.destroystokyo.paper.event.inventory.PrepareResultEvent
 import org.bukkit.GameMode
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
+import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.inventory.PrepareAnvilEvent
@@ -14,7 +15,7 @@ import top.catnies.firenchantkt.util.ItemUtils.nullOrAir
 
 class RecipeListener: Listener {
 
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     fun onPrepareAnvilEvent(event: PrepareAnvilEvent){
         if (event.inventory.viewers.isEmpty()) return
         val player = event.inventory.viewers.first() as? Player ?: return

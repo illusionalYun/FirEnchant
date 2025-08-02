@@ -1,5 +1,6 @@
 package top.catnies.firenchantkt.compatibility.enchantmentslots
 
+import cn.chengzhiya.mhdfscheduler.scheduler.MHDFScheduler
 import com.saicone.rtag.RtagItem
 import org.bukkit.Bukkit
 import org.bukkit.GameMode
@@ -25,6 +26,8 @@ class SlotRuneImpl: SlotRune {
         var itemID: String? = null
         var delegatesLoader: EnchantmentSlotsLoader? = null
     }
+
+    val plugin = Bukkit.getPluginManager().getPlugin("FirEnchantKt")!!
 
     override fun load() {
         delegatesLoader?.initSlotRuneImpl() ?: throw IllegalStateException("EnchantmentSlotLoader is not initialized")
@@ -58,8 +61,11 @@ class SlotRuneImpl: SlotRune {
         val resultItem = context.firstItem.clone()
         injectContextData(resultItem, useAmount)
         setEnchantmentSlots(resultItem, preUseEvent.targetSlots)
-        event.result = resultItem
-        event.view.repairCost = preUseEvent.costExp
+
+        MHDFScheduler.getGlobalRegionScheduler().runTaskLater(plugin, {
+            context.view.setItem(2, resultItem)
+            context.view.repairCost = preUseEvent.costExp
+        }, 0)
     }
 
     override fun onCost(event: InventoryClickEvent, context: AnvilContext) {

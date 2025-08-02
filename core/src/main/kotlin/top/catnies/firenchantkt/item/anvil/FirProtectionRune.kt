@@ -15,6 +15,7 @@ import top.catnies.firenchantkt.context.AnvilContext
 import top.catnies.firenchantkt.integration.FirItemProviderRegistry
 import top.catnies.firenchantkt.integration.ItemProvider
 import top.catnies.firenchantkt.util.ItemUtils.nullOrAir
+import top.catnies.firenchantkt.util.TaskUtils
 import top.catnies.firenchantkt.util.YamlUtils
 
 class FirProtectionRune(): ProtectionRune {
@@ -93,8 +94,10 @@ class FirProtectionRune(): ProtectionRune {
         if (protectionRunePreUseEvent.isCancelled) return
 
         // 显示结果
-        event.result = context.firstItem.clone().also { addProtectionRune(it) }
-        event.view.repairCost = config.PROTECTION_RUNE_EXP
+        TaskUtils.runTaskLater(delay = 0, task =  {
+            context.view.setItem(2, context.firstItem.clone().also { addProtectionRune(it) })
+            context.view.repairCost = costExp
+        })
     }
 
     override fun onCost(

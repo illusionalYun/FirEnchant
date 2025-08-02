@@ -28,6 +28,11 @@ object TaskUtils {
         tasks.forEach { MHDFScheduler.getAsyncScheduler().runTaskLater(plugin, it, delay) }
     }
 
+    // 运行延迟同步任务
+    fun runTaskLater(task: () -> Unit, delay: Long = 0) {
+        MHDFScheduler.getGlobalRegionScheduler().runTaskLater(plugin, task, delay)
+    }
+
     // 运行多个异步任务并在全部完成后执行同步回调
     fun runAsyncTasksWithSyncCallback(vararg tasks: () -> Unit, callback: () -> Unit, delay: Long = 0) {
         if (tasks.isEmpty()) {
