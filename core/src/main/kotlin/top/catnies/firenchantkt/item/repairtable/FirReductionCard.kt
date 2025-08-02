@@ -7,12 +7,11 @@ import org.bukkit.inventory.ItemStack
 import top.catnies.firenchantkt.api.event.repairtable.ReductionCardUseEvent
 import top.catnies.firenchantkt.config.RepairTableConfig
 import top.catnies.firenchantkt.context.RepairTableContext
-import top.catnies.firenchantkt.engine.RunSource
 
 class FirReductionCard: ReductionCard {
 
-    override fun matches(item: ItemStack): Boolean {
-        val tag = RtagItem.of(item)
+    override fun matches(itemStack: ItemStack): Boolean {
+        val tag = RtagItem.of(itemStack)
         val type = tag.get("FirEnchant", "RepairType") as? String ?: return false
         val value = tag.get("FirEnchant", "RepairValue") as? Double ?: tag.get("FirEnchant", "RepairValue") as? Int ?: return false
         ReductionType.entries.find { it.name.equals(type, true) } ?: return false
@@ -52,9 +51,8 @@ class FirReductionCard: ReductionCard {
         RepairTableConfig.instance.REPAIR_QUICK_TRIGGER_ACTION.forEach { action ->
             action.executeIfAllowed(
                 mapOf(
-                    "checkSource" to RunSource.MENU_CLICK,
                     "player" to context.player,
-                    "clickType" to event.click.name,
+                    "clickType" to event.click,
                     "event" to event
                 )
             )

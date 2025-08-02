@@ -14,9 +14,6 @@ abstract class AbstractAction(
     open val args: Map<String, Any?>
 ): Action {
 
-    @ArgumentKey(["runSource"], autoInject = true, description = "触发运行的操作, 用于标记和判断.")
-    protected lateinit var runSource: RunSource
-
     init {
         this::class.declaredMemberProperties.forEach { prop ->
             val annotation = prop.findAnnotation<ArgumentKey>() ?: return@forEach

@@ -17,7 +17,6 @@ import top.catnies.firenchantkt.context.RepairTableContext
 import top.catnies.firenchantkt.database.FirConnectionManager
 import top.catnies.firenchantkt.database.dao.ItemRepairData
 import top.catnies.firenchantkt.database.entity.ItemRepairTable
-import top.catnies.firenchantkt.engine.RunSource
 import top.catnies.firenchantkt.gui.RepairTableMenu
 import top.catnies.firenchantkt.gui.item.MenuCustomItem
 import top.catnies.firenchantkt.gui.item.MenuPageItem
@@ -170,9 +169,8 @@ class FirRepairTableMenu(
 
             // 执行动作
             val args = mutableMapOf<String, Any?>()
-            args["checkSource"] = RunSource.MENU_CLICK
             args["player"] = player
-            args["clickType"] = click.clickType.name
+            args["clickType"] = click.clickType
             args["event"] = click.event
             repairSlotItem?.second?.forEach { it.executeIfAllowed(args) }
             // 执行修复功能

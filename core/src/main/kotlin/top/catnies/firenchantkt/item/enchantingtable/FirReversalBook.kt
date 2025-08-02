@@ -9,7 +9,6 @@ import top.catnies.firenchantkt.config.EnchantingTableConfig
 import top.catnies.firenchantkt.context.EnchantingTableContext
 import top.catnies.firenchantkt.database.FirCacheManager
 import top.catnies.firenchantkt.engine.ConfigActionTemplate
-import top.catnies.firenchantkt.engine.RunSource
 import top.catnies.firenchantkt.integration.ItemProvider
 import top.catnies.firenchantkt.util.ItemUtils.nullOrAir
 import top.catnies.firenchantkt.util.YamlUtils
@@ -72,11 +71,8 @@ class FirReversalBook: ReversalBook {
         player.enchantmentSeed = useEvent.backSeed
         context.menu.clearInputInventory()
 
-        val args = mutableMapOf<String, Any?>()
-        args["checkSource"] = RunSource.MENU_CLICK
-        args["player"] = player
         actions.forEach { action ->
-            action.executeIfAllowed(args)
+            action.executeIfAllowed(mapOf("player" to player))
         }
     }
 }

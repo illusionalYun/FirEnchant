@@ -8,7 +8,6 @@ import top.catnies.firenchantkt.api.event.enchantingtable.RenewalBookUseEvent
 import top.catnies.firenchantkt.config.EnchantingTableConfig
 import top.catnies.firenchantkt.context.EnchantingTableContext
 import top.catnies.firenchantkt.engine.ConfigActionTemplate
-import top.catnies.firenchantkt.engine.RunSource
 import top.catnies.firenchantkt.integration.ItemProvider
 import top.catnies.firenchantkt.util.ItemUtils.nullOrAir
 import top.catnies.firenchantkt.util.YamlUtils
@@ -70,11 +69,8 @@ class FirRenewalBook: RenewalBook {
         player.enchantmentSeed = useEvent.newSeed
 
         // 额外动作
-        val args = mutableMapOf<String, Any?>()
-        args["checkSource"] = RunSource.MENU_CLICK
-        args["player"] = player
         actions.forEach { action ->
-            action.executeIfAllowed(args)
+            action.executeIfAllowed(mapOf("player" to player))
         }
     }
 }

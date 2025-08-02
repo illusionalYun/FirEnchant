@@ -8,7 +8,6 @@ import top.catnies.firenchantkt.FirEnchantPlugin
 import top.catnies.firenchantkt.api.event.extractsoul.ExtractSoulEvent
 import top.catnies.firenchantkt.config.ExtractSoulConfig
 import top.catnies.firenchantkt.enchantment.FirEnchantmentSettingFactory
-import top.catnies.firenchantkt.engine.RunSource
 import top.catnies.firenchantkt.gui.item.MenuCustomItem
 import top.catnies.firenchantkt.util.ItemUtils.nullOrAir
 import top.catnies.firenchantkt.util.PlayerUtils.giveOrDropList
@@ -113,7 +112,7 @@ class FirExtractSoulMenu(
                 if (count == 0) return@SimpleItem ItemStack(Material.AIR)
                 else return@SimpleItem resultItem.apply {amount = count}
             }
-        ) { click: Click? ->
+        ) { click: Click ->
             // 获取有效的附魔书
             val preRemoved = inputInventory.items.filter { !it.nullOrAir() && FirEnchantmentSettingFactory.fromItemStack(it) != null }
             val removedCount = preRemoved.size
@@ -130,10 +129,9 @@ class FirExtractSoulMenu(
                 player.giveOrDropList(event.resultItems)
                 // 执行动作
                 val runtimeArgs = mapOf(
-                    "checkSource" to RunSource.MENU_CLICK,
                     "player" to player,
-                    "clickType" to click?.clickType?.name,
-                    "event" to click?.event,
+                    "clickType" to click.clickType,
+                    "event" to click.event,
                     "removedCount" to removedCount
                 )
                 actions!!.forEach { it.executeIfAllowed(runtimeArgs) }
