@@ -13,6 +13,5 @@ class PermissionCondition(
     @ArgumentKey(["perm", "permission"])
     private lateinit var permission: String
 
-    override fun require() = true
     override fun check() = player.hasPermission(permission)
 }

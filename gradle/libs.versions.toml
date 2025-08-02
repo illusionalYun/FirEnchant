@@ -31,7 +31,6 @@ craftengine = "0.0.60"
 auraskills = "2.2.4"
 customcrops = "3.6.29"
 customfishing = "2.3.7"
-coinsengine = "2.5.0"
 placeholderapi = "2.11.6"
 
 
@@ -78,7 +77,6 @@ craftengine-bukkit = { module = "net.momirealms:craft-engine-bukkit", version.re
 auraskills = { module = "dev.aurelium:auraskills-api-bukkit", version.ref = "auraskills" }
 customcrops = { module = "net.momirealms:custom-crops", version.ref = "customcrops" }
 customfishing = { module = "net.momirealms:custom-fishing", version.ref = "customfishing" }
-coinsengine = { module = "su.nightexpress.coinsengine:CoinsEngine", version.ref = "coinsengine" }
 placeholderapi = { module = "me.clip:placeholderapi", version.ref = "placeholderapi" }
 
 

@@ -11,8 +11,8 @@ class VanillaItemProvider (
 
     @Nullable
     override fun getItemById(id: String): ItemStack? {
-        return try { ItemStack(Material.valueOf(id.uppercase())) }
-        catch (ignore: IllegalArgumentException) { null }
+        val material = Material.getMaterial(id.uppercase()) ?: return null
+        return ItemStack(material)
     }
 
     @Nullable
