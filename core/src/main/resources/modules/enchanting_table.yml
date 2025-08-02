@@ -206,21 +206,18 @@ menu-setting:
 
 # 花费设置, 玩家附魔当然是需要花费一些道具;
 # 为了尽可能的自由一些, 你需要设置每一个栏位可进行附魔的条件和动作;
-# 例如栏位1, 设置附魔需要达成条件: 金币 >= 60, 等级 >= 6, 青金石 >= 1; 然后执行附魔后, 扣除60金币, 扣除3级等级, 扣除1个青金石;
-# 有一些需要注意的是, 如果第一个栏位的条件不达要求, 其余的栏位均会视为不达要求;
+# 例如栏位1, 设置附魔需要达成条件: 金币 >= 60, 等级 >= 6, 青金石 >= 1;
+# 然后执行附魔后, 扣除60金币, 扣除3级等级, 扣除1个青金石;
 enchant-cost:
-  # 当玩家放入可附魔的物品到附魔台, 会检查玩家是否完全达成 conditions 下的所有条件
-  # 如果是, 就会亮起第一栏, 在玩家点击第一栏确认附魔后, 会把 actions 里的动作全部执行一遍;
   line-1:
-#    actions:
-#      - type: execute_command
-#        command: "money take 60"
-#      - type: cost_level
-#        level: 3
-#      - type: take_item
-#        hooked_plugin: "Vanilla"
-#        hooked_id: "apple"
-#        amount: 6
+    # 在这个栏位里, 附魔书出现的失败率区间值
+    min-failure: 0
+    max-failure: 100
+    # 动作: 玩家点击确认附魔后, 会把 actions 里的动作全部执行一遍;
+    actions:
+      - type: send_message
+        message: "你使用了一号附魔拦了"
+    # 条件: 决定玩家放入可附魔物品到附魔台后, 达成哪些条件才可以亮起栏位, 并且可进行附魔
     conditions:
       - type: permission
         permission: "enchantingtable.use"
@@ -228,19 +225,29 @@ enchant-cost:
         value1: "%player_level%"
         value2: 6
   line-2:
+    min-failure: 0
+    max-failure: 100
+    actions:
+      - type: send_message
+        message: "你使用了二号附魔拦了"
     conditions:
       - type: permission
         permission: "enchantingtable.use"
       - type: ">="
         value1: "%player_level%"
-        value2: 6
+        value2: 7
   line-3:
+    min-failure: 0
+    max-failure: 100
+    actions:
+      - type: send_message
+        message: "你使用了三号附魔拦了"
     conditions:
       - type: permission
         permission: "enchantingtable.use"
       - type: ">="
         value1: "%player_level%"
-        value2: 6
+        value2: 8
 
 
 # 重生之书, 当放入附魔台后, 会立刻消耗一件物品, 然后刷新玩家的附魔种子;

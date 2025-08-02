@@ -26,7 +26,7 @@ class FirEnchantmentSetting(
                     // 不应出现, 在 load 时就检查过.
                     throw IllegalArgumentException("Can't found item ${data.hookedID} from plugin ${data.itemProvider}!")
         }
-        var result = data.cacheItem!!
+        var result = data.cacheItem!!.clone()
         result = injectCustomData(result)
         result = replacePlaceholder(result)
         return result

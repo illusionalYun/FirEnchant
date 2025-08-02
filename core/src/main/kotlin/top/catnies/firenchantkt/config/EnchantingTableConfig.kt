@@ -70,12 +70,19 @@ class EnchantingTableConfig private constructor():
     var MENU_SHOW_ENCHANTMENT_LINE_2_BOOK_OFFLINE: ConfigurationSection? by ConfigProperty(null)
     var MENU_SHOW_ENCHANTMENT_LINE_3_BOOK_OFFLINE: ConfigurationSection? by ConfigProperty(null)
 
-    var ENCHANT_COST_LINE_1_CONDITIONS: List<ConfigConditionTemplate> by ConfigProperty(listOf())
-    var ENCHANT_COST_LINE_2_CONDITIONS: List<ConfigConditionTemplate> by ConfigProperty(listOf())
-    var ENCHANT_COST_LINE_3_CONDITIONS: List<ConfigConditionTemplate> by ConfigProperty(listOf())
+    var ENCHANT_COST_LINE_1_MIN_FAILURE: Int by ConfigProperty(0)
+    var ENCHANT_COST_LINE_2_MIN_FAILURE: Int by ConfigProperty(0)
+    var ENCHANT_COST_LINE_3_MIN_FAILURE: Int by ConfigProperty(0)
+    var ENCHANT_COST_LINE_1_MAX_FAILURE: Int by ConfigProperty(100)
+    var ENCHANT_COST_LINE_2_MAX_FAILURE: Int by ConfigProperty(100)
+    var ENCHANT_COST_LINE_3_MAX_FAILURE: Int by ConfigProperty(100)
     var ENCHANT_COST_LINE_1_ACTIONS: List<ConfigActionTemplate> by ConfigProperty(listOf())
     var ENCHANT_COST_LINE_2_ACTIONS: List<ConfigActionTemplate> by ConfigProperty(listOf())
     var ENCHANT_COST_LINE_3_ACTIONS: List<ConfigActionTemplate> by ConfigProperty(listOf())
+    var ENCHANT_COST_LINE_1_CONDITIONS: List<ConfigConditionTemplate> by ConfigProperty(listOf())
+    var ENCHANT_COST_LINE_2_CONDITIONS: List<ConfigConditionTemplate> by ConfigProperty(listOf())
+    var ENCHANT_COST_LINE_3_CONDITIONS: List<ConfigConditionTemplate> by ConfigProperty(listOf())
+
 
     /*附魔书*/
     var ORIGINAL_BOOK_MATCHES: MutableList<OriginalBookData> by ConfigProperty(mutableListOf())
@@ -128,6 +135,13 @@ class EnchantingTableConfig private constructor():
         MENU_SHOW_ENCHANTMENT_LINE_1_BOOK_OFFLINE = config().getConfigurationSection("menu-setting.show-enchantment-slot.line-1-book.offline")
         MENU_SHOW_ENCHANTMENT_LINE_2_BOOK_OFFLINE = config().getConfigurationSection("menu-setting.show-enchantment-slot.line-2-book.offline")
         MENU_SHOW_ENCHANTMENT_LINE_3_BOOK_OFFLINE = config().getConfigurationSection("menu-setting.show-enchantment-slot.line-3-book.offline")
+
+        ENCHANT_COST_LINE_1_MIN_FAILURE = config().getInt("enchant-cost.line-1.min-failure", 0)
+        ENCHANT_COST_LINE_2_MIN_FAILURE = config().getInt("enchant-cost.line-2.min-failure", 0)
+        ENCHANT_COST_LINE_3_MIN_FAILURE = config().getInt("enchant-cost.line-3.min-failure", 0)
+        ENCHANT_COST_LINE_1_MAX_FAILURE = config().getInt("enchant-cost.line-1.max-failure", 100)
+        ENCHANT_COST_LINE_2_MAX_FAILURE = config().getInt("enchant-cost.line-2.max-failure", 100)
+        ENCHANT_COST_LINE_3_MAX_FAILURE = config().getInt("enchant-cost.line-3.max-failure", 100)
 
         /*重生之书设置*/
         REVERSAL_BOOK_ENABLE = config().getBoolean("reversal-book.enable", false)
