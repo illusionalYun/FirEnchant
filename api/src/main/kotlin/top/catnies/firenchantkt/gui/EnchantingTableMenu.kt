@@ -1,6 +1,7 @@
 package top.catnies.firenchantkt.gui
 
 import org.bukkit.enchantments.Enchantment
+import top.catnies.firenchantkt.enchantment.EnchantmentSetting
 
 interface EnchantingTableMenu {
 
@@ -16,5 +17,9 @@ interface EnchantingTableMenu {
     // 检查玩家现在能点亮多少个栏位
     fun checkCanLight(): Int
 
+    // 刷新附魔栏
     fun refreshLine()
+
+    // 获取指定栏位的附魔书数据
+    fun getEnchantmentSettingByLine(line: Int): EnchantmentSetting?
 }

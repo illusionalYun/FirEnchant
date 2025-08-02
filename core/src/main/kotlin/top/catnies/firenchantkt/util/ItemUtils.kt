@@ -63,8 +63,8 @@ object ItemUtils {
         return this.enchantments.size
     }
 
-     // 将物品的 Name 和 Lore 中的占位符 ${placeholder} 替换成实际的值
-     // @param args 占位符映射表，例如 mapOf("currentPage" to "1") 会将 ${currentPage} 替换为 1
+    // 将物品的 Name 和 Lore 中的占位符 ${placeholder} 替换成实际的值
+    // @param args 占位符映射表，例如 mapOf("currentPage" to "1") 会将 ${currentPage} 替换为 1
     fun ItemStack.replacePlaceholder(args: Map<String, String>) {
         // 处理物品名称
         getData(DataComponentTypes.ITEM_NAME)?.let { nameComponent ->

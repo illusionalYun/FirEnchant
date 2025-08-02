@@ -4,7 +4,7 @@ import com.google.common.collect.HashBiMap
 import org.bukkit.Bukkit
 import top.catnies.firenchantkt.api.ServiceContainer
 import top.catnies.firenchantkt.api.event.ConditionRegisterEvent
-import top.catnies.firenchantkt.engine.condition.player.PermissionCondition
+import top.catnies.firenchantkt.engine.condition.PermissionCondition
 import top.catnies.firenchantkt.engine.condition.logic.AndCondition
 import top.catnies.firenchantkt.engine.condition.logic.EqualCondition
 import top.catnies.firenchantkt.engine.condition.logic.GreaterThanCondition

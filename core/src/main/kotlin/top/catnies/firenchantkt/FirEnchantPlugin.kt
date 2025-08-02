@@ -28,6 +28,7 @@ import top.catnies.firenchantkt.lazyinit.ItemsAdderLoadListener
 import top.catnies.firenchantkt.lazyinit.NexoLoadListener
 import top.catnies.firenchantkt.lazyinit.OraxenLoadListener
 import top.catnies.firenchantkt.listener.ListenerManger
+import top.catnies.firenchantkt.util.EnchantmentUtils
 import top.catnies.firenchantkt.util.MessageUtils.sendTranslatableComponent
 import top.catnies.firenchantkt.util.TaskUtils.plugin
 import xyz.xenondevs.invui.InvUI
@@ -88,6 +89,8 @@ class FirEnchantPlugin: JavaPlugin(), FirEnchant, CoroutineScope {
 
         FirAnvilItemRegistry.instance.reload() // 铁砧物品注册表
         FirEnchantingTableRegistry.instance.reload() // 附魔台物品注册表
+
+        EnchantmentUtils.ENCHANT_CACHE.clear() // 清除物品的可应用魔咒的缓存
     }
 
     // 延迟初始化注册表实现

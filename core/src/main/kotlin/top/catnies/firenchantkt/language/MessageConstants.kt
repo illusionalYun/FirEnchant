@@ -21,6 +21,8 @@ object MessageConstants {
     const val RESOURCE_ENCHANTMENT_FILE_ERROR = "resource.enchantment.file.error"
     const val RESOURCE_ENCHANTMENT_FILE_PROVIDER_NOT_FOUND = "resource.enchantment.file.provider.not_found"
     const val RESOURCE_ENCHANTMENT_FILE_ITEM_NOT_FOUND = "resource.enchantment.file.item.not_found"
+    const val RESOURCE_ORIGINAL_BOOK_MISSING_KEY = "resource.original_book.missing.key"
+    const val RESOURCE_ORIGINAL_BOOK_INVALID_ENCHANTMENT = "resource.original_book.invalid.enchantment"
     const val RESOURCE_HOOK_ITEM_PROVIDER_NOT_FOUND = "resource.hook.item_provider.not_found"
     const val RESOURCE_HOOK_ITEM_NOT_FOUND = "resource.hook.item.not_found"
     const val RESOURCE_MENU_STRUCTURE_ERROR = "resource.menu.structure.error"

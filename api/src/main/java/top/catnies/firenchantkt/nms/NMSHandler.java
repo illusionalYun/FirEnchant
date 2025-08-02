@@ -44,7 +44,6 @@ public interface NMSHandler {
      */
     List<Map<Enchantment, Integer>> getPlayerNextEnchantmentTableResultByItemStack(Player player, int bookShelfCount, ItemStack itemStack);
 
-
     /**
      * 获取玩家下次使用指定物品附魔的结果列表
      * 此方法每个选项卡只返回1个魔咒.

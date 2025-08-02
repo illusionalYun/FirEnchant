@@ -1,15 +1,25 @@
 package top.catnies.firenchantkt.config
 
+import io.papermc.paper.registry.RegistryAccess
+import io.papermc.paper.registry.RegistryKey
+import net.kyori.adventure.key.Key
 import org.bukkit.Bukkit
+import org.bukkit.Material
 import org.bukkit.configuration.ConfigurationSection
+import org.bukkit.configuration.file.YamlConfiguration
+import org.bukkit.enchantments.Enchantment
 import org.bukkit.inventory.ItemStack
 import top.catnies.firenchantkt.engine.ConfigActionTemplate
 import top.catnies.firenchantkt.engine.ConfigConditionTemplate
 import top.catnies.firenchantkt.item.enchantingtable.OriginalBookData
 import top.catnies.firenchantkt.language.MessageConstants.RESOURCE_MENU_STRUCTURE_ERROR
+import top.catnies.firenchantkt.language.MessageConstants.RESOURCE_ORIGINAL_BOOK_INVALID_ENCHANTMENT
+import top.catnies.firenchantkt.language.MessageConstants.RESOURCE_ORIGINAL_BOOK_MISSING_KEY
 import top.catnies.firenchantkt.util.ConfigParser
+import top.catnies.firenchantkt.util.EnchantmentUtils
 import top.catnies.firenchantkt.util.ItemUtils.nullOrAir
 import top.catnies.firenchantkt.util.MessageUtils.sendTranslatableComponent
+import top.catnies.firenchantkt.util.ResourceCopyUtils
 import top.catnies.firenchantkt.util.YamlUtils.getConfigurationSectionList
 import xyz.xenondevs.invui.gui.structure.Structure
 
@@ -53,6 +63,12 @@ class EnchantingTableConfig private constructor():
     var MENU_SHOW_ENCHANTMENT_LINE_1_OFFLINE: ConfigurationSection? by ConfigProperty(null)
     var MENU_SHOW_ENCHANTMENT_LINE_2_OFFLINE: ConfigurationSection? by ConfigProperty(null)
     var MENU_SHOW_ENCHANTMENT_LINE_3_OFFLINE: ConfigurationSection? by ConfigProperty(null)
+    var MENU_SHOW_ENCHANTMENT_LINE_1_BOOK_ONLINE: ConfigurationSection? by ConfigProperty(null)
+    var MENU_SHOW_ENCHANTMENT_LINE_2_BOOK_ONLINE: ConfigurationSection? by ConfigProperty(null)
+    var MENU_SHOW_ENCHANTMENT_LINE_3_BOOK_ONLINE: ConfigurationSection? by ConfigProperty(null)
+    var MENU_SHOW_ENCHANTMENT_LINE_1_BOOK_OFFLINE: ConfigurationSection? by ConfigProperty(null)
+    var MENU_SHOW_ENCHANTMENT_LINE_2_BOOK_OFFLINE: ConfigurationSection? by ConfigProperty(null)
+    var MENU_SHOW_ENCHANTMENT_LINE_3_BOOK_OFFLINE: ConfigurationSection? by ConfigProperty(null)
 
     var ENCHANT_COST_LINE_1_CONDITIONS: List<ConfigConditionTemplate> by ConfigProperty(listOf())
     var ENCHANT_COST_LINE_2_CONDITIONS: List<ConfigConditionTemplate> by ConfigProperty(listOf())
@@ -62,7 +78,7 @@ class EnchantingTableConfig private constructor():
     var ENCHANT_COST_LINE_3_ACTIONS: List<ConfigActionTemplate> by ConfigProperty(listOf())
 
     /*附魔书*/
-    var ORIGIONAL_BOOK_MATCHES: MutableList<OriginalBookData> by ConfigProperty(mutableListOf())
+    var ORIGINAL_BOOK_MATCHES: MutableList<OriginalBookData> by ConfigProperty(mutableListOf())
 
     /*重生之书设置*/
     var RENEWAL_BOOK_ENABLE: Boolean by ConfigProperty(false)               // 开启重生之书道具
@@ -106,6 +122,12 @@ class EnchantingTableConfig private constructor():
         MENU_SHOW_ENCHANTMENT_LINE_1_OFFLINE = config().getConfigurationSection("menu-setting.show-enchantment-slot.line-1.offline")
         MENU_SHOW_ENCHANTMENT_LINE_2_OFFLINE = config().getConfigurationSection("menu-setting.show-enchantment-slot.line-2.offline")
         MENU_SHOW_ENCHANTMENT_LINE_3_OFFLINE = config().getConfigurationSection("menu-setting.show-enchantment-slot.line-3.offline")
+        MENU_SHOW_ENCHANTMENT_LINE_1_BOOK_ONLINE = config().getConfigurationSection("menu-setting.show-enchantment-slot.line-1-book.online")
+        MENU_SHOW_ENCHANTMENT_LINE_2_BOOK_ONLINE = config().getConfigurationSection("menu-setting.show-enchantment-slot.line-2-book.online")
+        MENU_SHOW_ENCHANTMENT_LINE_3_BOOK_ONLINE = config().getConfigurationSection("menu-setting.show-enchantment-slot.line-3-book.online")
+        MENU_SHOW_ENCHANTMENT_LINE_1_BOOK_OFFLINE = config().getConfigurationSection("menu-setting.show-enchantment-slot.line-1-book.offline")
+        MENU_SHOW_ENCHANTMENT_LINE_2_BOOK_OFFLINE = config().getConfigurationSection("menu-setting.show-enchantment-slot.line-2-book.offline")
+        MENU_SHOW_ENCHANTMENT_LINE_3_BOOK_OFFLINE = config().getConfigurationSection("menu-setting.show-enchantment-slot.line-3-book.offline")
 
         /*重生之书设置*/
         REVERSAL_BOOK_ENABLE = config().getBoolean("reversal-book.enable", false)
@@ -157,6 +179,9 @@ class EnchantingTableConfig private constructor():
         ENCHANT_COST_LINE_3_ACTIONS = config().getConfigurationSectionList("enchant-cost.line-3.actions")
             .mapNotNull { ConfigParser.parseActionTemplate(it, fileName, "enchant-cost.line-3.actions") }
 
+        // 附魔书
+        loadOriginFilesFromFileSystem()
+
         // 重生之书
         RENEWAL_BOOK_ACTIONS = config().getConfigurationSectionList("renewal-book.actions")
             .mapNotNull { ConfigParser.parseActionTemplate(it, fileName, "renewal-book.actions") }
@@ -164,5 +189,76 @@ class EnchantingTableConfig private constructor():
         // 反转之书
         REVERSAL_BOOK_ACTIONS = config().getConfigurationSectionList("reversal-book.actions")
             .mapNotNull { ConfigParser.parseActionTemplate(it, fileName, "reversal-book.actions") }
+    }
+
+    // 加载读取可附魔物品的文件
+    private fun loadOriginFilesFromFileSystem() {
+        // 确保文件夹存在，如果不存在，就从资源文件里复制
+        val originalBookDirectory = plugin.dataFolder.resolve("original_books")
+        if (!originalBookDirectory.exists() || originalBookDirectory.listFiles()?.isEmpty() == true) {
+            ResourceCopyUtils.copyFolder(plugin, "original_books", plugin.dataFolder)
+        }
+        // 将文件夹下的内容加载到 ORIGINAL_BOOK_MATCHES 中.
+        originalBookDirectory.walkTopDown()
+            .maxDepth(1)
+            .filter { it.isFile && it.extension == "yml" }
+            .forEach { file ->
+                val enchantmentRegistry = RegistryAccess.registryAccess().getRegistry(RegistryKey.ENCHANTMENT)
+                val yaml = YamlConfiguration.loadConfiguration(file)
+
+                val plugin = yaml.getString("hooked-plugin")
+                if (plugin == null) sendMissingKeyWarn(file.name, "hooked-plugin")
+                val id = yaml.getString("hooked-id")
+                if (id == null) sendMissingKeyWarn(file.name, "hooked-id")
+                val enchantable = yaml.getInt("enchantable", -1)
+
+                val enchantmentStringList = yaml.getStringList("enchantment-list")
+                val enchantments = enchantmentStringList.fold(mutableSetOf<Enchantment>()) { acc, enchantment ->
+                    // 导入列表
+                    if (enchantment.startsWith("import:")) {
+                        val vanillaID = enchantment.substring(7).uppercase()
+                        Material.getMaterial(vanillaID)?.let {
+                            // 获取物品对应的魔咒列表添加
+                            val applicableEnchants = EnchantmentUtils.getApplicableEnchants(ItemStack(it))
+                            acc.addAll(applicableEnchants)
+                            acc
+                        }
+                    }
+                    // 导入普通魔咒
+                    val readEnchantment = enchantmentRegistry.get(Key.key(enchantment))
+                    if (readEnchantment == null) { sendInvalidEnchantment(file.name, enchantment); acc }
+                    else { acc.add(readEnchantment) }
+                    acc
+                }
+
+                if (enchantments.isEmpty()) {
+                    sendMissingKeyWarn(file.name, "enchantment-list")
+                    return@forEach
+                }
+
+                if (plugin != null && id != null) {
+                    ORIGINAL_BOOK_MATCHES.add(
+                        OriginalBookData(plugin, id, enchantable, enchantments)
+                    )
+                }
+            }
+    }
+
+    // 发送缺少键的信息
+    private fun sendMissingKeyWarn(fileName: String, key: String) {
+        Bukkit.getConsoleSender().sendTranslatableComponent(
+            RESOURCE_ORIGINAL_BOOK_MISSING_KEY,
+            "original_book/$fileName",
+            key
+        )
+    }
+
+    // 发送无法解析的魔咒的信息
+    private fun sendInvalidEnchantment(fileName: String, enchantment: String) {
+        Bukkit.getConsoleSender().sendTranslatableComponent(
+            RESOURCE_ORIGINAL_BOOK_INVALID_ENCHANTMENT,
+            fileName,
+            enchantment
+        )
     }
 }

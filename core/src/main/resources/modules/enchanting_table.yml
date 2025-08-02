@@ -8,11 +8,11 @@ replace-vanilla-enchanting-table: true
 menu-setting:
   # 菜单标题, 附魔台有3个栏位, 每个栏位有不同的状态: 0代表材料/等级/书架不足, 1代表可附魔, 2代表空;
   # 在不同情况下, 菜单的标题是如何的?
-  title-000: "<white>请选择魔咒: 亮0"
+  title-000: "<white>请放入物品"
   title-100: "<white>请选择魔咒: 亮1"
   title-110: "<white>请选择魔咒: 亮2"
   title-111: "<white>请选择魔咒: 亮3"
-  title-222: "<white>请放入物品"
+  title-222: "<white>请选择魔咒: 亮0"
   # 菜单结构
   structure:
     - "# # # # # # # # ?"

@@ -1,4 +1,4 @@
-package top.catnies.firenchantkt.engine.condition.player
+package top.catnies.firenchantkt.engine.condition
 
 import org.bukkit.entity.Player
 import top.catnies.firenchantkt.engine.AbstractCondition
