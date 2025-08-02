@@ -1,5 +1,9 @@
 package top.catnies.firenchantkt.config
 
+import top.catnies.firenchantkt.item.anvil.FirProtectionRune
+import top.catnies.firenchantkt.util.ItemUtils.nullOrAir
+import top.catnies.firenchantkt.util.YamlUtils
+
 
 @Suppress("PropertyName")
 class AnvilConfig private constructor():
@@ -77,7 +81,7 @@ class AnvilConfig private constructor():
         EB_MERGE_EXP_COST_MODE = config().getString("enchanted-book.use-enchanted-book.exp.cost-mode", "FIXED")!!
         EB_MERGE_EXP_FIXED_VALUE = config().getInt("enchanted-book.use-enchanted-book.exp.fixed-value", 18)
 
-        /*魔咒之魂设置*/
+        /*魔咒之魂*/
         ENCHANT_SOUL_ENABLE = config().getBoolean("enchant-soul.enable", false)
         if (ENCHANT_SOUL_ENABLE) {
             ENCHANT_SOUL_ITEM_PROVIDER = config().getString("enchant-soul.hooked-plugin")
@@ -88,7 +92,7 @@ class AnvilConfig private constructor():
             ENCHANT_SOUL_MAX_USE_SOULS = config().getInt("enchant-soul.max-use-souls", 12)
         }
 
-        /*保护符文设置*/
+        /*保护符文*/
         PROTECTION_RUNE_ENABLE = config().getBoolean("protection-rune.enable", false)
         if (PROTECTION_RUNE_ENABLE) {
             PROTECTION_RUNE_ITEM_PROVIDER = config().getString("protection-rune.hooked-plugin")
@@ -96,14 +100,14 @@ class AnvilConfig private constructor():
             PROTECTION_RUNE_EXP = config().getInt("protection-rune.exp", 18)
         }
 
-        /*升级符文设置*/
+        /*升级符文*/
         POWER_RUNE_ENABLE = config().getBoolean("power-rune.enable", false)
         if (POWER_RUNE_ENABLE) {
             POWER_RUNE_BREAK_FAILED_ITEM = config().getBoolean("power-rune.break-failed-item", false)
             POWER_RUNE_EXP = config().getInt("power-rune.exp", 25)
         }
 
-        /*拓展符文设置*/
+        /*拓展符文*/
         SLOT_RUNE_ENABLE = config().getBoolean("slot-rune.enable", false)
         if (SLOT_RUNE_ENABLE) {
             SLOT_RUNE_ITEM_PROVIDER = config().getString("slot-rune.hooked-plugin")
@@ -112,6 +116,21 @@ class AnvilConfig private constructor():
         }
     }
 
-    override fun loadLatePartConfig() {}
-
+    override fun loadLatePartConfig() {
+        /*魔咒之魂*/
+        if (ENCHANT_SOUL_ENABLE) {
+            val testItem = YamlUtils.tryBuildItem(ENCHANT_SOUL_ITEM_PROVIDER, ENCHANT_SOUL_ITEM_ID, fileName, "enchant-soul")
+            if (testItem.nullOrAir()) ENCHANT_SOUL_ENABLE = false
+        }
+        /*保护符文*/
+        if (PROTECTION_RUNE_ENABLE) {
+            val testItem = YamlUtils.tryBuildItem(PROTECTION_RUNE_ITEM_PROVIDER, PROTECTION_RUNE_ITEM_ID, fileName, "protection-rune")
+            if (testItem.nullOrAir()) PROTECTION_RUNE_ENABLE = false
+        }
+        /*拓展符文*/
+        if (SLOT_RUNE_ENABLE) {
+            val testItem = YamlUtils.tryBuildItem(SLOT_RUNE_ITEM_PROVIDER, SLOT_RUNE_ITEM_ID, fileName, "slot-rune")
+            if (testItem.nullOrAir()) SLOT_RUNE_ENABLE = false
+        }
+    }
 }

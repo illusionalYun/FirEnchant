@@ -23,6 +23,7 @@ class FirReversalBook: ReversalBook {
 
     var isEnabled: Boolean = false
     var itemProvider: ItemProvider? = null
+    var itemID: String? = null
     var actions: List<ConfigActionTemplate> = emptyList()
 
     init {
@@ -34,16 +35,8 @@ class FirReversalBook: ReversalBook {
         isEnabled = config.REVERSAL_BOOK_ENABLE
         if (isEnabled) {
             actions = config.REVERSAL_BOOK_ACTIONS
-            val buildItem = YamlUtils.tryBuildItem(
-                config.REVERSAL_BOOK_ITEM_PROVIDER,
-                config.REVERSAL_BOOK_ITEM_ID,
-                config.fileName,
-                "reverse-book"
-            )
-            if (buildItem.nullOrAir()) {
-                isEnabled = false
-                return
-            }
+            itemProvider = FirEnchantAPI.itemProviderRegistry().getItemProvider(config.REVERSAL_BOOK_ITEM_PROVIDER!!)
+            itemID = config.REVERSAL_BOOK_ITEM_ID
         }
     }
 
@@ -51,8 +44,8 @@ class FirReversalBook: ReversalBook {
 
     override fun matches(itemStack: ItemStack): Boolean {
         if (!isEnabled) return false
-        val itemProvider = FirEnchantAPI.itemProviderRegistry().getItemProvider(FirRenewalBook.Companion.config.REVERSAL_BOOK_ITEM_PROVIDER!!)
-        return itemProvider!!.getIdByItem(itemStack) == FirRenewalBook.Companion.config.REVERSAL_BOOK_ITEM_ID
+        val itemProvider = FirEnchantAPI.itemProviderRegistry().getItemProvider(config.REVERSAL_BOOK_ITEM_PROVIDER!!)
+        return itemProvider!!.getIdByItem(itemStack) == itemID
     }
 
     override fun onPostInput(itemStack: ItemStack, context: EnchantingTableContext) {

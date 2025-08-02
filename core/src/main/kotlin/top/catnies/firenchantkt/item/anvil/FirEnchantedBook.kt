@@ -2,6 +2,7 @@ package top.catnies.firenchantkt.item.anvil
 
 import io.papermc.paper.datacomponent.DataComponentTypes
 import org.bukkit.Bukkit
+import org.bukkit.GameMode
 import org.bukkit.entity.Player
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.inventory.PrepareAnvilEvent
@@ -150,10 +151,12 @@ class FirEnchantedBook : EnchantedBook {
 
             // 如果第一件物品是普通物品, 检查物品是否可以附魔.
             context.firstItem.isCompatibleWithEnchantment(originEnchantment, setting.level) -> {
+                val player = context.viewer
+
                 // 触发事件
                 val useEvent = EnchantedBookUseEvent(
-                    context.viewer, event, anvilView, context.firstItem, setting, resultItem,
-                    isSuccess(context.viewer,
+                    player, event, anvilView, context.firstItem, setting, resultItem,
+                    isSuccess(player,
                         originEnchantment.key.asString(),
                         setting.level,
                         anvilView.repairCost,
@@ -167,9 +170,8 @@ class FirEnchantedBook : EnchantedBook {
                 }
 
                 // 记录数据
-                val playerUUID = context.viewer.uniqueId
                 val logData = AnvilEnchantLogTable().apply {
-                    player = playerUUID
+                    this.player = player.uniqueId
                     usedEnchantment = originEnchantment.key.asString()
                     usedEnchantmentLevel = setting.level
                     takeLevel = anvilView.repairCost
@@ -187,7 +189,7 @@ class FirEnchantedBook : EnchantedBook {
 
                 // 失败逻辑
                 event.isCancelled = true
-                context.viewer.level -= anvilView.repairCost // 扣除经验值
+                if (player.gameMode != GameMode.CREATIVE) player.level -= anvilView.repairCost // 扣除经验值
                 anvilView.setItem(1, ItemStack.empty())
                 anvilView.setItem(2, ItemStack.empty())
 
@@ -198,23 +200,23 @@ class FirEnchantedBook : EnchantedBook {
                         FirEnchantAPI.hasProtectionRune(context.firstItem) -> {
                             FirEnchantAPI.removeProtectionRune(context.firstItem)
                             failBackItem?.let { anvilView.setCursor(it) }
-                            context.viewer.playSound(context.viewer.location, "block.anvil.destroy", 1f, 1f)
-                            context.viewer.sendTranslatableComponent(ANVIL_ENCHANTED_BOOK_USE_PROTECT_FAIL)
+                            player.playSound(player.location, "block.anvil.destroy", 1f, 1f)
+                            player.sendTranslatableComponent(ANVIL_ENCHANTED_BOOK_USE_PROTECT_FAIL)
                         }
                         // 没有保护符文
                         else -> {
                             anvilView.setItem(0, FirEnchantAPI.toBrokenGear(context.firstItem))
                             failBackItem?.let { anvilView.setCursor(it) }
-                            context.viewer.playSound(context.viewer.location, "block.anvil.destroy", 1f, 1f)
-                            context.viewer.sendTranslatableComponent(ANVIL_ENCHANTED_BOOK_USE_FAIL_BREAK)
+                            player.playSound(player.location, "block.anvil.destroy", 1f, 1f)
+                            player.sendTranslatableComponent(ANVIL_ENCHANTED_BOOK_USE_FAIL_BREAK)
                         }
                     }
                 }
                 // 没开启破坏装备
                 else {
                     failBackItem?.let { anvilView.setCursor(it) }
-                    context.viewer.playSound(context.viewer.location, "block.anvil.destroy", 1f, 1f)
-                    context.viewer.sendTranslatableComponent(ANVIL_ENCHANTED_BOOK_USE_FAIL)
+                    player.playSound(player.location, "block.anvil.destroy", 1f, 1f)
+                    player.sendTranslatableComponent(ANVIL_ENCHANTED_BOOK_USE_FAIL)
                 }
             }
         }

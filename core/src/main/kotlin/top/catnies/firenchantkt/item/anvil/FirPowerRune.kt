@@ -2,6 +2,7 @@ package top.catnies.firenchantkt.item.anvil
 
 import com.saicone.rtag.RtagItem
 import org.bukkit.Bukkit
+import org.bukkit.GameMode
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.inventory.PrepareAnvilEvent
 import org.bukkit.inventory.ItemStack
@@ -47,11 +48,12 @@ class FirPowerRune: PowerRune {
         val chance = readAndClearContextData(context.result!!).takeIf { it > 0 && it <= 100 } ?: return
         val anvilView = event.view as AnvilView
         val resultItem = context.result?.clone() ?: return
+        val player = context.viewer
         upgrade(resultItem)
 
         // 触发事件
         val useEvent = PowerRuneUseEvent(
-            context.viewer,
+            player,
             event,
             context.view,
             context.firstItem,
@@ -65,7 +67,7 @@ class FirPowerRune: PowerRune {
         }
 
         event.isCancelled = true
-        context.viewer.level -= anvilView.repairCost // 扣除经验值
+        if (player.gameMode != GameMode.CREATIVE) player.level -= anvilView.repairCost // 扣除经验值, 控制经验值的是 onPrepare 的事件设置.
         anvilView.setItem(0, ItemStack.empty())
         anvilView.setItem(2, ItemStack.empty())
 
@@ -77,19 +79,19 @@ class FirPowerRune: PowerRune {
             // 成功了
             useEvent.isSuccess -> {
                 anvilView.setCursor(resultItem)
-                context.viewer.playSound(context.viewer.location, "block.anvil.use", 1f, 1f)
+                player.playSound(player.location, "block.anvil.use", 1f, 1f)
             }
 
             // 失败了, 但是有保护符文
             FirEnchantAPI.hasProtectionRune(resultItem) -> {
                 anvilView.setCursor(context.firstItem)
-                context.viewer.playSound(context.viewer.location, "block.anvil.destroy", 1f, 1f)
+                player.playSound(player.location, "block.anvil.destroy", 1f, 1f)
             }
 
             // 失败了, 没有保护符文
             else -> {
                 FirEnchantAPI.toBrokenGear(context.firstItem).let { anvilView.setCursor(it) }
-                context.viewer.playSound(context.viewer.location, "block.anvil.destroy", 1f, 1f)
+                player.playSound(player.location, "block.anvil.destroy", 1f, 1f)
             }
 
         }

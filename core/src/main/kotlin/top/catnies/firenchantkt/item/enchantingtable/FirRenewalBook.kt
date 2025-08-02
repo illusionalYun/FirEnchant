@@ -9,8 +9,6 @@ import top.catnies.firenchantkt.config.EnchantingTableConfig
 import top.catnies.firenchantkt.context.EnchantingTableContext
 import top.catnies.firenchantkt.engine.ConfigActionTemplate
 import top.catnies.firenchantkt.integration.ItemProvider
-import top.catnies.firenchantkt.util.ItemUtils.nullOrAir
-import top.catnies.firenchantkt.util.YamlUtils
 
 
 class FirRenewalBook: RenewalBook {
@@ -23,6 +21,7 @@ class FirRenewalBook: RenewalBook {
 
     var isEnabled: Boolean = false
     var itemProvider: ItemProvider? = null
+    var itemID: String? = null
     var actions: List<ConfigActionTemplate> = emptyList()
 
     init {
@@ -34,16 +33,8 @@ class FirRenewalBook: RenewalBook {
         isEnabled = config.RENEWAL_BOOK_ENABLE
         if (isEnabled) {
             actions = config.RENEWAL_BOOK_ACTIONS
-            val buildItem = YamlUtils.tryBuildItem(
-                config.RENEWAL_BOOK_ITEM_PROVIDER,
-                config.RENEWAL_BOOK_ITEM_ID,
-                config.fileName,
-                "renewal-book"
-            )
-            if (buildItem.nullOrAir()) {
-                isEnabled = false
-                return
-            }
+            itemProvider = FirEnchantAPI.itemProviderRegistry().getItemProvider(config.RENEWAL_BOOK_ITEM_PROVIDER!!)
+            itemID = config.RENEWAL_BOOK_ITEM_ID
         }
     }
 
@@ -51,8 +42,7 @@ class FirRenewalBook: RenewalBook {
 
     override fun matches(itemStack: ItemStack): Boolean {
         if (!isEnabled) return false
-        val itemProvider = FirEnchantAPI.itemProviderRegistry().getItemProvider(config.RENEWAL_BOOK_ITEM_PROVIDER!!)
-        return itemProvider!!.getIdByItem(itemStack) == config.RENEWAL_BOOK_ITEM_ID
+        return itemProvider!!.getIdByItem(itemStack) == itemID
     }
 
     override fun onPostInput(itemStack: ItemStack, context: EnchantingTableContext) {

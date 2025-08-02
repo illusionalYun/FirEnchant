@@ -2,6 +2,7 @@ package top.catnies.firenchantkt.item.anvil
 
 import com.saicone.rtag.RtagItem
 import org.bukkit.Bukkit
+import org.bukkit.GameMode
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.inventory.PrepareAnvilEvent
 import org.bukkit.inventory.ItemStack
@@ -15,9 +16,6 @@ import top.catnies.firenchantkt.enchantment.EnchantmentSetting
 import top.catnies.firenchantkt.enchantment.FirEnchantmentSettingFactory
 import top.catnies.firenchantkt.integration.FirItemProviderRegistry
 import top.catnies.firenchantkt.integration.ItemProvider
-import top.catnies.firenchantkt.language.MessageConstants.RESOURCE_HOOK_ITEM_NOT_FOUND
-import top.catnies.firenchantkt.language.MessageConstants.RESOURCE_HOOK_ITEM_PROVIDER_NOT_FOUND
-import top.catnies.firenchantkt.util.MessageUtils.sendTranslatableComponent
 import kotlin.math.max
 import kotlin.math.min
 
@@ -30,8 +28,8 @@ class FirEnchantSoul: EnchantSoul {
     }
 
     var isEnabled: Boolean = false
-    var itemProvider: ItemProvider? = null
-    var itemID: String? = null
+    lateinit var itemProvider: ItemProvider
+    lateinit var itemID: String
 
     init {
         load()
@@ -41,20 +39,8 @@ class FirEnchantSoul: EnchantSoul {
     override fun load() {
         isEnabled = config.ENCHANT_SOUL_ENABLE
         if (isEnabled) {
-            itemProvider = config.ENCHANT_SOUL_ITEM_PROVIDER?.let { FirItemProviderRegistry.instance.getItemProvider(it) }
-            if (itemProvider == null) {
-                Bukkit.getConsoleSender().sendTranslatableComponent(RESOURCE_HOOK_ITEM_PROVIDER_NOT_FOUND, config.fileName, "enchant-soul", config.ENCHANT_SOUL_ITEM_PROVIDER ?: "null")
-                isEnabled = false
-                return
-            }
-
-            itemID = config.ENCHANT_SOUL_ITEM_ID
-            val item = itemID?.let { itemProvider?.getItemById(it) }
-            if (item == null) {
-                Bukkit.getConsoleSender().sendTranslatableComponent(RESOURCE_HOOK_ITEM_NOT_FOUND, config.fileName, "enchant-soul", itemID ?: "null")
-                isEnabled = false
-                return
-            }
+            itemProvider = FirItemProviderRegistry.instance.getItemProvider(config.ENCHANT_SOUL_ITEM_PROVIDER!!)!!
+            itemID = config.ENCHANT_SOUL_ITEM_ID!!
         }
     }
 
@@ -62,7 +48,7 @@ class FirEnchantSoul: EnchantSoul {
 
     override fun matches(itemStack: ItemStack): Boolean {
         if (!isEnabled) return false
-        return itemProvider!!.getIdByItem(itemStack) == itemID
+        return itemProvider.getIdByItem(itemStack) == itemID
     }
 
     override fun onPrepare(
@@ -93,9 +79,10 @@ class FirEnchantSoul: EnchantSoul {
     ) {
         val useAmount = context.result?.let { readAndClearContextData(it) }?.takeIf { it > 0 } ?: return
         val anvilView = event.view as AnvilView
+        val player = context.viewer
 
         // 触发事件
-        val useEvent = EnchantSoulUseEvent(context.viewer, event, anvilView, context.firstItem, useAmount, context.result!!)
+        val useEvent = EnchantSoulUseEvent(player, event, anvilView, context.firstItem, useAmount, context.result!!)
         Bukkit.getPluginManager().callEvent(useEvent)
         if (useEvent.isCancelled) {
             event.isCancelled = true
@@ -104,7 +91,7 @@ class FirEnchantSoul: EnchantSoul {
 
         // 计算使用的物品数量
         event.isCancelled = true
-        context.viewer.level -= anvilView.repairCost // 扣除经验值, 控制经验值的是 onPrepare 的事件设置.
+        if (player.gameMode != GameMode.CREATIVE) player.level -= anvilView.repairCost // 扣除经验值, 控制经验值的是 onPrepare 的事件设置.
         anvilView.setItem(0, ItemStack.empty())
         anvilView.setItem(2, ItemStack.empty())
         val resultAmount = context.secondItem.amount - useEvent.useAmount
@@ -113,7 +100,7 @@ class FirEnchantSoul: EnchantSoul {
 
         // 光标给物品
         anvilView.setCursor(useEvent.resultItem)
-        context.viewer.playSound(context.viewer.location, "block.anvil.use", 1f, 1f)
+        player.playSound(player.location, "block.anvil.use", 1f, 1f)
     }
 
     // 夹带私货, 把部分数据缓存到物品.

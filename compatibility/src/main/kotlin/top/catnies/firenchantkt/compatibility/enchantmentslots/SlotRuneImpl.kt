@@ -2,6 +2,7 @@ package top.catnies.firenchantkt.compatibility.enchantmentslots
 
 import com.saicone.rtag.RtagItem
 import org.bukkit.Bukkit
+import org.bukkit.GameMode
 import org.bukkit.entity.Player
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.inventory.PrepareAnvilEvent
@@ -64,9 +65,10 @@ class SlotRuneImpl: SlotRune {
     override fun onCost(event: InventoryClickEvent, context: AnvilContext) {
         val usedAmount = context.result?.let { readAndClearContextData(it) }?.takeIf { it != -1 } ?: return
         val anvilView = event.view as AnvilView
+        val player = context.viewer
 
         // 事件
-        val useEvent = SlotRuneUseEvent(context.viewer, event, anvilView, context.firstItem, usedAmount, context.result!!)
+        val useEvent = SlotRuneUseEvent(player, event, anvilView, context.firstItem, usedAmount, context.result!!)
         Bukkit.getPluginManager().callEvent(useEvent)
         if (useEvent.isCancelled) {
             event.isCancelled = true
@@ -74,7 +76,7 @@ class SlotRuneImpl: SlotRune {
         }
 
         event.isCancelled = true
-        context.viewer.level -= anvilView.repairCost // 扣除经验值
+        if (player.gameMode != GameMode.CREATIVE) player.level -= anvilView.repairCost // 扣除经验值
         anvilView.setItem(0, ItemStack.empty())
         anvilView.setItem(2, ItemStack.empty())
 
@@ -86,7 +88,7 @@ class SlotRuneImpl: SlotRune {
 
         // 光标给物品
         anvilView.setCursor(useEvent.resultItem)
-        context.viewer.playSound(context.viewer.location, "block.anvil.use", 1f, 1f)
+        player.playSound(player.location, "block.anvil.use", 1f, 1f)
     }
 
     private fun getCanUseAmount(currentSlots: Int, maxSlots: Int, inputAmount: Int): Int {

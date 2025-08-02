@@ -20,6 +20,7 @@ import top.catnies.firenchantkt.util.EnchantmentUtils
 import top.catnies.firenchantkt.util.ItemUtils.nullOrAir
 import top.catnies.firenchantkt.util.MessageUtils.sendTranslatableComponent
 import top.catnies.firenchantkt.util.ResourceCopyUtils
+import top.catnies.firenchantkt.util.YamlUtils
 import top.catnies.firenchantkt.util.YamlUtils.getConfigurationSectionList
 import xyz.xenondevs.invui.gui.structure.Structure
 
@@ -145,13 +146,17 @@ class EnchantingTableConfig private constructor():
 
         /*重生之书设置*/
         REVERSAL_BOOK_ENABLE = config().getBoolean("reversal-book.enable", false)
-        REVERSAL_BOOK_ITEM_PROVIDER = config().getString("reversal-book.hooked-plugin", null)
-        REVERSAL_BOOK_ITEM_ID = config().getString("reversal-book.hooked-id", null)
+        if (REVERSAL_BOOK_ENABLE) {
+            REVERSAL_BOOK_ITEM_PROVIDER = config().getString("reversal-book.hooked-plugin", null)
+            REVERSAL_BOOK_ITEM_ID = config().getString("reversal-book.hooked-id", null)
+        }
 
         /*反转之书设置*/
         RENEWAL_BOOK_ENABLE = config().getBoolean("renewal-book.enable", false)
-        RENEWAL_BOOK_ITEM_PROVIDER = config().getString("renewal-book.hooked-plugin", null)
-        RENEWAL_BOOK_ITEM_ID = config().getString("renewal-book.hooked-id", null)
+        if (RENEWAL_BOOK_ENABLE) {
+            RENEWAL_BOOK_ITEM_PROVIDER = config().getString("renewal-book.hooked-plugin", null)
+            RENEWAL_BOOK_ITEM_ID = config().getString("renewal-book.hooked-id", null)
+        }
     }
 
     // 等待注册表完成后延迟加载的部分
@@ -197,12 +202,22 @@ class EnchantingTableConfig private constructor():
         loadOriginFilesFromFileSystem()
 
         // 重生之书
-        RENEWAL_BOOK_ACTIONS = config().getConfigurationSectionList("renewal-book.actions")
-            .mapNotNull { ConfigParser.parseActionTemplate(it, fileName, "renewal-book.actions") }
+        if (REVERSAL_BOOK_ENABLE) {
+            RENEWAL_BOOK_ACTIONS = config().getConfigurationSectionList("renewal-book.actions")
+                .mapNotNull { ConfigParser.parseActionTemplate(it, fileName, "renewal-book.actions") }
+
+            val testItem = YamlUtils.tryBuildItem(REVERSAL_BOOK_ITEM_PROVIDER, REVERSAL_BOOK_ITEM_ID, fileName, "enchant-soul")
+            if (testItem.nullOrAir()) REVERSAL_BOOK_ENABLE = false
+        }
 
         // 反转之书
-        REVERSAL_BOOK_ACTIONS = config().getConfigurationSectionList("reversal-book.actions")
-            .mapNotNull { ConfigParser.parseActionTemplate(it, fileName, "reversal-book.actions") }
+        if (RENEWAL_BOOK_ENABLE) {
+            REVERSAL_BOOK_ACTIONS = config().getConfigurationSectionList("reversal-book.actions")
+                .mapNotNull { ConfigParser.parseActionTemplate(it, fileName, "reversal-book.actions") }
+
+            val testItem = YamlUtils.tryBuildItem(RENEWAL_BOOK_ITEM_PROVIDER, RENEWAL_BOOK_ITEM_ID, fileName, "enchant-renewal")
+            if (testItem.nullOrAir()) RENEWAL_BOOK_ENABLE = false
+        }
     }
 
     // 加载读取可附魔物品的文件

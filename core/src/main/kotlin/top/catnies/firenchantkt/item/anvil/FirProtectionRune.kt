@@ -2,6 +2,7 @@ package top.catnies.firenchantkt.item.anvil
 
 import com.saicone.rtag.RtagItem
 import org.bukkit.Bukkit
+import org.bukkit.GameMode
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.inventory.PrepareAnvilEvent
 import org.bukkit.inventory.ItemStack
@@ -11,6 +12,7 @@ import top.catnies.firenchantkt.api.event.anvil.ProtectionRunePreUseEvent
 import top.catnies.firenchantkt.api.event.anvil.ProtectionRuneUseEvent
 import top.catnies.firenchantkt.config.AnvilConfig
 import top.catnies.firenchantkt.context.AnvilContext
+import top.catnies.firenchantkt.integration.FirItemProviderRegistry
 import top.catnies.firenchantkt.integration.ItemProvider
 import top.catnies.firenchantkt.util.ItemUtils.nullOrAir
 import top.catnies.firenchantkt.util.YamlUtils
@@ -35,13 +37,8 @@ class FirProtectionRune(): ProtectionRune {
     override fun load() {
         isEnabled = config.PROTECTION_RUNE_ENABLE
         if (isEnabled) {
-            val buildItem = YamlUtils.tryBuildItem(
-                config.PROTECTION_RUNE_ITEM_PROVIDER,
-                config.PROTECTION_RUNE_ITEM_ID,
-                config.fileName,
-                "protection-rune"
-            )
-            if (buildItem.nullOrAir()) isEnabled = false
+            itemProvider = FirItemProviderRegistry.instance.getItemProvider(config.PROTECTION_RUNE_ITEM_PROVIDER!!)!!
+            itemID = config.PROTECTION_RUNE_ITEM_ID!!
         }
     }
 
@@ -105,9 +102,10 @@ class FirProtectionRune(): ProtectionRune {
         context: AnvilContext
     ) {
         val anvilView = event.view as AnvilView
+        val player = context.viewer
 
         // 触发事件
-        val protectionRuneUseEvent = ProtectionRuneUseEvent(context.viewer, event, event.view as AnvilView, context.firstItem, context.result!!)
+        val protectionRuneUseEvent = ProtectionRuneUseEvent(player, event, event.view as AnvilView, context.firstItem, context.result!!)
         Bukkit.getPluginManager().callEvent(protectionRuneUseEvent)
         if (protectionRuneUseEvent.isCancelled) {
             event.isCancelled = true
@@ -116,7 +114,7 @@ class FirProtectionRune(): ProtectionRune {
 
         // TODO 有没有什么不需要取消事件就能处理堆叠物品的方案?
         event.isCancelled = true
-        context.viewer.level -= anvilView.repairCost // 扣除经验值
+        if (player.gameMode != GameMode.CREATIVE) player.level -= anvilView.repairCost // 扣除经验值
         anvilView.setItem(0, ItemStack.empty())
         anvilView.setItem(2, ItemStack.empty())
 
@@ -126,7 +124,7 @@ class FirProtectionRune(): ProtectionRune {
 
         // 设置结果
         anvilView.setCursor(context.result!!)
-        context.viewer.playSound(context.viewer.location, "block.anvil.use", 1f, 1f)
+        player.playSound(player.location, "block.anvil.use", 1f, 1f)
     }
 
 }
