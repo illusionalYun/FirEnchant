@@ -30,6 +30,7 @@ import top.catnies.firenchantkt.util.ItemUtils.replacePlaceholder
 import top.catnies.firenchantkt.util.ItemUtils.serializeToBytes
 import top.catnies.firenchantkt.util.MessageUtils.renderToComponent
 import top.catnies.firenchantkt.util.MessageUtils.sendTranslatableComponent
+import top.catnies.firenchantkt.util.MessageUtils.wrapTitle
 import top.catnies.firenchantkt.util.PlayerUtils.giveOrDrop
 import top.catnies.firenchantkt.util.PlayerUtils.giveOrDropList
 import top.catnies.firenchantkt.util.TaskUtils
@@ -133,7 +134,7 @@ class FirRepairTableMenu(
                     }
                     // 执行
                     TaskUtils.runAsyncTasksLater(
-                        { window.changeTitle(titleAccept) },
+                        { window.changeTitle(titleAccept.wrapTitle(player)) },
                         delay = 1L
                     ) // 延迟刷新标题, 否则可能会把物品刷新给覆盖掉.
                     showBottom = true
@@ -141,7 +142,7 @@ class FirRepairTableMenu(
                     confirmBottom.notifyWindows()
                 }
                 event.isRemove -> {
-                    TaskUtils.runAsyncTasksLater({ window.changeTitle(titleDeny) }, delay = 1L)
+                    TaskUtils.runAsyncTasksLater({ window.changeTitle(titleDeny.wrapTitle(player)) }, delay = 1L)
                     showBottom = false
                     repairTime = null
                     confirmBottom.notifyWindows()
@@ -260,7 +261,7 @@ class FirRepairTableMenu(
 
         window = Window.single {
             it.setViewer(player)
-            it.setTitle(titleDeny)
+            it.setTitle(titleDeny.wrapTitle(player))
             it.setCloseHandlers(closeHandlers)
             it.setGui(gui)
             it.build()

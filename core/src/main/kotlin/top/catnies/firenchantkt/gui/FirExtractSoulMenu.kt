@@ -10,6 +10,7 @@ import top.catnies.firenchantkt.config.ExtractSoulConfig
 import top.catnies.firenchantkt.enchantment.FirEnchantmentSettingFactory
 import top.catnies.firenchantkt.gui.item.MenuCustomItem
 import top.catnies.firenchantkt.util.ItemUtils.nullOrAir
+import top.catnies.firenchantkt.util.MessageUtils.wrapTitle
 import top.catnies.firenchantkt.util.PlayerUtils.giveOrDropList
 import top.catnies.firenchantkt.util.TaskUtils
 import xyz.xenondevs.invui.gui.Gui
@@ -84,7 +85,7 @@ class FirExtractSoulMenu(
 
         window = Window.single {
             it.setViewer(player)
-            it.setTitle(title)
+            it.setTitle(title.wrapTitle(player))
             it.setCloseHandlers(closeHandlers)
             it.setGui(gui)
             it.build()

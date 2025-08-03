@@ -10,6 +10,7 @@ import top.catnies.firenchantkt.gui.item.MenuCustomItem
 import top.catnies.firenchantkt.gui.item.MenuEnchantLineItem
 import top.catnies.firenchantkt.item.FirEnchantingTableRegistry
 import top.catnies.firenchantkt.util.ItemUtils.nullOrAir
+import top.catnies.firenchantkt.util.MessageUtils.wrapTitle
 import top.catnies.firenchantkt.util.PlayerUtils.giveOrDropList
 import top.catnies.firenchantkt.util.TaskUtils
 import xyz.xenondevs.invui.gui.Gui
@@ -162,7 +163,7 @@ class FirEnchantingTableMenu(
 
         window = Window.single {
             it.setViewer(player)
-            it.setTitle(title000)
+            it.setTitle(title000.wrapTitle(player))
             it.setCloseHandlers(closeHandlers)
             it.setGui(gui)
             it.build()
@@ -202,11 +203,11 @@ class FirEnchantingTableMenu(
     // 刷新附魔栏位
     override fun refreshLine() {
         when (activeLine) {
-            0 -> window.changeTitle(title222)
-            1 -> window.changeTitle(title100)
-            2 -> window.changeTitle(title110)
-            3 -> window.changeTitle(title111)
-            -1 -> window.changeTitle(title000)
+            0 -> window.changeTitle(title222.wrapTitle(player))
+            1 -> window.changeTitle(title100.wrapTitle(player))
+            2 -> window.changeTitle(title110.wrapTitle(player))
+            3 -> window.changeTitle(title111.wrapTitle(player))
+            -1 -> window.changeTitle(title000.wrapTitle(player))
         }
         selectBottom1.notifyWindows()
         selectBottom2.notifyWindows()
@@ -234,7 +235,7 @@ class FirEnchantingTableMenu(
         enchantable = 0
         activeLine = -1
         refreshLine()
-        window.changeTitle(title000)
+        window.changeTitle(title000.wrapTitle(player))
     }
 
     // 设置记录的物品附魔力

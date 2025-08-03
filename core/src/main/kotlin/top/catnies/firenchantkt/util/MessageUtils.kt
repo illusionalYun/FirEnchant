@@ -11,6 +11,7 @@ import net.kyori.adventure.text.minimessage.translation.Argument
 import org.bukkit.entity.Player
 import top.catnies.firenchantkt.language.MessageTranslator
 import top.catnies.firenchantkt.language.tags.PlaceholderTag
+import xyz.xenondevs.inventoryaccess.component.AdventureComponentWrapper
 
 
 object MessageUtils {
@@ -106,6 +107,13 @@ object MessageUtils {
 
     fun List<String>.replacePlaceholders(list: List<String>, args: Map<String, String>): List<String> {
         return list.map { it.replacePlaceholders(args) }
+    }
+
+
+    // 将字符串包装成菜单标题
+    fun String.wrapTitle(player: Player?): AdventureComponentWrapper {
+        val component = this.renderToComponent(player)
+        return AdventureComponentWrapper(component)
     }
 
 }
