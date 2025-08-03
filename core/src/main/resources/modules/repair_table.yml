@@ -7,8 +7,8 @@
 # 菜单设置
 menu-setting:
   # 菜单标题, 当没有放入可修复物品/放入了可修复物品时展示不同的标题
-  title-deny: "<white><shift:-8><image:minecraft:soul_decompose>"
-  title-accept: "<white><shift:-8><image:minecraft:soul_decompose>"
+  title-deny: "<white><shift:-8><image:enchantment:emcforge_crafting>"
+  title-accept: "<white><shift:-8><image:enchantment:emcforge_crafting><shift:-177><image:enchantment:emcforge_crafting_bottom>"
   # 菜单结构
   structure:
     - "X # # # # # # # ?"
@@ -57,6 +57,7 @@ menu-setting:
     slot: 'P'
     hooked-plugin: "Vanilla"
     hooked-id: PAPER
+    custom-model-data: 31002
     item-name: "<red>上一页"
     click-actions: # 点击后会进行翻页, 你可以设置额外的行为, 但是翻页行为不可取消.
       - type: play_sound      # 点击音效
@@ -66,6 +67,7 @@ menu-setting:
     slot: 'N'
     hooked-plugin: "Vanilla"
     hooked-id: PAPER
+    custom-model-data: 31003
     item-name: "<red>下一页"
     click-actions: # 点击后会进行翻页, 你可以设置额外的行为, 但是翻页行为不可取消.
       - type: play_sound      # 点击音效
@@ -74,13 +76,11 @@ menu-setting:
   custom-items:
     'X':
       hooked-plugin: "Vanilla"
-      hooked-id: LEATHER_HORSE_ARMOR
+      hooked-id: PAPER
       item-name: "<red>关闭"
       lore: []
-      amount: 1
-      durability: 1
       custom-model-data: 31001
-      item-model: "minecraft:item/paper"
+      item-model: "minecraft:paper"
       click-actions:
         - type: play_sound      # 点击音效
           sound: "ui.button.click"
@@ -91,8 +91,8 @@ menu-setting:
       item-name: "<yellow>提示"
       lore:
         - "§7您可以把损坏的物品放入槽位内，然后选择修复方式。"
-      amount: 1
-      item-model: "minecraft:apple"
+      custom-model-data: 31001
+      item-model: "minecraft:paper"
       click-actions:
         - type: play_sound      # 点击音效
           sound: "ui.button.click"

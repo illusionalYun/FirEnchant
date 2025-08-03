@@ -4,7 +4,7 @@
 # 菜单设置
 menu-setting:
   # 菜单标题
-  title: "<white><shift:-8><image:minecraft:soul_decompose>"
+  title: "<white><shift:-8><image:enchantment:soul_decompose>"
   # 菜单结构
   structure:
     - "X # # # # # # # ?"
@@ -24,20 +24,8 @@ menu-setting:
       hooked-id: LEATHER_HORSE_ARMOR
       item-name: "<red>关闭"
       lore: []
-      amount: 1
-      durability: 1
       custom-model-data: 31001
-      item-model: "minecraft:item/paper"
-#      dyed-color: ?? 有问题的
-#        alpine: 1
-#        red: 255
-#        green: 255
-#        blue: 255
-      firework-color:
-        alpine: 1
-        red: 255
-        green: 255
-        blue: 255
+      item-model: "minecraft:paper"
       click-actions:
         - type: send_message    # 发送消息
           content: "我草666"
@@ -53,8 +41,8 @@ menu-setting:
       item-name: "<yellow>提示"
       lore:
         - "§7你可以在这里将附魔书转换成魔咒之尘。"
-      amount: 1
-      item-model: "minecraft:apple"
+      custom-model-data: 31001
+      item-model: "minecraft:paper"
       click-actions:
         - type: play_sound      # 点击音效
           sound: "ui.button.click"

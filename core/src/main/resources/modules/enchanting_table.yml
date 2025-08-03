@@ -8,11 +8,11 @@ replace-vanilla-enchanting-table: true
 menu-setting:
   # 菜单标题, 附魔台有3个栏位, 每个栏位有不同的状态: 0代表材料/等级/书架不足, 1代表可附魔, 2代表空;
   # 在不同情况下, 菜单的标题是如何的?
-  title-000: "<white>请放入物品"
-  title-100: "<white>请选择魔咒: 亮1"
-  title-110: "<white>请选择魔咒: 亮2"
-  title-111: "<white>请选择魔咒: 亮3"
-  title-222: "<white>请选择魔咒: 亮0"
+  title-000: "<white><shift:-8><image:enchantment:enchant_table_gui>"
+  title-100: "<white><shift:-8><image:enchantment:enchant_table_gui><shift:-116><image:enchantment:enchant_table_et1><shift:-109><image:enchantment:enchant_table_et5><shift:-109><image:enchantment:enchant_table_et6>"
+  title-110: "<white><shift:-8><image:enchantment:enchant_table_gui><shift:-116><image:enchantment:enchant_table_et1><shift:-109><image:enchantment:enchant_table_et2><shift:-109><image:enchantment:enchant_table_et6>"
+  title-111: "<white><shift:-8><image:enchantment:enchant_table_gui><shift:-116><image:enchantment:enchant_table_et1><shift:-109><image:enchantment:enchant_table_et2><shift:-109><image:enchantment:enchant_table_et3>"
+  title-222: "<white><shift:-8><image:enchantment:enchant_table_gui><shift:-116><image:enchantment:enchant_table_et4><shift:-109><image:enchantment:enchant_table_et5><shift:-109><image:enchantment:enchant_table_et6>"
   # 菜单结构
   structure:
     - "# # # # # # # # ?"
@@ -42,7 +42,7 @@ menu-setting:
           - " "
           - "<#a5acb8>→ 点击进行附魔"
         custom-model-data: 31001
-        item-model: "minecraft:item/paper"
+        item-model: "minecraft:paper"
       offline:
         item-name: "<red>材料不足"
         lore:
@@ -54,7 +54,7 @@ menu-setting:
           - " "
           - "<red>→ 无法进行附魔"
         custom-model-data: 31001
-        item-model: "minecraft:item/paper"
+        item-model: "minecraft:paper"
     line-2: # 当第二行栏位亮起时, 行占位物品的信息
       slot: 'b'
       online:
@@ -67,7 +67,7 @@ menu-setting:
           - " "
           - "<#a5acb8>→ 点击进行附魔"
         custom-model-data: 31001
-        item-model: "minecraft:item/paper"
+        item-model: "minecraft:paper"
       offline:
         item-name: "<red>材料不足"
         lore:
@@ -79,7 +79,7 @@ menu-setting:
           - " "
           - "<red>→ 无法进行附魔"
         custom-model-data: 31001
-        item-model: "minecraft:item/paper"
+        item-model: "minecraft:paper"
     line-3: # 当第三行栏位亮起时, 行占位物品的信息
       slot: 'c'
       online:
@@ -92,7 +92,7 @@ menu-setting:
           - " "
           - "<#a5acb8>→ 点击进行附魔"
         custom-model-data: 31001
-        item-model: "minecraft:item/paper"
+        item-model: "minecraft:paper"
       offline:
         item-name: "<red>材料不足"
         lore:
@@ -104,7 +104,7 @@ menu-setting:
           - " "
           - "<red>→ 无法进行附魔"
         custom-model-data: 31001
-        item-model: "minecraft:item/paper"
+        item-model: "minecraft:paper"
     # 当然除了line部分, 还有最后的附魔书展示部分, 你也可以自定义
     line-1-book: # 当第一行栏位亮起时, 附魔书位置的物品的显示信息
       slot: 'A'
@@ -128,7 +128,7 @@ menu-setting:
           - " "
           - "<red>→ 无法进行附魔"
         custom-model-data: 31001
-        item-model: "minecraft:item/paper"
+        item-model: "minecraft:paper"
     line-2-book: # 当第二行栏位亮起时, 行占位物品的信息
       slot: 'B'
       online:
@@ -151,7 +151,7 @@ menu-setting:
           - " "
           - "<red>→ 无法进行附魔"
         custom-model-data: 31001
-        item-model: "minecraft:item/paper"
+        item-model: "minecraft:paper"
     line-3-book: # 当第三行栏位亮起时, 行占位物品的信息
       slot: 'C'
       online:
@@ -174,19 +174,16 @@ menu-setting:
           - " "
           - "<red>→ 无法进行附魔"
         custom-model-data: 31001
-        item-model: "minecraft:item/paper"
+        item-model: "minecraft:paper"
 
   # 其他自定义槽位, 请勿和上方的槽位冲突
   custom-items:
     'X':
       hooked-plugin: "Vanilla"
-      hooked-id: LEATHER_HORSE_ARMOR
+      hooked-id: PAPER
       item-name: "<red>没用的按钮"
       lore: []
-      amount: 1
-      durability: 1
       custom-model-data: 31001
-      item-model: "minecraft:item/paper"
       click-actions:
         - type: play_sound      # 点击音效
           sound: "ui.button.click"
@@ -197,8 +194,7 @@ menu-setting:
       item-name: "<yellow>提示"
       lore:
         - "§7您可以把可附魔的物品放入槽位内，然后选择进行附魔。"
-      amount: 1
-      item-model: "minecraft:apple"
+      custom-model-data: 31001
       click-actions:
         - type: play_sound      # 点击音效
           sound: "ui.button.click"
