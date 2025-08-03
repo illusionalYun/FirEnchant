@@ -250,14 +250,14 @@ class EnchantingTableConfig private constructor():
                             // 获取物品对应的魔咒列表添加
                             val applicableEnchants = EnchantmentUtils.getApplicableEnchants(ItemStack(it))
                             acc.addAll(applicableEnchants)
-                            acc
+                            return@fold acc
                         }
                     }
                     // 导入普通魔咒
                     val readEnchantment = enchantmentRegistry.get(Key.key(enchantment))
                     if (readEnchantment == null) { sendInvalidEnchantment(file.name, enchantment); acc }
                     else { acc.add(readEnchantment) }
-                    acc
+                    return@fold acc
                 }
 
                 if (enchantments.isEmpty()) {
