@@ -23,10 +23,13 @@ class HasItemCondition(
 
     override fun check(): Boolean {
         val itemProvider = FirItemProviderRegistry.instance.getItemProvider(hookPlugin) ?: return false
-        player?.inventory?.fold(0) { acc, itemStack ->
-            val i = if (itemProvider.getIdByItem(itemStack) == hookedID) acc + itemStack.amount else acc
-            if (i >= count) return true
-            return@fold i
+        var acc = 0
+        player?.inventory?.forEach { itemStack ->
+            if (itemStack == null) return@forEach
+            if (itemProvider.getIdByItem(itemStack).equals(hookedID, true)) {
+                acc += itemStack.amount
+                if (acc >= count) return true
+            }
         }
         return false
     }

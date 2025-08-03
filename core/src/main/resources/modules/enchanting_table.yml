@@ -36,23 +36,21 @@ menu-setting:
         lore:
           - "{original_lore}" # 带有 {original_lore} 的行, 整一行会被替换成结果附魔书的lore;
           - " "
-          - "%img_icon_money% 666 金币"   # 这几行可以自定义
-          - "%img_icon_exp_point% 6 等级"
-          - "%img_icon_lapis_lazuli% 6 青金石"
+          - "<!i><white><image:enchantment:exp_point> 5 等级"
+          - "<!i><white><image:enchantment:lapis_lazuli> 1 青金石"
           - " "
-          - "<#a5acb8>→ 点击进行附魔"
+          - "<!i><#a5acb8>→ 点击进行附魔"
         custom-model-data: 31001
         item-model: "minecraft:paper"
       offline:
         item-name: "<red>材料不足"
         lore:
-          - "解锁这个槽位您还需要:"
+          - "<!i><gray>解锁这个槽位您需要:"
           - " "
-          - "%img_icon_money% 666 金币"
-          - "%img_icon_exp_point% 6 等级"
-          - "%img_icon_lapis_lazuli% 6 青金石"
+          - "<!i><white><image:enchantment:exp_point> 5 等级"
+          - "<!i><white><image:enchantment:lapis_lazuli> 1 青金石"
           - " "
-          - "<red>→ 无法进行附魔"
+          - "<!i><red>→ 无法进行附魔"
         custom-model-data: 31001
         item-model: "minecraft:paper"
     line-2: # 当第二行栏位亮起时, 行占位物品的信息
@@ -61,23 +59,21 @@ menu-setting:
         lore:
           - "{original_lore}"
           - " "
-          - "%img_icon_money% 666 金币"
-          - "%img_icon_exp_point% 6 等级"
-          - "%img_icon_lapis_lazuli% 6 青金石"
+          - "<!i><white><image:enchantment:exp_point> 15 等级"
+          - "<!i><white><image:enchantment:lapis_lazuli> 2 青金石"
           - " "
-          - "<#a5acb8>→ 点击进行附魔"
+          - "<!i><#a5acb8>→ 点击进行附魔"
         custom-model-data: 31001
         item-model: "minecraft:paper"
       offline:
         item-name: "<red>材料不足"
         lore:
-          - "解锁这个槽位您还需要:"
+          - "<!i><gray>解锁这个槽位您需要:"
           - " "
-          - "%img_icon_money% 666 金币"
-          - "%img_icon_exp_point% 6 等级"
-          - "%img_icon_lapis_lazuli% 6 青金石"
+          - "<!i><white><image:enchantment:exp_point> 15 等级"
+          - "<!i><white><image:enchantment:lapis_lazuli> 2 青金石"
           - " "
-          - "<red>→ 无法进行附魔"
+          - "<!i><red>→ 无法进行附魔"
         custom-model-data: 31001
         item-model: "minecraft:paper"
     line-3: # 当第三行栏位亮起时, 行占位物品的信息
@@ -86,23 +82,21 @@ menu-setting:
         lore:
           - "{original_lore}"
           - " "
-          - "%img_icon_money% 666 金币"
-          - "%img_icon_exp_point% 6 等级"
-          - "%img_icon_lapis_lazuli% 6 青金石"
+          - "<!i><white><image:enchantment:exp_point> 20 等级"
+          - "<!i><white><image:enchantment:lapis_lazuli> 3 青金石"
           - " "
-          - "<#a5acb8>→ 点击进行附魔"
+          - "<!i><#a5acb8>→ 点击进行附魔"
         custom-model-data: 31001
         item-model: "minecraft:paper"
       offline:
         item-name: "<red>材料不足"
         lore:
-          - "解锁这个槽位您还需要:"
+          - "<!i><gray>解锁这个槽位您需要:"
           - " "
-          - "%img_icon_money% 666 金币"
-          - "%img_icon_exp_point% 6 等级"
-          - "%img_icon_lapis_lazuli% 6 青金石"
+          - "<!i><white><image:enchantment:exp_point> 20 等级"
+          - "<!i><white><image:enchantment:lapis_lazuli> 3 青金石"
           - " "
-          - "<red>→ 无法进行附魔"
+          - "<!i><red>→ 无法进行附魔"
         custom-model-data: 31001
         item-model: "minecraft:paper"
     # 当然除了line部分, 还有最后的附魔书展示部分, 你也可以自定义
@@ -112,21 +106,19 @@ menu-setting:
         lore:
           - "{original_lore}" # 带有 {original_lore} 的行, 整一行会被替换成结果附魔书的lore;
           - " "
-          - "%img_icon_money% 666 金币"   # 这几行可以自定义
-          - "%img_icon_exp_point% 6 等级"
-          - "%img_icon_lapis_lazuli% 6 青金石"
+          - "<!i><white><image:enchantment:exp_point> 5 等级"
+          - "<!i><white><image:enchantment:lapis_lazuli> 1 青金石"
           - " "
-          - "<#a5acb8>→ 点击进行附魔"
+          - "<!i><#a5acb8>→ 点击进行附魔"
       offline:
         item-name: "<red>材料不足"
         lore:
-          - "解锁这个槽位您还需要:"
+          - "<!i><gray>解锁这个槽位您需要:"
           - " "
-          - "%img_icon_money% 666 金币"
-          - "%img_icon_exp_point% 6 等级"
-          - "%img_icon_lapis_lazuli% 6 青金石"
+          - "<!i><white><image:enchantment:exp_point> 5 等级"
+          - "<!i><white><image:enchantment:lapis_lazuli> 1 青金石"
           - " "
-          - "<red>→ 无法进行附魔"
+          - "<!i><red>→ 无法进行附魔"
         custom-model-data: 31001
         item-model: "minecraft:paper"
     line-2-book: # 当第二行栏位亮起时, 行占位物品的信息
@@ -135,21 +127,19 @@ menu-setting:
         lore:
           - "{original_lore}"
           - " "
-          - "%img_icon_money% 666 金币"
-          - "%img_icon_exp_point% 6 等级"
-          - "%img_icon_lapis_lazuli% 6 青金石"
+          - "<!i><white><image:enchantment:exp_point> 15 等级"
+          - "<!i><white><image:enchantment:lapis_lazuli> 2 青金石"
           - " "
-          - "<#a5acb8>→ 点击进行附魔"
+          - "<!i><#a5acb8>→ 点击进行附魔"
       offline:
         item-name: "<red>材料不足"
         lore:
-          - "解锁这个槽位您还需要:"
+          - "<!i><gray>解锁这个槽位您需要:"
           - " "
-          - "%img_icon_money% 666 金币"
-          - "%img_icon_exp_point% 6 等级"
-          - "%img_icon_lapis_lazuli% 6 青金石"
+          - "<!i><white><image:enchantment:exp_point> 15 等级"
+          - "<!i><white><image:enchantment:lapis_lazuli> 2 青金石"
           - " "
-          - "<red>→ 无法进行附魔"
+          - "<!i><red>→ 无法进行附魔"
         custom-model-data: 31001
         item-model: "minecraft:paper"
     line-3-book: # 当第三行栏位亮起时, 行占位物品的信息
@@ -158,21 +148,19 @@ menu-setting:
         lore:
           - "{original_lore}"
           - " "
-          - "%img_icon_money% 666 金币"
-          - "%img_icon_exp_point% 6 等级"
-          - "%img_icon_lapis_lazuli% 6 青金石"
+          - "<!i><white><image:enchantment:exp_point> 20 等级"
+          - "<!i><white><image:enchantment:lapis_lazuli> 3 青金石"
           - " "
-          - "<#a5acb8>→ 点击进行附魔"
+          - "<!i><#a5acb8>→ 点击进行附魔"
       offline:
         item-name: "<red>材料不足"
         lore:
-          - "解锁这个槽位您还需要:"
+          - "解锁这个槽位您需要:"
           - " "
-          - "%img_icon_money% 666 金币"
-          - "%img_icon_exp_point% 6 等级"
-          - "%img_icon_lapis_lazuli% 6 青金石"
+          - "<!i><white><image:enchantment:exp_point> 20 等级"
+          - "<!i><white><image:enchantment:lapis_lazuli> 3 青金石"
           - " "
-          - "<red>→ 无法进行附魔"
+          - "<!i><red>→ 无法进行附魔"
         custom-model-data: 31001
         item-model: "minecraft:paper"
 
@@ -213,37 +201,67 @@ enchant-cost:
     actions:
       - type: send_message
         message: "你使用了一号附魔拦了"
+      - type: cost_level
+        cost: 5
+      - type: take_item
+        hooked-plugin: "vanilla"
+        hooked-id: lapis_lazuli
+        count: 1
     # 条件: 决定玩家放入可附魔物品到附魔台后, 达成哪些条件才可以亮起栏位, 并且可进行附魔
     conditions:
       - type: permission
         permission: "enchantingtable.use"
       - type: ">="
         value1: "%player_level%"
-        value2: 6
+        value2: 5
+      - type: "has_item"
+        hooked-plugin: "vanilla"
+        hooked-id: lapis_lazuli
+        count: 1
   line-2:
     min-failure: 0
     max-failure: 100
     actions:
       - type: send_message
         message: "你使用了二号附魔拦了"
+      - type: cost_level
+        cost: 15
+      - type: take_item
+        hooked-plugin: "vanilla"
+        hooked-id: lapis_lazuli
+        count: 2
     conditions:
       - type: permission
         permission: "enchantingtable.use"
       - type: ">="
         value1: "%player_level%"
-        value2: 7
+        value2: 15
+      - type: "has_item"
+        hooked-plugin: "vanilla"
+        hooked-id: lapis_lazuli
+        count: 2
   line-3:
     min-failure: 0
     max-failure: 100
     actions:
       - type: send_message
         message: "你使用了三号附魔拦了"
+      - type: cost_level
+        cost: 20
+      - type: take_item
+        hooked-plugin: "vanilla"
+        hooked-id: lapis_lazuli
+        count: 3
     conditions:
       - type: permission
         permission: "enchantingtable.use"
       - type: ">="
         value1: "%player_level%"
-        value2: 8
+        value2: 20
+      - type: "has_item"
+        hooked-plugin: "vanilla"
+        hooked-id: lapis_lazuli
+        count: 3
 
 
 # 重生之书, 当放入附魔台后, 会立刻消耗一件物品, 然后刷新玩家的附魔种子;

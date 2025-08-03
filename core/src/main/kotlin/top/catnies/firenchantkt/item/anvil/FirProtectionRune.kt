@@ -115,7 +115,6 @@ class FirProtectionRune(): ProtectionRune {
             return
         }
 
-        // TODO 有没有什么不需要取消事件就能处理堆叠物品的方案?
         event.isCancelled = true
         if (player.gameMode != GameMode.CREATIVE) player.level -= anvilView.repairCost // 扣除经验值
         anvilView.setItem(0, ItemStack.empty())

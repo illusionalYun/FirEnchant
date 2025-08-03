@@ -25,7 +25,8 @@ class TakeItemAction (
         val itemProvider = FirItemProviderRegistry.instance.getItemProvider(hookPlugin) ?: return
         var targetCount = count
         player?.inventory?.forEach { itemStack ->
-            if (itemProvider.getIdByItem(itemStack) == hookedID) {
+            if (itemStack == null) return@forEach
+            if (itemProvider.getIdByItem(itemStack).equals(hookedID, true)) {
                 // 如果当前物品数量大于目标数量
                 if (itemStack.amount >= targetCount) {
                     itemStack.apply { amount -= targetCount }
