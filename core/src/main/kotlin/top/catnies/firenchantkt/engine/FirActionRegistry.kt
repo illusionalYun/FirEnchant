@@ -9,6 +9,7 @@ import top.catnies.firenchantkt.engine.actions.CostLevelAction
 import top.catnies.firenchantkt.engine.actions.ExecuteCommandAction
 import top.catnies.firenchantkt.engine.actions.PlaySoundAction
 import top.catnies.firenchantkt.engine.actions.SendMessageAction
+import top.catnies.firenchantkt.engine.actions.TakeItemAction
 
 class FirActionRegistry: ActionRegistry {
 
@@ -23,8 +24,9 @@ class FirActionRegistry: ActionRegistry {
         registerAction("close_inventory", CloseInventoryAction::class.java)
         registerAction("cost_level", CostLevelAction::class.java)
         registerAction("execute_command", ExecuteCommandAction::class.java)
-        registerAction("send_message", SendMessageAction::class.java)
         registerAction("play_sound", PlaySoundAction::class.java)
+        registerAction("send_message", SendMessageAction::class.java)
+        registerAction("take_item", TakeItemAction::class.java)
 
         ServiceContainer.register(ActionRegistry::class.java, this)
         Bukkit.getPluginManager().callEvent(ActionRegisterEvent(this))

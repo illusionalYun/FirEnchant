@@ -32,6 +32,7 @@ class FirPowerRune: PowerRune {
 
     override fun onPrepare(event: PrepareAnvilEvent, context: AnvilContext) {
         val chance = getChance(context.secondItem).takeIf { it > 0 && it <= 100 } ?: return
+        if (!canUpgrade(context.firstItem)) return
         // 经验值
         val costExp = config.POWER_RUNE_EXP
 
@@ -85,8 +86,15 @@ class FirPowerRune: PowerRune {
                 player.playSound(player.location, "block.anvil.use", 1f, 1f)
             }
 
+            // 失败了, 但是没开失败破损
+            (!config.POWER_RUNE_BREAK_FAILED_ITEM) -> {
+                anvilView.setCursor(context.firstItem)
+                player.playSound(player.location, "block.anvil.destroy", 1f, 1f)
+            }
+
             // 失败了, 但是有保护符文
             FirEnchantAPI.hasProtectionRune(resultItem) -> {
+                FirEnchantAPI.removeProtectionRune(context.firstItem)
                 anvilView.setCursor(context.firstItem)
                 player.playSound(player.location, "block.anvil.destroy", 1f, 1f)
             }
@@ -98,8 +106,6 @@ class FirPowerRune: PowerRune {
             }
 
         }
-
-
     }
 
     override fun getChance(item: ItemStack): Int {
