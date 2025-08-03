@@ -156,47 +156,92 @@ broken-item-model:
   matches:
     - match-item:   # 捕捉到的物品ID
         - "CraftEngine|default:topaz_sword" # 捕捉CE的物品.
-        - "iron_sword"  # 捕捉原版的物品
+        - "wooden_sword"  # 捕捉原版的物品
+        - "stone_sword"
+        - "golden_sword"
+        - "iron_sword"
+        - "diamond_sword"
+        - "netherite_sword"
       wrapper-item:
         hooked-plugin: "CraftEngine"
         hooked-id: "enchantment:broken_sword"
     - match-item:
+        - "wooden_pickaxe"
+        - "stone_pickaxe"
+        - "golden_pickaxe"
         - "iron_pickaxe"
+        - "diamond_pickaxe"
+        - "netherite_pickaxe"
       wrapper-item:
         hooked-plugin: "CraftEngine"
         hooked-id: "enchantment:broken_sword"
     - match-item:
+        - "wooden_axe"
+        - "stone_axe"
+        - "golden_axe"
         - "iron_axe"
+        - "diamond_axe"
+        - "netherite_axe"
       wrapper-item:
         hooked-plugin: "CraftEngine"
         hooked-id: "enchantment:broken_axe"
     - match-item:
+        - "wooden_shovel"
+        - "stone_shovel"
+        - "golden_shovel"
         - "iron_shovel"
+        - "diamond_shovel"
+        - "netherite_shovel"
       wrapper-item:
         hooked-plugin: "CraftEngine"
         hooked-id: "enchantment:broken_shovel"
     - match-item:
+        - "wooden_hoe"
+        - "stone_hoe"
+        - "golden_hoe"
         - "iron_hoe"
+        - "diamond_hoe"
+        - "netherite_hoe"
       wrapper-item:
         hooked-plugin: "CraftEngine"
         hooked-id: "enchantment:broken_hoe"
     - match-item:
+        - "leather_helmet"
+        - "chainmail_helmet"
         - "iron_helmet"
+        - "golden_helmet"
+        - "diamond_helmet"
+        - "netherite_helmet"
       wrapper-item:
         hooked-plugin: "CraftEngine"
         hooked-id: "enchantment:broken_helmet"
     - match-item:
+        - "leather_chestplate"
+        - "chainmail_chestplate"
         - "iron_chestplate"
+        - "golden_chestplate"
+        - "diamond_chestplate"
+        - "netherite_chestplate"
       wrapper-item:
         hooked-plugin: "CraftEngine"
         hooked-id: "enchantment:broken_chestplate"
     - match-item:
+        - "leather_leggings"
+        - "chainmail_leggings"
         - "iron_leggings"
+        - "golden_leggings"
+        - "diamond_leggings"
+        - "netherite_leggings"
       wrapper-item:
         hooked-plugin: "CraftEngine"
         hooked-id: "enchantment:broken_leggings"
     - match-item:
+        - "leather_boots"
+        - "chainmail_boots"
         - "iron_boots"
+        - "golden_boots"
+        - "diamond_boots"
+        - "netherite_boots"
       wrapper-item:
         hooked-plugin: "CraftEngine"
         hooked-id: "enchantment:broken_boots"
@@ -227,10 +272,6 @@ broken-item-model:
         hooked-id: "enchantment:broken_trident"
     - match-item:
         - "fishing_rod"
-      wrapper-item:
-        hooked-plugin: "CraftEngine"
-        hooked-id: "enchantment:broken_fishing_rod"
-    - match-item:
         - "carrot_on_a_stick"
       wrapper-item:
         hooked-plugin: "CraftEngine"
