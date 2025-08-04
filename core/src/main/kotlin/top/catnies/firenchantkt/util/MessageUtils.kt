@@ -102,7 +102,7 @@ object MessageUtils {
     // 替换String中的占位符
     fun String.replacePlaceholders(args: Map<String, String>): String {
         // 依次对args的每个entry进行处理.
-        return args.entries.fold(this) {acc, (key, value) -> acc.replace("\${$key}", value) }
+        return args.entries.fold(this) {acc, (key, value) -> acc.replace("{$key}", value) }
     }
 
     fun List<String>.replacePlaceholders(list: List<String>, args: Map<String, String>): List<String> {
