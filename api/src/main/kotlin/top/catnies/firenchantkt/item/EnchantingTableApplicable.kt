@@ -2,6 +2,8 @@ package top.catnies.firenchantkt.item
 
 import org.bukkit.inventory.ItemStack
 import top.catnies.firenchantkt.context.EnchantingTableContext
+import xyz.xenondevs.invui.inventory.event.ItemPostUpdateEvent
+import xyz.xenondevs.invui.inventory.event.ItemPreUpdateEvent
 
 interface EnchantingTableApplicable {
 
@@ -20,8 +22,13 @@ interface EnchantingTableApplicable {
         return false
     }
 
+    // 当物品尝试放入附魔台时
+    fun onPreInput(itemStack: ItemStack, event: ItemPreUpdateEvent, context: EnchantingTableContext) {
+        return
+    }
+
     // 当物品放入附魔台后
-    fun onPostInput(itemStack: ItemStack, context: EnchantingTableContext) {
+    fun onPostInput(itemStack: ItemStack, event: ItemPostUpdateEvent, context: EnchantingTableContext) {
         return
     }
 

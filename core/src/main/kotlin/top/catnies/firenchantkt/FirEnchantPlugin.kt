@@ -129,19 +129,28 @@ class FirEnchantPlugin: JavaPlugin(), FirEnchant, CoroutineScope {
             return
         }
         isInitializedRegistry = true
-        IntegrationManager.instance // 关联插件集成管理器
 
-        FirConditionRegistry.instance // 条件注册表
-        FirActionRegistry.instance // 动作注册表
-        FirItemProviderRegistry.instance // 物品集成注册表
-        FirEnchantmentManager.instance // 系统魔咒管理器
+        // 1.关联插件集成管理器
+        IntegrationManager.instance
+
+        // 2.动作条件注册表
+        FirConditionRegistry.instance
+        FirActionRegistry.instance
+
+        // 3.物品集成注册表
+        FirItemProviderRegistry.instance
+
+        // 4.系统魔咒管理器 (依赖3)
+        FirEnchantmentManager.instance
+
+        // 5.加载延迟配置部分(依赖1234)
+        ConfigManager.instance.loadConfigsLatePart()
+
+        // 6.物品注册表(依赖2345)
         FirAnvilItemRegistry.instance // 铁砧物品注册表
         FirRepairTableItemRegistry.instance // 修复桌物品注册表
         FirEnchantingTableRegistry.instance // 附魔台物品注册表
-
         FirBrokenGear.instance // 破损物品功能注册
-
-        ConfigManager.instance.loadConfigsLatePart() // 加载延迟加载的配置部分
     }
 
 

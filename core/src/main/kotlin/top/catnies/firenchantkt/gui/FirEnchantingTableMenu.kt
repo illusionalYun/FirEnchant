@@ -110,11 +110,18 @@ class FirEnchantingTableMenu(
     private fun buildBaseComponents() {
         inputInventory = VirtualInventory(1)
         inputInventory.setMaxStackSize(0, 1)
+        inputInventory.preUpdateHandler = Consumer { event ->
+            // 添加了新物品, 执行检查
+            if (event.isAdd || event.isSwap) {
+                val applicableItem = FirEnchantingTableRegistry.instance.findApplicableItem(event.newItem!!)
+                applicableItem?.onPreInput(event.newItem!!, event, EnchantingTableContext(player, bookShelves, this))
+            }
+        }
         inputInventory.postUpdateHandler = Consumer { event ->
             // 添加了新物品, 执行检查
             if (event.isAdd || event.isSwap) {
                 val applicableItem = FirEnchantingTableRegistry.instance.findApplicableItem(event.newItem!!)
-                applicableItem?.onPostInput(event.newItem!!, EnchantingTableContext(player, bookShelves, this))
+                applicableItem?.onPostInput(event.newItem!!, event, EnchantingTableContext(player, bookShelves, this))
             }
             // 移除物品, 重置菜单
             if (event.isRemove) {
@@ -183,6 +190,7 @@ class FirEnchantingTableMenu(
 
     // 设置附魔台的结果显示
     override fun setEnchantmentResult(list: List<EnchantmentSetting>) {
+        // TODO 返回的并非固定长度3, 需要修复
         settingLine1 = list[0]
         settingLine2 = list[1]
         settingLine3 = list[2]

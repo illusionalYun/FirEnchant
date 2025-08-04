@@ -11,6 +11,7 @@ import top.catnies.firenchantkt.context.EnchantingTableContext
 import top.catnies.firenchantkt.enchantment.FirEnchantmentSettingFactory
 import top.catnies.firenchantkt.integration.FirItemProviderRegistry
 import top.catnies.firenchantkt.integration.NMSHandlerHolder
+import xyz.xenondevs.invui.inventory.event.ItemPostUpdateEvent
 import kotlin.random.Random
 
 class FirOriginalBook: OriginalBook {
@@ -34,7 +35,7 @@ class FirOriginalBook: OriginalBook {
     }
 
     // 当物品放入附魔台时
-    override fun onPostInput(itemStack: ItemStack, context: EnchantingTableContext) {
+    override fun onPostInput(itemStack: ItemStack, event: ItemPostUpdateEvent, context: EnchantingTableContext) {
         val player = context.player
         val tableMenu = context.menu
 

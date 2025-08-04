@@ -59,7 +59,12 @@ allprojects {
         compileOnly(rootProject.libs.bundles.mysql) // Mysql Bundles
         // 依赖库
         compileOnly(rootProject.libs.bundles.rtag) // RTag Bundles
+        compileOnly(rootProject.libs.bundles.invui) { // InvUI
+            exclude("org.jetbrains.kotlin", "*")
+            exclude("org.jetbrains.kotlinx", "*")
+        }
         implementation(rootProject.libs.mhdf.scheduler) // Scheduler
+
         // 兼容
         compileOnly(rootProject.libs.placeholderapi) // PlaceholderAPI
     }
