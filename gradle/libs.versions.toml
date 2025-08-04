@@ -1,5 +1,5 @@
 [versions]
-plugin-version = "3.0.0-beta3"
+plugin-version = "3.0.0"
 # Plugins
 kotlin = "2.1.21"
 shadow = "9.0.0-beta6"
