@@ -8,11 +8,16 @@ replace-vanilla-enchanting-table: true
 menu-setting:
   # 菜单标题, 附魔台有3个栏位, 每个栏位有不同的状态: 0代表材料/等级/书架不足, 1代表可附魔, 2代表空;
   # 在不同情况下, 菜单的标题是如何的?
-  title-000: "<white><shift:-8><image:enchantment:enchant_table_gui>"
+  title-000: "<white><shift:-8><image:enchantment:enchant_table_gui><shift:-116><image:enchantment:enchant_table_et4><shift:-109><image:enchantment:enchant_table_et5><shift:-109><image:enchantment:enchant_table_et6>"
   title-100: "<white><shift:-8><image:enchantment:enchant_table_gui><shift:-116><image:enchantment:enchant_table_et1><shift:-109><image:enchantment:enchant_table_et5><shift:-109><image:enchantment:enchant_table_et6>"
   title-110: "<white><shift:-8><image:enchantment:enchant_table_gui><shift:-116><image:enchantment:enchant_table_et1><shift:-109><image:enchantment:enchant_table_et2><shift:-109><image:enchantment:enchant_table_et6>"
   title-111: "<white><shift:-8><image:enchantment:enchant_table_gui><shift:-116><image:enchantment:enchant_table_et1><shift:-109><image:enchantment:enchant_table_et2><shift:-109><image:enchantment:enchant_table_et3>"
-  title-222: "<white><shift:-8><image:enchantment:enchant_table_gui><shift:-116><image:enchantment:enchant_table_et4><shift:-109><image:enchantment:enchant_table_et5><shift:-109><image:enchantment:enchant_table_et6>"
+  title-222: "<white><shift:-8><image:enchantment:enchant_table_gui>"
+  title-122: "<white><shift:-8><image:enchantment:enchant_table_gui><shift:-116><image:enchantment:enchant_table_et1>"
+  title-112: "<white><shift:-8><image:enchantment:enchant_table_gui><shift:-116><image:enchantment:enchant_table_et1><shift:-109><image:enchantment:enchant_table_et2>"
+  title-022: "<white><shift:-8><image:enchantment:enchant_table_gui><shift:-116><image:enchantment:enchant_table_et4>"
+  title-002: "<white><shift:-8><image:enchantment:enchant_table_gui><shift:-116><image:enchantment:enchant_table_et4><shift:-109><image:enchantment:enchant_table_et5>"
+  title-102: "<white><shift:-8><image:enchantment:enchant_table_gui><shift:-116><image:enchantment:enchant_table_et1><shift:-109><image:enchantment:enchant_table_et5>"
   # 菜单结构
   structure:
     - "# # # # # # # # ?"

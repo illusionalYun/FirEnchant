@@ -65,6 +65,7 @@ class FirOriginalBook: OriginalBook {
             val enchantmentData = FirEnchantAPI.getEnchantmentData(enchantment.key)!!
             FirEnchantmentSettingFactory.fromData(enchantmentData, level, failure, 0)
         }
+        if (enchantingTableResults.isEmpty()) return // 没有结果魔咒, 无法附魔
 
         // 广播事件
         val inputEvent = OriginalBookInputEvent(

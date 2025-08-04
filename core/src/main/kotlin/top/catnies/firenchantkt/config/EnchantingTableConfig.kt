@@ -47,6 +47,11 @@ class EnchantingTableConfig private constructor():
     var MENU_TITLE_110: String by ConfigProperty("110")
     var MENU_TITLE_111: String by ConfigProperty("111")
     var MENU_TITLE_222: String by ConfigProperty("222")
+    var MENU_TITLE_122: String by ConfigProperty("122")
+    var MENU_TITLE_112: String by ConfigProperty("112")
+    var MENU_TITLE_022: String by ConfigProperty("022")
+    var MENU_TITLE_002: String by ConfigProperty("002")
+    var MENU_TITLE_102: String by ConfigProperty("102")
     var MENU_STRUCTURE_ARRAY: Array<String> by ConfigProperty(fallbackMenuStructure)    // 菜单结构
     var MENU_INPUT_SLOT: Char by ConfigProperty('I')                                    // 放入物品的槽位
     var MENU_CUSTOM_ITEMS: Map<Char, Pair<ItemStack?, List<ConfigActionTemplate>>> by ConfigProperty(emptyMap())    // 菜单中的自定义物品
@@ -111,6 +116,11 @@ class EnchantingTableConfig private constructor():
         MENU_TITLE_110 = config().getString("menu-setting.title-110", "110")!!
         MENU_TITLE_111 = config().getString("menu-setting.title-111", "111")!!
         MENU_TITLE_222 = config().getString("menu-setting.title-222", "222")!!
+        MENU_TITLE_122 = config().getString("menu-setting.title-122", "122")!!
+        MENU_TITLE_112 = config().getString("menu-setting.title-112", "112")!!
+        MENU_TITLE_022 = config().getString("menu-setting.title-022", "022")!!
+        MENU_TITLE_002 = config().getString("menu-setting.title-002", "002")!!
+        MENU_TITLE_102 = config().getString("menu-setting.title-102", "102")!!
         try { config().getStringList("menu-setting.structure").toTypedArray()
             .also { Structure(*it); MENU_STRUCTURE_ARRAY = it } // 测试合法性然后再赋值
         } catch (exception: Exception) {

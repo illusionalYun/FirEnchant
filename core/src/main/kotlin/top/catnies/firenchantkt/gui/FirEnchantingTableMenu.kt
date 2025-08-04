@@ -30,11 +30,21 @@ class FirEnchantingTableMenu(
         val config = EnchantingTableConfig.instance
     }
 
-    val title000 = config.MENU_TITLE_000
-    val title100 = config.MENU_TITLE_100
-    val title110 = config.MENU_TITLE_110
-    val title111 = config.MENU_TITLE_111
-    val title222 = config.MENU_TITLE_222
+    private val titleMap by lazy {
+        mapOf(
+            "000" to config.MENU_TITLE_000,
+            "100" to config.MENU_TITLE_100,
+            "110" to config.MENU_TITLE_110,
+            "111" to config.MENU_TITLE_111,
+            "222" to config.MENU_TITLE_222,
+            "122" to config.MENU_TITLE_122,
+            "112" to config.MENU_TITLE_112,
+            "022" to config.MENU_TITLE_022,
+            "002" to config.MENU_TITLE_002,
+            "102" to config.MENU_TITLE_102
+        )
+    }
+
     val structureArray = config.MENU_STRUCTURE_ARRAY
     val inputSlot = config.MENU_INPUT_SLOT
     val customItems = config.MENU_CUSTOM_ITEMS
@@ -67,43 +77,49 @@ class FirEnchantingTableMenu(
     val enchantmentBookOffline3 = config.MENU_SHOW_ENCHANTMENT_LINE_3_BOOK_OFFLINE
 
     var enchantable = 0
-    var activeLine: Int = -1
-    var settingLine1: EnchantmentSetting? = null
-    var settingLine2: EnchantmentSetting? = null
-    var settingLine3: EnchantmentSetting? = null
+    var activeLine = -1
+    var lineStatus: String = "000"
 
+    private val enchantmentSettings = arrayOfNulls<EnchantmentSetting>(3)
+    var settingLine1: EnchantmentSetting?
+        get() = enchantmentSettings[0]
+        set(value) { enchantmentSettings[0] = value }
+    var settingLine2: EnchantmentSetting?
+        get() = enchantmentSettings[1]
+        set(value) { enchantmentSettings[1] = value }
+    var settingLine3: EnchantmentSetting?
+        get() = enchantmentSettings[2]
+        set(value) { enchantmentSettings[2] = value }
 
     lateinit var gui: Gui
     lateinit var window: Window
     lateinit var inputInventory: VirtualInventory
+    private lateinit var selectBottoms: Array<MenuEnchantLineItem>
+    private lateinit var bookBottoms: Array<MenuEnchantLineItem>
 
-    lateinit var selectBottom1: MenuEnchantLineItem
-    lateinit var selectBottom2: MenuEnchantLineItem
-    lateinit var selectBottom3: MenuEnchantLineItem
-    lateinit var bookBottom1: MenuEnchantLineItem
-    lateinit var bookBottom2: MenuEnchantLineItem
-    lateinit var bookBottom3: MenuEnchantLineItem
+    private val enchantingTableContext by lazy { EnchantingTableContext(player, bookShelves, this) }
 
     // 关闭菜单时触发
     var closeHandlers: MutableList<Runnable> = mutableListOf()
 
     // 创建并且打开菜单
     override fun openMenu(data: Map<String, Any>, async: Boolean) {
+        val buildTask = {
+            buildBaseComponents()
+            buildLineBottoms()
+            buildGuiAndWindow()
+        }
+
         if (async) {
             TaskUtils.runAsyncTaskWithSyncCallback(
-                async = {
-                    buildBaseComponents()
-                    buildLineBottom()
-                    buildGuiAndWindow()
-                },
+                async = buildTask,
                 callback = { window.open() }
             )
         } else {
-            buildBaseComponents()
-            buildLineBottom()
-            buildGuiAndWindow()
+            buildTask()
             window.open()
         }
+
     }
 
     // 创建基础组件
@@ -114,14 +130,14 @@ class FirEnchantingTableMenu(
             // 添加了新物品, 执行检查
             if (event.isAdd || event.isSwap) {
                 val applicableItem = FirEnchantingTableRegistry.instance.findApplicableItem(event.newItem!!)
-                applicableItem?.onPreInput(event.newItem!!, event, EnchantingTableContext(player, bookShelves, this))
+                applicableItem?.onPreInput(event.newItem!!, event, enchantingTableContext)
             }
         }
         inputInventory.postUpdateHandler = Consumer { event ->
             // 添加了新物品, 执行检查
             if (event.isAdd || event.isSwap) {
                 val applicableItem = FirEnchantingTableRegistry.instance.findApplicableItem(event.newItem!!)
-                applicableItem?.onPostInput(event.newItem!!, event, EnchantingTableContext(player, bookShelves, this))
+                applicableItem?.onPostInput(event.newItem!!, event, enchantingTableContext)
             }
             // 移除物品, 重置菜单
             if (event.isRemove) {
@@ -137,19 +153,28 @@ class FirEnchantingTableMenu(
     }
 
     // 创建附魔栏物品
-    private fun buildLineBottom() {
-        selectBottom1 = MenuEnchantLineItem(this,
-            1, conditionLine1, actionLine1, enchantmentOnline1, enchantmentOffline1)
-        selectBottom2 = MenuEnchantLineItem(this,
-            2, conditionLine2, actionLine2, enchantmentOnline2, enchantmentOffline2)
-        selectBottom3 = MenuEnchantLineItem(this,
-            3, conditionLine3, actionLine3, enchantmentOnline3, enchantmentOffline3)
-        bookBottom1 = MenuEnchantLineItem(this,
-            1, conditionLine1, actionLine1, enchantmentBookOnline1, enchantmentBookOffline1)
-        bookBottom2 = MenuEnchantLineItem(this,
-            2, conditionLine2, actionLine2, enchantmentBookOnline2, enchantmentBookOffline2)
-        bookBottom3 = MenuEnchantLineItem(this,
-            3, conditionLine3, actionLine3, enchantmentBookOnline3, enchantmentBookOffline3)
+    private fun buildLineBottoms() {
+        // 配置数据数组，便于批量创建
+        val lineConfigs = arrayOf(
+            Triple(conditionLine1, actionLine1, 1),
+            Triple(conditionLine2, actionLine2, 2),
+            Triple(conditionLine3, actionLine3, 3)
+        )
+
+        val onlineConfigs = arrayOf(enchantmentOnline1, enchantmentOnline2, enchantmentOnline3)
+        val offlineConfigs = arrayOf(enchantmentOffline1, enchantmentOffline2, enchantmentOffline3)
+        val bookOnlineConfigs = arrayOf(enchantmentBookOnline1, enchantmentBookOnline2, enchantmentBookOnline3)
+        val bookOfflineConfigs = arrayOf(enchantmentBookOffline1, enchantmentBookOffline2, enchantmentBookOffline3)
+
+        selectBottoms = Array(3) { i ->
+            MenuEnchantLineItem(this, lineConfigs[i].third, lineConfigs[i].first,
+                lineConfigs[i].second, onlineConfigs[i], offlineConfigs[i])
+        }
+
+        bookBottoms = Array(3) { i ->
+            MenuEnchantLineItem(this, lineConfigs[i].third, lineConfigs[i].first,
+                lineConfigs[i].second, bookOnlineConfigs[i], bookOfflineConfigs[i])
+        }
     }
 
     // 创建 GUI & Window
@@ -158,19 +183,19 @@ class FirEnchantingTableMenu(
             .setStructure(Structure(*structureArray))
             .addIngredient(inputSlot, inputInventory)
 
-            .addIngredient(enchantmentBook1Slot, bookBottom1)
-            .addIngredient(enchantmentBook2Slot, bookBottom2)
-            .addIngredient(enchantmentBook3Slot, bookBottom3)
-            .addIngredient(enchantmentLine1Slot, selectBottom1)
-            .addIngredient(enchantmentLine2Slot, selectBottom2)
-            .addIngredient(enchantmentLine3Slot, selectBottom3)
+            .addIngredient(enchantmentLine1Slot, selectBottoms[0])
+            .addIngredient(enchantmentLine2Slot, selectBottoms[1])
+            .addIngredient(enchantmentLine3Slot, selectBottoms[2])
+            .addIngredient(enchantmentBook1Slot, bookBottoms[0])
+            .addIngredient(enchantmentBook2Slot, bookBottoms[1])
+            .addIngredient(enchantmentBook3Slot, bookBottoms[2])
 
             .apply { addCustomItems(this) }
             .build()
 
         window = Window.single {
             it.setViewer(player)
-            it.setTitle(title000.wrapTitle(player))
+            it.setTitle(titleMap["222"]!!.wrapTitle(player))
             it.setCloseHandlers(closeHandlers)
             it.setGui(gui)
             it.build()
@@ -179,9 +204,9 @@ class FirEnchantingTableMenu(
 
     // 添加自定义物品
     private fun addCustomItems(building: Gui.Builder.Normal) {
-        customItems
-            .filter { getMarkCount(it.key) > 0 }
+        customItems.asSequence()
             .filterNot { it.value.first.nullOrAir() }
+            .filter { getMarkCount(it.key) > 0 }
             .forEach { (char, pair) ->
                 val menuCustomItem = MenuCustomItem({ s -> pair.first!! }, pair.second)
                 building.addIngredient(char, menuCustomItem)
@@ -190,60 +215,71 @@ class FirEnchantingTableMenu(
 
     // 设置附魔台的结果显示
     override fun setEnchantmentResult(list: List<EnchantmentSetting>) {
-        // TODO 返回的并非固定长度3, 需要修复
-        settingLine1 = list[0]
-        settingLine2 = list[1]
-        settingLine3 = list[2]
+        enchantmentSettings.fill(null)
+        list.forEachIndexed { index, setting ->
+            if (index < 3) {
+                enchantmentSettings[index] = setting
+            }
+        }
     }
 
     // 检查玩家能亮几个附魔栏位
     override fun refreshCanLight(): Int {
-        val args = mutableMapOf("player" to player)
-        activeLine = when {
-            conditionLine1.any { !it.check(args) } -> 0
-            conditionLine2.any { !it.check(args) } -> 1
-            conditionLine3.any { !it.check(args) } -> 2
-            else -> 3
-        }
+        val args = mapOf("player" to player)
+        val conditions = arrayOf(conditionLine1, conditionLine2, conditionLine3)
+
+        // 找到第一个不满足条件的栏位
+        activeLine = conditions.indexOfFirst { condition ->
+            condition.any { !it.check(args) }
+        }.let { if (it == -1) 3 else it }
+
+        // 优化状态计算
+        lineStatus = calculateLineStatus()
+
         return activeLine
+    }
+
+    // 计算菜单状态逻辑
+    private fun calculateLineStatus(): String {
+        val hasSettings = enchantmentSettings.map { it != null }
+
+        return when {
+            hasSettings.all { it } -> when (activeLine) {
+                0 -> "000"
+                1 -> "100"
+                2 -> "110"
+                else -> "111"
+            }
+            hasSettings.none { it } -> "222"
+            !hasSettings[1] -> if (activeLine < 1) "022" else "122"
+            !hasSettings[2] -> when {
+                activeLine < 1 -> "002"
+                activeLine < 2 -> "102"
+                else -> "112"
+            }
+            else -> "000"
+        }
     }
 
     // 刷新附魔栏位
     override fun refreshLine() {
-        when (activeLine) {
-            0 -> window.changeTitle(title222.wrapTitle(player))
-            1 -> window.changeTitle(title100.wrapTitle(player))
-            2 -> window.changeTitle(title110.wrapTitle(player))
-            3 -> window.changeTitle(title111.wrapTitle(player))
-            -1 -> window.changeTitle(title000.wrapTitle(player))
-        }
-        selectBottom1.notifyWindows()
-        selectBottom2.notifyWindows()
-        selectBottom3.notifyWindows()
-        bookBottom1.notifyWindows()
-        bookBottom2.notifyWindows()
-        bookBottom3.notifyWindows()
+        titleMap[lineStatus]?.let { window.changeTitle(it.wrapTitle(player)) }
+        selectBottoms.forEach { it.notifyWindows() }
+        bookBottoms.forEach { it.notifyWindows() }
     }
 
     // 获取指定栏位的附魔书数据
     override fun getEnchantmentSettingByLine(line: Int): EnchantmentSetting? {
-        return when (line) {
-            1 -> settingLine1
-            2 -> settingLine2
-            3 -> settingLine3
-            else -> throw IllegalArgumentException("获取索引只能是1~3.")
-        }
+        require(line in 1..3) { "获取索引只能是1~3." }
+        return enchantmentSettings[line - 1]
     }
 
     // 清空附魔台状态
     fun clearEnchantmentMenu() {
-        settingLine1 = null
-        settingLine2 = null
-        settingLine3 = null
+        enchantmentSettings.fill(null)
         enchantable = 0
-        activeLine = -1
+        lineStatus = "222"
         refreshLine()
-        window.changeTitle(title000.wrapTitle(player))
     }
 
     // 设置记录的物品附魔力

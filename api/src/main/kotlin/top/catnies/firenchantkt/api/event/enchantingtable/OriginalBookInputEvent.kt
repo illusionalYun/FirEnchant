@@ -15,7 +15,7 @@ class OriginalBookInputEvent(
     val inputItem: ItemStack,
     // 记录使用这个物品附魔时, 可能出现的所有魔咒.
     val allEnchantment: Set<Enchantment>,
-    // 长度为3, 记录附魔台中出现的3个魔咒
+    // 至少1个, 最多3个, 记录附魔台中出现的3个魔咒
     var enchantingTableEnchantments: List<EnchantmentSetting>
 ) : PlayerEvent(player) {
 
