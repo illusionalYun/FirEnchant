@@ -14,6 +14,9 @@ class ListenerManger private constructor() {
     // 初始化
     private fun load() {
         Bukkit.getPluginManager().registerEvents(RecipeListener(), plugin)
+        Bukkit.getPluginManager().registerEvents(CacheListener(), plugin)
+        Bukkit.getPluginManager().registerEvents(BrokenItemListener(), plugin)
+        Bukkit.getPluginManager().registerEvents(EnchantingTableListener(), plugin)
     }
 
 }

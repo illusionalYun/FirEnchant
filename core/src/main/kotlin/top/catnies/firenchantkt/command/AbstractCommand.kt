@@ -11,8 +11,10 @@ abstract class AbstractCommand {
 
     // 创建方法
     abstract fun create(): LiteralArgumentBuilder<CommandSourceStack>
+
     // 检查执行条件
     abstract fun requires(requirement: CommandSourceStack): Boolean
+
     // 执行方法
     abstract fun execute(context: CommandContext<CommandSourceStack>): Int
 }

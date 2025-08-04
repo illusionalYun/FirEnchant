@@ -1,11 +1,13 @@
 api-version: "1.21"
 name: FirEnchantKt
-version: 3.0.0-beta1
+version: ${version}
 main: top.catnies.firenchantkt.FirEnchantPlugin
+loader: top.catnies.firenchantkt.FirEnchantPluginLoader
 #bootstrapper:
 #load: POSTWORLD
 authors:
   - Catnies
+  - ChengZhiMeow
 folia-supported: true
 dependencies:
   server:

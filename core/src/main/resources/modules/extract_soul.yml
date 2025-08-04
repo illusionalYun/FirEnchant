@@ -1,3 +1,62 @@
 # 这个文件主要负责配置将插件附魔书转换成魔咒之魂的功能。
 # 如果您发现了任何Bug/需要寻求帮助，您可以在我们的售后群联系 “那谁QQ1286071831” 进行反馈处理;
 
+# 菜单设置
+menu-setting:
+  # 菜单标题
+  title: "<white><shift:-8><image:enchantment:soul_decompose>"
+  # 菜单结构
+  structure:
+    - "X # # # # # # # ?"
+    - "I I I I I I I I I"
+    - "I I I I I I I I I"
+    - "I I I I I I I I I"
+    - "# # # # # # # # #"
+    - "# # # # O # # # #"
+  # 放入附魔书的物品栏槽位
+  input-slot: 'I'
+  # 输出材料的物品槽位
+  output-slot: 'O'
+  # 其他自定义槽位, 请勿和上方的槽位冲突
+  custom-items:
+    'X':
+      hooked-plugin: "Vanilla"
+      hooked-id: LEATHER_HORSE_ARMOR
+      item-name: "<red>关闭"
+      lore: []
+      custom-model-data: 31001
+      item-model: "minecraft:paper"
+      click-actions:
+        - type: send_message    # 发送消息
+          content: "我草666"
+        - type: play_sound      # 点击音效
+          sound: "ui.button.click"
+        - type: close_inventory # 关闭菜单
+          conditions:
+            - type: "permission"
+              permission: "admin"
+    '?':
+      hooked-plugin: "Vanilla"
+      hooked-id: PAPER
+      item-name: "<yellow>提示"
+      lore:
+        - "§7你可以在这里将附魔书转换成魔咒之尘。"
+      custom-model-data: 31001
+      item-model: "minecraft:paper"
+      click-actions:
+        - type: play_sound      # 点击音效
+          sound: "ui.button.click"
+
+
+# 提取设置
+# 玩家可以将附魔书放入提取菜单, 兑换成同等数量的目标物品.
+extract-item:
+  # 提取的结果物品
+  result-hooked-plugin: "CraftEngine"
+  result-hooked-id: "enchantment:ashes_o_enchantment"
+  # 提取数量至少 >= 1 时, 触发的动作
+  click-actions:
+    - type: play_sound
+      sound: "ui.button.click"
+    - type: send_message
+      content: "天哪, 你竟然提取了一个魔咒之魂, 太几把牛波了!!!"

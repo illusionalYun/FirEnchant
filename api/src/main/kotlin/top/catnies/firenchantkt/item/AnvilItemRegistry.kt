@@ -13,6 +13,9 @@ interface AnvilItemRegistry {
     // 注销一个铁砧物品
     fun unregisterItem(item: AnvilApplicable): Boolean
 
+    // 获取一个铁砧物品
+    fun <T : AnvilApplicable> getItem(applicableClass: Class<T>): T?
+
     // 获取所有的铁砧物品
     fun getItems(): List<AnvilApplicable>
 

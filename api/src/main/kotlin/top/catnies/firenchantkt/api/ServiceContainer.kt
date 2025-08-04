@@ -6,7 +6,7 @@ object ServiceContainer {
     private val services = mutableMapOf<Class<*>, Any>()
 
     fun <T : Any> register(serviceClass: Class<T>, implementation: T) {
-        services[serviceClass] = implementation
+        services.putIfAbsent(serviceClass, implementation)
     }
 
     @Suppress("UNCHECKED_CAST")
@@ -19,7 +19,4 @@ object ServiceContainer {
         return services.containsKey(serviceClass)
     }
 
-    fun clear() {
-        services.clear()
-    }
 }

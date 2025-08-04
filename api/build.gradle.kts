@@ -2,12 +2,6 @@ plugins {
     id("maven-publish") // Maven Publish
 }
 
-repositories {
-}
-
-dependencies {
-}
-
 // 发布到 Maven 仓库
 publishing {
     repositories {
@@ -22,7 +16,7 @@ publishing {
         create<MavenPublication>("maven") {
             groupId = "top.catnies"
             artifactId = "firenchantkt"
-            version = "3.0.0-beta-1"
+            version = "${rootProject.properties["project.version"]}"
             from(components["java"])
         }
     }

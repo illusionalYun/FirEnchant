@@ -1,0 +1,288 @@
+# 这个文件主要负责配置将插件附魔书转换成魔咒之魂的功能。
+# 如果您发现了任何Bug/需要寻求帮助，您可以在我们的售后群联系 “那谁QQ1286071831” 进行反馈处理;
+
+# 当物品在铁砧附魔失败时, 物品会转成破损状态.
+# 破损后的物品需要在修复工作台上进行修复;
+
+# 菜单设置
+menu-setting:
+  # 菜单标题, 当没有放入可修复物品/放入了可修复物品时展示不同的标题
+  title-deny: "<white><shift:-8><image:enchantment:emcforge_crafting>"
+  title-accept: "<white><shift:-8><image:enchantment:emcforge_crafting><shift:-177><image:enchantment:emcforge_crafting_bottom>"
+  # 菜单结构
+  structure:
+    - "X # # # # # # # ?"
+    - "# # # # I # # # #"
+    - "# # # C C C # # #"
+    - "# P O O O O O N #"
+  # 放入破损物品的槽位
+  input-slot: 'I'
+  # 输出队列槽位
+  output-array:
+    slot: 'O'
+    # 修复队列最大长度, 3代表玩家可以同时修复3件装备.
+    array-max-size: 3   # 默认长度
+    array-size-rule:
+      - permission: firenchant.vip  # 玩家拥有权限
+        size: 6                     # 如果玩家有权限, 那么队列长度就为6 ,这样玩家可同时修复6件物品.
+    # 队列物品不断刷新的时间
+    update-time: 20
+    # 附加在队列物品上的Lore
+    addition-active-lore:
+      - " "
+      - "&7该装备还需要花费 §e{cost_time}秒 &7才能修复完成"
+      - "&7shift + 左键: 取消修复"
+    addition-completed-lore:
+      - " "
+      - "&7该装备已经修复完成了哦!"
+      - "&7左键: 取走物品"
+  # 确认修复按钮
+  # 当放入可修复物品在菜单时, 按钮亮起时显示的内容
+  repair-bottom:
+    slot: 'C'
+    hooked-plugin: "Vanilla"
+    hooked-id: PAPER
+    custom-model-data: 31001
+    item-name: "<yellow>确认修复"
+    lore:
+      - "§7你可以将破损的物品寄存进行免费修复，"
+      - "§7但是需要花费 §e{cost_time}秒 §7的时间。"
+      - "§7 "
+      - "<#a5acb8>→ 点击进行修复"
+    click-actions: # 点击后会进行装备修复, 你可以设置额外的行为, 但是修复行为不可取消.
+      - type: play_sound      # 点击音效
+        sound: "ui.button.click"
+  # 队列上一页
+  previous-page:
+    slot: 'P'
+    hooked-plugin: "Vanilla"
+    hooked-id: PAPER
+    custom-model-data: 31002
+    item-name: "<red>上一页"
+    click-actions: # 点击后会进行翻页, 你可以设置额外的行为, 但是翻页行为不可取消.
+      - type: play_sound      # 点击音效
+        sound: "ui.button.click"
+  # 队列下一页
+  next-page:
+    slot: 'N'
+    hooked-plugin: "Vanilla"
+    hooked-id: PAPER
+    custom-model-data: 31003
+    item-name: "<red>下一页"
+    click-actions: # 点击后会进行翻页, 你可以设置额外的行为, 但是翻页行为不可取消.
+      - type: play_sound      # 点击音效
+        sound: "ui.button.click"
+  # 其他自定义槽位, 请勿和上方的槽位冲突
+  custom-items:
+    'X':
+      hooked-plugin: "Vanilla"
+      hooked-id: PAPER
+      item-name: "<red>关闭"
+      lore: []
+      custom-model-data: 31001
+      item-model: "minecraft:paper"
+      click-actions:
+        - type: play_sound      # 点击音效
+          sound: "ui.button.click"
+        - type: close_inventory # 关闭菜单
+    '?':
+      hooked-plugin: "Vanilla"
+      hooked-id: PAPER
+      item-name: "<yellow>提示"
+      lore:
+        - "§7您可以把损坏的物品放入槽位内，然后选择修复方式。"
+      custom-model-data: 31001
+      item-model: "minecraft:paper"
+      click-actions:
+        - type: play_sound      # 点击音效
+          sound: "ui.button.click"
+
+
+
+# 物品放入修复桌修复, 总是要付出一些代价的嘛;
+# 放入不同的物品, 需要花费不同的时间, 这个规则需要指定.
+# 不同的破损装备可以设计需要花费不同的时间, 例如携带魔咒更多的装备在修复时需要更多的时间才可以完成;
+repair-rule:
+  # 可选项：
+  # 1. 固定花费 "static"
+  # 2. 根据破损的物品上的附魔等级之和计算 "level", 例如锋利3+耐久2的剑, 记为5分;
+  # 3. 根据物品上附魔的数量计算 "count", 例如锋利3+耐久2的剑, 记为2分;
+  time-rule:
+    rule: "static"
+    rules:
+      # 固定花费配置 (秒)
+      static:
+        time: 600
+      # 等级和计算, 每级需要多少时间(秒), 如果没有魔咒, 则使用 fallback 设置的时间;
+      level:
+        time: 600
+        fallback: 450
+      # 魔咒数量和计算, 每个魔咒需要多少时间(秒), 如果没有魔咒, 则使用 fallback 设置的时间;
+      count:
+        time: 600
+        fallback: 450
+
+  # 正在修复队列中的装备, 允许玩家可以花费道具减少一定的修复时间;
+  # 在物品的CustomData组件上添加 {FirEnchant:{RepairType: 类型, RepairValue: 值}} 即可将物品标记为可减少修复时间的道具;
+  # 其中, 类型可选: "percent"(百分比值), "static"(固定值);
+  # 当类型为 percent 时, 值可取0~1, 代表减少百分之多少的剩余时间; 例如 0.5, 代表减少剩余时间的一半时间;
+  # 当类型为 static 时, 值可取正整数, 代表减少多少秒的固定时间; 例如 600, 代表减少10分钟时间;
+  quick-repair:
+    # 当玩家使用可减少修复时间的道具时, 还可以一些额外的操作, 例如播放音效, 发送消息等.
+    trigger-action:
+      - type: play_sound      # 点击音效
+        sound: "ui.button.click"
+
+  # 优惠规则, 你可以为VIP或符合条件的玩家设置折扣;
+  # 需要注意的是, 检查会从上到下依次检查, 会在第一个符合条件的规则处停止, 你需要将优先级高的/折扣力度大的规则写在前面.
+  magnification-rule:
+    # 权限组，可以加若干个
+    - permission: firenchant.svip # 玩家拥有权限
+      magnification: 0.5     # 时间折扣, 如果玩家有权限，那么修复物品的时间只需要设定的50%.
+    - permission: firenchant.vip
+      magnification: 0.7
+
+
+
+# 物品破损后, 物品的模型会发生变更.你需要指定物品破损之后的模型应该长什么样.
+# 为了一定的兼容性, 插件选择了物品破损时将原物品进行序列化, 存入wrapper物品内, 然后将原物品的 Name 和 Lore 转移到Wrapper物品上.
+# 这么做的好处是可以让大部分的"被动"属性失效, 但是部分通过发包附加的lore无法转移.
+broken-item-model:
+  # 当物品没有被下面的规则捕捉到时, 总需要一个包装.
+  fallback-item:
+    hooked-plugin: "CraftEngine"
+    hooked-id: "enchantment:broken_sword"
+  # 这里会按照物品的ID进行捕捉, 找到第一个符合条件的模型设置. 所以如果有需要特殊指定破损状态的物品, 请将其写的尽可能靠前.
+  matches:
+    - match-item:   # 捕捉到的物品ID
+        - "CraftEngine|default:topaz_sword" # 捕捉CE的物品.
+        - "wooden_sword"  # 捕捉原版的物品
+        - "stone_sword"
+        - "golden_sword"
+        - "iron_sword"
+        - "diamond_sword"
+        - "netherite_sword"
+      wrapper-item:
+        hooked-plugin: "CraftEngine"
+        hooked-id: "enchantment:broken_sword"
+    - match-item:
+        - "wooden_pickaxe"
+        - "stone_pickaxe"
+        - "golden_pickaxe"
+        - "iron_pickaxe"
+        - "diamond_pickaxe"
+        - "netherite_pickaxe"
+      wrapper-item:
+        hooked-plugin: "CraftEngine"
+        hooked-id: "enchantment:broken_sword"
+    - match-item:
+        - "wooden_axe"
+        - "stone_axe"
+        - "golden_axe"
+        - "iron_axe"
+        - "diamond_axe"
+        - "netherite_axe"
+      wrapper-item:
+        hooked-plugin: "CraftEngine"
+        hooked-id: "enchantment:broken_axe"
+    - match-item:
+        - "wooden_shovel"
+        - "stone_shovel"
+        - "golden_shovel"
+        - "iron_shovel"
+        - "diamond_shovel"
+        - "netherite_shovel"
+      wrapper-item:
+        hooked-plugin: "CraftEngine"
+        hooked-id: "enchantment:broken_shovel"
+    - match-item:
+        - "wooden_hoe"
+        - "stone_hoe"
+        - "golden_hoe"
+        - "iron_hoe"
+        - "diamond_hoe"
+        - "netherite_hoe"
+      wrapper-item:
+        hooked-plugin: "CraftEngine"
+        hooked-id: "enchantment:broken_hoe"
+    - match-item:
+        - "leather_helmet"
+        - "chainmail_helmet"
+        - "iron_helmet"
+        - "golden_helmet"
+        - "diamond_helmet"
+        - "netherite_helmet"
+      wrapper-item:
+        hooked-plugin: "CraftEngine"
+        hooked-id: "enchantment:broken_helmet"
+    - match-item:
+        - "leather_chestplate"
+        - "chainmail_chestplate"
+        - "iron_chestplate"
+        - "golden_chestplate"
+        - "diamond_chestplate"
+        - "netherite_chestplate"
+      wrapper-item:
+        hooked-plugin: "CraftEngine"
+        hooked-id: "enchantment:broken_chestplate"
+    - match-item:
+        - "leather_leggings"
+        - "chainmail_leggings"
+        - "iron_leggings"
+        - "golden_leggings"
+        - "diamond_leggings"
+        - "netherite_leggings"
+      wrapper-item:
+        hooked-plugin: "CraftEngine"
+        hooked-id: "enchantment:broken_leggings"
+    - match-item:
+        - "leather_boots"
+        - "chainmail_boots"
+        - "iron_boots"
+        - "golden_boots"
+        - "diamond_boots"
+        - "netherite_boots"
+      wrapper-item:
+        hooked-plugin: "CraftEngine"
+        hooked-id: "enchantment:broken_boots"
+    - match-item:
+        - "bow"
+      wrapper-item:
+        hooked-plugin: "CraftEngine"
+        hooked-id: "enchantment:broken_bow"
+    - match-item:
+        - "crossbow"
+      wrapper-item:
+        hooked-plugin: "CraftEngine"
+        hooked-id: "enchantment:broken_crossbow"
+    - match-item:
+        - "shield"
+      wrapper-item:
+        hooked-plugin: "CraftEngine"
+        hooked-id: "enchantment:broken_shield"
+    - match-item:
+        - "elytra"
+      wrapper-item:
+        hooked-plugin: "CraftEngine"
+        hooked-id: "enchantment:broken_elytra"
+    - match-item:
+        - "trident"
+      wrapper-item:
+        hooked-plugin: "CraftEngine"
+        hooked-id: "enchantment:broken_trident"
+    - match-item:
+        - "fishing_rod"
+        - "carrot_on_a_stick"
+      wrapper-item:
+        hooked-plugin: "CraftEngine"
+        hooked-id: "enchantment:broken_fishing_rod"
+    - match-item:
+        - "brush"
+      wrapper-item:
+        hooked-plugin: "CraftEngine"
+        hooked-id: "enchantment:broken_brush"
+    - match-item:
+        - "mace"
+      wrapper-item:
+        hooked-plugin: "CraftEngine"
+        hooked-id: "enchantment:broken_mace"

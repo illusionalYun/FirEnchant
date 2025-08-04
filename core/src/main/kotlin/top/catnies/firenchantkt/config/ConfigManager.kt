@@ -9,11 +9,22 @@ class ConfigManager private constructor() {
     // 配置文件
     private val configs = listOf(
         SettingsConfig.instance,
-        AnvilConfig.instance
+        AnvilConfig.instance,
+        ExtractSoulConfig.instance,
+        RepairTableConfig.instance,
+        EnchantingTableConfig.instance,
+        ShowEnchantedBooksConfig.instance,
     )
 
     // 重载所有配置
     fun reload() {
-        configs.forEach { it.reload() }
+        configs.forEach {
+            it.reload()
+        }
+    }
+
+    // 加载延迟加载的配置
+    fun loadConfigsLatePart() {
+        configs.forEach { it.loadLatePart() }
     }
 }

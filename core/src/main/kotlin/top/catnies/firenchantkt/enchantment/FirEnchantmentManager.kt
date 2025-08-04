@@ -9,8 +9,7 @@ import org.bukkit.configuration.file.YamlConfiguration
 import org.bukkit.enchantments.Enchantment
 import top.catnies.firenchantkt.FirEnchantPlugin
 import top.catnies.firenchantkt.api.ServiceContainer
-import top.catnies.firenchantkt.integration.IntegrationManager
-import top.catnies.firenchantkt.enchantment.EnchantmentSettingFactory
+import top.catnies.firenchantkt.integration.FirItemProviderRegistry
 import top.catnies.firenchantkt.language.MessageConstants.RESOURCE_ENCHANTMENT_FILE_ERROR
 import top.catnies.firenchantkt.language.MessageConstants.RESOURCE_ENCHANTMENT_FILE_ITEM_NOT_FOUND
 import top.catnies.firenchantkt.language.MessageConstants.RESOURCE_ENCHANTMENT_FILE_PROVIDER_NOT_FOUND
@@ -21,7 +20,7 @@ import top.catnies.firenchantkt.util.ResourceCopyUtils
 class FirEnchantmentManager private constructor(): EnchantmentManager {
     val plugin = FirEnchantPlugin.instance
     val logger = plugin.logger
-    val provider = IntegrationManager.instance
+    val provider = FirItemProviderRegistry.instance
 
     private val enchantments = mutableMapOf<NamespacedKey, EnchantmentData>()
 
@@ -35,7 +34,7 @@ class FirEnchantmentManager private constructor(): EnchantmentManager {
     private fun load() {
         readRegisteredEnchantments()
         ServiceContainer.register(EnchantmentManager::class.java, this)
-        ServiceContainer.register(EnchantmentSettingFactory::class.java, FirEnchantmentSettingFactoryImpl)
+        ServiceContainer.register(EnchantmentSettingFactory::class.java, FirEnchantmentSettingFactory)
     }
 
     fun reload() {
@@ -91,7 +90,7 @@ class FirEnchantmentManager private constructor(): EnchantmentManager {
                     originEnchantment = em,
                     itemProvider = itemProvider,
                     hookedID = hookedID,
-                    itemName = cfg.getString("item-name", "<arg:key> <arg:roman_level>")!!,
+                    itemName = cfg.getString("item-name", "<firenchant:enchantment> <firenchant:level_roman>")!!,
                     itemLore = cfg.getStringList("item-lore"),
                     cacheItem = hookedItem // 把物品缓存一下
                 )

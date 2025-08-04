@@ -38,9 +38,6 @@ class TranslationManager private constructor(){
 
     // 将系统语言文件夹下的内容加载到TranslationStore中.
     private fun loadFromFileSystem() {
-        val startTime = System.currentTimeMillis()
-        var loadedLanguages = 0
-
         languagesDirectory.walkTopDown()
             .maxDepth(1)
             .filter { it.isFile && it.extension == "yml" }
@@ -58,12 +55,10 @@ class TranslationManager private constructor(){
                         translator.addTranslation(key, locale, message)
                     }
 
-                loadedLanguages++
                 logger.info("Loaded language $lang ($langVersion)")
             }
 
         // 注册到全局翻译器
         GlobalTranslator.translator().addSource(translator)
-        logger.info("Loaded $loadedLanguages languages in ${System.currentTimeMillis() - startTime}ms")
     }
 }

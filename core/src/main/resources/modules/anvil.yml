@@ -1,6 +1,110 @@
 # 这个文件主要负责配置插件物品在铁砧上的行为，插件同时提供一些额外的可选功能。
 # 如果您发现了任何Bug/需要寻求帮助，您可以在我们的售后群联系 “那谁QQ1286071831” 进行反馈处理;
 
-# 是否禁止玩家在铁砧上使用原版的附魔书？
-# 如果设置为 true， 那么铁砧上无法再使用附魔书（创造模式不受影响）。
-deny-vanilla-enchanted-book: true
+
+# 原版附魔书设置
+vanilla-enchanted-book:
+  # 是否禁止玩家在铁砧上使用原版的附魔书？（创造模式不受影响）。
+  deny-use: true
+
+
+# 附魔书设置
+enchanted-book:
+  # 使用附魔书
+  use-enchanted-book:
+    # 经验值消耗设置
+    exp:
+      # 玩家在使用附魔书时,铁砧上消耗的经验值如何计算?
+      # 计算方式可选:
+      # 1. "FIXED"(固定值.)
+      # 2. "VANILLALIKE"(使用原版的计算逻辑,会将附魔书视为原版的附魔书,然后捕捉它的经验消耗.)
+      cost-mode: "FIXED"
+      fixed-value: 18
+
+    # 玩家在使用附魔书时,让服务器干预使用附魔书是否成功/失败.
+    # 因为频繁大量的操作(附魔)使用纯随机计算的效果实际上对于玩家来说体验很差,可能会有非常离谱的非酋,然后造成玩家流失.
+    failure-correction:
+      # 该选项会强制修改附魔书的成功和失败,对于玩家来说,具有过低的失败率的附魔书失败通常是不可接受的.
+      min-max-limit:
+        enable: false
+        min-success: 15 # 低于多少失败率的附魔书将必定成功?
+        max-failure: 90 # 高于多少失败率的附魔书将必定失败?
+
+      # 该选项会试图将玩家使用附魔书的成功/失败历史记录在缓存里,并根据记录会试图干预结果.
+      # 例如,使连续失败的玩家下次成功率会更大,连续成功的玩家下次的失败概率会更大,会使玩家区间内的概率符合预期.
+      history-compensation:
+        enable: false
+
+    # 使用附魔书失败时, 是否会使装备进入破损状态?
+    break-failed-item: true
+
+    # 行为设置, 当玩家使用附魔书后, 有可能会失败.
+    # 如果失败了, 你可以选择给予玩家一个物品作为补偿.
+    fail-back-item:
+      enable: true
+      hooked-plugin: "CraftEngine"
+      hooked-id: "enchantment:ashes_o_enchantment"
+
+  # 相同附魔书合并
+  merge-enchanted-book:
+    # 当两本附魔书合并时, 其结果附魔书上的失败率应该如何处理?
+    # 可选值:
+    # 1. DEFAULT(原版行为, 使用左边的附魔书的失败率)
+    # 2. HIGHER(选取两本附魔书中较高的概率)
+    # 3. LOWER(选取两本附魔书中较低的概率)
+    failure-inheritance: "DEFAULT"
+    # 经验值消耗设置
+    exp:
+      # 玩家在使用附魔书时,铁砧上消耗的经验值如何计算?
+      # 计算方式可选:
+      # 1. "FIXED"(固定值.)
+      # 2. "VANILLALIKE"(使用原版的计算逻辑,会将附魔书视为原版的附魔书,然后捕捉它的经验消耗.)
+      cost-mode: "FIXED"
+      fixed-value: 18
+
+
+# 魔咒之魂设置
+enchant-soul:
+  enable: true
+  # 魔咒之魂使用的物品
+  hooked-plugin: "CraftEngine"
+  hooked-id: "enchantment:ashes_o_enchantment"
+  # 使用每个魔咒之魂消耗的经验等级
+  exp: 3
+  # 每个魔咒之魂可降低多少附魔书的失败率?
+  reduce-failure: 3
+  # 附魔书最多可以使用魔咒之魂降低到多少的失败率?
+  min-failure: 5
+  # 附魔书最多可以使用多少个魔咒之魂?
+  max-use-souls: 12
+
+
+# 保护符文设置
+protection-rune:
+  enable: true
+  # 保护符文使用的物品
+  hooked-plugin: "CraftEngine"
+  hooked-id: "enchantment:rune_protection"
+  # 使用保护符文消耗的经验等级
+  exp: 18
+
+
+# 升级符文设置
+# 升级符文是通过物品custom-data里的数据指定的。
+# 具有 {FirEnchant: {PowerChance: 成功率}} 的数据的物品将会被视为升级符文. (成功率 >= 0)
+power-rune:
+  enable: true
+  # 升级符文升级失败时, 是否会使装备破损?
+  break-failed-item: false
+  # 使用升级符文消耗的经验等级
+  exp: 25
+
+
+# 扩展槽位符文设置 (此功能需要安装插件 EnchantmentSlots 4.4.0 +.)
+slot-rune:
+  enable: true
+  # 拓展符文使用的物品
+  hooked-plugin: "CraftEngine"
+  hooked-id: "enchantment:rune_slot"
+  # 使用拓展符文消耗的经验等级
+  exp: 12

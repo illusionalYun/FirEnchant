@@ -1,8 +1,14 @@
 package top.catnies.firenchantkt.item
 
+import org.bukkit.Bukkit
 import org.bukkit.inventory.ItemStack
+import top.catnies.firenchantkt.api.ServiceContainer
+import top.catnies.firenchantkt.api.event.anvil.AnvilApplicableItemRegisterEvent
+import top.catnies.firenchantkt.item.anvil.FirEnchantSoul
 import top.catnies.firenchantkt.item.anvil.FirEnchantedBook
-import top.catnies.firenchantkt.item.anvil.VanillaEnchantedBook
+import top.catnies.firenchantkt.item.anvil.FirPowerRune
+import top.catnies.firenchantkt.item.anvil.FirProtectionRune
+import top.catnies.firenchantkt.item.anvil.FirVanillaEnchantedBook
 
 
 class FirAnvilItemRegistry: AnvilItemRegistry {
@@ -10,15 +16,26 @@ class FirAnvilItemRegistry: AnvilItemRegistry {
     private val items = mutableListOf<AnvilApplicable>()
 
     companion object {
-        val instance: FirAnvilItemRegistry by lazy { FirAnvilItemRegistry().also {
-            it.load()
+        @JvmStatic
+        val instance: FirAnvilItemRegistry by lazy { FirAnvilItemRegistry().apply {
+            load()
         } }
     }
 
     // 初始化注册物品
-    fun load() {
-        registerItem(VanillaEnchantedBook())
+    private fun load() {
+        registerItem(FirVanillaEnchantedBook())
         registerItem(FirEnchantedBook())
+        registerItem(FirProtectionRune())
+        registerItem(FirEnchantSoul())
+        registerItem(FirPowerRune())
+        ServiceContainer.register(AnvilItemRegistry::class.java, this)
+        Bukkit.getPluginManager().callEvent(AnvilApplicableItemRegisterEvent(this))
+    }
+
+    // 重载物品
+    fun reload() {
+        items.forEach { it.reload() }
     }
 
     // 注册新的铁砧物品
@@ -31,6 +48,12 @@ class FirAnvilItemRegistry: AnvilItemRegistry {
         return items.remove(item)
     }
 
+    // 获取一个铁砧物品
+    @Suppress("UNCHECKED_CAST")
+    override fun <T : AnvilApplicable> getItem(applicableClass: Class<T>): T? {
+        return items.find { applicableClass.isInstance(it) } as T?
+    }
+
     // 获取所有铁砧物品
     override fun getItems(): List<AnvilApplicable> {
         return items.toList()
@@ -38,13 +61,7 @@ class FirAnvilItemRegistry: AnvilItemRegistry {
 
     // 找到物品对应的处理器
     override fun findApplicableItem(itemStack: ItemStack): AnvilApplicable? {
-        items.forEach {
-            if (it.matches(itemStack)) {
-                return it
-            }
-        }
-        return null
-//        return items.find { it.matches(itemStack) }
+        return items.find { it.matches(itemStack) }
     }
 
 }
