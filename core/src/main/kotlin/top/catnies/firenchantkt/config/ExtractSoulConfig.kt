@@ -48,7 +48,7 @@ class ExtractSoulConfig private constructor():
         MENU_TITLE = config().getString("menu-setting.title", "Extract Soul Menu")!!
         try { config().getStringList("menu-setting.structure").toTypedArray()
             .also { Structure(*it); MENU_STRUCTURE_ARRAY = it } // 测试合法性然后再赋值
-        } catch (exception: IllegalArgumentException) {
+        } catch (exception: Exception) {
             Bukkit.getConsoleSender().sendTranslatableComponent(RESOURCE_MENU_STRUCTURE_ERROR, fileName) }
         MENU_INPUT_SLOT = config().getString("menu-setting.input-slot", "I")?.first() ?: 'I'
         MENU_OUTPUT_SLOT = config().getString("menu-setting.output-slot", "O")?.first() ?: 'O'

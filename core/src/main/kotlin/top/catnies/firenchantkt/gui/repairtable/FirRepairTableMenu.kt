@@ -95,21 +95,20 @@ class FirRepairTableMenu(
 
     // 打开菜单
     override fun openMenu(data: Map<String, Any>, async: Boolean) {
+        val buildTask = {
+            initRepairItems() // 读取玩家修复列表, 构建列表
+            buildInputInventory()
+            buildConfirmItem()
+            buildPageItem()
+            buildGuiAndWindow()
+        }
         if (async) {
             TaskUtils.runAsyncTaskWithSyncCallback(
-                async = {
-                    initRepairItems() // 读取玩家修复列表, 构建列表
-                    buildInputInventory()
-                    buildConfirmItem()
-                    buildPageItem()
-                    buildGuiAndWindow()
-                },
+                async = buildTask,
                 callback = { window.open() }
             )
         } else {
-            buildConfirmItem() // 读取玩家修复列表, 构建列表
-            buildPageItem()
-            buildGuiAndWindow()
+            buildTask()
             window.open()
         }
     }

@@ -1,0 +1,69 @@
+# 这个文件主要负责配置将插件附魔书转换成魔咒之魂的功能。
+# 如果您发现了任何Bug/需要寻求帮助，您可以在我们的售后群联系 “那谁QQ1286071831” 进行反馈处理;
+
+# 这个菜单主要是用来展示服务器内所有附魔书的;
+# 你可以设置这个菜单的样式和排序方式
+
+# 菜单设置
+menu-setting:
+  # 菜单标题
+  title: "<white><shift:-8><image:enchantment:listview>"
+  # 菜单结构
+  structure:
+    - "X # # # # # # # ?"
+    - "I I I I I I I I I"
+    - "I I I I I I I I I"
+    - "I I I I I I I I I"
+    - "I I I I I I I I I"
+    - "# # # # # # # < >"
+  # 展示附魔书的物品栏槽位
+  content-slot: 'I'
+  # 上一页
+  previous-page:
+    slot: '<'
+    hooked-plugin: "Vanilla"
+    hooked-id: PAPER
+    custom-model-data: 31002
+    item-name: "<red>上一页"
+    click-actions: # 点击后会进行翻页, 你可以设置额外的行为, 但是翻页行为不可取消.
+      - type: play_sound      # 点击音效
+        sound: "ui.button.click"
+  # 下一页
+  next-page:
+    slot: '>'
+    hooked-plugin: "Vanilla"
+    hooked-id: PAPER
+    custom-model-data: 31003
+    item-name: "<red>下一页"
+    click-actions: # 点击后会进行翻页, 你可以设置额外的行为, 但是翻页行为不可取消.
+      - type: play_sound      # 点击音效
+        sound: "ui.button.click"
+  # 其他自定义槽位, 请勿和上方的槽位冲突
+  custom-items:
+    'X':
+      hooked-plugin: "Vanilla"
+      hooked-id: LEATHER_HORSE_ARMOR
+      item-name: "<red>关闭"
+      lore: []
+      custom-model-data: 31001
+      item-model: "minecraft:paper"
+      click-actions:
+        - type: play_sound
+          sound: "ui.button.click"
+        - type: close_inventory
+    '?':
+      hooked-plugin: "Vanilla"
+      hooked-id: PAPER
+      item-name: "<yellow>提示"
+      lore:
+        - "§7你可以在这里查看服务器内所有的附魔书。"
+      custom-model-data: 31001
+      item-model: "minecraft:paper"
+      click-actions:
+        - type: play_sound
+          sound: "ui.button.click"
+
+
+# 不展示在菜单里的魔咒
+hide-enchantment:
+#  - "minecraft:unbreaking"

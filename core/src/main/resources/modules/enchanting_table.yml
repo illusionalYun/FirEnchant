@@ -174,13 +174,15 @@ menu-setting:
     'X':
       hooked-plugin: "Vanilla"
       hooked-id: PAPER
-      item-name: "<red>没用的按钮"
+      item-name: "<gray>查看所有魔咒"
       lore: []
       custom-model-data: 31001
       click-actions:
         - type: play_sound      # 点击音效
           sound: "ui.button.click"
-        - type: close_inventory # 关闭菜单
+        - type: execute_command
+          command: "firenchant openmenu enchanted-books-list %player_name%"
+          sudo: false
     '?':
       hooked-plugin: "Vanilla"
       hooked-id: PAPER
