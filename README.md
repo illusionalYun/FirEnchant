@@ -8,14 +8,53 @@ Firenchants 是一款**附魔系统改革**插件，灵感来源于某国外服�
 
 ### 🔥 核心特色
 
-- **完全重写附魔台机制** - 全新的附魔书分类系统
-- **附魔失败机制** - 引入破损物品和修复系统
-- **多种趣味道具** - 升级符文、拓展符文等
-- **兼容主流物品插件** - 支持CE等
-- **真附魔兼容** - 支持ECO、ExcellentEnchant、aiyatsbus等原版注册的真实附魔
+- **覆盖原版但不离开原版** - 仍然使用附魔台作为媒介，无需玩家任何上手门槛
+
+  <img src="https://github-production-user-asset-6210df.s3.amazonaws.com/224338072/474384202-af53281a-105e-43cf-baa9-7d10e06ebec9.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVCODYLSA53PQK4ZA%2F20250805%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250805T080100Z&X-Amz-Expires=300&X-Amz-Signature=6fe292aa31ca222f31bc51078c8c1e7b0021354f28d95acac5b7a5fa0f0dce27&X-Amz-SignedHeaders=host" width = "600" height = "300" alt="图片名称" align=left />
+
+- **附魔失败机制** - 引入破损物品和多物品修复系统，增加附魔深度
+
+  <img src="https://github-production-user-asset-6210df.s3.amazonaws.com/224338072/474390052-58865f5a-f762-42c7-a9ef-d0b2e2c82838.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVCODYLSA53PQK4ZA%2F20250805%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250805T081239Z&X-Amz-Expires=300&X-Amz-Signature=2c184187194de743a1cb02d15040e1f72828485eadce873e47b103af7f7da05d&X-Amz-SignedHeaders=host" width = "600" height = "200" alt="图片名称" align=left />
+
+  <img src="https://github-production-user-asset-6210df.s3.amazonaws.com/224338072/474393782-e9aac878-c720-4d27-b09d-ed4a95d8ef06.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVCODYLSA53PQK4ZA%2F20250805%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250805T081932Z&X-Amz-Expires=300&X-Amz-Signature=98b28e2ef321a83a06cdd3302e9eea964f811dcb1bf8ed81b37c8181a7eedb48&X-Amz-SignedHeaders=host" width = "600" height = "330" alt="图片名称" align=left />
+
+- **多种趣味道具** - 升级符文、拓展符文等，丰富玩家体验
+
+  <img src="https://github-production-user-asset-6210df.s3.amazonaws.com/224338072/474395973-c7a834fa-ad14-4759-8bdf-407ff73457fd.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVCODYLSA53PQK4ZA%2F20250805%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250805T082329Z&X-Amz-Expires=300&X-Amz-Signature=278f5682534f6c39426ac1889118328d2d63b01218358e9f74bd0f8b17f4f54a&X-Amz-SignedHeaders=host" width = "600" height = "100" alt="图片名称" align=left />
+
 - **附魔自动导入** - 无需手动导入附魔，可自动检测所有注册原版的附魔
-- **多物品同时修复** - 支持多页物品同时修复
-- **多插件兼容** - 支持更多插件兼容
+
+  <img src="https://github-production-user-asset-6210df.s3.amazonaws.com/224338072/474404507-fb6decdf-1aae-4a8c-a8ad-b9b78f0642a4.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVCODYLSA53PQK4ZA%2F20250805%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250805T083910Z&X-Amz-Expires=300&X-Amz-Signature=ff582e49368610853e35caa813cddf95f077f78e2a997e213bd0a8eb3fc54ddb&X-Amz-SignedHeaders=host" width = "600" height = "400" alt="图片名称" align=left />
+
+- **兼容主流物品插件** - 支持CE、IA、Nexo等
+
+  <a href="https://modrinth.com/plugin/craftengine" target="_blank">
+  <img src="https://cdn.modrinth.com/data/tRX6FMfQ/0cf5b8584176a299543b47937eeeb2e3f6c2b30e.png" width = "100" height = "100" alt="图片名称" align=left />
+  </a>  <a href="https://www.spigotmc.org/resources/%E2%9C%A8itemsadder%E2%AD%90emotes-mobs-items-armors-hud-gui-emojis-blocks-wings-hats-liquids.73355/" target="_blank">
+  <img src="https://github-production-user-asset-6210df.s3.amazonaws.com/224338072/474400456-c5301279-074a-46c0-abaf-e847c37f3cd7.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVCODYLSA53PQK4ZA%2F20250805%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250805T083205Z&X-Amz-Expires=300&X-Amz-Signature=129c07667bc1d16ffc37bc7ba31b7c2ac963dde128f6303f85e5b20ed44d18ec&X-Amz-SignedHeaders=host" width = "100" height = "100" alt="图片名称" align=left />
+  </a>  <a href="https://polymart.org/product/6901/nexo" target="_blank">
+  <img src="https://images.polymart.org/product/6901/thumbnail.png?t=1743583080&v=3" width = "100" height = "100" alt="图片名称" align=left />
+  </a>
+
+
+
+
+
+- **真附魔兼容** - 支持ExcellentEnchant、EcoEnchants、aiyatsbus等原版注册的真实附魔
+
+  <a href="https://www.spigotmc.org/resources/excellentenchants-%E2%AD%90-75-vanilla-like-enchantments.61693/" target="_blank">
+  <img src="https://github-production-user-asset-6210df.s3.amazonaws.com/224338072/474405289-44fd32bc-de9f-4d9e-964f-e8950ab76326.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVCODYLSA53PQK4ZA%2F20250805%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250805T084109Z&X-Amz-Expires=300&X-Amz-Signature=94ca5d3236258c344a463c4ea02b550e80034a57fadb63ef7b6f012ddc919852&X-Amz-SignedHeaders=host" width = "100" height = "100" alt="图片名称" align=left />
+  </a><a href="https://www.spigotmc.org/resources/ecoenchants-%E2%AD%95-250-enchantments-%E2%9C%85-create-custom-enchants-%E2%9C%A8-essentials-cmi-support.79573/" target="_blank">
+  <img src="https://github-production-user-asset-6210df.s3.amazonaws.com/224338072/474407278-9a876e77-4628-451e-a650-0d56eff41f80.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVCODYLSA53PQK4ZA%2F20250805%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250805T084413Z&X-Amz-Expires=300&X-Amz-Signature=4ea687c3319ff6ffee264cafa8cf9f6265228e0b73d5ece38cea73c9383894c6&X-Amz-SignedHeaders=host" width = "100" height = "100" alt="图片名称" align=left />
+  </a> <a href="https://github.com/PolarAstrum/aiyatsbus" target="_blank">
+  <img src="https://github-production-user-asset-6210df.s3.amazonaws.com/224338072/474408229-ec7d6fd2-ffc5-4382-8877-5885093d13a9.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVCODYLSA53PQK4ZA%2F20250805%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250805T084608Z&X-Amz-Expires=300&X-Amz-Signature=a2b8de50759ad923bb8f72bf7f0c1387040f91d46bda68603f26026636926b1b&X-Amz-SignedHeaders=host" width = "100" height = "100" alt="图片名称" align=left />
+  </a>
+
+
+
+
+
+- **多插件兼容** - 更多插件兼容
 
 ------
 
@@ -61,7 +100,7 @@ Firenchants 是一款**附魔系统改革**插件，灵感来源于某国外服�
 
 ## ❌ 已知不兼容
 
-- AE等基于NBT的伪附魔插件
+- 不支持AdvancedEnchantments、EnchantmentForge等基于NBT的伪附魔插件
 
 ------
 
