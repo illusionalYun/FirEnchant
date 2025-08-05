@@ -12,19 +12,27 @@ Firenchants 是一款**附魔系统改革**插件，灵感来源于某国外服�
 
   <img src="https://s21.ax1x.com/2025/08/05/pVUaMad.png" width = "600" height = "300" alt="图片名称" align=left />
 
+
+
 - **附魔失败机制** - 引入破损物品和多物品修复系统，增加附魔深度
 
   <img src="https://s21.ax1x.com/2025/08/05/pVUanqe.png" width = "600" height = "200" alt="图片名称" align=left />
 
   <img src="https://s21.ax1x.com/2025/08/05/pVUaeKO.png" width = "600" height = "330" alt="图片名称" align=left />
 
+
+
 - **多种趣味道具** - 升级符文、拓展符文等，丰富玩家体验
 
   <img src="https://s21.ax1x.com/2025/08/05/pVUaVxK.png" width = "600" height = "100" alt="图片名称" align=left />
 
+
+
 - **附魔自动导入** - 无需手动导入附魔，可自动检测所有注册原版的附魔
 
   <img src="https://s21.ax1x.com/2025/08/05/pVUai5R.png" width = "600" height = "400" alt="图片名称" align=left />
+
+
 
 - **兼容主流物品插件** - 支持CE、IA、Nexo等
 
@@ -40,6 +48,8 @@ Firenchants 是一款**附魔系统改革**插件，灵感来源于某国外服�
 
 
 
+
+
 - **真附魔兼容** - 支持ExcellentEnchant、EcoEnchants、aiyatsbus等原版注册的真实附魔
 
   <a href="https://www.spigotmc.org/resources/excellentenchants-%E2%AD%90-75-vanilla-like-enchantments.61693/" target="_blank">
@@ -49,6 +59,8 @@ Firenchants 是一款**附魔系统改革**插件，灵感来源于某国外服�
   </a> <a href="https://github.com/PolarAstrum/aiyatsbus" target="_blank">
   <img src="https://s21.ax1x.com/2025/08/05/pVUaA8x.jpg" width = "100" height = "100" alt="图片名称" align=left />
   </a>
+
+
 
 
 
