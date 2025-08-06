@@ -8,25 +8,25 @@ Firenchants 是一款**附魔系统改革**插件，灵感来源于某国外服�
 
 ### 🔥 核心特色
 
-- **覆盖原版但不离开原版** - 仍然使用附魔台作为媒介，无需玩家任何上手门槛
+- **覆盖原版但不离开原版** - 仍然使用附魔台作为媒介，玩家可以往附魔台中放入配置文件中指定的可附魔的物品进行附魔，可以高度自定义可出现的魔咒列表和附魔所需的条件。
 
   <img src="https://s21.ax1x.com/2025/08/05/pVUaMad.png" width = "600" height = "300" alt="" />
 
-- **附魔失败机制** - 引入破损物品和多物品修复系统，增加附魔深度
+- **附魔失败机制** - 引入破损物品和物品修复系统，玩家使用附魔书时如果失败了，装备会破损，玩家可以花时间将破损的装备修复，增加附魔玩法深度。
 
   <img src="https://s21.ax1x.com/2025/08/05/pVUanqe.png" width = "600" height = "200" alt="" />
 
   <img src="https://s21.ax1x.com/2025/08/05/pVUaeKO.png" width = "600" height = "330" alt=""  />
 
-- **多种趣味道具** - 升级符文、拓展符文等，丰富玩家体验
+- **多种趣味道具** - 配套的多种道具，升级符文、拓展符文、快速修复卡等许多道具，既丰富了玩家体验，服主也可以发放更多附魔相关的道具奖励。
 
   <img src="https://s21.ax1x.com/2025/08/05/pVUaVxK.png" width = "600" height = "100" alt="" />
 
-- **附魔自动导入** - 无需手动导入附魔，可自动检测所有注册原版的附魔
+- **附魔自动导入** - 无需手动导入附魔，插件在启动时自动检测所有已注册的魔咒，快速上手使用。
 
   <img src="https://s21.ax1x.com/2025/08/05/pVUai5R.png" width = "600" height = "400" alt="" />
 
-- **兼容主流物品插件** - 支持CE、IA、Nexo等
+- **兼容主流物品插件** - 支持CraftEngine、Oraxen、ItemsAdder、Nexo等多个自定义物品插件，可以将本插件的道具绑定到这些自定义物品插件，减少物品混乱度。
 
   <a href="https://modrinth.com/plugin/craftengine" target="_blank">
   <img src="https://cdn.modrinth.com/data/tRX6FMfQ/0cf5b8584176a299543b47937eeeb2e3f6c2b30e.png" width = "100" height = "100" alt=""/>
@@ -35,7 +35,7 @@ Firenchants 是一款**附魔系统改革**插件，灵感来源于某国外服�
   </a><a href="https://polymart.org/product/6901/nexo" target="_blank"><img src="https://images.polymart.org/product/6901/thumbnail.png?t=1743583080&v=3" width = "100" height = "100" alt="" />
   </a>
 
-- **真附魔兼容** - 支持ExcellentEnchant、EcoEnchants、aiyatsbus等原版注册的真实附魔
+- **只修改附魔玩法，不调整魔咒** - 支持ExcellentEnchant、EcoEnchants、Aiyatsbus等插件注册的真实魔咒，同时也支持使用原版Datapack注册的魔咒！
 
   <a href="https://www.spigotmc.org/resources/excellentenchants-%E2%AD%90-75-vanilla-like-enchantments.61693/" target="_blank">
   <img src="https://s21.ax1x.com/2025/08/05/pVUaCVJ.png" width = "100" height = "100" alt="" />
@@ -45,31 +45,8 @@ Firenchants 是一款**附魔系统改革**插件，灵感来源于某国外服�
   <img src="https://s21.ax1x.com/2025/08/05/pVUaA8x.jpg" width = "100" height = "100" alt="" />
   </a>
 
-- **多插件兼容** - 更多插件兼容
-
-------
-
-## 🔧 如何构建
-
-### 💻 命令行
-
-1. 安装 **JDK 21**。
-
-2. 打开命令行并定位到项目目录。
-
-3. 运行
-
-   ```
-   ./gradlew build
-   ```
-
-4. 在 **/target** 文件夹中找到项目。
-
-### 🛠️ 使用 IDE
-
-1. 将项目导入到您的 IDE 中。
-2. 执行 **Gradle 构建**。
-3. 在 **/target** 文件夹中找到项目。
+- **多插件兼容** - 插件挂钩大量其他插件，支持Auraskill，Mcmmo，CustomCrops等许多插件，如果您有希望支持的插件也可以在Issue中提出！
+-
 
 -----------------------
 
