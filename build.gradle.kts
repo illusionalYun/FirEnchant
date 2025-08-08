@@ -37,16 +37,18 @@ allprojects {
     repositories {
         mavenCentral()
         maven("https://jitpack.io") // RTag
-        maven("https://repo.xenondevs.xyz/releases") // InvUI
+        maven("https://maven.chengzhimeow.cn/releases/") // ChengZhiMeow
+        maven("https://repo.xenondevs.xyz/releases/") // InvUI
         maven("https://repo.papermc.io/repository/maven-public/") // Paper
         maven("https://maven.devs.beer/") // ItemsAdder
         maven("https://repo.nexomc.com/releases") // Nexo
         maven("https://repo.oraxen.com/releases") // Oraxen
         maven("https://mvn.lumine.io/repository/maven-public/") // MythicMobs
-        maven("https://repo.momirealms.net/releases/") // CustomCrops, CustomFishing, CraftEngine
+        maven("https://repo.momirealms.net/releases/net/momirealms/") // CustomCrops, CustomFishing, CraftEngine
         maven("https://repo.extendedclip.com/content/repositories/placeholderapi/") // PlaceholderAPI
-        maven("https://maven.chengzhimeow.cn/releases") // ChengZhiMeow
         maven("https://repo.nightexpressdev.com/releases") // CoinsEngine
+        maven("https://repo1.maven.org/maven2/net/kyori/adventure-api/") // AdventureApi
+        maven("https://repo1.maven.org/maven2/net/kyori/adventure-text-minimessage/") // AdventureMinimessage
     }
 
     dependencies {
@@ -64,7 +66,8 @@ allprojects {
             exclude("org.jetbrains.kotlinx", "*")
         }
         implementation(rootProject.libs.mhdf.scheduler) // Scheduler
-
+        implementation("net.kyori:adventure-api:4.15.0")
+        implementation("net.kyori:adventure-text-minimessage:4.15.0")
         // 兼容
         compileOnly(rootProject.libs.placeholderapi) // PlaceholderAPI
     }
